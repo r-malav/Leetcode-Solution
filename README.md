@@ -1,9 +1,5 @@
 # LeetCode javascript solutions
 
-## web
-
-[https://baffinlee.github.io/leetcode-javascript/](https://baffinlee.github.io/leetcode-javascript/)
-
 ## dev
 
 ```bash

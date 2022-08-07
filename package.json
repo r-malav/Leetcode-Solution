@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BaffinLee/leetcode-javascript.git"
+    "url": "git+https://github.com/curest0x1021/Leetcode-Javascript.git"
   },
   "keywords": [
     "leetcode"
@@ -20,9 +20,9 @@
   "author": "Baffin Lee",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/BaffinLee/leetcode-javascript/issues"
+    "url": "https://github.com/curest0x1021/Leetcode-Javascript/issues"
   },
-  "homepage": "https://github.com/BaffinLee/leetcode-javascript#readme",
+  "homepage": "https://github.com/curest0x1021/Leetcode-Javascript#readme",
   "devDependencies": {
     "axios": "^0.18.0",
     "chalk": "^2.4.1",
