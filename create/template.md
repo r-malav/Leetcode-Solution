@@ -10,7 +10,7 @@
 
 ## Solution
 
-```javascript
+```java
 
 ```
 
