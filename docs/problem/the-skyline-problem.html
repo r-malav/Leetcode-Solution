@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>The Skyline Problem - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>218. The Skyline Problem</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/divide-and-conquer">Divide and Conquer</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/binary-indexed-tree">Binary Indexed Tree</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/segment-tree">Segment Tree</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/line-sweep">Line Sweep</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/heap-priority-queue">Heap (Priority Queue)</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/ordered-set">Ordered Set</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/falling-squares.html">Falling Squares</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A city's <strong>skyline</strong> is the outer contour of the silhouette formed by all the buildings in that city when viewed from a distance. Given the locations and heights of all the buildings, return **the *<em>skyline</em>* formed by these buildings collectively**.</p>
+<p>The geometric information of each building is given in the array <code>buildings</code> where <code>buildings[i] = [lefti, righti, heighti]</code>:</p>
+<ul>
+<li><p><code>lefti</code> is the x coordinate of the left edge of the <code>ith</code> building.</p></li>
+<li><p><code>righti</code> is the x coordinate of the right edge of the <code>ith</code> building.</p></li>
+<li><p><code>heighti</code> is the height of the <code>ith</code> building.</p></li>
+</ul>
+<p>You may assume all buildings are perfect rectangles grounded on an absolutely flat surface at height <code>0</code>.</p>
+<p>The <strong>skyline</strong> should be represented as a list of "key points" <strong>sorted by their x-coordinate</strong> in the form <code>[[x1,y1],[x2,y2],...]</code>. Each key point is the left endpoint of some horizontal segment in the skyline except the last point in the list, which always has a y-coordinate <code>0</code> and is used to mark the skyline's termination where the rightmost building ends. Any ground between the leftmost and rightmost buildings should be part of the skyline's contour.</p>
+<p><strong>Note:</strong> There must be no consecutive horizontal lines of equal height in the output skyline. For instance, <code>[...,[2 3],[4 5],[7 5],[11 5],[12 7],...]</code> is not acceptable; the three lines of height 5 should be merged into one in the final output as such: <code>[...,[2 3],[4 5],[12 7],...]</code></p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/12/01/merged.jpg" alt="" /></p>
+<pre><code class="hljs">Input: buildings = [[<span class="hljs-number">2</span>,<span class="hljs-number">9</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">7</span>,<span class="hljs-number">15</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">12</span>,<span class="hljs-number">12</span>],[<span class="hljs-number">15</span>,<span class="hljs-number">20</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">19</span>,<span class="hljs-number">24</span>,<span class="hljs-number">8</span>]]
+Output: [[<span class="hljs-number">2</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">15</span>],[<span class="hljs-number">7</span>,<span class="hljs-number">12</span>],[<span class="hljs-number">12</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">15</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">20</span>,<span class="hljs-number">8</span>],[<span class="hljs-number">24</span>,<span class="hljs-number">0</span>]]
+Explanation:
+Figure A shows the buildings of the input.
+Figure B shows the skyline formed by those buildings. The red points <span class="hljs-keyword">in</span> figure B represent the key points <span class="hljs-keyword">in</span> the output list.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: buildings = [[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>]]
+Output: [[<span class="hljs-number">0</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">0</span>]]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= buildings.length &lt;= 104</code></p></li>
+<li><p><code>0 &lt;= lefti &lt; righti &lt;= 231 - 1</code></p></li>
+<li><p><code>1 &lt;= heighti &lt;= 231 - 1</code></p></li>
+<li><p><code>buildings</code> is sorted by <code>lefti</code> in&nbsp;non-decreasing order.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[][]}</span> <span class="hljs-variable">buildings</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number[][]}</span></span>
+ */</span>
+<span class="hljs-keyword">var</span> getSkyline = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">buildings</span>) </span>{
+    <span class="hljs-keyword">var</span> res = [], height = [], pq = [<span class="hljs-number">0</span>], prevMax = <span class="hljs-literal">null</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> b <span class="hljs-keyword">of</span> buildings) {
+        height.push([b[<span class="hljs-number">0</span>], -b[<span class="hljs-number">2</span>]]);
+        height.push([b[<span class="hljs-number">1</span>],  b[<span class="hljs-number">2</span>]]);
+    }
+    height.sort(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> {
+        <span class="hljs-keyword">if</span>(a[<span class="hljs-number">0</span>] === b[<span class="hljs-number">0</span>])  <span class="hljs-keyword">return</span> a[<span class="hljs-number">1</span>] - b[<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">return</span> a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>];
+    });
+
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> h <span class="hljs-keyword">of</span> height) {
+        <span class="hljs-keyword">if</span>(h[<span class="hljs-number">1</span>] &lt; <span class="hljs-number">0</span>) {
+            pq.push(-h[<span class="hljs-number">1</span>]);
+        } <span class="hljs-keyword">else</span> {
+            remove(pq, h[<span class="hljs-number">1</span>]);
+        }
+
+        <span class="hljs-keyword">var</span> maxV = <span class="hljs-built_in">Math</span>.max(...pq);
+        <span class="hljs-keyword">if</span>(prevMax !== maxV) {  <span class="hljs-comment">// maxV changed after remove h[1]</span>
+            res.push([h[<span class="hljs-number">0</span>], maxV]);
+            prevMax = maxV;
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+};
+
+<span class="hljs-keyword">var</span> remove = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">arr, val</span>) </span>{ <span class="hljs-comment">// remove the first element equal to val</span>
+    <span class="hljs-keyword">var</span> ind = <span class="hljs-number">-1</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i&lt;arr.length; i++) {
+        <span class="hljs-keyword">if</span>(val === arr[i]) {
+            ind = i;
+            <span class="hljs-keyword">break</span>;
+        }
+    }
+    arr.splice(ind, <span class="hljs-number">1</span>);
+    <span class="hljs-keyword">return</span>;
+};
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

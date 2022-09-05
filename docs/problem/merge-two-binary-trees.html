@@ -2,24 +2,55 @@
 <p>Given two binary trees and imagine that when you put one of them to cover the other, some nodes of the two trees are overlapped while the others are not. </p>
 <p>You need to merge them into a new binary tree. The merge rule is that if two nodes overlap, then sum node values up as the new value of the merged node. Otherwise, the NOT null node will be used as the node of new tree.</p>
 <p><strong>Example 1:</strong></p>
-<pre><code class="hljs">Input: 
-    Tree<span class="hljs-number"> 1 </span>                    Tree<span class="hljs-number"> 2 </span>                 
-         <span class="hljs-number"> 1 </span>                       <span class="hljs-number"> 2 </span>                            
-         / \                       / \                            
-       <span class="hljs-number"> 3 </span> <span class="hljs-number"> 2 </span>                   <span class="hljs-number"> 1 </span> <span class="hljs-number"> 3 </span>                       
-       /                           \   \                      
-     <span class="hljs-number"> 5 </span>                           <span class="hljs-number"> 4 </span> <span class="hljs-number"> 7 </span>                 
-Output: 
-Merged tree:
-         3
-        / \
-      <span class="hljs-number"> 4 </span>  5
-      / \   \ 
-    <span class="hljs-number"> 5 </span> <span class="hljs-number"> 4 </span>  7
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> 
+    <span class="hljs-string">Tree</span> <span class="hljs-number">1</span>                     <span class="hljs-string">Tree</span> <span class="hljs-number">2</span>                  
+          <span class="hljs-number">1</span>                         <span class="hljs-number">2</span>                             
+         <span class="hljs-string">/</span> <span class="hljs-string">\</span>                       <span class="hljs-string">/</span> <span class="hljs-string">\</span>                            
+        <span class="hljs-number">3</span>   <span class="hljs-number">2</span>                     <span class="hljs-number">1</span>   <span class="hljs-number">3</span>                        
+       <span class="hljs-string">/</span>                           <span class="hljs-string">\</span>   <span class="hljs-string">\</span>                      
+      <span class="hljs-number">5</span>                             <span class="hljs-number">4</span>   <span class="hljs-number">7</span>                  
+<span class="hljs-attr">Output:</span> 
+<span class="hljs-attr">Merged tree:</span>
+         <span class="hljs-number">3</span>
+        <span class="hljs-string">/</span> <span class="hljs-string">\</span>
+       <span class="hljs-number">4</span>   <span class="hljs-number">5</span>
+      <span class="hljs-string">/</span> <span class="hljs-string">\</span>   <span class="hljs-string">\</span> 
+     <span class="hljs-number">5</span>   <span class="hljs-number">4</span>   <span class="hljs-number">7</span>
 </code></pre>
 <p><strong>Note:</strong>
 The merging process must start from the root nodes of both trees.</p>
-<h2 id="solution">Solution</h2>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> TreeNode <span class="hljs-title">mergeTrees</span><span class="hljs-params">(TreeNode root1, TreeNode root2)</span> </span>{
+        <span class="hljs-keyword">if</span> (root1 == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span> root2;
+        }
+        <span class="hljs-keyword">if</span> (root2 == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span> root1;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> TreeNode(
+                root1.val + root2.val,
+                mergeTrees(root1.left, root2.left),
+                mergeTrees(root1.right, root2.right));
+    }
+}
+</code></pre>
+<h2 id="solution-javascript">Solution (Javascript)</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
  * Definition for a binary tree node.
  * function TreeNode(val) {
@@ -28,9 +59,9 @@ The merging process must start from the root nodes of both trees.</p>
  * }
  */</span>
 <span class="hljs-comment">/**
- * @param {TreeNode} t1
- * @param {TreeNode} t2
- * @return {TreeNode}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{TreeNode}</span> <span class="hljs-variable">t1</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{TreeNode}</span> <span class="hljs-variable">t2</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{TreeNode}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> mergeTrees = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">t1, t2</span>) </span>{
   <span class="hljs-keyword">if</span> (!t1 &amp;&amp; !t2) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;

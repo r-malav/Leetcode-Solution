@@ -1,0 +1,99 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Evaluate Division - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>399. Evaluate Division</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/union-find">Union Find</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/graph">Graph</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/shortest-path">Shortest Path</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/check-for-contradictions-in-equations.html">Check for Contradictions in Equations</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an array of variable pairs <code>equations</code> and an array of real numbers <code>values</code>, where <code>equations[i] = [Ai, Bi]</code> and <code>values[i]</code> represent the equation <code>Ai / Bi = values[i]</code>. Each <code>Ai</code> or <code>Bi</code> is a string that represents a single variable.</p>
+<p>You are also given some <code>queries</code>, where <code>queries[j] = [Cj, Dj]</code> represents the <code>jth</code> query where you must find the answer for <code>Cj / Dj = ?</code>.</p>
+<p>Return <strong>the answers to all queries</strong>. If a single answer cannot be determined, return <code>-1.0</code>.</p>
+<p><strong>Note:</strong> The input is always valid. You may assume that evaluating the queries will not result in division by zero and that there is no contradiction.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: equations = [[<span class="hljs-string">"a"</span>,<span class="hljs-string">"b"</span>],[<span class="hljs-string">"b"</span>,<span class="hljs-string">"c"</span>]], values = [<span class="hljs-number">2.0</span>,<span class="hljs-number">3.0</span>], queries = [[<span class="hljs-string">"a"</span>,<span class="hljs-string">"c"</span>],[<span class="hljs-string">"b"</span>,<span class="hljs-string">"a"</span>],[<span class="hljs-string">"a"</span>,<span class="hljs-string">"e"</span>],[<span class="hljs-string">"a"</span>,<span class="hljs-string">"a"</span>],[<span class="hljs-string">"x"</span>,<span class="hljs-string">"x"</span>]]
+<span class="hljs-symbol">Output</span>: [<span class="hljs-number">6.00000</span>,<span class="hljs-number">0.50000</span>,<span class="hljs-number">-1.00000</span>,<span class="hljs-number">1.00000</span>,<span class="hljs-number">-1.00000</span>]
+<span class="hljs-symbol">Explanation</span>: 
+<span class="hljs-symbol">Given</span>: a / b = <span class="hljs-number">2.0</span>, b / c = <span class="hljs-number">3.0</span>
+queries are: a / c = ?, b / a = ?, a / e = ?, a / a = ?, x / x = ?
+return: [<span class="hljs-number">6.0</span>, <span class="hljs-number">0.5</span>, <span class="hljs-number">-1.0</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">-1.0</span> ]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: equations = [[<span class="hljs-string">"a"</span>,<span class="hljs-string">"b"</span>],[<span class="hljs-string">"b"</span>,<span class="hljs-string">"c"</span>],[<span class="hljs-string">"bc"</span>,<span class="hljs-string">"cd"</span>]], values = [<span class="hljs-number">1.5</span>,<span class="hljs-number">2.5</span>,<span class="hljs-number">5.0</span>], queries = [[<span class="hljs-string">"a"</span>,<span class="hljs-string">"c"</span>],[<span class="hljs-string">"c"</span>,<span class="hljs-string">"b"</span>],[<span class="hljs-string">"bc"</span>,<span class="hljs-string">"cd"</span>],[<span class="hljs-string">"cd"</span>,<span class="hljs-string">"bc"</span>]]
+<span class="hljs-symbol">Output</span>: [<span class="hljs-number">3.75000</span>,<span class="hljs-number">0.40000</span>,<span class="hljs-number">5.00000</span>,<span class="hljs-number">0.20000</span>]
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: equations = [[<span class="hljs-string">"a"</span>,<span class="hljs-string">"b"</span>]], values = [<span class="hljs-number">0.5</span>], queries = [[<span class="hljs-string">"a"</span>,<span class="hljs-string">"b"</span>],[<span class="hljs-string">"b"</span>,<span class="hljs-string">"a"</span>],[<span class="hljs-string">"a"</span>,<span class="hljs-string">"c"</span>],[<span class="hljs-string">"x"</span>,<span class="hljs-string">"y"</span>]]
+<span class="hljs-symbol">Output</span>: [<span class="hljs-number">0.50000</span>,<span class="hljs-number">2.00000</span>,<span class="hljs-number">-1.00000</span>,<span class="hljs-number">-1.00000</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= equations.length &lt;= 20</code></p></li>
+<li><p><code>equations[i].length == 2</code></p></li>
+<li><p><code>1 &lt;= Ai.length, Bi.length &lt;= 5</code></p></li>
+<li><p><code>values.length == equations.length</code></p></li>
+<li><p><code>0.0 &lt; values[i] &lt;= 20.0</code></p></li>
+<li><p><code>1 &lt;= queries.length &lt;= 20</code></p></li>
+<li><p><code>queries[i].length == 2</code></p></li>
+<li><p><code>1 &lt;= Cj.length, Dj.length &lt;= 5</code></p></li>
+<li><p><code>Ai, Bi, Cj, Dj</code> consist of lower case English letters and digits.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> Map&lt;String, String&gt; root;
+    <span class="hljs-keyword">private</span> Map&lt;String, Double&gt; rate;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">double</span>[] calcEquation(
+            List&lt;List&lt;String&gt;&gt; equations, <span class="hljs-keyword">double</span>[] values, List&lt;List&lt;String&gt;&gt; queries) {
+        root = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        rate = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">int</span> n = equations.size();
+        <span class="hljs-keyword">for</span> (List&lt;String&gt; equation : equations) {
+            String x = equation.get(<span class="hljs-number">0</span>);
+            String y = equation.get(<span class="hljs-number">1</span>);
+            root.put(x, x);
+            root.put(y, y);
+            rate.put(x, <span class="hljs-number">1.0</span>);
+            rate.put(y, <span class="hljs-number">1.0</span>);
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+            String x = equations.get(i).get(<span class="hljs-number">0</span>);
+            String y = equations.get(i).get(<span class="hljs-number">1</span>);
+            union(x, y, values[i]);
+        }
+        <span class="hljs-keyword">double</span>[] result = <span class="hljs-keyword">new</span> <span class="hljs-keyword">double</span>[queries.size()];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; queries.size(); ++i) {
+            String x = queries.get(i).get(<span class="hljs-number">0</span>);
+            String y = queries.get(i).get(<span class="hljs-number">1</span>);
+            <span class="hljs-keyword">if</span> (!root.containsKey(x) || !root.containsKey(y)) {
+                result[i] = -<span class="hljs-number">1</span>;
+                <span class="hljs-keyword">continue</span>;
+            }
+            String rootX = findRoot(x, x, <span class="hljs-number">1.0</span>);
+            String rootY = findRoot(y, y, <span class="hljs-number">1.0</span>);
+            result[i] = rootX.equals(rootY) ? rate.get(x) / rate.get(y) : -<span class="hljs-number">1.0</span>;
+        }
+        <span class="hljs-keyword">return</span> result;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">union</span><span class="hljs-params">(String x, String y, <span class="hljs-keyword">double</span> v)</span> </span>{
+        String rootX = findRoot(x, x, <span class="hljs-number">1.0</span>);
+        String rootY = findRoot(y, y, <span class="hljs-number">1.0</span>);
+        root.put(rootX, rootY);
+        <span class="hljs-keyword">double</span> r1 = rate.get(x);
+        <span class="hljs-keyword">double</span> r2 = rate.get(y);
+        rate.put(rootX, v * r2 / r1);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> String <span class="hljs-title">findRoot</span><span class="hljs-params">(String originalX, String x, <span class="hljs-keyword">double</span> r)</span> </span>{
+        <span class="hljs-keyword">if</span> (root.get(x).equals(x)) {
+            root.put(originalX, x);
+            rate.put(originalX, r * rate.get(x));
+            <span class="hljs-keyword">return</span> x;
+        }
+        <span class="hljs-keyword">return</span> findRoot(originalX, root.get(x), r * rate.get(x));
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Predict the Winner - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>486. Predict the Winner</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/math">Math</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/recursion">Recursion</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/game-theory">Game Theory</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/can-i-win.html">Can I Win</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an integer array <code>nums</code>. Two players are playing a game with this array: player 1 and player 2.</p>
+<p>Player 1 and player 2 take turns, with player 1 starting first. Both players start the game with a score of <code>0</code>. At each turn, the player takes one of the numbers from either end of the array (i.e., <code>nums[0]</code> or <code>nums[nums.length - 1]</code>) which reduces the size of the array by <code>1</code>. The player adds the chosen number to their score. The game ends when there are no more elements in the array.</p>
+<p>Return <code>true</code> if Player 1 can win the game. If the scores of both players are equal, then player 1 is still the winner, and you should also return <code>true</code>. You may assume that both players are playing optimally.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">2</span>]
+Output: <span class="hljs-literal">false</span>
+Explanation: Initially, player <span class="hljs-number">1</span> can choose between <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-number">2.</span> 
+If he chooses <span class="hljs-number">2</span> (<span class="hljs-keyword">or</span> <span class="hljs-number">1</span>), then player <span class="hljs-number">2</span> can choose <span class="hljs-keyword">from</span> <span class="hljs-number">1</span> (<span class="hljs-keyword">or</span> <span class="hljs-number">2</span>) <span class="hljs-keyword">and</span> <span class="hljs-number">5.</span> If player <span class="hljs-number">2</span> chooses <span class="hljs-number">5</span>, then player <span class="hljs-number">1</span> will be left with <span class="hljs-number">1</span> (<span class="hljs-keyword">or</span> <span class="hljs-number">2</span>). 
+So, <span class="hljs-keyword">final</span> score of player <span class="hljs-number">1</span> <span class="hljs-keyword">is</span> <span class="hljs-number">1</span> + <span class="hljs-number">2</span> = <span class="hljs-number">3</span>, <span class="hljs-keyword">and</span> player <span class="hljs-number">2</span> <span class="hljs-keyword">is</span> <span class="hljs-number">5.</span> 
+Hence, player <span class="hljs-number">1</span> will never be the winner <span class="hljs-keyword">and</span> you need to <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">nums</span> <span class="hljs-string">=</span> <span class="hljs-string">[1,5,233,7]</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">Player</span> <span class="hljs-number">1</span> <span class="hljs-string">first</span> <span class="hljs-string">chooses</span> <span class="hljs-number">1</span><span class="hljs-string">.</span> <span class="hljs-string">Then</span> <span class="hljs-string">player</span> <span class="hljs-number">2</span> <span class="hljs-string">has</span> <span class="hljs-string">to</span> <span class="hljs-string">choose</span> <span class="hljs-string">between</span> <span class="hljs-number">5</span> <span class="hljs-string">and</span> <span class="hljs-number">7</span><span class="hljs-string">.</span> <span class="hljs-literal">No</span> <span class="hljs-string">matter</span> <span class="hljs-string">which</span> <span class="hljs-string">number</span> <span class="hljs-string">player</span> <span class="hljs-number">2</span> <span class="hljs-string">choose,</span> <span class="hljs-string">player</span> <span class="hljs-number">1</span> <span class="hljs-string">can</span> <span class="hljs-string">choose</span> <span class="hljs-number">233</span><span class="hljs-string">.</span>
+<span class="hljs-string">Finally,</span> <span class="hljs-string">player</span> <span class="hljs-number">1</span> <span class="hljs-string">has</span> <span class="hljs-string">more</span> <span class="hljs-string">score</span> <span class="hljs-string">(234)</span> <span class="hljs-string">than</span> <span class="hljs-string">player</span> <span class="hljs-number">2</span> <span class="hljs-string">(12),</span> <span class="hljs-string">so</span> <span class="hljs-string">you</span> <span class="hljs-string">need</span> <span class="hljs-string">to</span> <span class="hljs-string">return</span> <span class="hljs-literal">True</span> <span class="hljs-string">representing</span> <span class="hljs-string">player1</span> <span class="hljs-string">can</span> <span class="hljs-string">win.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= nums.length &lt;= 20</code></p></li>
+<li><p><code>0 &lt;= nums[i] &lt;= 107</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">PredictTheWinner</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>{
+        <span class="hljs-keyword">int</span>[][] gain = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[nums.length][nums.length];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k = <span class="hljs-number">0</span>; k &lt; nums.length; k ++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i + k &lt; nums.length; i ++) {
+                <span class="hljs-keyword">if</span> (k == <span class="hljs-number">0</span>) {
+                    gain[i][i + k] = nums[i];
+                }
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (k == <span class="hljs-number">1</span>) {
+                    gain[i][i + k] = Math.abs(nums[i] - nums[i + k]);
+                }
+                <span class="hljs-keyword">else</span> {
+                    gain[i][i + k] = Math.max(gain[i][i] - gain[i + <span class="hljs-number">1</span>][i + k], gain[i + k][i + k] - gain[i][i + k - <span class="hljs-number">1</span>]);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> gain[<span class="hljs-number">0</span>][nums.length - <span class="hljs-number">1</span>] &gt;= <span class="hljs-number">0</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

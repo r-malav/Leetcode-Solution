@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Patching Array - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>330. Patching Array</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/greedy">Greedy</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/maximum-number-of-consecutive-values-you-can-make.html">Maximum Number of Consecutive Values You Can Make</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a sorted integer array <code>nums</code> and an integer <code>n</code>, add/patch elements to the array such that any number in the range <code>[1, n]</code> inclusive can be formed by the sum of some elements in the array.</p>
+<p>Return <strong>the minimum number of patches required</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>], n = <span class="hljs-number">6</span>
+Output: <span class="hljs-number">1</span>
+Explanation:
+Combinations of nums are [<span class="hljs-number">1</span>], [<span class="hljs-number">3</span>], [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>], which form possible sums of: <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4.</span>
+Now <span class="hljs-keyword">if</span> we add/patch <span class="hljs-number">2</span> to nums, the combinations are: [<span class="hljs-number">1</span>], [<span class="hljs-number">2</span>], [<span class="hljs-number">3</span>], [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>], [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>].
+Possible sums are <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, which now covers the range [<span class="hljs-number">1</span>, <span class="hljs-number">6</span>].
+So we only need <span class="hljs-number">1</span> patch.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">10</span>], n = <span class="hljs-number">20</span>
+Output: <span class="hljs-number">2</span>
+Explanation: The two patches can be [<span class="hljs-number">2</span>, <span class="hljs-number">4</span>].
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>], n = <span class="hljs-number">5</span>
+Output: <span class="hljs-number">0</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= nums.length &lt;= 1000</code></p></li>
+<li><p><code>1 &lt;= nums[i] &lt;= 104</code></p></li>
+<li><p><code>nums</code> is sorted in <strong>ascending order</strong>.</p></li>
+<li><p><code>1 &lt;= n &lt;= 231 - 1</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">nums</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">n</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
+ */</span>
+<span class="hljs-keyword">var</span> minPatches = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">nums, n</span>) </span>{
+    <span class="hljs-keyword">var</span> miss = <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">var</span> count = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (miss &lt;= n) {
+        <span class="hljs-keyword">if</span> (i &lt; nums.length &amp;&amp; nums[i] &lt;= miss) {
+            miss += nums[i++];
+        } <span class="hljs-keyword">else</span> {
+            miss += miss;
+            ++count;
+        }
+    }
+
+    <span class="hljs-keyword">return</span> count;
+};
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

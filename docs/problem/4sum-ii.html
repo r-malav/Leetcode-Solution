@@ -3,26 +3,47 @@
 <p>To make problem a bit easier, all A, B, C, D have same length of N where 0 ≤ N ≤ 500. All integers are in the range of -228 to 228 - 1 and the result is guaranteed to be at most 231 - 1.</p>
 <p><strong>Example:</strong></p>
 <pre><code class="hljs">Input:
-A = <span class="hljs-comment">[ 1, 2]</span>
-B = <span class="hljs-comment">[-2,-1]</span>
-C = <span class="hljs-comment">[-1, 2]</span>
-D = <span class="hljs-comment">[ 0, 2]</span>
+A = [ <span class="hljs-number">1</span>, <span class="hljs-number">2</span>]
+B = [<span class="hljs-number">-2</span>,<span class="hljs-number">-1</span>]
+C = [<span class="hljs-number">-1</span>, <span class="hljs-number">2</span>]
+D = [ <span class="hljs-number">0</span>, <span class="hljs-number">2</span>]
 
 Output:
-2
+<span class="hljs-number">2</span>
 
 Explanation:
-The two tuples <span class="hljs-keyword">are</span>:
-1. (0, 0, 0, 1) -&gt; A<span class="hljs-comment">[0]</span> + B<span class="hljs-comment">[0]</span> + C<span class="hljs-comment">[0]</span> + D<span class="hljs-comment">[1]</span> = 1 + (-2) + (-1) + 2 = 0
-2. (1, 1, 0, 0) -&gt; A<span class="hljs-comment">[1]</span> + B<span class="hljs-comment">[1]</span> + C<span class="hljs-comment">[0]</span> + D<span class="hljs-comment">[0]</span> = 2 + (-1) + (-1) + 0 = 0
+The two tuples are:
+<span class="hljs-number">1.</span> (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>) -&gt; A[<span class="hljs-number">0</span>] + B[<span class="hljs-number">0</span>] + C[<span class="hljs-number">0</span>] + D[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span> + (<span class="hljs-number">-2</span>) + (<span class="hljs-number">-1</span>) + <span class="hljs-number">2</span> = <span class="hljs-number">0</span>
+<span class="hljs-number">2.</span> (<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>) -&gt; A[<span class="hljs-number">1</span>] + B[<span class="hljs-number">1</span>] + C[<span class="hljs-number">0</span>] + D[<span class="hljs-number">0</span>] = <span class="hljs-number">2</span> + (<span class="hljs-number">-1</span>) + (<span class="hljs-number">-1</span>) + <span class="hljs-number">0</span> = <span class="hljs-number">0</span>
 </code></pre>
-<h2 id="solution">Solution</h2>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">fourSumCount</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums1, <span class="hljs-keyword">int</span>[] nums2, <span class="hljs-keyword">int</span>[] nums3, <span class="hljs-keyword">int</span>[] nums4)</span> </span>{
+        <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+        Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k : nums3) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i : nums4) {
+                <span class="hljs-keyword">int</span> sum = k + i;
+                map.put(sum, map.getOrDefault(sum, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);
+            }
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k : nums1) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i : nums2) {
+                <span class="hljs-keyword">int</span> m = -(k + i);
+                count += map.getOrDefault(m, <span class="hljs-number">0</span>);
+            }
+        }
+        <span class="hljs-keyword">return</span> count;
+    }
+}
+</code></pre>
+<h2 id="solution-javascript">Solution (Javascript)</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * @param {number[]} A
- * @param {number[]} B
- * @param {number[]} C
- * @param {number[]} D
- * @return {number}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">A</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">B</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">C</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">D</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> fourSumCount = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">A, B, C, D</span>) </span>{
   <span class="hljs-keyword">var</span> map = {};

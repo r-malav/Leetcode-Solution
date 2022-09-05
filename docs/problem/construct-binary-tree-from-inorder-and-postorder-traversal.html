@@ -3,7 +3,7 @@
 <p><strong>Note:</strong></p>
 <p>You may assume that duplicates do not exist in the tree.</p>
 <p>For example, given</p>
-<pre><code class="hljs">inorder = [<span class="hljs-number">9</span>,<span class="hljs-number">3</span>,<span class="hljs-number">15</span>,<span class="hljs-number">20</span>,<span class="hljs-number">7</span>]
+<pre><code class="hljs">inorder =&amp;nbsp;[<span class="hljs-number">9</span>,<span class="hljs-number">3</span>,<span class="hljs-number">15</span>,<span class="hljs-number">20</span>,<span class="hljs-number">7</span>]
 postorder = [<span class="hljs-number">9</span>,<span class="hljs-number">15</span>,<span class="hljs-number">7</span>,<span class="hljs-number">20</span>,<span class="hljs-number">3</span>]
 </code></pre>
 <p>Return the following binary tree:</p>
@@ -22,9 +22,9 @@ postorder = [<span class="hljs-number">9</span>,<span class="hljs-number">15</sp
  * }
  */</span>
 <span class="hljs-comment">/**
- * @param {number[]} inorder
- * @param {number[]} postorder
- * @return {TreeNode}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">inorder</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">postorder</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{TreeNode}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> buildTree = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">inorder, postorder</span>) </span>{
   <span class="hljs-keyword">return</span> helper(inorder, postorder, <span class="hljs-number">0</span>, inorder.length - <span class="hljs-number">1</span>, postorder.length - <span class="hljs-number">1</span>);

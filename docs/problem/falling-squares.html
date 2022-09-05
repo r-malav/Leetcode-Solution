@@ -1,0 +1,175 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Falling Squares - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>699. Falling Squares</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/segment-tree">Segment Tree</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/ordered-set">Ordered Set</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/the-skyline-problem.html">The Skyline Problem</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There are several squares being dropped onto the X-axis of a 2D plane.</p>
+<p>You are given a 2D integer array <code>positions</code> where <code>positions[i] = [lefti, sideLengthi]</code> represents the <code>ith</code> square with a side length of <code>sideLengthi</code> that is dropped with its left edge aligned with X-coordinate <code>lefti</code>.</p>
+<p>Each square is dropped one at a time from a height above any landed squares. It then falls downward (negative Y direction) until it either lands <strong>on the top side of another square</strong> or <strong>on the X-axis</strong>. A square brushing the left/right side of another square does not count as landing on it. Once it lands, it freezes in place and cannot be moved.</p>
+<p>After each square is dropped, you must record the <strong>height of the current tallest stack of squares</strong>.</p>
+<p>Return **an integer array *<em><code>ans</code></em>* where <strong><code>ans[i]</code></strong> represents the height described above after dropping the <strong><code>ith</code></strong> square**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/04/28/fallingsq1-plane.jpg" alt="" /></p>
+<pre><code class="hljs">Input: positions = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">6</span>,<span class="hljs-number">1</span>]]
+Output: [<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>]
+Explanation:
+After the first drop, the tallest stack <span class="hljs-keyword">is</span> square <span class="hljs-number">1</span> with a height of <span class="hljs-number">2.</span>
+After the second drop, the tallest stack <span class="hljs-keyword">is</span> squares <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-number">2</span> with a height of <span class="hljs-number">5.</span>
+After the third drop, the tallest stack <span class="hljs-keyword">is</span> still squares <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-number">2</span> with a height of <span class="hljs-number">5.</span>
+Thus, we <span class="hljs-keyword">return</span> an answer of [<span class="hljs-number">2</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>].
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: positions = [[100,100],[200,100]]
+Output: [100,100]
+Explanation:
+After the first <span class="hljs-keyword">drop</span>, the tallest stack <span class="hljs-keyword">is</span> <span class="hljs-keyword">square</span> <span class="hljs-number">1</span> <span class="hljs-keyword">with</span> a height <span class="hljs-keyword">of</span> <span class="hljs-number">100.</span>
+<span class="hljs-keyword">After</span> the <span class="hljs-keyword">second</span> <span class="hljs-keyword">drop</span>, the tallest stack <span class="hljs-keyword">is</span> either <span class="hljs-keyword">square</span> <span class="hljs-number">1</span> <span class="hljs-keyword">or</span> <span class="hljs-keyword">square</span> <span class="hljs-number">2</span>, <span class="hljs-keyword">both</span> <span class="hljs-keyword">with</span> heights <span class="hljs-keyword">of</span> <span class="hljs-number">100.</span>
+Thus, we <span class="hljs-keyword">return</span> an answer <span class="hljs-keyword">of</span> [<span class="hljs-number">100</span>, <span class="hljs-number">100</span>].
+Note that <span class="hljs-keyword">square</span> <span class="hljs-number">2</span> <span class="hljs-keyword">only</span> brushes the <span class="hljs-keyword">right</span> side <span class="hljs-keyword">of</span> <span class="hljs-keyword">square</span> <span class="hljs-number">1</span>, which does <span class="hljs-keyword">not</span> <span class="hljs-keyword">count</span> <span class="hljs-keyword">as</span> landing <span class="hljs-keyword">on</span> it.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= positions.length &lt;= 1000</code></p></li>
+<li><p><code>1 &lt;= lefti &lt;= 108</code></p></li>
+<li><p><code>1 &lt;= sideLengthi &lt;= 106</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SegTree</span> </span>{
+
+        <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Node</span> </span>{
+            <span class="hljs-keyword">int</span> l, r, v, lazy;
+
+            <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Node</span><span class="hljs-params">(<span class="hljs-keyword">int</span> l, <span class="hljs-keyword">int</span> r)</span> </span>{
+                <span class="hljs-keyword">this</span>.l = l;
+                <span class="hljs-keyword">this</span>.r = r;
+            }
+        }
+
+        <span class="hljs-keyword">private</span> Node[] tr;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">SegTree</span><span class="hljs-params">(<span class="hljs-keyword">int</span> size)</span> </span>{
+            tr = <span class="hljs-keyword">new</span> Node[size &lt;&lt; <span class="hljs-number">2</span>];
+            build(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, size - <span class="hljs-number">1</span>);
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">pushup</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u)</span> </span>{
+            tr[u].v = Math.max(tr[u &lt;&lt; <span class="hljs-number">1</span>].v, tr[u &lt;&lt; <span class="hljs-number">1</span> | <span class="hljs-number">1</span>].v);
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">pushdown</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u)</span> </span>{
+            <span class="hljs-keyword">int</span> c = tr[u].lazy;
+            <span class="hljs-keyword">if</span> (c != <span class="hljs-number">0</span>) {
+                tr[u].lazy = <span class="hljs-number">0</span>;
+                tr[u &lt;&lt; <span class="hljs-number">1</span>].v = tr[u &lt;&lt; <span class="hljs-number">1</span> | <span class="hljs-number">1</span>].v = c;
+                tr[u &lt;&lt; <span class="hljs-number">1</span>].lazy = tr[u &lt;&lt; <span class="hljs-number">1</span> | <span class="hljs-number">1</span>].lazy = c;
+            }
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">build</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u, <span class="hljs-keyword">int</span> l, <span class="hljs-keyword">int</span> r)</span> </span>{
+            tr[u] = <span class="hljs-keyword">new</span> Node(l, r);
+            <span class="hljs-keyword">if</span> (l == r) {
+                <span class="hljs-keyword">return</span>;
+            }
+
+            <span class="hljs-keyword">int</span> mid = l + r &gt;&gt; <span class="hljs-number">1</span>;
+            build(u &lt;&lt; <span class="hljs-number">1</span>, l, mid);
+            build(u &lt;&lt; <span class="hljs-number">1</span> | <span class="hljs-number">1</span>, mid + <span class="hljs-number">1</span>, r);
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u, <span class="hljs-keyword">int</span> l, <span class="hljs-keyword">int</span> r, <span class="hljs-keyword">int</span> c)</span> </span>{
+            <span class="hljs-keyword">if</span> (l &lt;= tr[u].l &amp;&amp; tr[u].r &lt;= r) {
+                tr[u].v = tr[u].lazy = c;
+                <span class="hljs-keyword">return</span>;
+            }
+
+            pushdown(u);
+            <span class="hljs-keyword">int</span> mid = tr[u].l + tr[u].r &gt;&gt; <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">if</span> (l &lt;= mid) {
+                update(u &lt;&lt; <span class="hljs-number">1</span>, l, r, c);
+            }
+            <span class="hljs-keyword">if</span> (mid + <span class="hljs-number">1</span> &lt;= r) {
+                update(u &lt;&lt; <span class="hljs-number">1</span> | <span class="hljs-number">1</span>, l, r, c);
+            }
+            pushup(u);
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">query</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u, <span class="hljs-keyword">int</span> l, <span class="hljs-keyword">int</span> r)</span> </span>{
+            <span class="hljs-keyword">if</span> (l &lt;= tr[u].l &amp;&amp; tr[u].r &lt;= r) {
+                <span class="hljs-keyword">return</span> tr[u].v;
+            }
+
+            pushdown(u);
+            <span class="hljs-keyword">int</span> res = <span class="hljs-number">0</span>, mid = tr[u].l + tr[u].r &gt;&gt; <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">if</span> (l &lt;= mid) {
+                res = Math.max(res, query(u &lt;&lt; <span class="hljs-number">1</span>, l, r));
+            }
+            <span class="hljs-keyword">if</span> (mid + <span class="hljs-number">1</span> &lt;= r) {
+                res = Math.max(res, query(u &lt;&lt; <span class="hljs-number">1</span> | <span class="hljs-number">1</span>, l, r));
+            }
+
+            <span class="hljs-keyword">return</span> res;
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">query</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">return</span> tr[<span class="hljs-number">1</span>].v;
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title">fallingSquares</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] positions)</span> </span>{
+        List&lt;Integer&gt; xs = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] p : positions) {
+            <span class="hljs-keyword">int</span> a = p[<span class="hljs-number">0</span>], b = a + p[<span class="hljs-number">1</span>];
+            xs.add(a * <span class="hljs-number">2</span>);
+            xs.add(b * <span class="hljs-number">2</span>);
+            xs.add(a + b);
+        }
+        xs = unique(xs);
+
+        SegTree segTree = <span class="hljs-keyword">new</span> SegTree(xs.size());
+
+        List&lt;Integer&gt; res = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] p : positions) {
+            <span class="hljs-keyword">int</span> a = p[<span class="hljs-number">0</span>], b = a + p[<span class="hljs-number">1</span>];
+            a = get(a * <span class="hljs-number">2</span>, xs);
+            b = get(b * <span class="hljs-number">2</span>, xs);
+            <span class="hljs-keyword">int</span> h = segTree.query(<span class="hljs-number">1</span>, a + <span class="hljs-number">1</span>, b - <span class="hljs-number">1</span>);
+            segTree.update(<span class="hljs-number">1</span>, a, b, h + p[<span class="hljs-number">1</span>]);
+            res.add(segTree.query());
+        }
+
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">get</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, List&lt;Integer&gt; xs)</span> </span>{
+        <span class="hljs-keyword">int</span> l = <span class="hljs-number">0</span>, r = xs.size() - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (l &lt; r) {
+            <span class="hljs-keyword">int</span> m = l + r &gt;&gt; <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">if</span> (xs.get(m) &gt;= x) {
+                r = m;
+            } <span class="hljs-keyword">else</span> {
+                l = m + <span class="hljs-number">1</span>;
+            }
+        }
+
+        <span class="hljs-keyword">return</span> l;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> List&lt;Integer&gt; <span class="hljs-title">unique</span><span class="hljs-params">(List&lt;Integer&gt; list)</span> </span>{
+        list.sort(Integer::compareTo);
+        <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; list.size(); i++) {
+            <span class="hljs-keyword">if</span> (i == <span class="hljs-number">0</span> || list.get(j - <span class="hljs-number">1</span>) != list.get(i)) {
+                list.set(j++, list.get(i));
+            }
+        }
+
+        <span class="hljs-keyword">return</span> list.subList(<span class="hljs-number">0</span>, j);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

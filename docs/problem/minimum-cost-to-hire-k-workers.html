@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Cost to Hire K Workers - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>857. Minimum Cost to Hire K Workers</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/greedy">Greedy</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/sorting">Sorting</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/heap-priority-queue">Heap (Priority Queue)</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There are <code>n</code> workers. You are given two integer arrays <code>quality</code> and <code>wage</code> where <code>quality[i]</code> is the quality of the <code>ith</code> worker and <code>wage[i]</code> is the minimum wage expectation for the <code>ith</code> worker.</p>
+<p>We want to hire exactly <code>k</code> workers to form a paid group. To hire a group of <code>k</code> workers, we must pay them according to the following rules:</p>
+<ul>
+<li><p>Every worker in the paid group should be paid in the ratio of their quality compared to other workers in the paid group.</p></li>
+<li><p>Every worker in the paid group must be paid at least their minimum wage expectation.</p></li>
+</ul>
+<p>Given the integer <code>k</code>, return <strong>the least amount of money needed to form a paid group satisfying the above conditions</strong>. Answers within <code>10-5</code> of the actual answer will be accepted.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: quality = [<span class="hljs-number">10</span>,<span class="hljs-number">20</span>,<span class="hljs-number">5</span>], wage = [<span class="hljs-number">70</span>,<span class="hljs-number">50</span>,<span class="hljs-number">30</span>], k = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">105.00000</span>
+Explanation: We pay <span class="hljs-number">70</span> to <span class="hljs-number">0</span>th worker <span class="hljs-keyword">and</span> <span class="hljs-number">35</span> to <span class="hljs-number">2</span>nd worker.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: quality = [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">10</span>,<span class="hljs-number">10</span>,<span class="hljs-number">1</span>], wage = [<span class="hljs-number">4</span>,<span class="hljs-number">8</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">7</span>], k = <span class="hljs-number">3</span>
+Output: <span class="hljs-number">30.66667</span>
+Explanation: We pay <span class="hljs-number">4</span> to <span class="hljs-number">0</span>th worker, <span class="hljs-number">13.33333</span> to <span class="hljs-number">2</span>nd <span class="hljs-keyword">and</span> <span class="hljs-number">3</span>rd workers separately.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == quality.length == wage.length</code></p></li>
+<li><p><code>1 &lt;= k &lt;= n &lt;= 104</code></p></li>
+<li><p><code>1 &lt;= quality[i], wage[i] &lt;= 104</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">double</span> <span class="hljs-title">mincostToHireWorkers</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] quality, <span class="hljs-keyword">int</span>[] wage, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">int</span> n = quality.length;
+        Worker[] workers = <span class="hljs-keyword">new</span> Worker[n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            workers[i] = <span class="hljs-keyword">new</span> Worker(wage[i], quality[i]);
+        }
+        Arrays.sort(workers, Comparator.comparingDouble(Worker::ratio));
+
+        PriorityQueue&lt;Integer&gt; maxHeap = <span class="hljs-keyword">new</span> PriorityQueue&lt;&gt;((a, b) -&gt; Integer.compare(b, a));
+        <span class="hljs-keyword">int</span> sumQuality = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">double</span> result = Double.MAX_VALUE;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            Worker worker = workers[i];
+            sumQuality += worker.quality;
+            maxHeap.add(worker.quality);
+            <span class="hljs-keyword">if</span> (maxHeap.size() &gt; k) {
+                sumQuality -= maxHeap.remove();
+            }
+            <span class="hljs-keyword">double</span> groupRatio = worker.ratio();
+            <span class="hljs-keyword">if</span> (maxHeap.size() == k) {
+                result = Math.min(sumQuality * groupRatio, result);
+            }
+        }
+        <span class="hljs-keyword">return</span> result;
+    }
+
+    <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Worker</span> </span>{
+        <span class="hljs-keyword">int</span> wage;
+        <span class="hljs-keyword">int</span> quality;
+
+        <span class="hljs-function"><span class="hljs-keyword">double</span> <span class="hljs-title">ratio</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">return</span> (<span class="hljs-keyword">double</span>) wage / quality;
+        }
+
+        Worker(<span class="hljs-keyword">int</span> wage, <span class="hljs-keyword">int</span> quality) {
+            <span class="hljs-keyword">this</span>.wage = wage;
+            <span class="hljs-keyword">this</span>.quality = quality;
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

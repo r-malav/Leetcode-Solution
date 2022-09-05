@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Swap Salary - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>627. Swap Salary</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/database">Database</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Table: <code>Salary</code></p>
+<pre><code class="hljs">+-------------+----------+
+| Column Name |<span class="hljs-built_in"> Type </span>    |
++-------------+----------+
+| id          | int      |
+| name        | varchar  |
+| sex         | ENUM     |
+| salary      | int      |
++-------------+----------+
+id is the primary key <span class="hljs-keyword">for</span> this table.
+The sex column is ENUM value of<span class="hljs-built_in"> type </span>(<span class="hljs-string">'m'</span>, <span class="hljs-string">'f'</span>).
+The table contains information about an employee.
+</code></pre>
+<p>&nbsp;</p>
+<p>Write an SQL query to swap all <code>'f'</code> and <code>'m'</code> values (i.e., change all <code>'f'</code> values to <code>'m'</code> and vice versa) with a <strong>single update statement</strong> and no intermediate temporary tables.</p>
+<p>Note that you must write a single update statement, <strong>do not</strong> write any select statement for this problem.</p>
+<p>The query result format is in the following example.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: 
+<span class="hljs-section">Salary table:
++----+------+-----+--------+</span>
+<span class="hljs-section">| id | name | sex | salary |
++----+------+-----+--------+</span>
+| 1  | A    | m   | 2500   |
+| 2  | B    | f   | 1500   |
+| 3  | C    | m   | 5500   |
+<span class="hljs-section">| 4  | D    | f   | 500    |
++----+------+-----+--------+</span>
+<span class="hljs-section">Output: 
++----+------+-----+--------+</span>
+<span class="hljs-section">| id | name | sex | salary |
++----+------+-----+--------+</span>
+| 1  | A    | f   | 2500   |
+| 2  | B    | m   | 1500   |
+| 3  | C    | f   | 5500   |
+<span class="hljs-section">| 4  | D    | m   | 500    |
++----+------+-----+--------+</span>
+Explanation: 
+(1, A) and (3, C) were changed from <span class="hljs-emphasis">'m'</span> to <span class="hljs-emphasis">'f'</span>.
+(2, B) and (4, D) were changed from <span class="hljs-emphasis">'f'</span> to <span class="hljs-emphasis">'m'</span>.
+</code></pre>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-sql"><span class="hljs-comment"># Write your MySQL query statement below</span>
+<span class="hljs-keyword">UPDATE</span> Salary <span class="hljs-keyword">SET</span> sex = <span class="hljs-keyword">CASE</span> <span class="hljs-keyword">WHEN</span> sex = <span class="hljs-string">'m'</span> <span class="hljs-keyword">THEN</span> <span class="hljs-string">'f'</span> <span class="hljs-keyword">ELSE</span> <span class="hljs-string">'m'</span> <span class="hljs-keyword">END</span> <span class="hljs-keyword">WHERE</span> <span class="hljs-literal">TRUE</span>;
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

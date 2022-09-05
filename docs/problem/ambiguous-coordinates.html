@@ -1,0 +1,114 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Ambiguous Coordinates - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>816. Ambiguous Coordinates</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/backtracking">Backtracking</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>We had some 2-dimensional coordinates, like <code>"(1, 3)"</code> or <code>"(2, 0.5)"</code>. Then, we removed all commas, decimal points, and spaces and ended up with the string s.</p>
+<ul>
+<li>For example, <code>"(1, 3)"</code> becomes <code>s = "(13)"</code> and <code>"(2, 0.5)"</code> becomes <code>s = "(205)"</code>.</li>
+</ul>
+<p>Return <strong>a list of strings representing all possibilities for what our original coordinates could have been</strong>.</p>
+<p>Our original representation never had extraneous zeroes, so we never started with numbers like <code>"00"</code>, <code>"0.0"</code>, <code>"0.00"</code>, <code>"1.0"</code>, <code>"001"</code>, <code>"00.01"</code>, or any other number that can be represented with fewer digits. Also, a decimal point within a number never occurs without at least one digit occurring before it, so we never started with numbers like <code>".1"</code>.</p>
+<p>The final answer list can be returned in any order. All coordinates in the final answer have exactly one space between them (occurring after the comma.)</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> s = <span class="hljs-string">"(123)"</span>
+<span class="hljs-symbol">Output:</span> [<span class="hljs-string">"(1, 2.3)"</span>,<span class="hljs-string">"(1, 23)"</span>,<span class="hljs-string">"(1.2, 3)"</span>,<span class="hljs-string">"(12, 3)"</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">s</span> <span class="hljs-string">=</span> <span class="hljs-string">"(0123)"</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-string">["(0,</span> <span class="hljs-number">1.23</span><span class="hljs-string">)","(0,</span> <span class="hljs-number">12.3</span><span class="hljs-string">)","(0,</span> <span class="hljs-number">123</span><span class="hljs-string">)","(0.1,</span> <span class="hljs-number">2.3</span><span class="hljs-string">)","(0.1,</span> <span class="hljs-number">23</span><span class="hljs-string">)","(0.12,</span> <span class="hljs-number">3</span><span class="hljs-string">)"]</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-number">0.0</span><span class="hljs-string">,</span> <span class="hljs-number">00</span><span class="hljs-string">,</span> <span class="hljs-number">0001</span> <span class="hljs-string">or</span> <span class="hljs-number">00.01</span> <span class="hljs-string">are</span> <span class="hljs-string">not</span> <span class="hljs-string">allowed.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> s = <span class="hljs-string">"(00011)"</span>
+<span class="hljs-symbol">Output:</span> [<span class="hljs-string">"(0, 0.011)"</span>,<span class="hljs-string">"(0.001, 1)"</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>4 &lt;= s.length &lt;= 12</code></p></li>
+<li><p><code>s[0] == '('</code> and <code>s[s.length - 1] == ')'</code>.</p></li>
+<li><p>The rest of <code>s</code> are digits.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title">ambiguousCoordinates</span><span class="hljs-params">(String s)</span> </span>{
+        <span class="hljs-keyword">char</span>[] sc = s.toCharArray();
+        List&lt;String&gt; result = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> commaPos = <span class="hljs-number">2</span>; commaPos &lt; sc.length - <span class="hljs-number">1</span>; commaPos++) {
+            <span class="hljs-keyword">if</span> (isValidNum(sc, <span class="hljs-number">1</span>, commaPos - <span class="hljs-number">1</span>)) {
+                <span class="hljs-keyword">if</span> (isValidNum(sc, commaPos, sc.length - <span class="hljs-number">2</span>)) {
+                    buildNums(result, sb, sc, commaPos - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, commaPos, sc.length - <span class="hljs-number">2</span>, <span class="hljs-number">0</span>);
+                }
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> dp2Idx = commaPos + <span class="hljs-number">1</span>; dp2Idx &lt; sc.length - <span class="hljs-number">1</span>; dp2Idx++) {
+                    <span class="hljs-keyword">if</span> (isValidDPNum(sc, commaPos, sc.length - <span class="hljs-number">2</span>, dp2Idx)) {
+                        buildNums(result, sb, sc, commaPos - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, commaPos, sc.length - <span class="hljs-number">2</span>, dp2Idx);
+                    }
+                }
+            }
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> dp1Idx = <span class="hljs-number">2</span>; dp1Idx &lt; commaPos; dp1Idx++) {
+                <span class="hljs-keyword">if</span> (isValidDPNum(sc, <span class="hljs-number">1</span>, commaPos - <span class="hljs-number">1</span>, dp1Idx)) {
+                    <span class="hljs-keyword">if</span> (isValidNum(sc, commaPos, sc.length - <span class="hljs-number">2</span>)) {
+                        buildNums(result, sb, sc, commaPos - <span class="hljs-number">1</span>, dp1Idx, commaPos, sc.length - <span class="hljs-number">2</span>, <span class="hljs-number">0</span>);
+                    }
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> dp2Idx = commaPos + <span class="hljs-number">1</span>; dp2Idx &lt; sc.length - <span class="hljs-number">1</span>; dp2Idx++) {
+                        <span class="hljs-keyword">if</span> (isValidDPNum(sc, commaPos, sc.length - <span class="hljs-number">2</span>, dp2Idx)) {
+                            buildNums(
+                                    result,
+                                    sb,
+                                    sc,
+                                    commaPos - <span class="hljs-number">1</span>,
+                                    dp1Idx,
+                                    commaPos,
+                                    sc.length - <span class="hljs-number">2</span>,
+                                    dp2Idx);
+                        }
+                    }
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> result;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isValidNum</span><span class="hljs-params">(<span class="hljs-keyword">char</span>[] sc, <span class="hljs-keyword">int</span> startIdx, <span class="hljs-keyword">int</span> lastIdx)</span> </span>{
+        <span class="hljs-keyword">return</span> sc[startIdx] != <span class="hljs-string">'0'</span> || lastIdx - startIdx == <span class="hljs-number">0</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isValidDPNum</span><span class="hljs-params">(<span class="hljs-keyword">char</span>[] sc, <span class="hljs-keyword">int</span> startIdx, <span class="hljs-keyword">int</span> lastIdx, <span class="hljs-keyword">int</span> dpIdx)</span> </span>{
+        <span class="hljs-keyword">return</span> (sc[startIdx] != <span class="hljs-string">'0'</span> || dpIdx - startIdx == <span class="hljs-number">1</span>) &amp;&amp; sc[lastIdx] != <span class="hljs-string">'0'</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">buildNums</span><span class="hljs-params">(
+            List&lt;String&gt; result,
+            StringBuilder sb,
+            <span class="hljs-keyword">char</span>[] sc,
+            <span class="hljs-keyword">int</span> last1Idx,
+            <span class="hljs-keyword">int</span> dp1Idx,
+            <span class="hljs-keyword">int</span> start2Idx,
+            <span class="hljs-keyword">int</span> last2Idx,
+            <span class="hljs-keyword">int</span> dp2Idx)</span> </span>{
+        sb.setLength(<span class="hljs-number">0</span>);
+        sb.append(<span class="hljs-string">'('</span>);
+        <span class="hljs-keyword">if</span> (dp1Idx == <span class="hljs-number">0</span>) {
+            sb.append(sc, <span class="hljs-number">1</span>, last1Idx - <span class="hljs-number">1</span> + <span class="hljs-number">1</span>);
+        } <span class="hljs-keyword">else</span> {
+            sb.append(sc, <span class="hljs-number">1</span>, dp1Idx - <span class="hljs-number">1</span>).append(<span class="hljs-string">'.'</span>).append(sc, dp1Idx, last1Idx - dp1Idx + <span class="hljs-number">1</span>);
+        }
+        sb.append(<span class="hljs-string">','</span>).append(<span class="hljs-string">' '</span>);
+        <span class="hljs-keyword">if</span> (dp2Idx == <span class="hljs-number">0</span>) {
+            sb.append(sc, start2Idx, last2Idx - start2Idx + <span class="hljs-number">1</span>);
+        } <span class="hljs-keyword">else</span> {
+            sb.append(sc, start2Idx, dp2Idx - start2Idx)
+                    .append(<span class="hljs-string">'.'</span>)
+                    .append(sc, dp2Idx, last2Idx - dp2Idx + <span class="hljs-number">1</span>);
+        }
+        sb.append(<span class="hljs-string">')'</span>);
+        result.add(sb.toString());
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

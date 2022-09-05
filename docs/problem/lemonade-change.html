@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Lemonade Change - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>860. Lemonade Change</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/greedy">Greedy</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>At a lemonade stand, each lemonade costs <code>$5</code>. Customers are standing in a queue to buy from you and order one at a time (in the order specified by bills). Each customer will only buy one lemonade and pay with either a <code>$5</code>, <code>$10</code>, or <code>$20</code> bill. You must provide the correct change to each customer so that the net transaction is that the customer pays <code>$5</code>.</p>
+<p>Note that you do not have any change in hand at first.</p>
+<p>Given an integer array <code>bills</code> where <code>bills[i]</code> is the bill the <code>ith</code> customer pays, return <code>true</code> <strong>if you can provide every customer with the correct change, or</strong> <code>false</code> <strong>otherwise</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: bills = [<span class="hljs-number">5</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>,<span class="hljs-number">10</span>,<span class="hljs-number">20</span>]
+Output: <span class="hljs-literal">true</span>
+Explanation: 
+From the first <span class="hljs-number">3</span> customers, we collect three $<span class="hljs-number">5</span> bills <span class="hljs-keyword">in</span> order.
+From the fourth customer, we collect a $<span class="hljs-number">10</span> bill <span class="hljs-keyword">and</span> give back a $<span class="hljs-number">5.</span>
+From the fifth customer, we give a $<span class="hljs-number">10</span> bill <span class="hljs-keyword">and</span> a $<span class="hljs-number">5</span> bill.
+Since all customers got correct change, we output <span class="hljs-literal">true</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: bills = [5,5,10,10,20]
+Output: <span class="hljs-literal">false</span>
+Explanation: 
+<span class="hljs-keyword">From</span> the first two customers <span class="hljs-keyword">in</span> order, we collect two <span class="hljs-variable">$5</span> bills.
+<span class="hljs-keyword">For</span> the next two customers <span class="hljs-keyword">in</span> order, we collect a <span class="hljs-variable">$10</span> bill <span class="hljs-keyword">and</span> give back a <span class="hljs-variable">$5</span> bill.
+<span class="hljs-keyword">For</span> the last customer, we can <span class="hljs-keyword">not</span> give the change of <span class="hljs-variable">$15</span> back because we only have two <span class="hljs-variable">$10</span> bills.
+Since <span class="hljs-keyword">not</span> every<span class="hljs-built_in"> customer </span>received the correct change, the answer is <span class="hljs-literal">false</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= bills.length &lt;= 105</code></p></li>
+<li><p><code>bills[i]</code> is either <code>5</code>, <code>10</code>, or <code>20</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">lemonadeChange</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] bills)</span> </span>{
+        <span class="hljs-keyword">int</span> countFive = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> countTen = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> bill : bills) {
+            <span class="hljs-keyword">if</span> (bill == <span class="hljs-number">5</span>) {
+                countFive++;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (bill == <span class="hljs-number">10</span>) {
+                <span class="hljs-keyword">if</span> (countFive == <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+                }
+                countFive--;
+                countTen++;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (bill == <span class="hljs-number">20</span>) {
+                <span class="hljs-keyword">if</span> (countFive &gt; <span class="hljs-number">0</span> &amp;&amp; countTen &gt; <span class="hljs-number">0</span>) {
+                    countFive--;
+                    countTen--;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (countFive &gt;= <span class="hljs-number">3</span>) {
+                    countFive -= <span class="hljs-number">3</span>;
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

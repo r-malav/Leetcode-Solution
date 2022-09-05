@@ -1,0 +1,94 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Expressive Words - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>809. Expressive Words</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/two-pointers">Two Pointers</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Sometimes people repeat letters to represent extra feeling. For example:</p>
+<ul>
+<li><p><code>"hello" -&gt; "heeellooo"</code></p></li>
+<li><p><code>"hi" -&gt; "hiiii"</code></p></li>
+</ul>
+<p>In these strings like <code>"heeellooo"</code>, we have groups of adjacent letters that are all the same: <code>"h"</code>, <code>"eee"</code>, <code>"ll"</code>, <code>"ooo"</code>.</p>
+<p>You are given a string <code>s</code> and an array of query strings <code>words</code>. A query word is <strong>stretchy</strong> if it can be made to be equal to <code>s</code> by any number of applications of the following extension operation: choose a group consisting of characters <code>c</code>, and add some number of characters <code>c</code> to the group so that the size of the group is <strong>three or more</strong>.</p>
+<ul>
+<li>For example, starting with <code>"hello"</code>, we could do an extension on the group <code>"o"</code> to get <code>"hellooo"</code>, but we cannot get <code>"helloo"</code> since the group <code>"oo"</code> has a size less than three. Also, we could do another extension like <code>"ll" -&gt; "lllll"</code> to get <code>"helllllooo"</code>. If <code>s = "helllllooo"</code>, then the query word <code>"hello"</code> would be <strong>stretchy</strong> because of these two extension operations: <code>query = "hello" -&gt; "hellooo" -&gt; "helllllooo" = s</code>.</li>
+</ul>
+<p>Return **the number of query strings that are *<em>stretchy</em>***.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"heeellooo"</span>, <span class="hljs-built_in">words</span> = [<span class="hljs-string">"hello"</span>, <span class="hljs-string">"hi"</span>, <span class="hljs-string">"helo"</span>]
+Output: <span class="hljs-number">1</span>
+Explanation: 
+We can extend <span class="hljs-string">"e"</span> <span class="hljs-keyword">and</span> <span class="hljs-string">"o"</span> <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> <span class="hljs-built_in">word</span> <span class="hljs-string">"hello"</span> <span class="hljs-keyword">to</span> <span class="hljs-keyword">get</span> <span class="hljs-string">"heeellooo"</span>.
+We can't extend <span class="hljs-string">"helo"</span> <span class="hljs-keyword">to</span> <span class="hljs-keyword">get</span> <span class="hljs-string">"heeellooo"</span> because <span class="hljs-keyword">the</span> group <span class="hljs-string">"ll"</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> size <span class="hljs-number">3</span> <span class="hljs-keyword">or</span> more.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> s = <span class="hljs-string">"zzzzzyyyyy"</span>, words = [<span class="hljs-string">"zzyy"</span>,<span class="hljs-string">"zy"</span>,<span class="hljs-string">"zyy"</span>]
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">3</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length, words.length &lt;= 100</code></p></li>
+<li><p><code>1 &lt;= words[i].length &lt;= 100</code></p></li>
+<li><p><code>s</code> and <code>words[i]</code> consist of lowercase letters.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">expressiveWords</span><span class="hljs-params">(String s, String[] words)</span> </span>{
+        <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (String w : words) {
+            <span class="hljs-keyword">if</span> (check(s, w)) {
+                ans++;
+            }
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">check</span><span class="hljs-params">(String s, String w)</span> </span>{
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;
+        <span class="hljs-comment">/* Logic is to check whether character at same index of S and w are same
+          if same,
+           1. Find the consecutive number of occurrences of the char in S (say len1) and w ( say len2)
+           2. If len1 == len 2 , move to the next char in S and w
+           3. If  len1 &gt;= 3 and len2 &lt; len1, means we can make the char in w stretchy to match len1
+           4. else, return false, because it's not possible to stretch the char in w
+        */</span>
+        <span class="hljs-keyword">while</span> (i &lt; s.length() &amp;&amp; j &lt; w.length()) {
+            <span class="hljs-keyword">char</span> ch1 = s.charAt(i);
+            <span class="hljs-keyword">char</span> ch2 = w.charAt(j);
+
+            <span class="hljs-keyword">int</span> len1 = getLen(s, i);
+            <span class="hljs-keyword">int</span> len2 = getLen(w, j);
+            <span class="hljs-keyword">if</span> (ch1 == ch2) {
+                <span class="hljs-keyword">if</span> (len1 == len2 || (len1 &gt;= <span class="hljs-number">3</span> &amp;&amp; len2 &lt; len1)) {
+                    i = i + len1;
+                    j = j + len2;
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+                }
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> i == s.length() &amp;&amp; j == w.length();
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getLen</span><span class="hljs-params">(String value, <span class="hljs-keyword">int</span> i)</span> </span>{
+        i = i + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> count = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = i; j &lt; value.length(); j++) {
+            <span class="hljs-keyword">if</span> (value.charAt(j) == value.charAt(i - <span class="hljs-number">1</span>)) {
+                count++;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> count;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

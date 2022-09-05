@@ -11,49 +11,24 @@
 The signature of the <code>C++</code> function had been updated. If you still see your function signature accepts a <code>const char *</code> argument, please click the reload button to reset your code definition.</p>
 <h2 id="solution">Solution</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * @param {string} s
- * @return {boolean}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{string}</span> <span class="hljs-variable">s</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{boolean}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> isNumber = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">s</span>) </span>{
-  <span class="hljs-keyword">var</span> state = [
-    {}, 
-    {<span class="hljs-string">'blank'</span>: <span class="hljs-number">1</span>, <span class="hljs-string">'sign'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'digit'</span>:<span class="hljs-number">3</span>, <span class="hljs-string">'.'</span>:<span class="hljs-number">4</span>}, 
-    {<span class="hljs-string">'digit'</span>:<span class="hljs-number">3</span>, <span class="hljs-string">'.'</span>:<span class="hljs-number">4</span>},
-    {<span class="hljs-string">'digit'</span>:<span class="hljs-number">3</span>, <span class="hljs-string">'.'</span>:<span class="hljs-number">5</span>, <span class="hljs-string">'e'</span>:<span class="hljs-number">6</span>, <span class="hljs-string">'blank'</span>:<span class="hljs-number">9</span>},
-    {<span class="hljs-string">'digit'</span>:<span class="hljs-number">5</span>},
-    {<span class="hljs-string">'digit'</span>:<span class="hljs-number">5</span>, <span class="hljs-string">'e'</span>:<span class="hljs-number">6</span>, <span class="hljs-string">'blank'</span>:<span class="hljs-number">9</span>},
-    {<span class="hljs-string">'sign'</span>:<span class="hljs-number">7</span>, <span class="hljs-string">'digit'</span>:<span class="hljs-number">8</span>},
-    {<span class="hljs-string">'digit'</span>:<span class="hljs-number">8</span>},
-    {<span class="hljs-string">'digit'</span>:<span class="hljs-number">8</span>, <span class="hljs-string">'blank'</span>:<span class="hljs-number">9</span>},
-    {<span class="hljs-string">'blank'</span>:<span class="hljs-number">9</span>}
-  ];
-  <span class="hljs-keyword">var</span> validState = [<span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>];
-  <span class="hljs-keyword">var</span> currentState = <span class="hljs-number">1</span>;
-  <span class="hljs-keyword">var</span> len = s.length;
-  <span class="hljs-keyword">var</span> str = <span class="hljs-string">''</span>;
-  <span class="hljs-keyword">var</span> type = <span class="hljs-string">''</span>;
-  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) {
-    str = s[i];
-    <span class="hljs-keyword">if</span> (str &gt;= <span class="hljs-string">'0'</span> &amp;&amp; str &lt;= <span class="hljs-string">'9'</span>) {
-      type = <span class="hljs-string">'digit'</span>;
-    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (str === <span class="hljs-string">'+'</span> || str === <span class="hljs-string">'-'</span>) {
-      type = <span class="hljs-string">'sign'</span>;
-    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (str === <span class="hljs-string">' '</span>) {
-      type = <span class="hljs-string">'blank'</span>;
-    } <span class="hljs-keyword">else</span> {
-      type = str;
-    }
-    <span class="hljs-keyword">if</span> (state[currentState][type] === <span class="hljs-literal">undefined</span>) {
-      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-    } <span class="hljs-keyword">else</span> {
-      currentState = state[currentState][type];
-    }
-  }
-    <span class="hljs-keyword">if</span> (validState.indexOf(currentState) === <span class="hljs-number">-1</span>) {
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-    } <span class="hljs-keyword">else</span> {
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-    }
+    <span class="hljs-keyword">let</span> exp = <span class="hljs-literal">false</span>, sign = <span class="hljs-literal">false</span>, num = <span class="hljs-literal">false</span>, dec = <span class="hljs-literal">false</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> c <span class="hljs-keyword">of</span> s)
+        <span class="hljs-keyword">if</span> (c &gt;= <span class="hljs-string">'0'</span> &amp;&amp; c &lt;= <span class="hljs-string">'9'</span>) num = <span class="hljs-literal">true</span>     
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c === <span class="hljs-string">'e'</span> || c === <span class="hljs-string">'E'</span>)
+            <span class="hljs-keyword">if</span> (exp || !num) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+            <span class="hljs-keyword">else</span> exp = <span class="hljs-literal">true</span>, sign = <span class="hljs-literal">false</span>, num = <span class="hljs-literal">false</span>, dec = <span class="hljs-literal">false</span>
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c === <span class="hljs-string">'+'</span> || c === <span class="hljs-string">'-'</span>)
+            <span class="hljs-keyword">if</span> (sign || num || dec) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+            <span class="hljs-keyword">else</span> sign = <span class="hljs-literal">true</span>
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c === <span class="hljs-string">'.'</span>)
+            <span class="hljs-keyword">if</span> (dec || exp) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+            <span class="hljs-keyword">else</span> dec = <span class="hljs-literal">true</span>
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+    <span class="hljs-keyword">return</span> num
 };
 </code></pre>
 <p><strong>Explain:</strong></p>

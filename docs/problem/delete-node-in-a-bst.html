@@ -1,0 +1,101 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Delete Node in a BST - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>450. Delete Node in a BST</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/tree">Tree</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/binary-search-tree">Binary Search Tree</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/binary-tree">Binary Tree</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/split-bst.html">Split BST</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a root node reference of a BST and a key, delete the node with the given key in the BST. Return **the *<em>root node reference</em>* (possibly updated) of the BST**.</p>
+<p>Basically, the deletion can be divided into two stages:</p>
+<ul>
+<li><p>Search for a node to remove.</p></li>
+<li><p>If the node is found, delete the node.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/09/04/del_node_1.jpg" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-keyword">Input</span>: root = [<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-keyword">null</span>,<span class="hljs-number">7</span>], key = <span class="hljs-number">3</span>
+Output: [<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>,<span class="hljs-keyword">null</span>,<span class="hljs-keyword">null</span>,<span class="hljs-number">7</span>]
+Explanation: Given key <span class="hljs-keyword">to</span> <span class="hljs-keyword">delete</span> <span class="hljs-keyword">is</span> <span class="hljs-number">3.</span> So we find the node <span class="hljs-keyword">with</span> <span class="hljs-keyword">value</span> <span class="hljs-number">3</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">delete</span> it.
+One <span class="hljs-keyword">valid</span> answer <span class="hljs-keyword">is</span> [<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>,<span class="hljs-keyword">null</span>,<span class="hljs-keyword">null</span>,<span class="hljs-number">7</span>], shown <span class="hljs-keyword">in</span> the above BST.
+Please <span class="hljs-keyword">notice</span> that another <span class="hljs-keyword">valid</span> answer <span class="hljs-keyword">is</span> [<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">6</span>,<span class="hljs-keyword">null</span>,<span class="hljs-number">4</span>,<span class="hljs-keyword">null</span>,<span class="hljs-number">7</span>] <span class="hljs-keyword">and</span> it<span class="hljs-string">'s also accepted.
+</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">7</span>], key = <span class="hljs-number">0</span>
+Output: [<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">7</span>]
+Explanation: The tree does <span class="hljs-keyword">not</span> contain a node with value = <span class="hljs-number">0.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-meta">Input</span>: root = [], <span class="hljs-meta">key</span> = 0
+<span class="hljs-meta">Output</span>: []
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p>The number of nodes in the tree is in the range <code>[0, 104]</code>.</p></li>
+<li><p><code>-105 &lt;= Node.val &lt;= 105</code></p></li>
+<li><p>Each node has a <strong>unique</strong> value.</p></li>
+<li><p><code>root</code> is a valid binary search tree.</p></li>
+<li><p><code>-105 &lt;= key &lt;= 105</code></p></li>
+</ul>
+<p>&nbsp;
+<strong>Follow up:</strong> Could you solve it with time complexity <code>O(height of tree)</code>?</p>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-comment">/*
+     * Steps:
+     * 1. Recursively find the node that has the same value as the key, while setting the left/right nodes equal
+     * to the returned subtree
+     * 2. Once the node is found, have to handle the below 4 cases
+     * a. node doesn't have left or right - return null
+     * b. node only has left subtree- return the left subtree
+     * c. node only has right subtree- return the right subtree
+     * d. node has both left and right - find the minimum value in the right subtree, set that value
+     * to the currently found node, then recursively delete the minimum value in the right subtree
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> TreeNode <span class="hljs-title">deleteNode</span><span class="hljs-params">(TreeNode root, <span class="hljs-keyword">int</span> key)</span> </span>{
+        <span class="hljs-keyword">if</span> (root == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span> root;
+        }
+        <span class="hljs-keyword">if</span> (root.val &gt; key) {
+            root.left = deleteNode(root.left, key);
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (root.val &lt; key) {
+            root.right = deleteNode(root.right, key);
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">if</span> (root.left == <span class="hljs-keyword">null</span>) {
+                <span class="hljs-keyword">return</span> root.right;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (root.right == <span class="hljs-keyword">null</span>) {
+                <span class="hljs-keyword">return</span> root.left;
+            }
+            TreeNode minNode = getMin(root.right);
+            root.val = minNode.val;
+            root.right = deleteNode(root.right, root.val);
+        }
+        <span class="hljs-keyword">return</span> root;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> TreeNode <span class="hljs-title">getMin</span><span class="hljs-params">(TreeNode node)</span> </span>{
+        <span class="hljs-keyword">while</span> (node.left != <span class="hljs-keyword">null</span>) {
+            node = node.left;
+        }
+        <span class="hljs-keyword">return</span> node;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

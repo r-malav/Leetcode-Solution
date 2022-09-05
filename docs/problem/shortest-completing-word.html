@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Shortest Completing Word - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>749. Shortest Completing Word</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/hash-table">Hash Table</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Shortest Completing Word - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>748. Shortest Completing Word</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/hash-table">Hash Table</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
 <p>Find the minimum length word from a given dictionary <code>words</code>, which has all the letters from the string <code>licensePlate</code>.  Such a word is said to <em>complete</em> the given string <code>licensePlate</code></p>
 <p>Here, for letters we ignore case.  For example, <code>"P"</code> on the <code>licensePlate</code> still matches <code>"p"</code> on the word.</p>
 <p>It is guaranteed an answer exists.  If there are multiple answers, return the one that occurs first in the array.</p>
@@ -23,11 +23,45 @@ We <span class="hljs-literal">return</span> <span class="hljs-keyword">the</span
 <li><code>words</code> will have a length in the range <code>[10, 1000]</code>.</li>
 <li>Every <code>words[i]</code> will consist of lowercase letters, and have length in range <code>[1, 15]</code>.</li>
 </ul>
-<h2 id="solution">Solution</h2>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">shortestCompletingWord</span><span class="hljs-params">(String licensePlate, String[] words)</span> </span>{
+        licensePlate = licensePlate.toLowerCase();
+        <span class="hljs-keyword">int</span>[] a = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">26</span>];
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; licensePlate.length(); i++) {
+            <span class="hljs-keyword">if</span> (Character.isLetter(licensePlate.charAt(i))) {
+                a[licensePlate.charAt(i) - <span class="hljs-string">'a'</span>]++;
+            }
+        }
+        String ans = <span class="hljs-string">""</span>;
+        <span class="hljs-keyword">for</span> (String str : words) {
+            <span class="hljs-keyword">int</span>[] a1 = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">26</span>];
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; str.length(); j++) {
+                a1[str.charAt(j) - <span class="hljs-string">'a'</span>]++;
+            }
+            <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">while</span> (j &lt; <span class="hljs-number">26</span>) {
+                <span class="hljs-keyword">if</span> (a[j] &lt;= a1[j]) {
+                    j++;
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">break</span>;
+                }
+            }
+
+            <span class="hljs-keyword">if</span> (j == <span class="hljs-number">26</span> &amp;&amp; (ans.isEmpty() || ans.length() &gt; str.length())) {
+                ans = str;
+            }
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<h2 id="solution-javascript">Solution (Javascript)</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * @param {string} licensePlate
- * @param {string[]} words
- * @return {string}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{string}</span> <span class="hljs-variable">licensePlate</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{string[]}</span> <span class="hljs-variable">words</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{string}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> shortestCompletingWord = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">licensePlate, words</span>) </span>{
   <span class="hljs-keyword">var</span> count = <span class="hljs-number">0</span>;

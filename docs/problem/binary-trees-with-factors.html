@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Binary Trees With Factors - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>823. Binary Trees With Factors</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/hash-table">Hash Table</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an array of unique integers, <code>arr</code>, where each integer <code>arr[i]</code> is strictly greater than <code>1</code>.</p>
+<p>We make a binary tree using these integers, and each number may be used for any number of times. Each non-leaf node's value should be equal to the product of the values of its children.</p>
+<p>Return <strong>the number of binary trees we can make</strong>. The answer may be too large so return the answer <strong>modulo</strong> <code>109 + 7</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: arr = [<span class="hljs-number">2</span>,<span class="hljs-number">4</span>]
+Output: <span class="hljs-number">3</span>
+Explanation: We can make these trees: [<span class="hljs-number">2</span>], [<span class="hljs-number">4</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: arr = [<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">10</span>]
+Output: <span class="hljs-number">7</span>
+Explanation: We can make these trees: [<span class="hljs-number">2</span>], [<span class="hljs-number">4</span>], [<span class="hljs-number">5</span>], [<span class="hljs-number">10</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">10</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span>], [<span class="hljs-number">10</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>].
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= arr.length &lt;= 1000</code></p></li>
+<li><p><code>2 &lt;= arr[i] &lt;= 109</code></p></li>
+<li><p>All the values of <code>arr</code> are <strong>unique</strong>.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">arr</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
+ */</span>
+<span class="hljs-keyword">var</span> numFactoredBinaryTrees = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">arr</span>) </span>{
+    arr.sort(<span class="hljs-function">(<span class="hljs-params">a,b</span>) =&gt;</span> a - b)
+    <span class="hljs-keyword">let</span> len = arr.length, fmap = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>(), ans = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) {
+        <span class="hljs-keyword">let</span> num = arr[i], ways = <span class="hljs-number">1</span>, lim = <span class="hljs-built_in">Math</span>.sqrt(num)
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = <span class="hljs-number">0</span>, fA = arr[<span class="hljs-number">0</span>]; fA &lt;= lim; fA = arr[++j]) {
+            <span class="hljs-keyword">let</span> fB = num / fA
+            <span class="hljs-keyword">if</span> (fmap.has(fB))
+                ways += fmap.get(fA) * fmap.get(fB) * (fA === fB ? <span class="hljs-number">1</span> : <span class="hljs-number">2</span>)
+        }
+        fmap.set(num, ways), ans += ways
+    }
+    <span class="hljs-keyword">return</span> ans % <span class="hljs-number">1000000007</span>
+};
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

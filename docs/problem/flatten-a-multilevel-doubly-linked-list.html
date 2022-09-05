@@ -1,0 +1,112 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Flatten a Multilevel Doubly Linked List - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>430. Flatten a Multilevel Doubly Linked List</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/linked-list">Linked List</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/doubly-linked-list">Doubly-Linked List</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/flatten-binary-tree-to-linked-list.html">Flatten Binary Tree to Linked List</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/correct-a-binary-tree.html">Correct a Binary Tree</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a doubly linked list, which contains nodes that have a next pointer, a previous pointer, and an additional <strong>child pointer</strong>. This child pointer may or may not point to a separate doubly linked list, also containing these special nodes. These child lists may have one or more children of their own, and so on, to produce a <strong>multilevel data structure</strong> as shown in the example below.</p>
+<p>Given the <code>head</code> of the first level of the list, <strong>flatten</strong> the list so that all the nodes appear in a single-level, doubly linked list. Let <code>curr</code> be a node with a child list. The nodes in the child list should appear <strong>after</strong> <code>curr</code> and <strong>before</strong> <code>curr.next</code> in the flattened list.</p>
+<p>Return **the *<em><code>head</code></em>* of the flattened list. The nodes in the list must have <strong>all</strong> of their child pointers set to **<code>null</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/11/09/flatten11.jpg" alt="" /></p>
+<pre><code class="hljs">Input: head = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span>,<span class="hljs-number">10</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">11</span>,<span class="hljs-number">12</span>]
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>,<span class="hljs-number">11</span>,<span class="hljs-number">12</span>,<span class="hljs-number">9</span>,<span class="hljs-number">10</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>]
+Explanation: The multilevel linked list <span class="hljs-keyword">in</span> the input <span class="hljs-keyword">is</span> shown.
+After flattening the multilevel linked list it becomes:
+
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/11/09/flatten2.1jpg" alt="" /></p>
+<pre><code class="hljs">Input: head = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">3</span>]
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>]
+Explanation: The multilevel linked list <span class="hljs-keyword">in</span> the input <span class="hljs-keyword">is</span> shown.
+After flattening the multilevel linked list it becomes:
+
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> head = []
+Outpu<span class="hljs-variable">t:</span> []
+Explanation: There could <span class="hljs-keyword">be</span> <span class="hljs-built_in">empty</span> <span class="hljs-keyword">list</span> in the <span class="hljs-built_in">input</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p>The number of Nodes will not exceed <code>1000</code>.</p></li>
+<li><p><code>1 &lt;= Node.val &lt;= 105</code></p></li>
+</ul>
+<p>&nbsp;
+<strong>How the multilevel linked list is represented in test cases:</strong></p>
+<p>We use the multilevel linked list from <strong>Example 1</strong> above:</p>
+<pre><code class="hljs"><span class="hljs-number">1</span>--<span class="hljs-number">-2</span>--<span class="hljs-number">-3</span>--<span class="hljs-number">-4</span>--<span class="hljs-number">-5</span>--<span class="hljs-number">-6</span>--NULL
+         |
+         <span class="hljs-number">7</span>--<span class="hljs-number">-8</span>--<span class="hljs-number">-9</span>--<span class="hljs-number">-10</span>--NULL
+             |
+             <span class="hljs-number">11</span>-<span class="hljs-number">-12</span>--NULL
+</code></pre>
+<p>The serialization of each level is as follows:</p>
+<pre><code class="hljs">[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-literal">null</span>]
+[<span class="hljs-number">7</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span>,<span class="hljs-number">10</span>,<span class="hljs-literal">null</span>]
+[<span class="hljs-number">11</span>,<span class="hljs-number">12</span>,<span class="hljs-literal">null</span>]
+</code></pre>
+<p>To serialize all levels together, we will add nulls in each level to signify no node connects to the upper node of the previous level. The serialization becomes:</p>
+<pre><code class="hljs">[<span class="hljs-number">1</span>,    <span class="hljs-number">2</span>,    <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-literal">null</span>]
+             |
+[<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, <span class="hljs-number">7</span>,    <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">10</span>, <span class="hljs-literal">null</span>]
+                   |
+[            <span class="hljs-literal">null</span>, <span class="hljs-number">11</span>, <span class="hljs-number">12</span>, <span class="hljs-literal">null</span>]
+</code></pre>
+<p>Merging the serialization of each level and removing trailing nulls we obtain:</p>
+<pre><code class="hljs">[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span>,<span class="hljs-number">10</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">11</span>,<span class="hljs-number">12</span>]
+</code></pre>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node prev;
+    public Node next;
+    public Node child;
+};
+*/</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-comment">// is true ONLY for the first element of the list</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> first = <span class="hljs-keyword">true</span>;
+    <span class="hljs-comment">// Holds the head node of the newly constructed doubly linked list</span>
+    <span class="hljs-keyword">private</span> Node root;
+    <span class="hljs-comment">// Holds the current node of the newly constructed doubly linked list</span>
+    <span class="hljs-keyword">private</span> Node current;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Node <span class="hljs-title">flatten</span><span class="hljs-params">(Node head)</span> </span>{
+        <span class="hljs-keyword">if</span> (head == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span> root;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// Construct our doubly linked list</span>
+            <span class="hljs-keyword">if</span> (first) {
+                first = !first;
+                root = <span class="hljs-keyword">new</span> Node(head.val);
+                current = root;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// Map all values to the newly constructed list.</span>
+                <span class="hljs-comment">// temp value to hold our prev element</span>
+                Node temp = current;
+                current.next = <span class="hljs-keyword">new</span> Node(head.val);
+                current = current.next;
+                current.prev = temp;
+            }
+        }
+        <span class="hljs-comment">// iterate over child nodes.</span>
+        <span class="hljs-keyword">if</span> (head.child != <span class="hljs-keyword">null</span>) {
+            flatten(head.child);
+        }
+        <span class="hljs-keyword">if</span> (head.next != <span class="hljs-keyword">null</span>) {
+            <span class="hljs-comment">// iterate next</span>
+            flatten(head.next);
+        }
+        <span class="hljs-keyword">return</span> root;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

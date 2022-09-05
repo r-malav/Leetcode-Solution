@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Bitwise AND of Numbers Range - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>201. Bitwise AND of Numbers Range</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/bit-manipulation">Bit Manipulation</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given two integers <code>left</code> and <code>right</code> that represent the range <code>[left, right]</code>, return <strong>the bitwise AND of all numbers in this range, inclusive</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">left</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span><span class="hljs-string">,</span> <span class="hljs-string">right</span> <span class="hljs-string">=</span> <span class="hljs-number">7</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">4</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">left</span> <span class="hljs-string">=</span> <span class="hljs-number">0</span><span class="hljs-string">,</span> <span class="hljs-string">right</span> <span class="hljs-string">=</span> <span class="hljs-number">0</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">0</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">left</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span><span class="hljs-string">,</span> <span class="hljs-string">right</span> <span class="hljs-string">=</span> <span class="hljs-number">2147483647</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">0</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>0 &lt;= left &lt;= right &lt;= 231 - 1</code></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span>[] MASKS =
+            <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {
+                <span class="hljs-number">0</span>,
+                <span class="hljs-number">0x80000000</span>,
+                <span class="hljs-number">0xC0000000</span>,
+                <span class="hljs-number">0xE0000000</span>,
+                <span class="hljs-number">0xF0000000</span>,
+                <span class="hljs-number">0xF8000000</span>,
+                <span class="hljs-number">0xFC000000</span>,
+                <span class="hljs-number">0xFE000000</span>,
+                <span class="hljs-number">0xFF000000</span>,
+                <span class="hljs-number">0xFF800000</span>,
+                <span class="hljs-number">0xFFC00000</span>,
+                <span class="hljs-number">0xFFE00000</span>,
+                <span class="hljs-number">0xFFF00000</span>,
+                <span class="hljs-number">0xFFF80000</span>,
+                <span class="hljs-number">0xFFFC0000</span>,
+                <span class="hljs-number">0xFFFE0000</span>,
+                <span class="hljs-number">0xFFFF0000</span>,
+                <span class="hljs-number">0xFFFF8000</span>,
+                <span class="hljs-number">0xFFFFC000</span>,
+                <span class="hljs-number">0xFFFFE000</span>,
+                <span class="hljs-number">0xFFFFF000</span>,
+                <span class="hljs-number">0xFFFFF800</span>,
+                <span class="hljs-number">0xFFFFFC00</span>,
+                <span class="hljs-number">0xFFFFFE00</span>,
+                <span class="hljs-number">0xFFFFFF00</span>,
+                <span class="hljs-number">0xFFFFFF80</span>,
+                <span class="hljs-number">0xFFFFFFC0</span>,
+                <span class="hljs-number">0xFFFFFFE0</span>,
+                <span class="hljs-number">0xFFFFFFF0</span>,
+                <span class="hljs-number">0xFFFFFFF8</span>,
+                <span class="hljs-number">0xFFFFFFFC</span>,
+                <span class="hljs-number">0xFFFFFFFE</span>
+            };
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">rangeBitwiseAnd</span><span class="hljs-params">(<span class="hljs-keyword">int</span> left, <span class="hljs-keyword">int</span> right)</span> </span>{
+        <span class="hljs-keyword">return</span> left == right ? left : right &amp; MASKS[Integer.numberOfLeadingZeros(left ^ right)];
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Strange Printer - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>664. Strange Printer</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/remove-boxes.html">Remove Boxes</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/strange-printer-ii.html">Strange Printer II</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is a strange printer with the following two special properties:</p>
+<ul>
+<li><p>The printer can only print a sequence of <strong>the same character</strong> each time.</p></li>
+<li><p>At each turn, the printer can print new characters starting from and ending at any place and will cover the original existing characters.</p></li>
+</ul>
+<p>Given a string <code>s</code>, return <strong>the minimum number of turns the printer needed to print it</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> s = <span class="hljs-string">"aaabbb"</span>
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-number">2</span>
+Explanation: <span class="hljs-keyword">Print</span> <span class="hljs-string">"aaa"</span> <span class="hljs-keyword">first</span> <span class="hljs-built_in">and</span> then <span class="hljs-keyword">print</span> <span class="hljs-string">"bbb"</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"aba"</span>
+Output: <span class="hljs-number">2</span>
+Explanation: Print <span class="hljs-string">"aaa"</span> <span class="hljs-keyword">first</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">then</span> print <span class="hljs-string">"b"</span> <span class="hljs-built_in">from</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">second</span> place <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">string</span>, which will cover <span class="hljs-keyword">the</span> existing <span class="hljs-keyword">character</span> <span class="hljs-string">'a'</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 100</code></p></li>
+<li><p><code>s</code> consists of lowercase English letters.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">strangePrinter</span><span class="hljs-params">(String s)</span> </span>{
+        <span class="hljs-keyword">if</span> (s.length() == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">int</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[s.length()][s.length()];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = s.length() - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = i; j &lt; s.length(); j++) {
+                <span class="hljs-keyword">if</span> (i == j) {
+                    dp[i][j] = <span class="hljs-number">1</span>;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (s.charAt(i) == s.charAt(i + <span class="hljs-number">1</span>)) {
+                    dp[i][j] = dp[i + <span class="hljs-number">1</span>][j];
+                } <span class="hljs-keyword">else</span> {
+                    dp[i][j] = dp[i + <span class="hljs-number">1</span>][j] + <span class="hljs-number">1</span>;
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k = i + <span class="hljs-number">1</span>; k &lt;= j; k++) {
+                        <span class="hljs-keyword">if</span> (s.charAt(k) == s.charAt(i)) {
+                            dp[i][j] = Math.min(dp[i][j], dp[i + <span class="hljs-number">1</span>][k - <span class="hljs-number">1</span>] + dp[k][j]);
+                        }
+                    }
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][s.length() - <span class="hljs-number">1</span>];
+    }
+}
+</code></pre>
+<h2 id="solution-c">Solution (C++)</h2>
+<pre><code class="hljs lang-cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> {</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">strangePrinter</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-built_in">string</span>&amp; s)</span> </span>{
+        <span class="hljs-keyword">int</span> l = s.length();
+        t_ = <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;(l, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;(l, <span class="hljs-number">0</span>));
+        <span class="hljs-keyword">return</span> turn(s, <span class="hljs-number">0</span>, s.length() - <span class="hljs-number">1</span>);
+    }
+<span class="hljs-keyword">private</span>:
+    <span class="hljs-comment">// Minimal turns to print s[i] to s[j] </span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">turn</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-built_in">string</span>&amp; s, <span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j)</span> </span>{
+        <span class="hljs-comment">// Empty string</span>
+        <span class="hljs-keyword">if</span> (i &gt; j) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;        
+        <span class="hljs-comment">// Solved</span>
+        <span class="hljs-keyword">if</span> (t_[i][j] &gt; <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> t_[i][j];
+
+        <span class="hljs-comment">// Default behavior, print s[i] to s[j-1] and print s[j]</span>
+        <span class="hljs-keyword">int</span> ans = turn(s, i, j<span class="hljs-number">-1</span>) + <span class="hljs-number">1</span>;
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k = i; k &lt; j; ++k)
+            <span class="hljs-keyword">if</span> (s[k] == s[j])
+                ans = min(ans, turn(s, i, k) + turn(s, k + <span class="hljs-number">1</span>, j - <span class="hljs-number">1</span>));
+
+        <span class="hljs-keyword">return</span> t_[i][j] = ans;
+    }
+
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; t_;
+};
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

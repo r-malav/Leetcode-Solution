@@ -17,11 +17,11 @@
 </code></pre>
 <p><strong>Note</strong>: All emails are in lowercase.</p>
 <h2 id="solution-1">Solution 1</h2>
-<pre><code class="hljs lang-sql"># Write your MySQL query statement below
-select Email
-  from Person
-  group by Email
-  having count(Id) &gt; 1
+<pre><code class="hljs lang-sql"><span class="hljs-comment"># Write your MySQL query statement below</span>
+<span class="hljs-keyword">select</span> Email
+  <span class="hljs-keyword">from</span> Person
+  <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> Email
+  <span class="hljs-keyword">having</span> <span class="hljs-keyword">count</span>(<span class="hljs-keyword">Id</span>) &gt; <span class="hljs-number">1</span>
 </code></pre>
 <p><strong>Explain:</strong></p>
 <p>nope.</p>
@@ -31,12 +31,12 @@ select Email
 <li>Space complexity :</li>
 </ul>
 <h2 id="solution-2">Solution 2</h2>
-<pre><code class="hljs lang-sql"># Write your MySQL query statement below
-select
-  distinct a.Email as Email
-  from Person a, Person b
-  where a.Id &lt;&gt; b.Id
-    and a.Email = b.Email
+<pre><code class="hljs lang-sql"><span class="hljs-comment"># Write your MySQL query statement below</span>
+<span class="hljs-keyword">select</span>
+  <span class="hljs-keyword">distinct</span> a.Email <span class="hljs-keyword">as</span> Email
+  <span class="hljs-keyword">from</span> Person a, Person b
+  <span class="hljs-keyword">where</span> a.Id &lt;&gt; b.Id
+    <span class="hljs-keyword">and</span> a.Email = b.Email
 </code></pre>
 <p><strong>Explain:</strong></p>
 <p>nope.</p>

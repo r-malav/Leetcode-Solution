@@ -7,11 +7,33 @@
 <li>Both <code>num1</code> and <code>num2</code> does not contain any leading zero.</li>
 <li>You <strong>must not use any built-in BigInteger library</strong> or <strong>convert the inputs to integer</strong> directly.</li>
 </ul>
-<h2 id="solution">Solution</h2>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">addStrings</span><span class="hljs-params">(String num1, String num2)</span> </span>{
+        StringBuilder result = <span class="hljs-keyword">new</span> StringBuilder();
+        <span class="hljs-keyword">int</span> carry = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = num1.length() - <span class="hljs-number">1</span>, j = num2.length() - <span class="hljs-number">1</span>;
+                i &gt;= <span class="hljs-number">0</span> || j &gt;= <span class="hljs-number">0</span> || carry != <span class="hljs-number">0</span>;
+                i--, j--) {
+            <span class="hljs-keyword">int</span> sum = carry;
+            <span class="hljs-keyword">if</span> (i &gt;= <span class="hljs-number">0</span>) {
+                sum += Character.digit(num1.charAt(i), <span class="hljs-number">10</span>);
+            }
+            <span class="hljs-keyword">if</span> (j &gt;= <span class="hljs-number">0</span>) {
+                sum += Character.digit(num2.charAt(j), <span class="hljs-number">10</span>);
+            }
+            carry = sum / <span class="hljs-number">10</span>;
+            result.append(sum % <span class="hljs-number">10</span>);
+        }
+        <span class="hljs-keyword">return</span> result.reverse().toString();
+    }
+}
+</code></pre>
+<h2 id="solution-javascript">Solution (Javascript)</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * @param {string} num1
- * @param {string} num2
- * @return {string}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{string}</span> <span class="hljs-variable">num1</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{string}</span> <span class="hljs-variable">num2</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{string}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> addStrings = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">num1, num2</span>) </span>{
     <span class="hljs-keyword">var</span> len1 = num1.length;

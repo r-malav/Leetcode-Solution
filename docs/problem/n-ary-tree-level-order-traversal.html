@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>N-ary Tree Level Order Traversal - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>429. N-ary Tree Level Order Traversal</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/tree">Tree</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/breadth-first-search">Breadth-First Search</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/binary-tree-level-order-traversal.html">Binary Tree Level Order Traversal</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/n-ary-tree-preorder-traversal.html">N-ary Tree Preorder Traversal</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/n-ary-tree-postorder-traversal.html">N-ary Tree Postorder Traversal</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/the-time-when-the-network-becomes-idle.html">The Time When the Network Becomes Idle</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an n-ary tree, return the <strong>level order</strong> traversal of its nodes' values.</p>
+<p><strong>Nary-Tree input serialization is represented in their level order traversal, each group of children is separated by the null value (See examples).</strong></p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2018/10/12/narytreeexample.png" alt="" /></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">1</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>]
+Output: [[<span class="hljs-number">1</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">6</span>]]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/11/08/sample_4_964.png" alt="" /></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">1</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">8</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">9</span>,<span class="hljs-number">10</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">11</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">12</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">13</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">14</span>]
+Output: [[<span class="hljs-number">1</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">11</span>,<span class="hljs-number">12</span>,<span class="hljs-number">13</span>],[<span class="hljs-number">14</span>]]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p>The height of the n-ary tree is less than or equal to <code>1000</code></p></li>
+<li><p>The total number of nodes is between <code>[0, 104]</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List&lt;Node&gt; children;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, List&lt;Node&gt; _children) {
+        val = _val;
+        children = _children;
+    }
+};
+*/</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; levelOrder(Node root) {
+        List&lt;List&lt;Integer&gt;&gt; ans = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">if</span> (root == <span class="hljs-keyword">null</span>)
+            <span class="hljs-keyword">return</span> ans;
+        Queue&lt;Node&gt; nodesQueue = <span class="hljs-keyword">new</span> LinkedList&lt;&gt;();
+        nodesQueue.add(root);
+        <span class="hljs-keyword">while</span> (!nodesQueue.isEmpty()) {
+            <span class="hljs-keyword">int</span> size = nodesQueue.size();
+            List&lt;Integer&gt; level = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+            <span class="hljs-keyword">while</span> (size-- &gt; <span class="hljs-number">0</span>) {
+                Node current = nodesQueue.remove();
+                <span class="hljs-keyword">for</span> (Node child : current.children) 
+                    nodesQueue.add(child);
+                level.add(current.val);
+            }
+            ans.add(level);
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Accounts Merge - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>721. Accounts Merge</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/union-find">Union Find</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/redundant-connection.html">Redundant Connection</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/sentence-similarity.html">Sentence Similarity</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/sentence-similarity-ii.html">Sentence Similarity II</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a list of <code>accounts</code> where each element <code>accounts[i]</code> is a list of strings, where the first element <code>accounts[i][0]</code> is a name, and the rest of the elements are <strong>emails</strong> representing emails of the account.</p>
+<p>Now, we would like to merge these accounts. Two accounts definitely belong to the same person if there is some common email to both accounts. Note that even if two accounts have the same name, they may belong to different people as people could have the same name. A person can have any number of accounts initially, but all of their accounts definitely have the same name.</p>
+<p>After merging the accounts, return the accounts in the following format: the first element of each account is the name, and the rest of the elements are emails <strong>in sorted order</strong>. The accounts themselves can be returned in <strong>any order</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: accounts = [[<span class="hljs-string">"John"</span>,<span class="hljs-string">"johnsmith@mail.com"</span>,<span class="hljs-string">"john_newyork@mail.com"</span>],[<span class="hljs-string">"John"</span>,<span class="hljs-string">"johnsmith@mail.com"</span>,<span class="hljs-string">"john00@mail.com"</span>],[<span class="hljs-string">"Mary"</span>,<span class="hljs-string">"mary@mail.com"</span>],[<span class="hljs-string">"John"</span>,<span class="hljs-string">"johnnybravo@mail.com"</span>]]
+Output: [[<span class="hljs-string">"John"</span>,<span class="hljs-string">"john00@mail.com"</span>,<span class="hljs-string">"john_newyork@mail.com"</span>,<span class="hljs-string">"johnsmith@mail.com"</span>],[<span class="hljs-string">"Mary"</span>,<span class="hljs-string">"mary@mail.com"</span>],[<span class="hljs-string">"John"</span>,<span class="hljs-string">"johnnybravo@mail.com"</span>]]
+Explanation:
+The first <span class="hljs-keyword">and</span> second John<span class="hljs-string">'s are the same person as they have the common email "johnsmith@mail.com".
+The third John and Mary are different people as none of their email addresses are used by other accounts.
+We could return these lists in any order, for example the answer [['</span>Mary<span class="hljs-string">', '</span>mary@mail.com<span class="hljs-string">'], ['</span>John<span class="hljs-string">', '</span>johnnybravo@mail.com<span class="hljs-string">'], 
+['</span>John<span class="hljs-string">', '</span>john0<span class="hljs-number">0</span>@mail.com<span class="hljs-string">', '</span>john_newyork@mail.com<span class="hljs-string">', '</span>johnsmith@mail.com<span class="hljs-string">']] would still be accepted.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: accounts = [[<span class="hljs-string">"Gabe"</span>,<span class="hljs-string">"Gabe0@m.co"</span>,<span class="hljs-string">"Gabe3@m.co"</span>,<span class="hljs-string">"Gabe1@m.co"</span>],[<span class="hljs-string">"Kevin"</span>,<span class="hljs-string">"Kevin3@m.co"</span>,<span class="hljs-string">"Kevin5@m.co"</span>,<span class="hljs-string">"Kevin0@m.co"</span>],[<span class="hljs-string">"Ethan"</span>,<span class="hljs-string">"Ethan5@m.co"</span>,<span class="hljs-string">"Ethan4@m.co"</span>,<span class="hljs-string">"Ethan0@m.co"</span>],[<span class="hljs-string">"Hanzo"</span>,<span class="hljs-string">"Hanzo3@m.co"</span>,<span class="hljs-string">"Hanzo1@m.co"</span>,<span class="hljs-string">"Hanzo0@m.co"</span>],[<span class="hljs-string">"Fern"</span>,<span class="hljs-string">"Fern5@m.co"</span>,<span class="hljs-string">"Fern1@m.co"</span>,<span class="hljs-string">"Fern0@m.co"</span>]]
+Output: [[<span class="hljs-string">"Ethan"</span>,<span class="hljs-string">"Ethan0@m.co"</span>,<span class="hljs-string">"Ethan4@m.co"</span>,<span class="hljs-string">"Ethan5@m.co"</span>],[<span class="hljs-string">"Gabe"</span>,<span class="hljs-string">"Gabe0@m.co"</span>,<span class="hljs-string">"Gabe1@m.co"</span>,<span class="hljs-string">"Gabe3@m.co"</span>],[<span class="hljs-string">"Hanzo"</span>,<span class="hljs-string">"Hanzo0@m.co"</span>,<span class="hljs-string">"Hanzo1@m.co"</span>,<span class="hljs-string">"Hanzo3@m.co"</span>],[<span class="hljs-string">"Kevin"</span>,<span class="hljs-string">"Kevin0@m.co"</span>,<span class="hljs-string">"Kevin3@m.co"</span>,<span class="hljs-string">"Kevin5@m.co"</span>],[<span class="hljs-string">"Fern"</span>,<span class="hljs-string">"Fern0@m.co"</span>,<span class="hljs-string">"Fern1@m.co"</span>,<span class="hljs-string">"Fern5@m.co"</span>]]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= accounts.length &lt;= 1000</code></p></li>
+<li><p><code>2 &lt;= accounts[i].length &lt;= 10</code></p></li>
+<li><p><code>1 &lt;= accounts[i][j].length &lt;= 30</code></p></li>
+<li><p><code>accounts[i][0]</code> consists of English letters.</p></li>
+<li><p><code>accounts[i][j] (for j &gt; 0)</code> is a valid email.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> List&lt;List&lt;String&gt;&gt; accountsMerge(List&lt;List&lt;String&gt;&gt; accounts) {
+        Map&lt;String, String&gt; emailToName = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        Map&lt;String, ArrayList&lt;String&gt;&gt; graph = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">for</span> (List&lt;String&gt; account : accounts) {
+            String name = <span class="hljs-string">""</span>;
+            <span class="hljs-keyword">for</span> (String email : account) {
+                <span class="hljs-keyword">if</span> (name.equals(<span class="hljs-string">""</span>)) {
+                    name = email;
+                    <span class="hljs-keyword">continue</span>;
+                }
+                graph.computeIfAbsent(email, x -&gt; <span class="hljs-keyword">new</span> ArrayList&lt;&gt;()).add(account.get(<span class="hljs-number">1</span>));
+                graph.computeIfAbsent(account.get(<span class="hljs-number">1</span>), x -&gt; <span class="hljs-keyword">new</span> ArrayList&lt;&gt;()).add(email);
+                emailToName.put(email, name);
+            }
+        }
+
+        Set&lt;String&gt; seen = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+        List&lt;List&lt;String&gt;&gt; ans = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">for</span> (String email : graph.keySet()) {
+            <span class="hljs-keyword">if</span> (!seen.contains(email)) {
+                seen.add(email);
+                Stack&lt;String&gt; stack = <span class="hljs-keyword">new</span> Stack&lt;&gt;();
+                stack.push(email);
+                List&lt;String&gt; component = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+                <span class="hljs-keyword">while</span> (!stack.empty()) {
+                    String node = stack.pop();
+                    component.add(node);
+                    <span class="hljs-keyword">for</span> (String nei : graph.get(node)) {
+                        <span class="hljs-keyword">if</span> (!seen.contains(nei)) {
+                            seen.add(nei);
+                            stack.push(nei);
+                        }
+                    }
+                }
+                Collections.sort(component);
+                component.add(<span class="hljs-number">0</span>, emailToName.get(email));
+                ans.add(component);
+            }
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

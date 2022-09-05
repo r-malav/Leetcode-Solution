@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Most Profit Assigning Work - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>826. Most Profit Assigning Work</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/two-pointers">Two Pointers</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/binary-search">Binary Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/greedy">Greedy</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/maximum-number-of-tasks-you-can-assign.html">Maximum Number of Tasks You Can Assign</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/successful-pairs-of-spells-and-potions.html">Successful Pairs of Spells and Potions</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You have <code>n</code> jobs and <code>m</code> workers. You are given three arrays: <code>difficulty</code>, <code>profit</code>, and <code>worker</code> where:</p>
+<ul>
+<li><p><code>difficulty[i]</code> and <code>profit[i]</code> are the difficulty and the profit of the <code>ith</code> job, and</p></li>
+<li><p><code>worker[j]</code> is the ability of <code>jth</code> worker (i.e., the <code>jth</code> worker can only complete a job with difficulty at most <code>worker[j]</code>).</p></li>
+</ul>
+<p>Every worker can be assigned <strong>at most one job</strong>, but one job can be <strong>completed multiple times</strong>.</p>
+<ul>
+<li>For example, if three workers attempt the same job that pays <code>$1</code>, then the total profit will be <code>$3</code>. If a worker cannot complete any job, their profit is <code>$0</code>.</li>
+</ul>
+<p>Return the maximum profit we can achieve after assigning the workers to the jobs.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: difficulty = [<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>,<span class="hljs-number">8</span>,<span class="hljs-number">10</span>], profit = [<span class="hljs-number">10</span>,<span class="hljs-number">20</span>,<span class="hljs-number">30</span>,<span class="hljs-number">40</span>,<span class="hljs-number">50</span>], worker = [<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>]
+Output: <span class="hljs-number">100</span>
+Explanation: Workers are assigned jobs of difficulty [<span class="hljs-number">4</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>,<span class="hljs-number">6</span>] <span class="hljs-keyword">and</span> they <span class="hljs-keyword">get</span> a profit of [<span class="hljs-number">20</span>,<span class="hljs-number">20</span>,<span class="hljs-number">30</span>,<span class="hljs-number">30</span>] separately.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: difficulty = [<span class="hljs-number">85</span>,<span class="hljs-number">47</span>,<span class="hljs-number">57</span>], profit = [<span class="hljs-number">24</span>,<span class="hljs-number">66</span>,<span class="hljs-number">99</span>], worker = [<span class="hljs-number">40</span>,<span class="hljs-number">25</span>,<span class="hljs-number">25</span>]
+Output: <span class="hljs-number">0</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == difficulty.length</code></p></li>
+<li><p><code>n == profit.length</code></p></li>
+<li><p><code>m == worker.length</code></p></li>
+<li><p><code>1 &lt;= n, m &lt;= 104</code></p></li>
+<li><p><code>1 &lt;= difficulty[i], profit[i], worker[i] &lt;= 105</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxProfitAssignment</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] difficulty, <span class="hljs-keyword">int</span>[] profit, <span class="hljs-keyword">int</span>[] worker)</span> </span>{
+        <span class="hljs-keyword">int</span> n = <span class="hljs-number">100000</span>;
+        <span class="hljs-keyword">int</span>[] maxProfit = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; difficulty.length; i++) {
+            maxProfit[difficulty[i]] = Math.max(maxProfit[difficulty[i]], profit[i]);
+        }
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; n; i++) {
+            maxProfit[i] = Math.max(maxProfit[i], maxProfit[i - <span class="hljs-number">1</span>]);
+        }
+
+        <span class="hljs-keyword">int</span> sum = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> efficiency : worker) {
+            sum += maxProfit[efficiency];
+        }
+        <span class="hljs-keyword">return</span> sum;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -15,8 +15,8 @@ Each LED represents a zero or one, with the least significant bit on the right.<
 </ul>
 <h2 id="solution-1">Solution 1</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * @param {number} num
- * @return {string[]}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">num</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{string[]}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> readBinaryWatch = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">num</span>) </span>{
   <span class="hljs-keyword">var</span> res = [];
@@ -47,8 +47,8 @@ Each LED represents a zero or one, with the least significant bit on the right.<
 </ul>
 <h2 id="solution-2">Solution 2</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * @param {number} num
- * @return {string[]}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">num</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{string[]}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> readBinaryWatch = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">num</span>) </span>{
   <span class="hljs-keyword">var</span> res = [];
@@ -74,6 +74,57 @@ Each LED represents a zero or one, with the least significant bit on the right.<
   }
   <span class="hljs-keyword">return</span> n;
 };
+</code></pre>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title">readBinaryWatch</span><span class="hljs-params">(<span class="hljs-keyword">int</span> turnedOn)</span> </span>{
+        List&lt;String&gt; times = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> hour = <span class="hljs-number">0</span>; hour &lt;= <span class="hljs-number">11</span>; hour++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> minutes = <span class="hljs-number">0</span>; minutes &lt;= <span class="hljs-number">59</span>; minutes++) {
+                readBinaryWatchHelper(turnedOn, times, hour, minutes);
+            }
+        }
+        <span class="hljs-keyword">return</span> times;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">readBinaryWatchHelper</span><span class="hljs-params">(
+            <span class="hljs-keyword">int</span> turnedOn, List&lt;String&gt; selectedTimes, <span class="hljs-keyword">int</span> hour, <span class="hljs-keyword">int</span> minutes)</span> </span>{
+        <span class="hljs-keyword">if</span> (isValidTime(turnedOn, hour, minutes)) {
+            selectedTimes.add(getTimeString(hour, minutes));
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> String <span class="hljs-title">getTimeString</span><span class="hljs-params">(<span class="hljs-keyword">int</span> hour, <span class="hljs-keyword">int</span> minutes)</span> </span>{
+        StringBuilder time = <span class="hljs-keyword">new</span> StringBuilder();
+        time.append(hour);
+        time.append(<span class="hljs-string">':'</span>);
+        <span class="hljs-keyword">if</span> (minutes &lt; <span class="hljs-number">10</span>) {
+            time.append(<span class="hljs-string">'0'</span>);
+        }
+        time.append(minutes);
+        <span class="hljs-keyword">return</span> time.toString();
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isValidTime</span><span class="hljs-params">(<span class="hljs-keyword">int</span> turnedOn, <span class="hljs-keyword">int</span> hour, <span class="hljs-keyword">int</span> minutes)</span> </span>{
+        <span class="hljs-keyword">int</span> counter = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (hour != <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">if</span> ((hour &amp; <span class="hljs-number">1</span>) == <span class="hljs-number">1</span>) {
+                counter++;
+            }
+            hour &gt;&gt;&gt;= <span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">if</span> (counter &gt; turnedOn) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+        }
+        <span class="hljs-keyword">while</span> (minutes != <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">if</span> ((minutes &amp; <span class="hljs-number">1</span>) == <span class="hljs-number">1</span>) {
+                counter++;
+            }
+            minutes &gt;&gt;&gt;= <span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">return</span> counter == turnedOn;
+    }
+}
 </code></pre>
 <p><strong>Explain:</strong></p>
 <p>nope.</p>

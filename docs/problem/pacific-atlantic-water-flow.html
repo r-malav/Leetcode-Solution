@@ -1,0 +1,102 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Pacific Atlantic Water Flow - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>417. Pacific Atlantic Water Flow</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is an <code>m x n</code> rectangular island that borders both the <strong>Pacific Ocean</strong> and <strong>Atlantic Ocean</strong>. The <strong>Pacific Ocean</strong> touches the island's left and top edges, and the <strong>Atlantic Ocean</strong> touches the island's right and bottom edges.</p>
+<p>The island is partitioned into a grid of square cells. You are given an <code>m x n</code> integer matrix <code>heights</code> where <code>heights[r][c]</code> represents the <strong>height above sea level</strong> of the cell at coordinate <code>(r, c)</code>.</p>
+<p>The island receives a lot of rain, and the rain water can flow to neighboring cells directly north, south, east, and west if the neighboring cell's height is <strong>less than or equal to</strong> the current cell's height. Water can flow from any cell adjacent to an ocean into the ocean.</p>
+<p>Return **a *<em>2D list</em>* of grid coordinates <strong><code>result</code></strong> where <strong><code>result[i] = [ri, ci]</code></strong> denotes that rain water can flow from cell <strong><code>(ri, ci)</code></strong> to <strong>both</strong> the Pacific and Atlantic oceans**.</p>
+<p>&nbsp;
+Example 1:</p>
+<p><img src="https://assets.leetcode.com/uploads/2021/06/08/waterflow-grid.jpg" alt="" /></p>
+<pre><code class="hljs">Input: heights = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>]]
+Output: [[<span class="hljs-number">0</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">0</span>]]
+Explanation: The following cells can flow to the Pacific <span class="hljs-keyword">and</span> Atlantic oceans, as shown below:
+[<span class="hljs-number">0</span>,<span class="hljs-number">4</span>]: [<span class="hljs-number">0</span>,<span class="hljs-number">4</span>] -&gt; Pacific Ocean 
+&amp;nbsp;      [<span class="hljs-number">0</span>,<span class="hljs-number">4</span>] -&gt; Atlantic Ocean
+[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>]: [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>] -&gt; [<span class="hljs-number">0</span>,<span class="hljs-number">3</span>] -&gt; Pacific Ocean 
+&amp;nbsp;      [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>] -&gt; [<span class="hljs-number">1</span>,<span class="hljs-number">4</span>] -&gt; Atlantic Ocean
+[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>]: [<span class="hljs-number">1</span>,<span class="hljs-number">4</span>] -&gt; [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>] -&gt; [<span class="hljs-number">0</span>,<span class="hljs-number">3</span>] -&gt; Pacific Ocean 
+&amp;nbsp;      [<span class="hljs-number">1</span>,<span class="hljs-number">4</span>] -&gt; Atlantic Ocean
+[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]: [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>] -&gt; [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] -&gt; [<span class="hljs-number">0</span>,<span class="hljs-number">2</span>] -&gt; Pacific Ocean 
+&amp;nbsp;      [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>] -&gt; [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>] -&gt; [<span class="hljs-number">2</span>,<span class="hljs-number">4</span>] -&gt; Atlantic Ocean
+[<span class="hljs-number">3</span>,<span class="hljs-number">0</span>]: [<span class="hljs-number">3</span>,<span class="hljs-number">0</span>] -&gt; Pacific Ocean 
+&amp;nbsp;      [<span class="hljs-number">3</span>,<span class="hljs-number">0</span>] -&gt; [<span class="hljs-number">4</span>,<span class="hljs-number">0</span>] -&gt; Atlantic Ocean
+[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]: [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>] -&gt; [<span class="hljs-number">3</span>,<span class="hljs-number">0</span>] -&gt; Pacific Ocean 
+&amp;nbsp;      [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>] -&gt; [<span class="hljs-number">4</span>,<span class="hljs-number">1</span>] -&gt; Atlantic Ocean
+[<span class="hljs-number">4</span>,<span class="hljs-number">0</span>]: [<span class="hljs-number">4</span>,<span class="hljs-number">0</span>] -&gt; Pacific Ocean 
+       [<span class="hljs-number">4</span>,<span class="hljs-number">0</span>] -&gt; Atlantic Ocean
+Note that there are other possible paths <span class="hljs-keyword">for</span> these cells to flow to the Pacific <span class="hljs-keyword">and</span> Atlantic oceans.
+</code></pre>
+<p>Example 2:</p>
+<pre><code class="hljs">Input: heights = <span class="hljs-string">[[1]]</span>
+Output: <span class="hljs-string">[[0,0]]</span>
+Explanation: The water can flow from the only cell to the Pacific <span class="hljs-keyword">and</span> Atlantic oceans.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == heights.length</code></p></li>
+<li><p><code>n == heights[r].length</code></p></li>
+<li><p><code>1 &lt;= m, n &lt;= 200</code></p></li>
+<li><p><code>0 &lt;= heights[r][c] &lt;= 105</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> col = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> row = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; pacificAtlantic(<span class="hljs-keyword">int</span>[][] matrix) {
+        List&lt;List&lt;Integer&gt;&gt; res = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">if</span> (matrix.length == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> res;
+        }
+        col = matrix.length;
+        row = matrix[<span class="hljs-number">0</span>].length;
+        <span class="hljs-keyword">boolean</span>[][] pacific = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[col][row];
+        <span class="hljs-keyword">boolean</span>[][] atlantic = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[col][row];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; col; i++) {
+            dfs(i, <span class="hljs-number">0</span>, matrix, pacific);
+            dfs(i, row - <span class="hljs-number">1</span>, matrix, atlantic);
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; row; i++) {
+            dfs(<span class="hljs-number">0</span>, i, matrix, pacific);
+            dfs(col - <span class="hljs-number">1</span>, i, matrix, atlantic);
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; col; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; row; j++) {
+                <span class="hljs-keyword">if</span> (pacific[i][j] &amp;&amp; atlantic[i][j]) {
+                    List&lt;Integer&gt; temp = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+                    temp.add(i);
+                    temp.add(j);
+                    res.add(temp);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j, <span class="hljs-keyword">int</span>[][] matrix, <span class="hljs-keyword">boolean</span>[][] visited)</span> </span>{
+        <span class="hljs-keyword">if</span> (i &lt; <span class="hljs-number">0</span> || j &lt; <span class="hljs-number">0</span> || i &gt;= matrix.length || j &gt;= matrix[<span class="hljs-number">0</span>].length || visited[i][j]) {
+            <span class="hljs-keyword">return</span>;
+        }
+        visited[i][j] = <span class="hljs-keyword">true</span>;
+        <span class="hljs-keyword">if</span> (i &lt; col - <span class="hljs-number">1</span> &amp;&amp; matrix[i][j] &lt;= matrix[i + <span class="hljs-number">1</span>][j]) {
+            dfs(i + <span class="hljs-number">1</span>, j, matrix, visited);
+        }
+        <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; matrix[i][j] &lt;= matrix[i - <span class="hljs-number">1</span>][j]) {
+            dfs(i - <span class="hljs-number">1</span>, j, matrix, visited);
+        }
+        <span class="hljs-keyword">if</span> (j &lt; row - <span class="hljs-number">1</span> &amp;&amp; matrix[i][j] &lt;= matrix[i][j + <span class="hljs-number">1</span>]) {
+            dfs(i, j + <span class="hljs-number">1</span>, matrix, visited);
+        }
+        <span class="hljs-keyword">if</span> (j &gt; <span class="hljs-number">0</span> &amp;&amp; matrix[i][j] &lt;= matrix[i][j - <span class="hljs-number">1</span>]) {
+            dfs(i, j - <span class="hljs-number">1</span>, matrix, visited);
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -4,19 +4,19 @@
 <p>Determine if you are able to reach the last index.</p>
 <p><strong>Example 1:</strong></p>
 <pre><code class="hljs">Input: [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>]
-Output: <span class="hljs-keyword">true</span>
-Explanation: Jump <span class="hljs-number">1</span> <span class="hljs-keyword">step</span> <span class="hljs-keyword">from</span> <span class="hljs-keyword">index</span> <span class="hljs-number">0</span> <span class="hljs-keyword">to</span> <span class="hljs-number">1</span>, <span class="hljs-keyword">then</span> <span class="hljs-number">3</span> steps <span class="hljs-keyword">to</span> the last <span class="hljs-keyword">index</span>.
+Output: <span class="hljs-literal">true</span>
+Explanation: Jump <span class="hljs-number">1</span> step <span class="hljs-keyword">from</span> index <span class="hljs-number">0</span> to <span class="hljs-number">1</span>, then <span class="hljs-number">3</span> steps to the last index.
 </code></pre>
 <p><strong>Example 2:</strong></p>
-<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">4</span>]
-Outpu<span class="hljs-variable">t:</span> false
-Explanation: You will always arrive at <span class="hljs-built_in">index</span> <span class="hljs-number">3</span> <span class="hljs-keyword">no</span> matter what. Its maximum
-             jump length <span class="hljs-keyword">is</span> <span class="hljs-number">0</span>, which makes it impossible <span class="hljs-keyword">to</span> reach the <span class="hljs-keyword">last</span> <span class="hljs-built_in">index</span>.
+<pre><code class="hljs">Input: [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">4</span>]
+Output: <span class="hljs-literal">false</span>
+Explanation: You will always arrive at index <span class="hljs-number">3</span> no matter what. Its maximum
+&amp;nbsp;            jump length <span class="hljs-keyword">is</span> <span class="hljs-number">0</span>, which makes it impossible to reach the last index.
 </code></pre>
 <h2 id="solution">Solution</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * @param {number[]} nums
- * @return {boolean}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">nums</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{boolean}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> canJump = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">nums</span>) </span>{
   <span class="hljs-keyword">var</span> len = nums.length;

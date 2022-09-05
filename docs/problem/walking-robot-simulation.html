@@ -1,0 +1,138 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Walking Robot Simulation - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>874. Walking Robot Simulation</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/simulation">Simulation</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/walking-robot-simulation-ii.html">Walking Robot Simulation II</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A robot on an infinite XY-plane starts at point <code>(0, 0)</code> facing north. The robot can receive a sequence of these three possible types of <code>commands</code>:</p>
+<ul>
+<li><p><code>-2</code>: Turn left <code>90</code> degrees.</p></li>
+<li><p><code>-1</code>: Turn right <code>90</code> degrees.</p></li>
+<li><p><code>1 &lt;= k &lt;= 9</code>: Move forward <code>k</code> units, one unit at a time.</p></li>
+</ul>
+<p>Some of the grid squares are <code>obstacles</code>. The <code>ith</code> obstacle is at grid point <code>obstacles[i] = (xi, yi)</code>. If the robot runs into an obstacle, then it will instead stay in its current location and move on to the next command.</p>
+<p>Return **the *<em>maximum Euclidean distance</em>* that the robot ever gets from the origin <strong>squared</strong> (i.e. if the distance is <strong><code>5</code></strong>, return <strong><code>25</code></strong>)**.</p>
+<p><strong>Note:</strong></p>
+<ul>
+<li><p>North means +Y direction.</p></li>
+<li><p>East means +X direction.</p></li>
+<li><p>South means -Y direction.</p></li>
+<li><p>West means -X direction.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: commands = [<span class="hljs-number">4</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">3</span>], obstacles = []
+Output: <span class="hljs-number">25</span>
+Explanation: The robot starts at (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>):
+<span class="hljs-number">1.</span> Move north <span class="hljs-number">4</span> units to (<span class="hljs-number">0</span>, <span class="hljs-number">4</span>).
+<span class="hljs-number">2.</span> Turn right.
+<span class="hljs-number">3.</span> Move east <span class="hljs-number">3</span> units to (<span class="hljs-number">3</span>, <span class="hljs-number">4</span>).
+The furthest point the robot ever gets <span class="hljs-keyword">from</span> the origin <span class="hljs-keyword">is</span> (<span class="hljs-number">3</span>, <span class="hljs-number">4</span>), which squared <span class="hljs-keyword">is</span> <span class="hljs-number">32</span> + <span class="hljs-number">42</span> = <span class="hljs-number">25</span> units away.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: commands = [<span class="hljs-number">4</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">4</span>], obstacles = [[<span class="hljs-number">2</span>,<span class="hljs-number">4</span>]]
+Output: <span class="hljs-number">65</span>
+Explanation: The robot starts at (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>):
+<span class="hljs-number">1.</span> Move north <span class="hljs-number">4</span> units to (<span class="hljs-number">0</span>, <span class="hljs-number">4</span>).
+<span class="hljs-number">2.</span> Turn right.
+<span class="hljs-number">3.</span> Move east <span class="hljs-number">1</span> unit <span class="hljs-keyword">and</span> <span class="hljs-keyword">get</span> blocked by the obstacle at (<span class="hljs-number">2</span>, <span class="hljs-number">4</span>), robot <span class="hljs-keyword">is</span> at (<span class="hljs-number">1</span>, <span class="hljs-number">4</span>).
+<span class="hljs-number">4.</span> Turn left.
+<span class="hljs-number">5.</span> Move north <span class="hljs-number">4</span> units to (<span class="hljs-number">1</span>, <span class="hljs-number">8</span>).
+The furthest point the robot ever gets <span class="hljs-keyword">from</span> the origin <span class="hljs-keyword">is</span> (<span class="hljs-number">1</span>, <span class="hljs-number">8</span>), which squared <span class="hljs-keyword">is</span> <span class="hljs-number">12</span> + <span class="hljs-number">82</span> = <span class="hljs-number">65</span> units away.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: commands = [<span class="hljs-number">6</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">6</span>], obstacles = []
+Output: <span class="hljs-number">36</span>
+Explanation: The robot starts at (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>):
+<span class="hljs-number">1.</span> Move north <span class="hljs-number">6</span> units to (<span class="hljs-number">0</span>, <span class="hljs-number">6</span>).
+<span class="hljs-number">2.</span> Turn right.
+<span class="hljs-number">3.</span> Turn right.
+<span class="hljs-number">4.</span> Move south <span class="hljs-number">6</span> units to (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>).
+The furthest point the robot ever gets <span class="hljs-keyword">from</span> the origin <span class="hljs-keyword">is</span> (<span class="hljs-number">0</span>, <span class="hljs-number">6</span>), which squared <span class="hljs-keyword">is</span> <span class="hljs-number">62</span> = <span class="hljs-number">36</span> units away.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= commands.length &lt;= 104</code></p></li>
+<li><p><code>commands[i]</code> is either <code>-2</code>, <code>-1</code>, or an integer in the range <code>[1, 9]</code>.</p></li>
+<li><p><code>0 &lt;= obstacles.length &lt;= 104</code></p></li>
+<li><p><code>-3 * 104 &lt;= xi, yi &lt;= 3 * 104</code></p></li>
+<li><p>The answer is guaranteed to be less than <code>231</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">robotSim</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] commands, <span class="hljs-keyword">int</span>[][] obstacles)</span> </span>{
+        <span class="hljs-comment">// 0=right, 1=up, 2=left, 3=down</span>
+        <span class="hljs-keyword">int</span> direction = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> x = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> y = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> maxDis = <span class="hljs-number">0</span>;
+        Map&lt;Integer, TreeSet&lt;Integer&gt;&gt; xMap = <span class="hljs-keyword">new</span> HashMap&lt;&gt;(obstacles.length);
+        Map&lt;Integer, TreeSet&lt;Integer&gt;&gt; yMap = <span class="hljs-keyword">new</span> HashMap&lt;&gt;(obstacles.length);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] xy : obstacles) {
+            xMap.computeIfAbsent(xy[<span class="hljs-number">0</span>], k -&gt; <span class="hljs-keyword">new</span> TreeSet&lt;&gt;()).add(xy[<span class="hljs-number">1</span>]);
+            yMap.computeIfAbsent(xy[<span class="hljs-number">1</span>], k -&gt; <span class="hljs-keyword">new</span> TreeSet&lt;&gt;()).add(xy[<span class="hljs-number">0</span>]);
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> cmd : commands) {
+            <span class="hljs-keyword">if</span> (cmd == -<span class="hljs-number">1</span>) {
+                direction += <span class="hljs-number">3</span>;
+                direction %= <span class="hljs-number">4</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (cmd == -<span class="hljs-number">2</span>) {
+                direction += <span class="hljs-number">1</span>;
+                direction %= <span class="hljs-number">4</span>;
+            } <span class="hljs-keyword">else</span> {
+                Integer next = <span class="hljs-keyword">null</span>;
+                <span class="hljs-keyword">switch</span> (direction) {
+                    <span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:
+                        <span class="hljs-keyword">if</span> (yMap.containsKey(y)) {
+                            next = yMap.get(y).ceiling(x + <span class="hljs-number">1</span>);
+                        }
+                        <span class="hljs-keyword">if</span> (next != <span class="hljs-keyword">null</span>) {
+                            x = Math.min(x + cmd, next - <span class="hljs-number">1</span>);
+                        } <span class="hljs-keyword">else</span> {
+                            x += cmd;
+                        }
+                        <span class="hljs-keyword">break</span>;
+                    <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:
+                        <span class="hljs-keyword">if</span> (xMap.containsKey(x)) {
+                            next = xMap.get(x).ceiling(y + <span class="hljs-number">1</span>);
+                        }
+                        <span class="hljs-keyword">if</span> (next != <span class="hljs-keyword">null</span>) {
+                            y = Math.min(y + cmd, next - <span class="hljs-number">1</span>);
+                        } <span class="hljs-keyword">else</span> {
+                            y += cmd;
+                        }
+                        <span class="hljs-keyword">break</span>;
+                    <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:
+                        <span class="hljs-keyword">if</span> (yMap.containsKey(y)) {
+                            next = yMap.get(y).floor(x - <span class="hljs-number">1</span>);
+                        }
+                        <span class="hljs-keyword">if</span> (next != <span class="hljs-keyword">null</span>) {
+                            x = Math.max(x - cmd, next + <span class="hljs-number">1</span>);
+                        } <span class="hljs-keyword">else</span> {
+                            x -= cmd;
+                        }
+                        <span class="hljs-keyword">break</span>;
+                    <span class="hljs-keyword">case</span> <span class="hljs-number">3</span>:
+                        <span class="hljs-keyword">if</span> (xMap.containsKey(x)) {
+                            next = xMap.get(x).floor(y - <span class="hljs-number">1</span>);
+                        }
+                        <span class="hljs-keyword">if</span> (next != <span class="hljs-keyword">null</span>) {
+                            y = Math.max(y - cmd, next + <span class="hljs-number">1</span>);
+                        } <span class="hljs-keyword">else</span> {
+                            y -= cmd;
+                        }
+                        <span class="hljs-keyword">break</span>;
+                    <span class="hljs-keyword">default</span>:
+                        <span class="hljs-comment">// error</span>
+                        <span class="hljs-keyword">break</span>;
+                }
+                maxDis = Math.max(maxDis, x * x + y * y);
+            }
+        }
+        <span class="hljs-keyword">return</span> maxDis;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

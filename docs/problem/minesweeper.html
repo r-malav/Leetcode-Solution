@@ -1,0 +1,106 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minesweeper - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>529. Minesweeper</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/detonate-the-maximum-bombs.html">Detonate the Maximum Bombs</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Let's play the minesweeper game (Wikipedia, online game)!</p>
+<p>You are given an <code>m x n</code> char matrix <code>board</code> representing the game board where:</p>
+<ul>
+<li><p><code>'M'</code> represents an unrevealed mine,</p></li>
+<li><p><code>'E'</code> represents an unrevealed empty square,</p></li>
+<li><p><code>'B'</code> represents a revealed blank square that has no adjacent mines (i.e., above, below, left, right, and all 4 diagonals),</p></li>
+<li><p>digit (<code>'1'</code> to <code>'8'</code>) represents how many mines are adjacent to this revealed square, and</p></li>
+<li><p><code>'X'</code> represents a revealed mine.</p></li>
+</ul>
+<p>You are also given an integer array <code>click</code> where <code>click = [clickr, clickc]</code> represents the next click position among all the unrevealed squares (<code>'M'</code> or <code>'E'</code>).</p>
+<p>Return <strong>the board after revealing this position according to the following rules</strong>:</p>
+<ul>
+<li><p>If a mine <code>'M'</code> is revealed, then the game is over. You should change it to <code>'X'</code>.</p></li>
+<li><p>If an empty square <code>'E'</code> with no adjacent mines is revealed, then change it to a revealed blank <code>'B'</code> and all of its adjacent unrevealed squares should be revealed recursively.</p></li>
+<li><p>If an empty square <code>'E'</code> with at least one adjacent mine is revealed, then change it to a digit (<code>'1'</code> to <code>'8'</code>) representing the number of adjacent mines.</p></li>
+<li><p>Return the board when no more squares will be revealed.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2018/10/12/minesweeper_example_1.png" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: board = [[<span class="hljs-string">"E"</span>,<span class="hljs-string">"E"</span>,<span class="hljs-string">"E"</span>,<span class="hljs-string">"E"</span>,<span class="hljs-string">"E"</span>],[<span class="hljs-string">"E"</span>,<span class="hljs-string">"E"</span>,<span class="hljs-string">"M"</span>,<span class="hljs-string">"E"</span>,<span class="hljs-string">"E"</span>],[<span class="hljs-string">"E"</span>,<span class="hljs-string">"E"</span>,<span class="hljs-string">"E"</span>,<span class="hljs-string">"E"</span>,<span class="hljs-string">"E"</span>],[<span class="hljs-string">"E"</span>,<span class="hljs-string">"E"</span>,<span class="hljs-string">"E"</span>,<span class="hljs-string">"E"</span>,<span class="hljs-string">"E"</span>]], click = [<span class="hljs-number">3</span>,<span class="hljs-number">0</span>]
+<span class="hljs-symbol">Output</span>: [[<span class="hljs-string">"B"</span>,<span class="hljs-string">"1"</span>,<span class="hljs-string">"E"</span>,<span class="hljs-string">"1"</span>,<span class="hljs-string">"B"</span>],[<span class="hljs-string">"B"</span>,<span class="hljs-string">"1"</span>,<span class="hljs-string">"M"</span>,<span class="hljs-string">"1"</span>,<span class="hljs-string">"B"</span>],[<span class="hljs-string">"B"</span>,<span class="hljs-string">"1"</span>,<span class="hljs-string">"1"</span>,<span class="hljs-string">"1"</span>,<span class="hljs-string">"B"</span>],[<span class="hljs-string">"B"</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"B"</span>]]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2018/10/12/minesweeper_example_2.png" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: board = [[<span class="hljs-string">"B"</span>,<span class="hljs-string">"1"</span>,<span class="hljs-string">"E"</span>,<span class="hljs-string">"1"</span>,<span class="hljs-string">"B"</span>],[<span class="hljs-string">"B"</span>,<span class="hljs-string">"1"</span>,<span class="hljs-string">"M"</span>,<span class="hljs-string">"1"</span>,<span class="hljs-string">"B"</span>],[<span class="hljs-string">"B"</span>,<span class="hljs-string">"1"</span>,<span class="hljs-string">"1"</span>,<span class="hljs-string">"1"</span>,<span class="hljs-string">"B"</span>],[<span class="hljs-string">"B"</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"B"</span>]], click = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
+<span class="hljs-symbol">Output</span>: [[<span class="hljs-string">"B"</span>,<span class="hljs-string">"1"</span>,<span class="hljs-string">"E"</span>,<span class="hljs-string">"1"</span>,<span class="hljs-string">"B"</span>],[<span class="hljs-string">"B"</span>,<span class="hljs-string">"1"</span>,<span class="hljs-string">"X"</span>,<span class="hljs-string">"1"</span>,<span class="hljs-string">"B"</span>],[<span class="hljs-string">"B"</span>,<span class="hljs-string">"1"</span>,<span class="hljs-string">"1"</span>,<span class="hljs-string">"1"</span>,<span class="hljs-string">"B"</span>],[<span class="hljs-string">"B"</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"B"</span>]]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == board.length</code></p></li>
+<li><p><code>n == board[i].length</code></p></li>
+<li><p><code>1 &lt;= m, n &lt;= 50</code></p></li>
+<li><p><code>board[i][j]</code> is either <code>'M'</code>, <code>'E'</code>, <code>'B'</code>, or a digit from <code>'1'</code> to <code>'8'</code>.</p></li>
+<li><p><code>click.length == 2</code></p></li>
+<li><p><code>0 &lt;= clickr &lt; m</code></p></li>
+<li><p><code>0 &lt;= clickc &lt; n</code></p></li>
+<li><p><code>board[clickr][clickc]</code> is either <code>'M'</code> or <code>'E'</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span>[][] DIRECTION = {
+        {<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {<span class="hljs-number">0</span>, <span class="hljs-number">1</span>}, {<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>}, {-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>}, {-<span class="hljs-number">1</span>, <span class="hljs-number">1</span>}, {<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>}, {<span class="hljs-number">1</span>, <span class="hljs-number">1</span>}
+    };
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> row;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> col;
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">char</span>[][] board, <span class="hljs-keyword">int</span> row, <span class="hljs-keyword">int</span> col)</span> </span>{
+        <span class="hljs-keyword">if</span> (row &lt; <span class="hljs-number">0</span> || row &gt;= <span class="hljs-keyword">this</span>.row || col &lt; <span class="hljs-number">0</span> || col &gt;= <span class="hljs-keyword">this</span>.col) {
+            <span class="hljs-keyword">return</span>;
+        }
+        <span class="hljs-keyword">if</span> (board[row][col] == <span class="hljs-string">'E'</span>) {
+            <span class="hljs-keyword">int</span> numOfMine = bfs(board, row, col);
+            <span class="hljs-keyword">if</span> (numOfMine != <span class="hljs-number">0</span>) {
+                board[row][col] = (<span class="hljs-keyword">char</span>) (numOfMine + <span class="hljs-string">'0'</span>);
+                <span class="hljs-keyword">return</span>;
+            } <span class="hljs-keyword">else</span> {
+                board[row][col] = <span class="hljs-string">'B'</span>;
+            }
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] i : DIRECTION) {
+                dfs(board, row + i[<span class="hljs-number">0</span>], col + i[<span class="hljs-number">1</span>]);
+            }
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">bfs</span><span class="hljs-params">(<span class="hljs-keyword">char</span>[][] board, <span class="hljs-keyword">int</span> row, <span class="hljs-keyword">int</span> col)</span> </span>{
+        <span class="hljs-keyword">int</span> numOfMine = <span class="hljs-number">0</span>;
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] i : DIRECTION) {
+            <span class="hljs-keyword">int</span> newRow = row + i[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">int</span> newCol = col + i[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (newRow &gt;= <span class="hljs-number">0</span>
+                    &amp;&amp; newRow &lt; <span class="hljs-keyword">this</span>.row
+                    &amp;&amp; newCol &gt;= <span class="hljs-number">0</span>
+                    &amp;&amp; newCol &lt; <span class="hljs-keyword">this</span>.col
+                    &amp;&amp; board[newRow][newCol] == <span class="hljs-string">'M'</span>) {
+                numOfMine++;
+            }
+        }
+
+        <span class="hljs-keyword">return</span> numOfMine;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">char</span>[][] updateBoard(<span class="hljs-keyword">char</span>[][] board, <span class="hljs-keyword">int</span>[] c) {
+        <span class="hljs-keyword">if</span> (board[c[<span class="hljs-number">0</span>]][c[<span class="hljs-number">1</span>]] == <span class="hljs-string">'M'</span>) {
+            board[c[<span class="hljs-number">0</span>]][c[<span class="hljs-number">1</span>]] = <span class="hljs-string">'X'</span>;
+            <span class="hljs-keyword">return</span> board;
+        } <span class="hljs-keyword">else</span> {
+            row = board.length;
+            col = board[<span class="hljs-number">0</span>].length;
+            dfs(board, c[<span class="hljs-number">0</span>], c[<span class="hljs-number">1</span>]);
+        }
+        <span class="hljs-keyword">return</span> board;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Index Sum of Two Lists - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>599. Minimum Index Sum of Two Lists</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/hash-table">Hash Table</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/intersection-of-two-linked-lists.html">Intersection of Two Linked Lists</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given two arrays of strings <code>list1</code> and <code>list2</code>, find the <strong>common strings with the least index sum</strong>.</p>
+<p>A <strong>common string</strong> is a string that appeared in both <code>list1</code> and <code>list2</code>.</p>
+<p>A <strong>common string with the least index sum</strong> is a common string such that if it appeared at <code>list1[i]</code> and <code>list2[j]</code> then <code>i + j</code> should be the minimum value among all the other <strong>common strings</strong>.</p>
+<p>Return **all the *<em>common strings with the least index sum</em>***. Return the answer in *<em>any order</em>*.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> list1 = [<span class="hljs-string">"Shogun"</span>,<span class="hljs-string">"Tapioca Express"</span>,<span class="hljs-string">"Burger King"</span>,<span class="hljs-string">"KFC"</span>], list2 = [<span class="hljs-string">"Piatti"</span>,<span class="hljs-string">"The Grill at Torrey Pines"</span>,<span class="hljs-string">"Hungry Hunter Steakhouse"</span>,<span class="hljs-string">"Shogun"</span>]
+Outpu<span class="hljs-variable">t:</span> [<span class="hljs-string">"Shogun"</span>]
+Explanation: The <span class="hljs-keyword">only</span> common <span class="hljs-built_in">string</span> <span class="hljs-keyword">is</span> <span class="hljs-string">"Shogun"</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: list1 = [<span class="hljs-string">"Shogun"</span>,<span class="hljs-string">"Tapioca Express"</span>,<span class="hljs-string">"Burger King"</span>,<span class="hljs-string">"KFC"</span>], list2 = [<span class="hljs-string">"KFC"</span>,<span class="hljs-string">"Shogun"</span>,<span class="hljs-string">"Burger King"</span>]
+Output: [<span class="hljs-string">"Shogun"</span>]
+Explanation: The common <span class="hljs-keyword">string</span> <span class="hljs-keyword">with</span> <span class="hljs-keyword">the</span> least index <span class="hljs-built_in">sum</span> is <span class="hljs-string">"Shogun"</span> <span class="hljs-keyword">with</span> index <span class="hljs-built_in">sum</span> = (<span class="hljs-number">0</span> + <span class="hljs-number">1</span>) = <span class="hljs-number">1.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: list1 = [<span class="hljs-string">"happy"</span>,<span class="hljs-string">"sad"</span>,<span class="hljs-string">"good"</span>], list2 = [<span class="hljs-string">"sad"</span>,<span class="hljs-string">"happy"</span>,<span class="hljs-string">"good"</span>]
+Output: [<span class="hljs-string">"sad"</span>,<span class="hljs-string">"happy"</span>]
+Explanation: There are <span class="hljs-literal">three</span> common strings:
+<span class="hljs-string">"happy"</span> <span class="hljs-keyword">with</span> index <span class="hljs-built_in">sum</span> = (<span class="hljs-number">0</span> + <span class="hljs-number">1</span>) = <span class="hljs-number">1.</span>
+<span class="hljs-string">"sad"</span> <span class="hljs-keyword">with</span> index <span class="hljs-built_in">sum</span> = (<span class="hljs-number">1</span> + <span class="hljs-number">0</span>) = <span class="hljs-number">1.</span>
+<span class="hljs-string">"good"</span> <span class="hljs-keyword">with</span> index <span class="hljs-built_in">sum</span> = (<span class="hljs-number">2</span> + <span class="hljs-number">2</span>) = <span class="hljs-number">4.</span>
+The strings <span class="hljs-keyword">with</span> <span class="hljs-keyword">the</span> least index <span class="hljs-built_in">sum</span> are <span class="hljs-string">"sad"</span> <span class="hljs-keyword">and</span> <span class="hljs-string">"happy"</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= list1.length, list2.length &lt;= 1000</code></p></li>
+<li><p><code>1 &lt;= list1[i].length, list2[i].length &lt;= 30</code></p></li>
+<li><p><code>list1[i]</code> and <code>list2[i]</code> consist of spaces <code>' '</code> and English letters.</p></li>
+<li><p>All the strings of <code>list1</code> are <strong>unique</strong>.</p></li>
+<li><p>All the strings of <code>list2</code> are <strong>unique</strong>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> String[] findRestaurant(String[] list1, String[] list2) {
+        <span class="hljs-keyword">int</span> min = <span class="hljs-number">1000000</span>;
+        Map&lt;String, Integer&gt; hm = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        List&lt;String&gt; result = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        fillMap(list1, hm);
+        <span class="hljs-comment">// find min value</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; list2.length; i++) {
+            <span class="hljs-keyword">if</span> (hm.containsKey(list2[i])) {
+                <span class="hljs-keyword">int</span> value = hm.get(list2[i]) + i;
+                <span class="hljs-comment">// a new min value was found</span>
+                <span class="hljs-keyword">if</span> (value &lt; min) {
+                    min = value;
+                    <span class="hljs-comment">// Clean the arraylist</span>
+                    result.clear();
+                    <span class="hljs-comment">// add new min value</span>
+                    result.add(list2[i]);
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (value == min) {
+                    result.add(list2[i]);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> result.toArray(<span class="hljs-keyword">new</span> String[result.size()]);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">fillMap</span><span class="hljs-params">(String[] a, Map&lt;String, Integer&gt; hm)</span> </span>{
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; a.length; i++) {
+            hm.put(a[i], i);
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Reconstruct Itinerary - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>332. Reconstruct Itinerary</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/graph">Graph</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/eulerian-circuit">Eulerian Circuit</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/longest-common-subpath.html">Longest Common Subpath</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/valid-arrangement-of-pairs.html">Valid Arrangement of Pairs</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a list of airline <code>tickets</code> where <code>tickets[i] = [fromi, toi]</code> represent the departure and the arrival airports of one flight. Reconstruct the itinerary in order and return it.</p>
+<p>All of the tickets belong to a man who departs from <code>"JFK"</code>, thus, the itinerary must begin with <code>"JFK"</code>. If there are multiple valid itineraries, you should return the itinerary that has the smallest lexical order when read as a single string.</p>
+<ul>
+<li>For example, the itinerary <code>["JFK", "LGA"]</code> has a smaller lexical order than <code>["JFK", "LGB"]</code>.</li>
+</ul>
+<p>You may assume all tickets form at least one valid itinerary. You must use all the tickets once and only once.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/03/14/itinerary1-graph.jpg" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: tickets = [[<span class="hljs-string">"MUC"</span>,<span class="hljs-string">"LHR"</span>],[<span class="hljs-string">"JFK"</span>,<span class="hljs-string">"MUC"</span>],[<span class="hljs-string">"SFO"</span>,<span class="hljs-string">"SJC"</span>],[<span class="hljs-string">"LHR"</span>,<span class="hljs-string">"SFO"</span>]]
+<span class="hljs-symbol">Output</span>: [<span class="hljs-string">"JFK"</span>,<span class="hljs-string">"MUC"</span>,<span class="hljs-string">"LHR"</span>,<span class="hljs-string">"SFO"</span>,<span class="hljs-string">"SJC"</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/03/14/itinerary2-graph.jpg" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: tickets = [[<span class="hljs-string">"JFK"</span>,<span class="hljs-string">"SFO"</span>],[<span class="hljs-string">"JFK"</span>,<span class="hljs-string">"ATL"</span>],[<span class="hljs-string">"SFO"</span>,<span class="hljs-string">"ATL"</span>],[<span class="hljs-string">"ATL"</span>,<span class="hljs-string">"JFK"</span>],[<span class="hljs-string">"ATL"</span>,<span class="hljs-string">"SFO"</span>]]
+<span class="hljs-symbol">Output</span>: [<span class="hljs-string">"JFK"</span>,<span class="hljs-string">"ATL"</span>,<span class="hljs-string">"JFK"</span>,<span class="hljs-string">"SFO"</span>,<span class="hljs-string">"ATL"</span>,<span class="hljs-string">"SFO"</span>]
+<span class="hljs-symbol">Explanation</span>: <span class="hljs-symbol">Another</span> possible reconstruction is [<span class="hljs-string">"JFK"</span>,<span class="hljs-string">"SFO"</span>,<span class="hljs-string">"ATL"</span>,<span class="hljs-string">"JFK"</span>,<span class="hljs-string">"ATL"</span>,<span class="hljs-string">"SFO"</span>] but it is larger in lexical order.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= tickets.length &lt;= 300</code></p></li>
+<li><p><code>tickets[i].length == 2</code></p></li>
+<li><p><code>fromi.length == 3</code></p></li>
+<li><p><code>toi.length == 3</code></p></li>
+<li><p><code>fromi</code> and <code>toi</code> consist of uppercase English letters.</p></li>
+<li><p><code>fromi != toi</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@param <span class="hljs-type">{string[][]}</span> <span class="hljs-variable">tickets</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{string[]}</span></span>
+ */</span>
+<span class="hljs-keyword">var</span> findItinerary = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">tickets</span>) </span>{
+    <span class="hljs-keyword">const</span> flight_paths = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>();
+
+    <span class="hljs-comment">// This is what we will return, we always know we start at JFK.</span>
+    <span class="hljs-keyword">const</span> flight_path_order = [<span class="hljs-string">"JFK"</span>];
+
+    tickets = tickets.sort(); <span class="hljs-comment">// O(n^2);</span>
+
+    <span class="hljs-comment">// Create the adjacency list.</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> [source, dest] <span class="hljs-keyword">of</span> tickets) {
+        <span class="hljs-keyword">let</span> edges = [];
+        <span class="hljs-keyword">if</span> (flight_paths.has(source)) {
+            edges = flight_paths.get(source);
+        }
+        edges.push(dest);
+        flight_paths.set(source, edges);
+    }
+
+    <span class="hljs-comment">// Depth first search.</span>
+    <span class="hljs-keyword">const</span> depth_first_search = <span class="hljs-function">(<span class="hljs-params">city</span>) =&gt;</span> {
+        <span class="hljs-comment">// Have we already been to all the nodes?</span>
+        <span class="hljs-comment">// Meaning we have visited all the tickets?</span>
+        <span class="hljs-keyword">if</span> (flight_path_order.length === tickets.length + <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+
+        <span class="hljs-comment">// Get the departures of flights from this city.</span>
+        <span class="hljs-comment">// If their isn't any, we need to back track on this node</span>
+        <span class="hljs-comment">// Because we know we have more flights to go and we have already</span>
+        <span class="hljs-comment">// somehow visited our destination. Which is incorrect.</span>
+        <span class="hljs-keyword">const</span> cities_to_go_to = flight_paths.get(city) || [];
+        <span class="hljs-keyword">if</span> (!cities_to_go_to.length) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+
+        <span class="hljs-comment">// So we have other cities to go to from here.</span>
+        <span class="hljs-comment">// Let's create a copy of those cities because we're going to</span>
+        <span class="hljs-comment">// be dynamically adding and removing from that array. Something our</span>
+        <span class="hljs-comment">// for loop wouldn't be able able to handle otherwise.</span>
+        <span class="hljs-keyword">const</span> cities_copied = <span class="hljs-built_in">Array</span>.from(cities_to_go_to);
+
+        <span class="hljs-comment">// Visit all connecting cities.</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> other_city <span class="hljs-keyword">of</span> cities_copied) {
+            <span class="hljs-comment">// Add to our output, as we're doing this in topological sort</span>
+            flight_path_order.push(other_city);
+
+            <span class="hljs-comment">// Remove the city from the edges of the graph.</span>
+            <span class="hljs-comment">// As we don't want to revisit it. Otherwise we would have a loop.</span>
+            <span class="hljs-comment">// Note: we're passing this array by reference. So we don't need to re-set it.</span>
+            <span class="hljs-comment">// We use shift here because we've done this in lexicographical order starting from</span>
+            <span class="hljs-comment">// the beginning.</span>
+            cities_to_go_to.shift();
+
+            <span class="hljs-comment">// If it returns true, it mean's we've visited all cities</span>
+            <span class="hljs-comment">// and that mean's we have nothing else to do.</span>
+            <span class="hljs-keyword">if</span> (depth_first_search(other_city)) {
+                <span class="hljs-keyword">return</span> flight_path_order;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// BACKTRACKING!</span>
+                <span class="hljs-comment">// We've visited the wrong city!</span>
+                <span class="hljs-comment">// Undo our work here, as this is not the right city,</span>
+                <span class="hljs-comment">// we need to revisit this city later on and not now.</span>
+                <span class="hljs-comment">// What this does is visit all other cities</span>
+                <span class="hljs-comment">// then backtrack on this city.</span>
+                flight_path_order.pop();
+                cities_to_go_to.push(other_city);
+            }
+        }
+
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    };
+
+    <span class="hljs-comment">// Start at JFK airport</span>
+    <span class="hljs-keyword">return</span> depth_first_search(<span class="hljs-string">"JFK"</span>);
+};
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

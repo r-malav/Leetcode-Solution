@@ -1,0 +1,121 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Cherry Pickup - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>741. Cherry Pickup</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/minimum-path-sum.html">Minimum Path Sum</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/dungeon-game.html">Dungeon Game</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/maximum-path-quality-of-a-graph.html">Maximum Path Quality of a Graph</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an <code>n x n</code> <code>grid</code> representing a field of cherries, each cell is one of three possible integers.</p>
+<ul>
+<li><p><code>0</code> means the cell is empty, so you can pass through,</p></li>
+<li><p><code>1</code> means the cell contains a cherry that you can pick up and pass through, or</p></li>
+<li><p><code>-1</code> means the cell contains a thorn that blocks your way.</p></li>
+</ul>
+<p>Return <strong>the maximum number of cherries you can collect by following the rules below</strong>:</p>
+<ul>
+<li><p>Starting at the position <code>(0, 0)</code> and reaching <code>(n - 1, n - 1)</code> by moving right or down through valid path cells (cells with value <code>0</code> or <code>1</code>).</p></li>
+<li><p>After reaching <code>(n - 1, n - 1)</code>, returning to <code>(0, 0)</code> by moving left or up through valid path cells.</p></li>
+<li><p>When passing through a path cell containing a cherry, you pick it up, and the cell becomes an empty cell <code>0</code>.</p></li>
+<li><p>If there is no valid path between <code>(0, 0)</code> and <code>(n - 1, n - 1)</code>, then no cherries can be collected.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/12/14/grid.jpg" alt="" /></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">-1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]]
+Output: <span class="hljs-number">5</span>
+Explanation: The player started at (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>) <span class="hljs-keyword">and</span> went down, down, right right to reach (<span class="hljs-number">2</span>, <span class="hljs-number">2</span>).
+<span class="hljs-number">4</span> cherries were picked up during <span class="hljs-keyword">this</span> single trip, <span class="hljs-keyword">and</span> the matrix becomes [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">-1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]].
+Then, the player went left, up, up, left to <span class="hljs-keyword">return</span> home, picking up one more cherry.
+The total number of cherries picked up <span class="hljs-keyword">is</span> <span class="hljs-number">5</span>, <span class="hljs-keyword">and</span> <span class="hljs-keyword">this</span> <span class="hljs-keyword">is</span> the maximum possible.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">-1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">-1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]]
+Output: <span class="hljs-number">0</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == grid.length</code></p></li>
+<li><p><code>n == grid[i].length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 50</code></p></li>
+<li><p><code>grid[i][j]</code> is <code>-1</code>, <code>0</code>, or <code>1</code>.</p></li>
+<li><p><code>grid[0][0] != -1</code></p></li>
+<li><p><code>grid[n - 1][n - 1] != -1</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">cherryPickup</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] grid)</span> </span>{
+        <span class="hljs-keyword">int</span>[][][] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[grid.length][grid.length][grid.length];
+        <span class="hljs-keyword">int</span> ans = solve(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, grid, dp);
+        <span class="hljs-keyword">return</span> Math.max(ans, <span class="hljs-number">0</span>);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">solve</span><span class="hljs-params">(<span class="hljs-keyword">int</span> r1, <span class="hljs-keyword">int</span> c1, <span class="hljs-keyword">int</span> r2, <span class="hljs-keyword">int</span>[][] arr, <span class="hljs-keyword">int</span>[][][] dp)</span> </span>{
+        <span class="hljs-keyword">int</span> c2 = r1 + c1 - r2;
+        <span class="hljs-keyword">if</span> (r1 &gt;= arr.length
+                || r2 &gt;= arr.length
+                || c1 &gt;= arr[<span class="hljs-number">0</span>].length
+                || c2 &gt;= arr[<span class="hljs-number">0</span>].length
+                || arr[r1][c1] == -<span class="hljs-number">1</span>
+                || arr[r2][c2] == -<span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> Integer.MIN_VALUE;
+        }
+
+        <span class="hljs-keyword">if</span> (r1 == arr.length - <span class="hljs-number">1</span> &amp;&amp; c1 == arr[<span class="hljs-number">0</span>].length - <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> arr[r1][c1];
+        }
+
+        <span class="hljs-keyword">if</span> (dp[r1][c1][r2] != <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> dp[r1][c1][r2];
+        }
+
+        <span class="hljs-keyword">int</span> cherries = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">if</span> (r1 == r2 &amp;&amp; c1 == c2) {
+            cherries += arr[r1][c1];
+        } <span class="hljs-keyword">else</span> {
+            cherries += arr[r1][c1] + arr[r2][c2];
+        }
+
+        <span class="hljs-keyword">int</span> a = solve(r1, c1 + <span class="hljs-number">1</span>, r2, arr, dp);
+        <span class="hljs-keyword">int</span> b = solve(r1 + <span class="hljs-number">1</span>, c1, r2 + <span class="hljs-number">1</span>, arr, dp);
+        <span class="hljs-keyword">int</span> c = solve(r1, c1 + <span class="hljs-number">1</span>, r2 + <span class="hljs-number">1</span>, arr, dp);
+        <span class="hljs-keyword">int</span> d = solve(r1 + <span class="hljs-number">1</span>, c1, r2, arr, dp);
+
+        cherries += Math.max(Math.max(a, b), Math.max(c, d));
+        dp[r1][c1][r2] = cherries;
+        <span class="hljs-keyword">return</span> cherries;
+    }
+}
+</code></pre>
+<h2 id="solution-c">Solution (C++)</h2>
+<pre><code class="hljs lang-cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> {</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">cherryPickup</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; grid)</span> </span>{
+        <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> n = grid.size();
+        grid_ = &amp;grid;
+        m_ = <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&gt;(
+                n, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;(n, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;(n, INT_MIN)));
+        <span class="hljs-keyword">return</span> max(<span class="hljs-number">0</span>, dp(n - <span class="hljs-number">1</span>, n - <span class="hljs-number">1</span>, n - <span class="hljs-number">1</span>));
+    }
+<span class="hljs-keyword">private</span>:
+    <span class="hljs-comment">// max cherries from (x1, y1) to (0, 0) + (x2, y2) to (0, 0)</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">dp</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x1, <span class="hljs-keyword">int</span> y1, <span class="hljs-keyword">int</span> x2)</span> </span>{
+        <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> y2 = x1 + y1 - x2;
+        <span class="hljs-keyword">if</span> (x1 &lt; <span class="hljs-number">0</span> || y1 &lt; <span class="hljs-number">0</span> || x2 &lt; <span class="hljs-number">0</span> || y2 &lt; <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+        <span class="hljs-keyword">if</span> ((*grid_)[y1][x1] &lt; <span class="hljs-number">0</span> || (*grid_)[y2][x2] &lt; <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+        <span class="hljs-keyword">if</span> (x1 == <span class="hljs-number">0</span> &amp;&amp; y1 == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> (*grid_)[y1][x1];
+        <span class="hljs-keyword">if</span> (m_[x1][y1][x2] != INT_MIN) <span class="hljs-keyword">return</span> m_[x1][y1][x2];        
+        <span class="hljs-keyword">int</span> ans =  max(max(dp(x1 - <span class="hljs-number">1</span>, y1, x2 - <span class="hljs-number">1</span>), dp(x1, y1 - <span class="hljs-number">1</span>, x2)),
+                       max(dp(x1, y1 - <span class="hljs-number">1</span>, x2 - <span class="hljs-number">1</span>), dp(x1 - <span class="hljs-number">1</span>, y1, x2)));
+        <span class="hljs-keyword">if</span> (ans &lt; <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> m_[x1][y1][x2] = <span class="hljs-number">-1</span>;
+        ans += (*grid_)[y1][x1];
+        <span class="hljs-keyword">if</span> (x1 != x2) ans += (*grid_)[y2][x2];
+
+        <span class="hljs-keyword">return</span> m_[x1][y1][x2] = ans;
+    }
+
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&gt; m_;
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;* grid_; <span class="hljs-comment">// does not own the object</span>
+};
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

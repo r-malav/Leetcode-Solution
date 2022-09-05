@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>All Nodes Distance K in Binary Tree - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>863. All Nodes Distance K in Binary Tree</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/tree">Tree</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/binary-tree">Binary Tree</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/amount-of-time-for-binary-tree-to-be-infected.html">Amount of Time for Binary Tree to Be Infected</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given the <code>root</code> of a binary tree, the value of a target node <code>target</code>, and an integer <code>k</code>, return **an array of the values of all nodes that have a distance *<em><code>k</code></em>* from the target node.**</p>
+<p>You can return the answer in <strong>any order</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://s3-lc-upload.s3.amazonaws.com/uploads/2018/06/28/sketch0.png" alt="" /></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">3</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">8</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">7</span>,<span class="hljs-number">4</span>], target = <span class="hljs-number">5</span>, k = <span class="hljs-number">2</span>
+Output: [<span class="hljs-number">7</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>]
+Explanation: The nodes that are a distance <span class="hljs-number">2</span> <span class="hljs-keyword">from</span> the target node (with value <span class="hljs-number">5</span>) have values <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-keyword">and</span> <span class="hljs-number">1.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">root</span> <span class="hljs-string">=</span> <span class="hljs-string">[1],</span> <span class="hljs-string">target</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span><span class="hljs-string">,</span> <span class="hljs-string">k</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-string">[]</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p>The number of nodes in the tree is in the range <code>[1, 500]</code>.</p></li>
+<li><p><code>0 &lt;= Node.val &lt;= 500</code></p></li>
+<li><p>All the values <code>Node.val</code> are <strong>unique</strong>.</p></li>
+<li><p><code>target</code> is the value of one of the nodes in the tree.</p></li>
+<li><p><code>0 &lt;= k &lt;= 1000</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">kFar</span><span class="hljs-params">(TreeNode root, <span class="hljs-keyword">int</span> k, TreeNode visited, List&lt;Integer&gt; ls)</span> </span>{
+        <span class="hljs-keyword">if</span> (root == <span class="hljs-keyword">null</span> || k &lt; <span class="hljs-number">0</span> || root == visited) {
+            <span class="hljs-keyword">return</span>;
+        }
+        <span class="hljs-keyword">if</span> (k == <span class="hljs-number">0</span>) {
+            ls.add(root.val);
+            <span class="hljs-keyword">return</span>;
+        }
+        kFar(root.left, k - <span class="hljs-number">1</span>, visited, ls);
+        kFar(root.right, k - <span class="hljs-number">1</span>, visited, ls);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title">distanceK</span><span class="hljs-params">(TreeNode root, TreeNode target, <span class="hljs-keyword">int</span> k)</span> </span>{
+        List&lt;Integer&gt; ls = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">if</span> (k == <span class="hljs-number">0</span>) {
+            ls.add(target.val);
+            <span class="hljs-keyword">return</span> ls;
+        }
+        nodeToRoot(root, target, k, ls);
+        <span class="hljs-keyword">return</span> ls;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">nodeToRoot</span><span class="hljs-params">(TreeNode root, TreeNode target, <span class="hljs-keyword">int</span> k, List&lt;Integer&gt; ls)</span> </span>{
+        <span class="hljs-keyword">if</span> (root == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">if</span> (root.val == target.val) {
+            kFar(root, k, <span class="hljs-keyword">null</span>, ls);
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">int</span> ld = nodeToRoot(root.left, target, k, ls);
+        <span class="hljs-keyword">if</span> (ld != -<span class="hljs-number">1</span>) {
+            kFar(root, k - ld, root.left, ls);
+            <span class="hljs-keyword">return</span> ld + <span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">int</span> rd = nodeToRoot(root.right, target, k, ls);
+        <span class="hljs-keyword">if</span> (rd != -<span class="hljs-number">1</span>) {
+            kFar(root, k - rd, root.right, ls);
+            <span class="hljs-keyword">return</span> rd + <span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

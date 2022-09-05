@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Find Mode in Binary Search Tree - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>501. Find Mode in Binary Search Tree</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/tree">Tree</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/binary-search-tree">Binary Search Tree</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/binary-tree">Binary Tree</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/validate-binary-search-tree.html">Validate Binary Search Tree</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given the <code>root</code> of a binary search tree (BST) with duplicates, return <strong>all the mode(s) (i.e., the most frequently occurred element) in it</strong>.</p>
+<p>If the tree has more than one mode, return them in <strong>any order</strong>.</p>
+<p>Assume a BST is defined as follows:</p>
+<ul>
+<li><p>The left subtree of a node contains only nodes with keys <strong>less than or equal to</strong> the node's key.</p></li>
+<li><p>The right subtree of a node contains only nodes with keys <strong>greater than or equal to</strong> the node's key.</p></li>
+<li><p>Both the left and right subtrees must also be binary search trees.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/03/11/mode-tree.jpg" alt="" /></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">1</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]
+Output: [<span class="hljs-number">2</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">0</span>]
+Output: [<span class="hljs-number">0</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p>The number of nodes in the tree is in the range <code>[1, 104]</code>.</p></li>
+<li><p><code>-105 &lt;= Node.val &lt;= 105</code></p></li>
+</ul>
+<p>&nbsp;
+<strong>Follow up:</strong> Could you do that without using any extra space? (Assume that the implicit stack space incurred due to recursion does not count).</p>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> Integer prev = <span class="hljs-keyword">null</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> max = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> cnt = <span class="hljs-number">1</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] findMode(TreeNode root) {
+        ArrayList&lt;Integer&gt; modes = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        traverse(root, modes);
+        <span class="hljs-keyword">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[modes.size()];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; modes.size(); i++) {
+            res[i] = modes.get(i);
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">traverse</span><span class="hljs-params">(TreeNode root, List&lt;Integer&gt; modes)</span> </span>{
+        <span class="hljs-keyword">if</span> (root == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span>;
+        }
+        traverse(root.left, modes);
+        <span class="hljs-keyword">if</span> (prev != <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">if</span> (prev == root.val) {
+                cnt++;
+            } <span class="hljs-keyword">else</span> {
+                cnt = <span class="hljs-number">1</span>;
+            }
+        }
+        <span class="hljs-keyword">if</span> (cnt &gt; max) {
+            max = cnt;
+            modes.clear();
+            modes.add(root.val);
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (cnt == max) {
+            modes.add(root.val);
+        }
+        prev = root.val;
+        traverse(root.right, modes);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

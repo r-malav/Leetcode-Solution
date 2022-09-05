@@ -1,0 +1,100 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Shopping Offers - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>638. Shopping Offers</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/backtracking">Backtracking</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/bit-manipulation">Bit Manipulation</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/memoization">Memoization</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/bitmask">Bitmask</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>In LeetCode Store, there are <code>n</code> items to sell. Each item has a price. However, there are some special offers, and a special offer consists of one or more different kinds of items with a sale price.</p>
+<p>You are given an integer array <code>price</code> where <code>price[i]</code> is the price of the <code>ith</code> item, and an integer array <code>needs</code> where <code>needs[i]</code> is the number of pieces of the <code>ith</code> item you want to buy.</p>
+<p>You are also given an array <code>special</code> where <code>special[i]</code> is of size <code>n + 1</code> where <code>special[i][j]</code> is the number of pieces of the <code>jth</code> item in the <code>ith</code> offer and <code>special[i][n]</code> (i.e., the last integer in the array) is the price of the <code>ith</code> offer.</p>
+<p>Return <strong>the lowest price you have to pay for exactly certain items as given, where you could make optimal use of the special offers</strong>. You are not allowed to buy more items than you want, even if that would lower the overall price. You could use any of the special offers as many times as you want.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: price = [<span class="hljs-number">2</span>,<span class="hljs-number">5</span>], special = [[<span class="hljs-number">3</span>,<span class="hljs-number">0</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">10</span>]], needs = [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>]
+Output: <span class="hljs-number">14</span>
+Explanation: There are two kinds of items, A <span class="hljs-keyword">and</span> B. Their prices are $<span class="hljs-number">2</span> <span class="hljs-keyword">and</span> $<span class="hljs-number">5</span> respectively. 
+In special offer <span class="hljs-number">1</span>, you can pay $<span class="hljs-number">5</span> <span class="hljs-keyword">for</span> <span class="hljs-number">3</span>A <span class="hljs-keyword">and</span> <span class="hljs-number">0</span>B
+In special offer <span class="hljs-number">2</span>, you can pay $<span class="hljs-number">10</span> <span class="hljs-keyword">for</span> <span class="hljs-number">1</span>A <span class="hljs-keyword">and</span> <span class="hljs-number">2</span>B. 
+You need to buy <span class="hljs-number">3</span>A <span class="hljs-keyword">and</span> <span class="hljs-number">2</span>B, so you may pay $<span class="hljs-number">10</span> <span class="hljs-keyword">for</span> <span class="hljs-number">1</span>A <span class="hljs-keyword">and</span> <span class="hljs-number">2</span>B (special offer #<span class="hljs-number">2</span>), <span class="hljs-keyword">and</span> $<span class="hljs-number">4</span> <span class="hljs-keyword">for</span> <span class="hljs-number">2</span>A.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: price = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>], special = [[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">9</span>]], needs = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]
+Output: <span class="hljs-number">11</span>
+Explanation: The price of A <span class="hljs-keyword">is</span> $<span class="hljs-number">2</span>, <span class="hljs-keyword">and</span> $<span class="hljs-number">3</span> <span class="hljs-keyword">for</span> B, $<span class="hljs-number">4</span> <span class="hljs-keyword">for</span> C. 
+You may pay $<span class="hljs-number">4</span> <span class="hljs-keyword">for</span> <span class="hljs-number">1</span>A <span class="hljs-keyword">and</span> <span class="hljs-number">1</span>B, <span class="hljs-keyword">and</span> $<span class="hljs-number">9</span> <span class="hljs-keyword">for</span> <span class="hljs-number">2</span>A ,<span class="hljs-number">2</span>B <span class="hljs-keyword">and</span> <span class="hljs-number">1</span>C. 
+You need to buy <span class="hljs-number">1</span>A ,<span class="hljs-number">2</span>B <span class="hljs-keyword">and</span> <span class="hljs-number">1</span>C, so you may pay $<span class="hljs-number">4</span> <span class="hljs-keyword">for</span> <span class="hljs-number">1</span>A <span class="hljs-keyword">and</span> <span class="hljs-number">1</span>B (special offer #<span class="hljs-number">1</span>), <span class="hljs-keyword">and</span> $<span class="hljs-number">3</span> <span class="hljs-keyword">for</span> <span class="hljs-number">1</span>B, $<span class="hljs-number">4</span> <span class="hljs-keyword">for</span> <span class="hljs-number">1</span>C. 
+You cannot add more items, though only $<span class="hljs-number">9</span> <span class="hljs-keyword">for</span> <span class="hljs-number">2</span>A ,<span class="hljs-number">2</span>B <span class="hljs-keyword">and</span> <span class="hljs-number">1</span>C.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == price.length == needs.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 6</code></p></li>
+<li><p><code>0 &lt;= price[i], needs[i] &lt;= 10</code></p></li>
+<li><p><code>1 &lt;= special.length &lt;= 100</code></p></li>
+<li><p><code>special[i].length == n + 1</code></p></li>
+<li><p><code>0 &lt;= special[i][j] &lt;= 50</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">shoppingOffers</span><span class="hljs-params">(
+            List&lt;Integer&gt; price, List&lt;List&lt;Integer&gt;&gt; special, List&lt;Integer&gt; needs)</span> </span>{
+        Map&lt;List&lt;Integer&gt;, Integer&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        shoppingOffersUtil(price, special, needs, map);
+        <span class="hljs-keyword">return</span> map.get(needs);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">shoppingOffersUtil</span><span class="hljs-params">(
+            List&lt;Integer&gt; price,
+            List&lt;List&lt;Integer&gt;&gt; special,
+            List&lt;Integer&gt; needs,
+            Map&lt;List&lt;Integer&gt;, Integer&gt; map)</span> </span>{
+        <span class="hljs-keyword">if</span> (map.containsKey(needs)) {
+            <span class="hljs-keyword">return</span> map.get(needs);
+        }
+        Integer ans = computePrice(price, needs);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; special.size(); i++) {
+            <span class="hljs-keyword">if</span> (verify(special.get(i), needs)) {
+                ans =
+                        Math.min(
+                                special.get(i).get(needs.size())
+                                        + shoppingOffersUtil(
+                                                price,
+                                                special,
+                                                updatedNeeds(needs, special.get(i)),
+                                                map),
+                                ans);
+            }
+        }
+        map.put(needs, ans);
+        <span class="hljs-keyword">return</span> map.get(needs);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> List&lt;Integer&gt; <span class="hljs-title">updatedNeeds</span><span class="hljs-params">(List&lt;Integer&gt; needs, List&lt;Integer&gt; special)</span> </span>{
+        List&lt;Integer&gt; updatedNeeds = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;(needs);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; needs.size(); i++) {
+            updatedNeeds.set(i, updatedNeeds.get(i) - special.get(i));
+        }
+        <span class="hljs-keyword">return</span> updatedNeeds;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">verify</span><span class="hljs-params">(List&lt;Integer&gt; special, List&lt;Integer&gt; needs)</span> </span>{
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; needs.size(); i++) {
+            <span class="hljs-keyword">if</span> (special.get(i) &gt; needs.get(i)) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> Integer <span class="hljs-title">computePrice</span><span class="hljs-params">(List&lt;Integer&gt; price, List&lt;Integer&gt; needs)</span> </span>{
+        <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; needs.size(); i++) {
+            ans += (needs.get(i) * price.get(i));
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Insert into a Binary Search Tree - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>701. Insert into a Binary Search Tree</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/tree">Tree</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/binary-search-tree">Binary Search Tree</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/binary-tree">Binary Tree</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/search-in-a-binary-search-tree.html">Search in a Binary Search Tree</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given the <code>root</code> node of a binary search tree (BST) and a <code>value</code> to insert into the tree. Return <strong>the root node of the BST after the insertion</strong>. It is <strong>guaranteed</strong> that the new value does not exist in the original BST.</p>
+<p><strong>Notice</strong>&nbsp;that there may exist&nbsp;multiple valid ways for the&nbsp;insertion, as long as the tree remains a BST after insertion. You can return <strong>any of them</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/10/05/insertbst.jpg" alt="" /></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">4</span>,<span class="hljs-number">2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>], val = <span class="hljs-number">5</span>
+Output: [<span class="hljs-number">4</span>,<span class="hljs-number">2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>]
+Explanation: Another accepted tree <span class="hljs-keyword">is</span>:
+
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">40</span>,<span class="hljs-number">20</span>,<span class="hljs-number">60</span>,<span class="hljs-number">10</span>,<span class="hljs-number">30</span>,<span class="hljs-number">50</span>,<span class="hljs-number">70</span>], val = <span class="hljs-number">25</span>
+Output: [<span class="hljs-number">40</span>,<span class="hljs-number">20</span>,<span class="hljs-number">60</span>,<span class="hljs-number">10</span>,<span class="hljs-number">30</span>,<span class="hljs-number">50</span>,<span class="hljs-number">70</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">25</span>]
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">4</span>,<span class="hljs-number">2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>], val = <span class="hljs-number">5</span>
+Output: [<span class="hljs-number">4</span>,<span class="hljs-number">2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p>The number of nodes in&nbsp;the tree will be in the range <code>[0,&amp;nbsp;104]</code>.</p></li>
+<li><p><code>-108 &lt;= Node.val &lt;= 108</code></p></li>
+<li><p>All the values <code>Node.val</code> are <strong>unique</strong>.</p></li>
+<li><p><code>-108 &lt;= val &lt;= 108</code></p></li>
+<li><p>It's <strong>guaranteed</strong> that <code>val</code> does not exist in the original BST.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> TreeNode <span class="hljs-title">insertIntoBST</span><span class="hljs-params">(TreeNode root, <span class="hljs-keyword">int</span> val)</span> </span>{
+        <span class="hljs-keyword">if</span> (root == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> TreeNode(val);
+        }
+        <span class="hljs-keyword">if</span> (root.val &lt; val) {
+            root.right = insertIntoBST(root.right, val);
+        } <span class="hljs-keyword">else</span> {
+            root.left = insertIntoBST(root.left, val);
+        }
+        <span class="hljs-keyword">return</span> root;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

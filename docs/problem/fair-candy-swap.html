@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Fair Candy Swap - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>888. Fair Candy Swap</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/hash-table">Hash Table</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/binary-search">Binary Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Alice and Bob have a different total number of candies. You are given two integer arrays <code>aliceSizes</code> and <code>bobSizes</code> where <code>aliceSizes[i]</code> is the number of candies of the <code>ith</code> box of candy that Alice has and <code>bobSizes[j]</code> is the number of candies of the <code>jth</code> box of candy that Bob has.</p>
+<p>Since they are friends, they would like to exchange one candy box each so that after the exchange, they both have the same total amount of candy. The total amount of candy a person has is the sum of the number of candies in each box they have.</p>
+<p>Return a**n integer array *<em><code>answer</code></em>* where <strong><code>answer[0]</code></strong> is the number of candies in the box that Alice must exchange, and <strong><code>answer[1]</code></strong> is the number of candies in the box that Bob must exchange**. If there are multiple answers, you may *<em>return any</em>* one of them. It is guaranteed that at least one answer exists.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: aliceSizes = [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>], bobSizes = [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: aliceSizes = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>], bobSizes = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: aliceSizes = [<span class="hljs-number">2</span>], bobSizes = [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>]
+Output: [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= aliceSizes.length, bobSizes.length &lt;= 104</code></p></li>
+<li><p><code>1 &lt;= aliceSizes[i], bobSizes[j] &lt;= 105</code></p></li>
+<li><p>Alice and Bob have a different total number of candies.</p></li>
+<li><p>There will be at least one valid answer for the given input.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] fairCandySwap(<span class="hljs-keyword">int</span>[] aliceSizes, <span class="hljs-keyword">int</span>[] bobSizes) {
+        <span class="hljs-keyword">int</span> aSum = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> bSum = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> diff;
+        <span class="hljs-keyword">int</span>[] ans = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">2</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> bar : aliceSizes) {
+            aSum += bar;
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> bar : bobSizes) {
+            bSum += bar;
+        }
+        diff = aSum - bSum;
+        HashSet&lt;Integer&gt; set = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> bar : aliceSizes) {
+            set.add(bar);
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> bar : bobSizes) {
+            <span class="hljs-keyword">if</span> (set.contains(bar + diff / <span class="hljs-number">2</span>)) {
+                ans[<span class="hljs-number">0</span>] = bar + diff / <span class="hljs-number">2</span>;
+                ans[<span class="hljs-number">1</span>] = bar;
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

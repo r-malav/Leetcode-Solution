@@ -5,14 +5,14 @@
 <p>top() -- Get the top element.</p>
 <p>getMin() -- Retrieve the minimum element in the stack.</p>
 <p><strong>Example:</strong></p>
-<pre><code class="hljs">M<span class="hljs-keyword">in</span>Stack <span class="hljs-keyword">min</span>Stack = new M<span class="hljs-keyword">in</span>Stack();
-<span class="hljs-keyword">min</span>Stack.push(-<span class="hljs-number">2</span>);
-<span class="hljs-keyword">min</span>Stack.push(<span class="hljs-number">0</span>);
-<span class="hljs-keyword">min</span>Stack.push(-<span class="hljs-number">3</span>);
-<span class="hljs-keyword">min</span>Stack.getM<span class="hljs-keyword">in</span>();   --&gt; Returns -<span class="hljs-number">3</span>.
-<span class="hljs-keyword">min</span>Stack.pop();
-<span class="hljs-keyword">min</span>Stack.top();      --&gt; Returns <span class="hljs-number">0</span>.
-<span class="hljs-keyword">min</span>Stack.getM<span class="hljs-keyword">in</span>();   --&gt; Returns -<span class="hljs-number">2</span>.
+<pre><code class="hljs">MinStack minStack = new MinStack()<span class="hljs-comment">;</span>
+minStack.push(-<span class="hljs-number">2</span>)<span class="hljs-comment">;</span>
+minStack.push(<span class="hljs-number">0</span>)<span class="hljs-comment">;</span>
+minStack.push(-<span class="hljs-number">3</span>)<span class="hljs-comment">;</span>
+minStack.getMin()<span class="hljs-comment">;   --&gt; Returns -3.</span>
+minStack.pop()<span class="hljs-comment">;</span>
+minStack.top()<span class="hljs-comment">;      --&gt; Returns 0.</span>
+minStack.getMin()<span class="hljs-comment">;   --&gt; Returns -2.</span>
 </code></pre>
 <h2 id="solution-1">Solution 1</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**

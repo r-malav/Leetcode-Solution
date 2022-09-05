@@ -4,19 +4,19 @@
 <p><strong>Example 1:</strong></p>
 <pre><code class="hljs">Input: [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]
 Output: <span class="hljs-number">4</span>
-Explanation: Rob house <span class="hljs-number">1</span> (<span class="hljs-attr">money</span> = <span class="hljs-number">1</span>) <span class="hljs-literal">and</span> <span class="hljs-keyword">then</span> rob house <span class="hljs-number">3</span> (<span class="hljs-attr">money</span> = <span class="hljs-number">3</span>).
-             Total amount you can <span class="hljs-attr">rob</span> = <span class="hljs-number">1</span> + <span class="hljs-number">3</span> = <span class="hljs-number">4</span>.
+Explanation: Rob house <span class="hljs-number">1</span> (money = <span class="hljs-number">1</span>) <span class="hljs-keyword">and</span> then rob house <span class="hljs-number">3</span> (money = <span class="hljs-number">3</span>).
+&amp;nbsp;            Total amount you can rob = <span class="hljs-number">1</span> + <span class="hljs-number">3</span> = <span class="hljs-number">4.</span>
 </code></pre>
 <p><strong>Example 2:</strong></p>
-<pre><code class="hljs">Input: [2,7,9,3,1]
-Output: 12
-Explanation: Rob house<span class="hljs-number"> 1 </span>(money = 2), rob house<span class="hljs-number"> 3 </span>(money = 9) and rob house<span class="hljs-number"> 5 </span>(money = 1).
-             Total amount you can rob =<span class="hljs-number"> 2 </span>+<span class="hljs-number"> 9 </span>+<span class="hljs-number"> 1 </span>= 12.
+<pre><code class="hljs">Input: [<span class="hljs-number">2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">9</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]
+Output: <span class="hljs-number">12</span>
+Explanation: Rob house <span class="hljs-number">1</span> (money = <span class="hljs-number">2</span>), rob house <span class="hljs-number">3</span> (money = <span class="hljs-number">9</span>) <span class="hljs-keyword">and</span> rob house <span class="hljs-number">5</span> (money = <span class="hljs-number">1</span>).
+&amp;nbsp;            Total amount you can rob = <span class="hljs-number">2</span> + <span class="hljs-number">9</span> + <span class="hljs-number">1</span> = <span class="hljs-number">12.</span>
 </code></pre>
 <h2 id="solution-1">Solution 1</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * @param {number[]} nums
- * @return {number}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">nums</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> rob = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">nums</span>) </span>{
   <span class="hljs-keyword">return</span> helper([], <span class="hljs-number">0</span>, nums);
@@ -42,8 +42,8 @@ Explanation: Rob house<span class="hljs-number"> 1 </span>(money = 2), rob house
 </ul>
 <h2 id="solution-2">Solution 2</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * @param {number[]} nums
- * @return {number}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">nums</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> rob = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">nums</span>) </span>{
   <span class="hljs-keyword">var</span> len = nums.length;
@@ -66,8 +66,8 @@ Explanation: Rob house<span class="hljs-number"> 1 </span>(money = 2), rob house
 </ul>
 <h2 id="solution-3">Solution 3</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * @param {number[]} nums
- * @return {number}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">nums</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> rob = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">nums</span>) </span>{
   <span class="hljs-keyword">var</span> len = nums.length;

@@ -1,0 +1,98 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Guess the Word - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>843. Guess the Word</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/math">Math</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/interactive">Interactive</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/game-theory">Game Theory</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an array of unique strings <code>words</code> where <code>words[i]</code> is six letters long. One word of <code>words</code> was chosen as a secret word.</p>
+<p>You are also given the helper object <code>Master</code>. You may call <code>Master.guess(word)</code> where <code>word</code> is a six-letter-long string, and it must be from <code>words</code>. <code>Master.guess(word)</code> returns:</p>
+<ul>
+<li><p><code>-1</code> if <code>word</code> is not from <code>words</code>, or</p></li>
+<li><p>an integer representing the number of exact matches (value and position) of your guess to the secret word.</p></li>
+</ul>
+<p>There is a parameter <code>allowedGuesses</code> for each test case where <code>allowedGuesses</code> is the maximum number of times you can call <code>Master.guess(word)</code>.</p>
+<p>For each test case, you should call <code>Master.guess</code> with the secret word without exceeding the maximum number of allowed guesses. You will get:</p>
+<ul>
+<li><p><strong><code>"Either you took too many guesses, or you did not find the secret word."</code></strong> if you called <code>Master.guess</code> more than <code>allowedGuesses</code> times or if you did not call <code>Master.guess</code> with the secret word, or</p></li>
+<li><p><strong><code>"You guessed the secret word correctly."</code></strong> if you called <code>Master.guess</code> with the secret word with the number of calls to <code>Master.guess</code> less than or equal to <code>allowedGuesses</code>.</p></li>
+</ul>
+<p>The test cases are generated such that you can guess the secret word with a reasonable strategy (other than using the bruteforce method).</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input:<span class="hljs-built_in"> secret </span>= <span class="hljs-string">"acckzz"</span>, words = [<span class="hljs-string">"acckzz"</span>,<span class="hljs-string">"ccbazz"</span>,<span class="hljs-string">"eiowzz"</span>,<span class="hljs-string">"abcczz"</span>], allowedGuesses = 10
+Output: You guessed the<span class="hljs-built_in"> secret </span>word correctly.
+Explanation:
+master.guess(<span class="hljs-string">"aaaaaa"</span>) returns -1, because <span class="hljs-string">"aaaaaa"</span> is <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> wordlist.
+master.guess(<span class="hljs-string">"acckzz"</span>) returns 6, because <span class="hljs-string">"acckzz"</span> is<span class="hljs-built_in"> secret </span><span class="hljs-keyword">and</span> has all 6 matches.
+master.guess(<span class="hljs-string">"ccbazz"</span>) returns 3, because <span class="hljs-string">"ccbazz"</span> has 3 matches.
+master.guess(<span class="hljs-string">"eiowzz"</span>) returns 2, because <span class="hljs-string">"eiowzz"</span> has 2 matches.
+master.guess(<span class="hljs-string">"abcczz"</span>) returns 4, because <span class="hljs-string">"abcczz"</span> has 4 matches.
+We made 5 calls <span class="hljs-keyword">to</span> master.guess, <span class="hljs-keyword">and</span> one of them was the secret, so we pass the test case.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input:<span class="hljs-built_in"> secret </span>= <span class="hljs-string">"hamada"</span>, words = [<span class="hljs-string">"hamada"</span>,<span class="hljs-string">"khaled"</span>], allowedGuesses = 10
+Output: You guessed the<span class="hljs-built_in"> secret </span>word correctly.
+Explanation: Since there are two words, you can guess both.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= words.length &lt;= 100</code></p></li>
+<li><p><code>words[i].length == 6</code></p></li>
+<li><p><code>words[i]</code> consist of lowercase English letters.</p></li>
+<li><p>All the strings of <code>wordlist</code> are <strong>unique</strong>.</p></li>
+<li><p><code>secret</code> exists in <code>words</code>.</p></li>
+<li><p><code>10 &lt;= allowedGuesses &lt;= 30</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/**
+ * // This is the Master's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * interface Master {
+ *     public int guess(String word) {}
+ * }
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> next = <span class="hljs-number">0</span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">findSecretWord</span><span class="hljs-params">(String[] wordlist, Master master)</span> </span>{
+        List&lt;String&gt; list = Arrays.asList(wordlist);
+        Collections.shuffle(list);
+        <span class="hljs-keyword">boolean</span>[] test = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[wordlist.length];
+        <span class="hljs-keyword">while</span> (<span class="hljs-keyword">true</span>) {
+            <span class="hljs-keyword">int</span> num = master.guess(list.get(next));
+            <span class="hljs-keyword">if</span> (num == <span class="hljs-number">6</span>) {
+                <span class="hljs-keyword">break</span>;
+            }
+            updateList(list, test, num);
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">updateList</span><span class="hljs-params">(List&lt;String&gt; list, <span class="hljs-keyword">boolean</span>[] test, <span class="hljs-keyword">int</span> num)</span> </span>{
+        <span class="hljs-keyword">int</span> index = next;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = index + <span class="hljs-number">1</span>; i &lt; test.length; i++) {
+            <span class="hljs-keyword">if</span> (test[i]) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-keyword">int</span> samePart = getSame(list.get(index), list.get(i));
+            <span class="hljs-keyword">if</span> (samePart != num) {
+                test[i] = <span class="hljs-keyword">true</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (next == index) {
+                next = i;
+            }
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getSame</span><span class="hljs-params">(String word1, String word2)</span> </span>{
+        <span class="hljs-keyword">int</span> ret = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">6</span>; i++) {
+            <span class="hljs-keyword">if</span> (word1.charAt(i) == word2.charAt(i)) {
+                ret++;
+            }
+        }
+        <span class="hljs-keyword">return</span> ret;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

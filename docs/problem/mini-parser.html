@@ -1,0 +1,98 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Mini Parser - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>385. Mini Parser</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/stack">Stack</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/depth-first-search">Depth-First Search</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/flatten-nested-list-iterator.html">Flatten Nested List Iterator</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/ternary-expression-parser.html">Ternary Expression Parser</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/remove-comments.html">Remove Comments</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a string s represents the serialization of a nested list, implement a parser to deserialize it and return <strong>the deserialized</strong> <code>NestedInteger</code>.</p>
+<p>Each element is either an integer or a list whose elements may also be integers or other lists.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"324"</span>
+Output: <span class="hljs-number">324</span>
+Explanation: You should <span class="hljs-literal">return</span> <span class="hljs-keyword">a</span> NestedInteger object which <span class="hljs-keyword">contains</span> <span class="hljs-keyword">a</span> single <span class="hljs-keyword">integer</span> <span class="hljs-number">324.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"[123,[456,[789]]]"</span>
+Output: [<span class="hljs-number">123</span>,[<span class="hljs-number">456</span>,[<span class="hljs-number">789</span>]]]
+Explanation: Return <span class="hljs-keyword">a</span> NestedInteger object containing <span class="hljs-keyword">a</span> nested list <span class="hljs-keyword">with</span> <span class="hljs-number">2</span> elements:
+<span class="hljs-number">1.</span> An <span class="hljs-keyword">integer</span> containing <span class="hljs-built_in">value</span> <span class="hljs-number">123.</span>
+<span class="hljs-number">2.</span> A nested list containing <span class="hljs-literal">two</span> elements:
+    i.  An <span class="hljs-keyword">integer</span> containing <span class="hljs-built_in">value</span> <span class="hljs-number">456.</span>
+    ii. A nested list <span class="hljs-keyword">with</span> <span class="hljs-literal">one</span> <span class="hljs-keyword">element</span>:
+         <span class="hljs-keyword">a</span>. An <span class="hljs-keyword">integer</span> containing <span class="hljs-built_in">value</span> <span class="hljs-number">789</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 5 * 104</code></p></li>
+<li><p><code>s</code> consists of digits, square brackets <code>"[]"</code>, negative sign <code>'-'</code>, and commas <code>','</code>.</p></li>
+<li><p><code>s</code> is the serialization of valid <code>NestedInteger</code>.</p></li>
+<li><p>All the values in the input are in the range <code>[-106, 106]</code>.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/**
+ * // This is the interface that allows for creating nested lists.
+ * // You should not implement it, or speculate about its implementation
+ * public interface NestedInteger {
+ *     // Constructor initializes an empty nested list.
+ *     public NestedInteger();
+ *
+ *     // Constructor initializes a single integer.
+ *     public NestedInteger(int value);
+ *
+ *     // <span class="hljs-doctag">@return</span> true if this NestedInteger holds a single integer, rather than a nested list.
+ *     public boolean isInteger();
+ *
+ *     // <span class="hljs-doctag">@return</span> the single integer that this NestedInteger holds, if it holds a single integer
+ *     // Return null if this NestedInteger holds a nested list
+ *     public Integer getInteger();
+ *
+ *     // Set this NestedInteger to hold a single integer.
+ *     public void setInteger(int value);
+ *
+ *     // Set this NestedInteger to hold a nested list and adds a nested integer to it.
+ *     public void add(NestedInteger ni);
+ *
+ *     // <span class="hljs-doctag">@return</span> the nested list that this NestedInteger holds, if it holds a nested list
+ *     // Return empty list if this NestedInteger holds a single integer
+ *     public List&lt;NestedInteger&gt; getList();
+ * }
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> NestedInteger <span class="hljs-title">deserialize</span><span class="hljs-params">(String s)</span> </span>{
+        <span class="hljs-keyword">return</span> getAns(s);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> NestedInteger <span class="hljs-title">getAns</span><span class="hljs-params">(String s)</span> </span>{
+        <span class="hljs-keyword">if</span> (s.charAt(i) == <span class="hljs-string">'['</span>) {
+            NestedInteger ni = <span class="hljs-keyword">new</span> NestedInteger();
+            i++;
+            <span class="hljs-keyword">while</span> (i &lt; s.length() &amp;&amp; s.charAt(i) != <span class="hljs-string">']'</span>) {
+                ni.add(getAns(s));
+            }
+            i++;
+            <span class="hljs-keyword">return</span> ni;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (s.charAt(i) == <span class="hljs-string">','</span>) {
+            i++;
+            <span class="hljs-keyword">return</span> getAns(s);
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">int</span> x = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">int</span> m = <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">if</span> (s.charAt(i) == <span class="hljs-string">'-'</span>) {
+                i++;
+                m = -<span class="hljs-number">1</span>;
+            }
+            <span class="hljs-keyword">while</span> (i &lt; s.length() &amp;&amp; Character.isDigit(s.charAt(i))) {
+                x = x * <span class="hljs-number">10</span> + s.charAt(i++) - <span class="hljs-string">'0'</span>;
+            }
+            x *= m;
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> NestedInteger(x);
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

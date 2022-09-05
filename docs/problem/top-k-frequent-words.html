@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Top K Frequent Words - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>692. Top K Frequent Words</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/hash-table">Hash Table</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/trie">Trie</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/sorting">Sorting</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/heap-priority-queue">Heap (Priority Queue)</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/bucket-sort">Bucket Sort</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/counting">Counting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/top-k-frequent-elements.html">Top K Frequent Elements</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/k-closest-points-to-origin.html">K Closest Points to Origin</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/sort-features-by-popularity.html">Sort Features by Popularity</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/sender-with-largest-word-count.html">Sender With Largest Word Count</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/maximum-number-of-pairs-in-array.html">Maximum Number of Pairs in Array</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an array of strings <code>words</code> and an integer <code>k</code>, return **the *<em><code>k</code></em>* most frequent strings**.</p>
+<p>Return the answer <strong>sorted</strong> by <strong>the frequency</strong> from highest to lowest. Sort the words with the same frequency by their <strong>lexicographical order</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: words = [<span class="hljs-string">"i"</span>,<span class="hljs-string">"love"</span>,<span class="hljs-string">"leetcode"</span>,<span class="hljs-string">"i"</span>,<span class="hljs-string">"love"</span>,<span class="hljs-string">"coding"</span>], k = 2
+Output: [<span class="hljs-string">"i"</span>,<span class="hljs-string">"love"</span>]
+Explanation: <span class="hljs-string">"i"</span> <span class="hljs-keyword">and</span> <span class="hljs-string">"love"</span> are the two most frequent words.<span class="hljs-built_in">
+Note </span>that <span class="hljs-string">"i"</span> comes before <span class="hljs-string">"love"</span> due <span class="hljs-keyword">to</span> a lower alphabetical order.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: <span class="hljs-keyword">words</span> = [<span class="hljs-string">"the"</span>,<span class="hljs-string">"day"</span>,<span class="hljs-string">"is"</span>,<span class="hljs-string">"sunny"</span>,<span class="hljs-string">"the"</span>,<span class="hljs-string">"the"</span>,<span class="hljs-string">"the"</span>,<span class="hljs-string">"sunny"</span>,<span class="hljs-string">"is"</span>,<span class="hljs-string">"is"</span>], k = <span class="hljs-number">4</span>
+Output: [<span class="hljs-string">"the"</span>,<span class="hljs-string">"is"</span>,<span class="hljs-string">"sunny"</span>,<span class="hljs-string">"day"</span>]
+Explanation: <span class="hljs-string">"the"</span>, <span class="hljs-string">"is"</span>, <span class="hljs-string">"sunny"</span> <span class="hljs-keyword">and</span> <span class="hljs-string">"day"</span> are <span class="hljs-keyword">the</span> <span class="hljs-literal">four</span> most frequent <span class="hljs-keyword">words</span>, <span class="hljs-keyword">with</span> <span class="hljs-keyword">the</span> <span class="hljs-built_in">number</span> <span class="hljs-keyword">of</span> occurrence being <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> <span class="hljs-number">1</span> respectively.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= words.length &lt;= 500</code></p></li>
+<li><p><code>1 &lt;= words[i].length &lt;= 10</code></p></li>
+<li><p><code>words[i]</code> consists of lowercase English letters.</p></li>
+<li><p><code>k</code> is in the range <code>[1, The number of **unique** words[i]]</code></p></li>
+</ul>
+<p>&nbsp;
+<strong>Follow-up:</strong> Could you solve it in <code>O(n log(k))</code> time and <code>O(n)</code> extra space?</p>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-comment">/*
+     * O(n) extra space
+     * O(nlogk) time
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title">topKFrequent</span><span class="hljs-params">(String[] words, <span class="hljs-keyword">int</span> k)</span> </span>{
+        Map&lt;String, Integer&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">for</span> (String word : words) {
+            map.put(word, map.getOrDefault(word, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);
+        }
+        SortedSet&lt;Map.Entry&lt;String, Integer&gt;&gt; sortedset =
+                <span class="hljs-keyword">new</span> TreeSet&lt;&gt;(
+                        (e1, e2) -&gt; {
+                            <span class="hljs-keyword">if</span> (e1.getValue().intValue() != e2.getValue().intValue()) {
+                                <span class="hljs-keyword">return</span> e2.getValue() - e1.getValue();
+                            } <span class="hljs-keyword">else</span> {
+                                <span class="hljs-keyword">return</span> e1.getKey().compareToIgnoreCase(e2.getKey());
+                            }
+                        });
+        sortedset.addAll(map.entrySet());
+        List&lt;String&gt; result = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        Iterator&lt;Map.Entry&lt;String, Integer&gt;&gt; iterator = sortedset.iterator();
+        <span class="hljs-keyword">while</span> (iterator.hasNext() &amp;&amp; k-- &gt; <span class="hljs-number">0</span>) {
+            result.add(iterator.next().getKey());
+        }
+        <span class="hljs-keyword">return</span> result;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Contiguous Array - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>525. Contiguous Array</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/hash-table">Hash Table</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/prefix-sum">Prefix Sum</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/maximum-size-subarray-sum-equals-k.html">Maximum Size Subarray Sum Equals k</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a binary array <code>nums</code>, return **the maximum length of a contiguous subarray with an equal number of *<em><code>0</code></em>* and **<code>1</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]
+Output: <span class="hljs-number">2</span>
+Explanation: [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>] <span class="hljs-keyword">is</span> the longest contiguous subarray with an equal number of <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-number">1.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]
+Output: <span class="hljs-number">2</span>
+Explanation: [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>] (<span class="hljs-keyword">or</span> [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>]) <span class="hljs-keyword">is</span> a longest contiguous subarray with equal number of <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-number">1.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= nums.length &lt;= 105</code></p></li>
+<li><p><code>nums[i]</code> is either <code>0</code> or <code>1</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">findMaxLength</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>{
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+            <span class="hljs-keyword">if</span> (nums[i] == <span class="hljs-number">0</span>) {
+                nums[i] = -<span class="hljs-number">1</span>;
+            }
+        }
+        HashMap&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        map.put(<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>);
+        <span class="hljs-keyword">int</span> ps = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> len = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+            ps += nums[i];
+            <span class="hljs-keyword">if</span> (!map.containsKey(ps)) {
+                map.put(ps, i);
+            } <span class="hljs-keyword">else</span> {
+                len = Math.max(len, i - map.get(ps));
+            }
+        }
+        <span class="hljs-keyword">return</span> len;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

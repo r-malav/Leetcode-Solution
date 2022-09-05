@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Number of Atoms - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>726. Number of Atoms</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/hash-table">Hash Table</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/stack">Stack</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/decode-string.html">Decode String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/encode-string-with-shortest-length.html">Encode String with Shortest Length</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/parse-lisp-expression.html">Parse Lisp Expression</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a string <code>formula</code> representing a chemical formula, return <strong>the count of each atom</strong>.</p>
+<p>The atomic element always starts with an uppercase character, then zero or more lowercase letters, representing the name.</p>
+<p>One or more digits representing that element's count may follow if the count is greater than <code>1</code>. If the count is <code>1</code>, no digits will follow.</p>
+<ul>
+<li>For example, <code>"H2O"</code> and <code>"H2O2"</code> are possible, but <code>"H1O2"</code> is impossible.</li>
+</ul>
+<p>Two formulas are concatenated together to produce another formula.</p>
+<ul>
+<li>For example, <code>"H2O2He3Mg4"</code> is also a formula.</li>
+</ul>
+<p>A formula placed in parentheses, and a count (optionally added) is also a formula.</p>
+<ul>
+<li>For example, <code>"(H2O2)"</code> and <code>"(H2O2)3"</code> are formulas.</li>
+</ul>
+<p>Return the count of all elements as a string in the following form: the first name (in sorted order), followed by its count (if that count is more than <code>1</code>), followed by the second name (in sorted order), followed by its count (if that count is more than <code>1</code>), and so on.</p>
+<p>The test cases are generated so that all the values in the output fit in a <strong>32-bit</strong> integer.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> formula = <span class="hljs-string">"H2O"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">"H2O"</span>
+<span class="hljs-symbol">Explanation:</span> The count of elements <span class="hljs-class">are </span>{<span class="hljs-string">'H'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'O'</span>: <span class="hljs-number">1</span>}.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-string">Input:</span> formula = <span class="hljs-string">"Mg(OH)2"</span>
+<span class="hljs-string">Output:</span> <span class="hljs-string">"H2MgO2"</span>
+<span class="hljs-string">Explanation:</span> The count of elements are {<span class="hljs-string">'H'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'Mg'</span>: <span class="hljs-number">1</span>, <span class="hljs-string">'O'</span>: <span class="hljs-number">2</span>}.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> formula = <span class="hljs-string">"K4(ON(SO3)2)2"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">"K4N2O14S4"</span>
+<span class="hljs-symbol">Explanation:</span> The count of elements <span class="hljs-class">are </span>{<span class="hljs-string">'K'</span>: <span class="hljs-number">4</span>, <span class="hljs-string">'N'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'O'</span>: <span class="hljs-number">14</span>, <span class="hljs-string">'S'</span>: <span class="hljs-number">4</span>}.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= formula.length &lt;= 1000</code></p></li>
+<li><p><code>formula</code> consists of English letters, digits, <code>'('</code>, and <code>')'</code>.</p></li>
+<li><p><code>formula</code> is always valid.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@param <span class="hljs-type">{string}</span> <span class="hljs-variable">formula</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{string}</span></span>
+ */</span>
+<span class="hljs-keyword">var</span> countOfAtoms = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">formula</span>) </span>{
+  <span class="hljs-comment">// we split the formula by "letters", "numbers", "(", ")"</span>
+  <span class="hljs-comment">// so we don't have to check the formula letter by letter.</span>
+  formula = formula.match(<span class="hljs-regexp">/[A-Z][a-z]*|\d+|[()]/g</span>);
+  <span class="hljs-keyword">const</span> stk = [];
+  <span class="hljs-keyword">let</span> temp = {};
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; formula.length; i += <span class="hljs-number">1</span>) {
+    <span class="hljs-keyword">if</span> (formula[i] == <span class="hljs-string">'('</span>) {
+      <span class="hljs-comment">// A nested level starts here, we record what we have for</span>
+      <span class="hljs-comment">// the temporary results to the stack.</span>
+      stk.push(temp);
+      <span class="hljs-comment">// And start new.</span>
+      temp = {}; <span class="hljs-comment">// </span>
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (formula[i].match(<span class="hljs-regexp">/^\d+$/</span>)) {
+      <span class="hljs-comment">// We see a number, and before the number is a ')',</span>
+      <span class="hljs-keyword">if</span> (formula[i<span class="hljs-number">-1</span>] == <span class="hljs-string">')'</span>) {
+        <span class="hljs-comment">// We multiply the number with the temporary results.</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> k <span class="hljs-keyword">in</span> temp) temp[k] *= +formula[i];
+        <span class="hljs-comment">// And we merge the top of the stack to the temporary</span>
+        <span class="hljs-comment">// result so it's always updated.  </span>
+        mergeTemp(stk.pop(), temp);
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// If it's a letter before the number, we need to </span>
+        <span class="hljs-comment">// subtract it by 1, because we had it initialized as</span>
+        <span class="hljs-comment">// { X: 1 } to begin with.</span>
+        temp[formula[i<span class="hljs-number">-1</span>]] += +formula[i] - <span class="hljs-number">1</span>;
+      }
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (formula[i] != <span class="hljs-string">')'</span>) {
+      <span class="hljs-comment">// If it's just letters, we update its count.</span>
+      <span class="hljs-comment">// Note we might have the same letter on the same level.</span>
+      <span class="hljs-comment">// For example, "H2...H4"</span>
+      temp[formula[i]] = temp[formula[i]] + <span class="hljs-number">1</span> || <span class="hljs-number">1</span>;
+    }
+  }
+
+  <span class="hljs-comment">// 1. Make sure we merge all the temporary results on the</span>
+  <span class="hljs-comment">//    outermost level, if thy exist on the stack.</span>
+  <span class="hljs-comment">// 2. This is the bug where a input like "Mg(H2O)N" this would</span>
+  <span class="hljs-comment">//    not include { Mg: 1 } to the final result, because we only </span>
+  <span class="hljs-comment">//    try merging stack top to temp when we see a number after</span>
+  <span class="hljs-comment">//    ')' on line 21, but in this case, we don't see a number, so</span>
+  <span class="hljs-comment">//    we just move on and leave { Mg: 1 } on the stack.</span>
+  <span class="hljs-comment">// 3. We could potentially remove these kind of parenthesis,</span>
+  <span class="hljs-comment">//    however, I don't think it's worth the trouble.</span>
+  <span class="hljs-keyword">while</span> (stk.length) mergeTemp(stk.pop(), temp);
+
+  <span class="hljs-comment">// Now we have all the key-value pairs, let's sort them</span>
+  <span class="hljs-comment">// and print them in order with desired format.</span>
+  <span class="hljs-keyword">let</span> ans = <span class="hljs-string">''</span>;
+  <span class="hljs-built_in">Object</span>.keys(temp).sort(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> a.localeCompare(b)).map(<span class="hljs-function"><span class="hljs-params">k</span> =&gt;</span> {
+    ans += <span class="hljs-string">`<span class="hljs-subst">${k}</span><span class="hljs-subst">${temp[k] &gt; <span class="hljs-number">1</span> ? temp[k] : <span class="hljs-string">''</span>}</span>`</span>;
+  });
+  <span class="hljs-keyword">return</span> ans;
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">mergeTemp</span>(<span class="hljs-params">prev, temp</span>) </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> k <span class="hljs-keyword">in</span> prev) {
+      temp[k] = temp[k] + prev[k] || prev[k];
+    }
+  }
+};
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

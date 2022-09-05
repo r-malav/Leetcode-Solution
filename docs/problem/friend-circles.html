@@ -3,19 +3,19 @@
 <p>Given a <strong>N*N</strong> matrix <strong>M</strong> representing the friend relationship between students in the class. If M[i][j] = 1, then the ith and jth students are <strong>direct</strong> friends with each other, otherwise not. And you have to output the total number of friend circles among all the students.</p>
 <p><strong>Example 1:</strong></p>
 <pre><code class="hljs">Input: 
-<span class="hljs-string">[[1,1,0],
- [1,1,0],
- [0,0,1]]</span>
+[[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],
+ [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],
+ [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]]
 Output: <span class="hljs-number">2</span>
-Explanation:The <span class="hljs-number">0</span>th <span class="hljs-keyword">and</span> <span class="hljs-number">1</span>st students are direct friends, so they are <span class="hljs-keyword">in</span> a friend circle. The <span class="hljs-number">2</span>nd student himself is <span class="hljs-keyword">in</span> a friend circle. So <span class="hljs-keyword">return</span> <span class="hljs-number">2.</span>
+Explanation:The <span class="hljs-number">0</span>th <span class="hljs-keyword">and</span> <span class="hljs-number">1</span>st students are direct friends, so they are <span class="hljs-keyword">in</span> a friend circle. The <span class="hljs-number">2</span>nd student himself <span class="hljs-keyword">is</span> <span class="hljs-keyword">in</span> a friend circle. So <span class="hljs-keyword">return</span> <span class="hljs-number">2.</span>
 </code></pre>
 <p><strong>Example 2:</strong></p>
-<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> 
+<pre><code class="hljs">Input: 
 [[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],
  [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],
  [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]]
-Outpu<span class="hljs-variable">t:</span> <span class="hljs-number">1</span>
-Explanation:The <span class="hljs-number">0</span><span class="hljs-keyword">th</span> <span class="hljs-built_in">and</span> <span class="hljs-number">1</span><span class="hljs-keyword">st</span> students are direct friends, the <span class="hljs-number">1</span><span class="hljs-keyword">st</span> <span class="hljs-built_in">and</span> <span class="hljs-number">2</span>nd students are direct friends, <span class="hljs-keyword">so</span> the <span class="hljs-number">0</span><span class="hljs-keyword">th</span> <span class="hljs-built_in">and</span> <span class="hljs-number">2</span>nd students are indirect friends. All of them are in the same friend circle, <span class="hljs-keyword">so</span> <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>.
+Output: <span class="hljs-number">1</span>
+Explanation:The <span class="hljs-number">0</span>th <span class="hljs-keyword">and</span> <span class="hljs-number">1</span>st students are direct friends, the <span class="hljs-number">1</span>st <span class="hljs-keyword">and</span> <span class="hljs-number">2</span>nd students are direct friends, so the <span class="hljs-number">0</span>th <span class="hljs-keyword">and</span> <span class="hljs-number">2</span>nd students are indirect friends. All of them are <span class="hljs-keyword">in</span> the same friend circle, so <span class="hljs-keyword">return</span> <span class="hljs-number">1.</span>
 </code></pre>
 <p><strong>Note:</strong></p>
 <ul>
@@ -23,10 +23,45 @@ Explanation:The <span class="hljs-number">0</span><span class="hljs-keyword">th<
 <li>M[i][i] = 1 for all students.</li>
 <li>If M[i][j] = 1, then M[j][i] = 1.</li>
 </ul>
-<h2 id="solution">Solution</h2>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">findCircleNum</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] arr)</span> </span>{
+        <span class="hljs-keyword">int</span>[] parent = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[arr.length];
+        Arrays.fill(parent, -<span class="hljs-number">1</span>);
+        <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; arr.length - <span class="hljs-number">1</span>; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = i + <span class="hljs-number">1</span>; j &lt; arr[i].length; j++) {
+                <span class="hljs-keyword">if</span> (arr[i][j] == <span class="hljs-number">1</span>) {
+                    ans += union(i, j, parent);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> arr.length - ans;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">union</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a, <span class="hljs-keyword">int</span> b, <span class="hljs-keyword">int</span>[] arr)</span> </span>{
+        <span class="hljs-keyword">int</span> ga = find(a, arr);
+        <span class="hljs-keyword">int</span> gb = find(b, arr);
+        <span class="hljs-keyword">if</span> (ga != gb) {
+            arr[gb] = ga;
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a, <span class="hljs-keyword">int</span>[] arr)</span> </span>{
+        <span class="hljs-keyword">if</span> (arr[a] == -<span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> a;
+        }
+        arr[a] = find(arr[a], arr);
+        <span class="hljs-keyword">return</span> arr[a];
+    }
+}
+</code></pre>
+<h2 id="solution-javascript">Solution (Javascript)</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * @param {number[][]} M
- * @return {number}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[][]}</span> <span class="hljs-variable">M</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
  */</span>
 
 <span class="hljs-keyword">var</span> findCircleNum = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">M</span>) </span>{

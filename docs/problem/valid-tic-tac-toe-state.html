@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Valid Tic-Tac-Toe State - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>794. Valid Tic-Tac-Toe State</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/design-tic-tac-toe.html">Design Tic-Tac-Toe</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a Tic-Tac-Toe board as a string array <code>board</code>, return <code>true</code> if and only if it is possible to reach this board position during the course of a valid tic-tac-toe game.</p>
+<p>The board is a <code>3 x 3</code> array that consists of characters <code>' '</code>, <code>'X'</code>, and <code>'O'</code>. The <code>' '</code> character represents an empty square.</p>
+<p>Here are the rules of Tic-Tac-Toe:</p>
+<ul>
+<li><p>Players take turns placing characters into empty squares <code>' '</code>.</p></li>
+<li><p>The first player always places <code>'X'</code> characters, while the second player always places <code>'O'</code> characters.</p></li>
+<li><p><code>'X'</code> and <code>'O'</code> characters are always placed into empty squares, never filled ones.</p></li>
+<li><p>The game ends when there are three of the same (non-empty) character filling any row, column, or diagonal.</p></li>
+<li><p>The game also ends if all squares are non-empty.</p></li>
+<li><p>No more moves can be played if the game is over.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/05/15/tictactoe1-grid.jpg" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-string">Input:</span> board = [<span class="hljs-string">"O  "</span>,<span class="hljs-string">"   "</span>,<span class="hljs-string">"   "</span>]
+<span class="hljs-string">Output:</span> <span class="hljs-literal">false</span>
+<span class="hljs-string">Explanation:</span> The first player always plays <span class="hljs-string">"X"</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/05/15/tictactoe2-grid.jpg" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-string">Input:</span> board = [<span class="hljs-string">"XOX"</span>,<span class="hljs-string">" X "</span>,<span class="hljs-string">"   "</span>]
+<span class="hljs-string">Output:</span> <span class="hljs-literal">false</span>
+<span class="hljs-string">Explanation:</span> Players take turns making moves.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/05/15/tictactoe4-grid.jpg" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-string">Input:</span> board = [<span class="hljs-string">"XOX"</span>,<span class="hljs-string">"O O"</span>,<span class="hljs-string">"XOX"</span>]
+<span class="hljs-string">Output:</span> <span class="hljs-literal">true</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>board.length == 3</code></p></li>
+<li><p><code>board[i].length == 3</code></p></li>
+<li><p><code>board[i][j]</code> is either <code>'X'</code>, <code>'O'</code>, or <code>' '</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">validTicTacToe</span><span class="hljs-params">(String[] board)</span> </span>{
+        <span class="hljs-comment">// X=1,O=-1,’ ’=0</span>
+        <span class="hljs-keyword">int</span> sum = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span>[] winsCol = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">3</span>];
+        <span class="hljs-keyword">int</span>[] winsDiag = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">2</span>];
+        <span class="hljs-keyword">boolean</span> xWin = <span class="hljs-keyword">false</span>;
+        <span class="hljs-keyword">boolean</span> oWin = <span class="hljs-keyword">false</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++) {
+            String str = board[i];
+            <span class="hljs-keyword">int</span> rowSum = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">3</span>; j++) {
+                <span class="hljs-comment">// char chr=str.toCharArray()[j];</span>
+                <span class="hljs-keyword">int</span> intchr = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">if</span> (str.toCharArray()[j] == <span class="hljs-string">'X'</span>) {
+                    intchr = <span class="hljs-number">1</span>;
+                }
+                <span class="hljs-keyword">if</span> (str.toCharArray()[j] == <span class="hljs-string">'O'</span>) {
+                    intchr = -<span class="hljs-number">1</span>;
+                }
+                rowSum += intchr;
+                winsCol[j] += intchr;
+                <span class="hljs-keyword">if</span> (i == <span class="hljs-number">2</span> &amp;&amp; winsCol[j] == <span class="hljs-number">3</span>) {
+                    xWin = <span class="hljs-keyword">true</span>;
+                }
+                <span class="hljs-keyword">if</span> (i == <span class="hljs-number">2</span> &amp;&amp; winsCol[j] == -<span class="hljs-number">3</span>) {
+                    oWin = <span class="hljs-keyword">true</span>;
+                }
+                <span class="hljs-keyword">if</span> (Math.abs(i - j) != <span class="hljs-number">1</span>) {
+                    <span class="hljs-keyword">if</span> (i == j &amp;&amp; i == <span class="hljs-number">1</span>) {
+                        winsDiag[<span class="hljs-number">0</span>] += intchr;
+                        winsDiag[<span class="hljs-number">1</span>] += intchr;
+                    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (i == j) {
+                        winsDiag[<span class="hljs-number">0</span>] += intchr;
+                    } <span class="hljs-keyword">else</span> {
+                        winsDiag[<span class="hljs-number">1</span>] += intchr;
+                    }
+                }
+                <span class="hljs-keyword">if</span> (i == <span class="hljs-number">2</span> &amp;&amp; Math.max(winsDiag[<span class="hljs-number">0</span>], winsDiag[<span class="hljs-number">1</span>]) == <span class="hljs-number">3</span>) {
+                    xWin = <span class="hljs-keyword">true</span>;
+                }
+                <span class="hljs-keyword">if</span> (i == <span class="hljs-number">2</span> &amp;&amp; Math.min(winsDiag[<span class="hljs-number">0</span>], winsDiag[<span class="hljs-number">1</span>]) == -<span class="hljs-number">3</span>) {
+                    oWin = <span class="hljs-keyword">true</span>;
+                }
+            }
+            <span class="hljs-keyword">if</span> (rowSum == <span class="hljs-number">3</span>) {
+                xWin = <span class="hljs-keyword">true</span>;
+            }
+            <span class="hljs-keyword">if</span> (rowSum == -<span class="hljs-number">3</span>) {
+                oWin = <span class="hljs-keyword">true</span>;
+            }
+            sum += rowSum;
+        }
+        <span class="hljs-keyword">if</span> (sum == <span class="hljs-number">0</span> &amp;&amp; !xWin) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+        }
+        <span class="hljs-keyword">return</span> sum == <span class="hljs-number">1</span> &amp;&amp; !oWin;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

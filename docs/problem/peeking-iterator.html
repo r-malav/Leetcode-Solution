@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Peeking Iterator - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>284. Peeking Iterator</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/design">Design</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/iterator">Iterator</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/binary-search-tree-iterator.html">Binary Search Tree Iterator</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/flatten-2d-vector.html">Flatten 2D Vector</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/zigzag-iterator.html">Zigzag Iterator</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Design an iterator that supports the <code>peek</code> operation on an existing iterator in addition to the <code>hasNext</code> and the <code>next</code> operations.</p>
+<p>Implement the <code>PeekingIterator</code> class:</p>
+<ul>
+<li><p><code>PeekingIterator(Iterator&lt;int&gt; nums)</code> Initializes the object with the given integer iterator <code>iterator</code>.</p></li>
+<li><p><code>int next()</code> Returns the next element in the array and moves the pointer to the next element.</p></li>
+<li><p><code>boolean hasNext()</code> Returns <code>true</code> if there are still elements in the array.</p></li>
+<li><p><code>int peek()</code> Returns the next element in the array <strong>without</strong> moving the pointer.</p></li>
+</ul>
+<p><strong>Note:</strong> Each language may have a different implementation of the constructor and <code>Iterator</code>, but they all support the <code>int next()</code> and <code>boolean hasNext()</code> functions.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input
+[<span class="hljs-string">"PeekingIterator"</span>, <span class="hljs-string">"next"</span>, <span class="hljs-string">"peek"</span>, <span class="hljs-string">"next"</span>, <span class="hljs-string">"next"</span>, <span class="hljs-string">"hasNext"</span>]
+[[[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]], [], [], [], [], []]
+Output
+[<span class="hljs-literal">null</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-literal">false</span>]
+
+Explanation
+PeekingIterator peekingIterator = new PeekingIterator([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]); <span class="hljs-comment">// [1,2,3]</span>
+peekingIterator.next();    <span class="hljs-comment">// return 1, the pointer moves to the next element [1,2,3].</span>
+peekingIterator.peek();    <span class="hljs-comment">// return 2, the pointer does not move [1,2,3].</span>
+peekingIterator.next();    <span class="hljs-comment">// return 2, the pointer moves to the next element [1,2,3]</span>
+peekingIterator.next();    <span class="hljs-comment">// return 3, the pointer moves to the next element [1,2,3]</span>
+peekingIterator.hasNext(); <span class="hljs-comment">// return False</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= nums.length &lt;= 1000</code></p></li>
+<li><p><code>1 &lt;= nums[i] &lt;= 1000</code></p></li>
+<li><p>All the calls to <code>next</code> and <code>peek</code> are valid.</p></li>
+<li><p>At most <code>1000</code> calls will be made to <code>next</code>, <code>hasNext</code>, and <code>peek</code>.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Follow up:</strong> How would you extend your design to be generic and work with all types, not just integer?</p>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">// Java Iterator interface reference:</span>
+<span class="hljs-comment">// https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PeekingIterator</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Iterator</span>&lt;<span class="hljs-title">Integer</span>&gt; </span>{
+    <span class="hljs-keyword">private</span> Iterator&lt;Integer&gt; it;
+    <span class="hljs-keyword">private</span> Integer current;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">PeekingIterator</span><span class="hljs-params">(Iterator&lt;Integer&gt; iterator)</span> </span>{
+        <span class="hljs-comment">// initialize any member here.</span>
+        it = iterator;
+        current = it.next();
+    }
+
+    <span class="hljs-comment">// Returns the next element in the iteration without advancing the iterator.</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Integer <span class="hljs-title">peek</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">if</span> (current == <span class="hljs-keyword">null</span>) {
+            current = it.next();
+        }
+        <span class="hljs-keyword">return</span> current;
+    }
+
+    <span class="hljs-comment">// hasNext() and next() should behave the same as in the Iterator interface.</span>
+    <span class="hljs-comment">// Override them if needed.</span>
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Integer <span class="hljs-title">next</span><span class="hljs-params">()</span> </span>{
+        Integer temp = current;
+        current = it.hasNext() ? it.next() : <span class="hljs-keyword">null</span>;
+        <span class="hljs-keyword">return</span> temp;
+    }
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">hasNext</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> current != <span class="hljs-keyword">null</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

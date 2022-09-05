@@ -1,0 +1,102 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Reachable Nodes In Subdivided Graph - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>882. Reachable Nodes In Subdivided Graph</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/graph">Graph</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/heap-priority-queue">Heap (Priority Queue)</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/shortest-path">Shortest Path</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/find-all-people-with-secret.html">Find All People With Secret</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/paths-in-maze-that-lead-to-same-room.html">Paths in Maze That Lead to Same Room</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an undirected graph (the <strong>"original graph"</strong>) with <code>n</code> nodes labeled from <code>0</code> to <code>n - 1</code>. You decide to <strong>subdivide</strong> each edge in the graph into a chain of nodes, with the number of new nodes varying between each edge.</p>
+<p>The graph is given as a 2D array of <code>edges</code> where <code>edges[i] = [ui, vi, cnti]</code> indicates that there is an edge between nodes <code>ui</code> and <code>vi</code> in the original graph, and <code>cnti</code> is the total number of new nodes that you will <strong>subdivide</strong> the edge into. Note that <code>cnti == 0</code> means you will not subdivide the edge.</p>
+<p>To <strong>subdivide</strong> the edge <code>[ui, vi]</code>, replace it with <code>(cnti + 1)</code> new edges and <code>cnti</code> new nodes. The new nodes are <code>x1</code>, <code>x2</code>, …, <code>xcnti</code>, and the new edges are <code>[ui, x1]</code>, <code>[x1, x2]</code>, <code>[x2, x3]</code>, …, <code>[xcnti-1, xcnti]</code>, <code>[xcnti, vi]</code>.</p>
+<p>In this <strong>new graph</strong>, you want to know how many nodes are <strong>reachable</strong> from the node <code>0</code>, where a node is <strong>reachable</strong> if the distance is <code>maxMoves</code> or less.</p>
+<p>Given the original graph and <code>maxMoves</code>, return **the number of nodes that are *<em>reachable</em>* from node <strong><code>0</code></strong> in the new graph**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://s3-lc-upload.s3.amazonaws.com/uploads/2018/08/01/origfinal.png" alt="" /></p>
+<pre><code class="hljs">Input: edges = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]], maxMoves = <span class="hljs-number">6</span>, n = <span class="hljs-number">3</span>
+Output: <span class="hljs-number">13</span>
+Explanation: The edge subdivisions are shown <span class="hljs-keyword">in</span> the image above.
+The nodes that are reachable are highlighted <span class="hljs-keyword">in</span> yellow.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: edges = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">6</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">8</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]], maxMoves = <span class="hljs-number">10</span>, n = <span class="hljs-number">4</span>
+Output: <span class="hljs-number">23</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: edges = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]], maxMoves = <span class="hljs-number">17</span>, n = <span class="hljs-number">5</span>
+Output: <span class="hljs-number">1</span>
+Explanation: Node <span class="hljs-number">0</span> <span class="hljs-keyword">is</span> disconnected <span class="hljs-keyword">from</span> the rest of the graph, so only node <span class="hljs-number">0</span> <span class="hljs-keyword">is</span> reachable.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>0 &lt;= edges.length &lt;= min(n * (n - 1) / 2, 104)</code></p></li>
+<li><p><code>edges[i].length == 3</code></p></li>
+<li><p><code>0 &lt;= ui &lt; vi &lt; n</code></p></li>
+<li><p>There are <strong>no multiple edges</strong> in the graph.</p></li>
+<li><p><code>0 &lt;= cnti &lt;= 104</code></p></li>
+<li><p><code>0 &lt;= maxMoves &lt;= 109</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 3000</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">reachableNodes</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] edges, <span class="hljs-keyword">int</span> maxMoves, <span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-comment">// Build graph</span>
+        List&lt;<span class="hljs-keyword">int</span>[]&gt;[] graph = <span class="hljs-keyword">new</span> List[n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+            graph[i] = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] edge : edges) {
+            <span class="hljs-comment">// how many nodes between u and v(inclusive)</span>
+            <span class="hljs-comment">// vvvvvvvvvvvvvvv</span>
+            <span class="hljs-keyword">int</span> u = edge[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">int</span> v = edge[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">int</span> w = edge[<span class="hljs-number">2</span>] + <span class="hljs-number">1</span>;
+            graph[u].add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {v, w});
+            graph[v].add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {u, w});
+        }
+        <span class="hljs-comment">// Do dijkstra</span>
+        Queue&lt;<span class="hljs-keyword">int</span>[]&gt; queue = <span class="hljs-keyword">new</span> PriorityQueue&lt;&gt;((a, b) -&gt; Integer.compare(a[<span class="hljs-number">1</span>], b[<span class="hljs-number">1</span>]));
+        <span class="hljs-keyword">int</span>[] dist = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        Arrays.fill(dist, Integer.MAX_VALUE &gt;&gt; <span class="hljs-number">1</span>);
+        dist[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
+        queue.add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {<span class="hljs-number">0</span>, dist[<span class="hljs-number">0</span>]});
+        <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+            <span class="hljs-keyword">int</span>[] curr = queue.poll();
+            <span class="hljs-keyword">int</span> u = curr[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">int</span> d = curr[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (d != dist[u]) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] next : graph[u]) {
+                <span class="hljs-keyword">int</span> v = next[<span class="hljs-number">0</span>];
+                <span class="hljs-keyword">int</span> w = next[<span class="hljs-number">1</span>];
+                <span class="hljs-keyword">if</span> (dist[u] + w &lt; dist[v]) {
+                    dist[v] = dist[u] + w;
+                    queue.add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {v, dist[v]});
+                }
+            }
+        }
+        <span class="hljs-comment">// Count reachable nodes</span>
+        <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> (dist[i] &lt;= maxMoves) {
+                ans++;
+            }
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] edge : edges) {
+            <span class="hljs-keyword">int</span> u = edge[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">int</span> v = edge[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">int</span> w = edge[<span class="hljs-number">2</span>];
+            <span class="hljs-comment">// Nodes can be extended from (u, v) in at most maxMoves steps</span>
+            <span class="hljs-comment">// if maxMoves - dist[u] &lt; 0, then l = 0</span>
+            <span class="hljs-keyword">int</span> l = Math.max(<span class="hljs-number">0</span>, maxMoves - dist[u]);
+            <span class="hljs-keyword">int</span> r = Math.max(<span class="hljs-number">0</span>, maxMoves - dist[v]);
+            <span class="hljs-comment">// l + r shouldn't be greater than w</span>
+            ans += Math.min(w, l + r);
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

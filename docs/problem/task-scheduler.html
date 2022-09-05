@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Task Scheduler - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>621. Task Scheduler</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/hash-table">Hash Table</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/greedy">Greedy</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/sorting">Sorting</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/heap-priority-queue">Heap (Priority Queue)</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/counting">Counting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/rearrange-string-k-distance-apart.html">Rearrange String k Distance Apart</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/reorganize-string.html">Reorganize String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/maximum-number-of-weeks-for-which-you-can-work.html">Maximum Number of Weeks for Which You Can Work</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/find-minimum-time-to-finish-all-jobs-ii.html">Find Minimum Time to Finish All Jobs II</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/task-scheduler-ii.html">Task Scheduler II</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a characters array <code>tasks</code>, representing the tasks a CPU needs to do, where each letter represents a different task. Tasks could be done in any order. Each task is done in one unit of time. For each unit of time, the CPU could complete either one task or just be idle.</p>
+<p>However, there is a non-negative integer&nbsp;<code>n</code> that represents the cooldown period between&nbsp;two <strong>same tasks</strong>&nbsp;(the same letter in the array), that is that there must be at least <code>n</code> units of time between any two same tasks.</p>
+<p>Return <strong>the least number of units of times that the CPU will take to finish all the given tasks</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: tasks = [<span class="hljs-string">"A"</span>,<span class="hljs-string">"A"</span>,<span class="hljs-string">"A"</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"B"</span>], n = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">8</span>
+Explanation: 
+A -&gt; B -&gt; idle -&gt; A -&gt; B -&gt; idle -&gt; A -&gt; B
+There is <span class="hljs-built_in">at</span> least <span class="hljs-number">2</span> units of <span class="hljs-built_in">time</span> between any two same tasks.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: tasks = [<span class="hljs-string">"A"</span>,<span class="hljs-string">"A"</span>,<span class="hljs-string">"A"</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"B"</span>], n = <span class="hljs-number">0</span>
+Output: <span class="hljs-number">6</span>
+Explanation: On <span class="hljs-keyword">this</span> <span class="hljs-keyword">case</span> any permutation of size <span class="hljs-number">6</span> would work since n = <span class="hljs-number">0.</span>
+[<span class="hljs-meta"><span class="hljs-meta-string">"A"</span>,<span class="hljs-meta-string">"A"</span>,<span class="hljs-meta-string">"A"</span>,<span class="hljs-meta-string">"B"</span>,<span class="hljs-meta-string">"B"</span>,<span class="hljs-meta-string">"B"</span></span>]
+[<span class="hljs-meta"><span class="hljs-meta-string">"A"</span>,<span class="hljs-meta-string">"B"</span>,<span class="hljs-meta-string">"A"</span>,<span class="hljs-meta-string">"B"</span>,<span class="hljs-meta-string">"A"</span>,<span class="hljs-meta-string">"B"</span></span>]
+[<span class="hljs-meta"><span class="hljs-meta-string">"B"</span>,<span class="hljs-meta-string">"B"</span>,<span class="hljs-meta-string">"B"</span>,<span class="hljs-meta-string">"A"</span>,<span class="hljs-meta-string">"A"</span>,<span class="hljs-meta-string">"A"</span></span>]
+...
+And so <span class="hljs-keyword">on</span>.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: tasks = [<span class="hljs-string">"A"</span>,<span class="hljs-string">"A"</span>,<span class="hljs-string">"A"</span>,<span class="hljs-string">"A"</span>,<span class="hljs-string">"A"</span>,<span class="hljs-string">"A"</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"C"</span>,<span class="hljs-string">"D"</span>,<span class="hljs-string">"E"</span>,<span class="hljs-string">"F"</span>,<span class="hljs-string">"G"</span>], n = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">16</span>
+Explanation: 
+One possible solution <span class="hljs-keyword">is</span>
+A<span class="hljs-function"> -&gt;</span> B<span class="hljs-function"> -&gt;</span> C<span class="hljs-function"> -&gt;</span> A<span class="hljs-function"> -&gt;</span> D<span class="hljs-function"> -&gt;</span> E<span class="hljs-function"> -&gt;</span> A<span class="hljs-function"> -&gt;</span> F<span class="hljs-function"> -&gt;</span> G<span class="hljs-function"> -&gt;</span> A<span class="hljs-function"> -&gt;</span> idle<span class="hljs-function"> -&gt;</span> idle<span class="hljs-function"> -&gt;</span> A<span class="hljs-function"> -&gt;</span> idle<span class="hljs-function"> -&gt;</span> idle<span class="hljs-function"> -&gt;</span> A
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= task.length &lt;= 104</code></p></li>
+<li><p><code>tasks[i]</code> is upper-case English letter.</p></li>
+<li><p>The integer <code>n</code> is in the range <code>[0, 100]</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">leastInterval</span><span class="hljs-params">(<span class="hljs-keyword">char</span>[] tasks, <span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-keyword">if</span> (n &lt;= <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> tasks.length;
+        }
+        <span class="hljs-keyword">int</span>[] counters = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">26</span>];
+        <span class="hljs-keyword">int</span> maxCount = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> task : tasks) {
+            <span class="hljs-keyword">int</span> idx = task - <span class="hljs-string">'A'</span>;
+            counters[idx]++;
+            maxCount = Math.max(maxCount, counters[idx]);
+        }
+        <span class="hljs-keyword">int</span> maxNum = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> counter : counters) {
+            <span class="hljs-keyword">if</span> (counter == maxCount) {
+                maxNum++;
+            }
+        }
+        <span class="hljs-keyword">return</span> Math.max(tasks.length, (maxCount - <span class="hljs-number">1</span>) * (n + <span class="hljs-number">1</span>) + maxNum);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

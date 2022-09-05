@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Rising Temperature - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>197. Rising Temperature</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/database">Database</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Table: <code>Weather</code></p>
+<pre><code class="hljs"><span class="hljs-code">+---------------+</span>---------+
+<span class="hljs-section">| Column Name   | Type    |
++---------------+---------+</span>
+| id            | int     |
+| recordDate    | date    |
+<span class="hljs-section">| temperature   | int     |
++---------------+---------+</span>
+id is the primary key for this table.
+This table contains information about the temperature on a certain day.
+</code></pre>
+<p>&nbsp;</p>
+<p>Write an SQL query to find all dates' <code>Id</code> with higher temperatures compared to its previous dates (yesterday).</p>
+<p>Return the result table in <strong>any order</strong>.</p>
+<p>The query result format is in the following example.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: 
+<span class="hljs-section">Weather table:
++----+------------+-------------+</span>
+<span class="hljs-section">| id | recordDate | temperature |
++----+------------+-------------+</span>
+| 1  | 2015-01-01 | 10          |
+| 2  | 2015-01-02 | 25          |
+| 3  | 2015-01-03 | 20          |
+<span class="hljs-section">| 4  | 2015-01-04 | 30          |
++----+------------+-------------+</span>
+<span class="hljs-section">Output: 
++----+</span>
+<span class="hljs-section">| id |
++----+</span>
+| 2  |
+<span class="hljs-section">| 4  |
++----+</span>
+Explanation: 
+In 2015-01-02, the temperature was higher than the previous day (10 -&gt; 25).
+In 2015-01-04, the temperature was higher than the previous day (20 -&gt; 30).
+</code></pre>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-sql"><span class="hljs-comment"># Write your MySQL query statement below</span>
+<span class="hljs-keyword">SELECT</span> SecondDate.id <span class="hljs-keyword">as</span> <span class="hljs-keyword">Id</span>
+<span class="hljs-keyword">FROM</span> Weather SecondDate <span class="hljs-keyword">JOIN</span> Weather FirstDate
+<span class="hljs-keyword">ON</span> ADDDATE(FirstDate.recordDate,<span class="hljs-number">1</span>) = SecondDate.recordDate
+<span class="hljs-keyword">AND</span> SecondDate.temperature &gt; FirstDate.temperature;
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

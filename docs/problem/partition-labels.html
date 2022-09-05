@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Partition Labels - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>763. Partition Labels</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/hash-table">Hash Table</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/two-pointers">Two Pointers</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/greedy">Greedy</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/merge-intervals.html">Merge Intervals</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a string <code>s</code>. We want to partition the string into as many parts as possible so that each letter appears in at most one part.</p>
+<p>Note that the partition is done so that after concatenating all the parts in order, the resultant string should be <code>s</code>.</p>
+<p>Return <strong>a list of integers representing the size of these parts</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"ababcbacadefegdehijhklij"</span>
+Output: [<span class="hljs-number">9</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>]
+Explanation:
+The <span class="hljs-built_in">partition</span> <span class="hljs-built_in">is</span> <span class="hljs-string">"ababcbaca"</span>, <span class="hljs-string">"defegde"</span>, <span class="hljs-string">"hijhklij"</span>.
+This <span class="hljs-built_in">is</span> a <span class="hljs-built_in">partition</span> so that each letter appears <span class="hljs-keyword">in</span> <span class="hljs-built_in">at</span> most one <span class="hljs-built_in">part</span>.
+A <span class="hljs-built_in">partition</span> like <span class="hljs-string">"ababcbacadefegde"</span>, <span class="hljs-string">"hijhklij"</span> <span class="hljs-built_in">is</span> incorrect, because it splits s into less parts.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> s = <span class="hljs-string">"eccbbbbdec"</span>
+<span class="hljs-symbol">Output:</span> [<span class="hljs-number">10</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 500</code></p></li>
+<li><p><code>s</code> consists of lowercase English letters.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@param <span class="hljs-type">{string}</span> <span class="hljs-variable">s</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number[]}</span></span>
+ */</span>
+<span class="hljs-keyword">var</span> partitionLabels = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">s</span>) </span>{
+  <span class="hljs-keyword">let</span> lastIndex = {}
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; s.length; i++){
+    lastIndex[s[i]]= i
+  }
+  <span class="hljs-keyword">let</span> partitions = []
+  <span class="hljs-keyword">let</span> start = <span class="hljs-number">0</span>
+  <span class="hljs-keyword">let</span> end = <span class="hljs-number">0</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; s.length; i++) {
+    end = <span class="hljs-built_in">Math</span>.max(end, lastIndex[s[i]])
+    <span class="hljs-keyword">if</span> (i === end) {
+      partitions.push(i - start + <span class="hljs-number">1</span>)
+      start = i + <span class="hljs-number">1</span>
+    }
+  }
+  <span class="hljs-keyword">return</span> partitions
+};
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

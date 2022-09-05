@@ -7,15 +7,15 @@
 <li>You may assume that each input would have <strong>exactly</strong> one solution and you may not use the <strong>same</strong> element twice.</li>
 </ul>
 <p><strong>Example:</strong></p>
-<pre><code class="hljs">Input: <span class="hljs-attr">numbers</span> = [<span class="hljs-number">2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">11</span>,<span class="hljs-number">15</span>], <span class="hljs-attr">target</span> = <span class="hljs-number">9</span>
+<pre><code class="hljs">Input: numbers = [<span class="hljs-number">2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">11</span>,<span class="hljs-number">15</span>], target = <span class="hljs-number">9</span>
 Output: [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
-Explanation: The sum of <span class="hljs-number">2</span> <span class="hljs-literal">and</span> <span class="hljs-number">7</span> is <span class="hljs-number">9</span>. Therefore <span class="hljs-attr">index1</span> = <span class="hljs-number">1</span>, <span class="hljs-attr">index2</span> = <span class="hljs-number">2</span>.
+Explanation: The sum of <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> <span class="hljs-number">7</span> <span class="hljs-keyword">is</span> <span class="hljs-number">9.</span> Therefore index1 = <span class="hljs-number">1</span>, index2 = <span class="hljs-number">2.</span>
 </code></pre>
 <h2 id="solution-1">Solution 1</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * @param {number[]} numbers
- * @param {number} target
- * @return {number[]}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">numbers</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">target</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number[]}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> twoSum = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">numbers, target</span>) </span>{
   <span class="hljs-keyword">var</span> sum = <span class="hljs-number">0</span>;

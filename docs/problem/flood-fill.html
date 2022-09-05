@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Flood Fill - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>733. Flood Fill</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/island-perimeter.html">Island Perimeter</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>An image is represented by an <code>m x n</code> integer grid <code>image</code> where <code>image[i][j]</code> represents the pixel value of the image.</p>
+<p>You are also given three integers <code>sr</code>, <code>sc</code>, and <code>color</code>. You should perform a <strong>flood fill</strong> on the image starting from the pixel <code>image[sr][sc]</code>.</p>
+<p>To perform a <strong>flood fill</strong>, consider the starting pixel, plus any pixels connected <strong>4-directionally</strong> to the starting pixel of the same color as the starting pixel, plus any pixels connected <strong>4-directionally</strong> to those pixels (also with the same color), and so on. Replace the color of all of the aforementioned pixels with <code>color</code>.</p>
+<p>Return <strong>the modified image after performing the flood fill</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/06/01/flood1-grid.jpg" alt="" /></p>
+<pre><code class="hljs">Input: image = [[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]], sr = <span class="hljs-number">1</span>, sc = <span class="hljs-number">1</span>, color = <span class="hljs-number">2</span>
+Output: [[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]]
+Explanation: From the center of the image with position (sr, sc) = (<span class="hljs-number">1</span>, <span class="hljs-number">1</span>) (i.e., the red pixel), all pixels connected by a path of the same color as the starting pixel (i.e., the blue pixels) are colored with the new color.
+Note the bottom corner <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> colored <span class="hljs-number">2</span>, because it <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-number">4</span>-directionally connected to the starting pixel.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: image = [[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]], sr = <span class="hljs-number">0</span>, sc = <span class="hljs-number">0</span>, color = <span class="hljs-number">0</span>
+Output: [[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]]
+Explanation: The starting pixel <span class="hljs-keyword">is</span> already colored <span class="hljs-number">0</span>, so no changes are made to the image.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == image.length</code></p></li>
+<li><p><code>n == image[i].length</code></p></li>
+<li><p><code>1 &lt;= m, n &lt;= 50</code></p></li>
+<li><p><code>0 &lt;= image[i][j], color &lt; 216</code></p></li>
+<li><p><code>0 &lt;= sr &lt; m</code></p></li>
+<li><p><code>0 &lt;= sc &lt; n</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[][] floodFill(<span class="hljs-keyword">int</span>[][] image, <span class="hljs-keyword">int</span> sr, <span class="hljs-keyword">int</span> sc, <span class="hljs-keyword">int</span> newColor) {
+        <span class="hljs-keyword">int</span> o = image[sr][sc];
+        helper(image, sr, sc, newColor, o);
+        <span class="hljs-keyword">return</span> image;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">helper</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] img, <span class="hljs-keyword">int</span> r, <span class="hljs-keyword">int</span> c, <span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> o)</span> </span>{
+        <span class="hljs-keyword">if</span> (r &gt;= img.length
+                || c &gt;= img[<span class="hljs-number">0</span>].length
+                || r &lt; <span class="hljs-number">0</span>
+                || c &lt; <span class="hljs-number">0</span>
+                || img[r][c] == n
+                || img[r][c] != o) {
+            <span class="hljs-keyword">return</span>;
+        }
+        img[r][c] = n;
+        helper(img, r + <span class="hljs-number">1</span>, c, n, o);
+        helper(img, r - <span class="hljs-number">1</span>, c, n, o);
+        helper(img, r, c + <span class="hljs-number">1</span>, n, o);
+        helper(img, r, c - <span class="hljs-number">1</span>, n, o);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -17,11 +17,11 @@
 <pre><code class="hljs"><span class="hljs-number">5</span>
    / \
   <span class="hljs-number">1</span>   <span class="hljs-number">4</span>
-     / \
-    <span class="hljs-number">3</span>   <span class="hljs-number">6</span>
-Output: <span class="hljs-literal">false</span>
-Explanation: The input <span class="hljs-keyword">is</span>: [<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-keyword">null</span>,<span class="hljs-keyword">null</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>]. The root node<span class="hljs-symbol">'s</span> value
-             <span class="hljs-keyword">is</span> <span class="hljs-number">5</span> but its right child<span class="hljs-symbol">'s</span> value <span class="hljs-keyword">is</span> <span class="hljs-number">4</span>.
+&amp;nbsp;    / \
+&amp;nbsp;   <span class="hljs-number">3</span>   <span class="hljs-number">6</span>
+Output: <span class="hljs-keyword">false</span>
+Explanation: The <span class="hljs-keyword">input</span> <span class="hljs-keyword">is</span>: [<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-keyword">null</span>,<span class="hljs-keyword">null</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>]. The root nod<span class="hljs-string">e's value
+&amp;nbsp;            is 5 but its right child'</span>s <span class="hljs-keyword">value</span> <span class="hljs-keyword">is</span> <span class="hljs-number">4.</span>
 </code></pre>
 <h2 id="solution-1">Solution 1</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
@@ -32,8 +32,8 @@ Explanation: The input <span class="hljs-keyword">is</span>: [<span class="hljs-
  * }
  */</span>
 <span class="hljs-comment">/**
- * @param {TreeNode} root
- * @return {boolean}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{TreeNode}</span> <span class="hljs-variable">root</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{boolean}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> isValidBST = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">root</span>) </span>{
   <span class="hljs-keyword">return</span> helper(root, <span class="hljs-built_in">Number</span>.MIN_SAFE_INTEGER, <span class="hljs-built_in">Number</span>.MAX_SAFE_INTEGER);
@@ -61,8 +61,8 @@ Explanation: The input <span class="hljs-keyword">is</span>: [<span class="hljs-
  * }
  */</span>
 <span class="hljs-comment">/**
- * @param {TreeNode} root
- * @return {boolean}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{TreeNode}</span> <span class="hljs-variable">root</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{boolean}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> isValidBST = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">root</span>) </span>{
   <span class="hljs-keyword">var</span> prev = <span class="hljs-literal">null</span>;

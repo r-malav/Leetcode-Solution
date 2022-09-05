@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Matchsticks to Square - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>473. Matchsticks to Square</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/backtracking">Backtracking</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/bit-manipulation">Bit Manipulation</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/bitmask">Bitmask</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an integer array <code>matchsticks</code> where <code>matchsticks[i]</code> is the length of the <code>ith</code> matchstick. You want to use <strong>all the matchsticks</strong> to make one square. You <strong>should not break</strong> any stick, but you can link them up, and each matchstick must be used <strong>exactly one time</strong>.</p>
+<p>Return <code>true</code> if you can make this square and <code>false</code> otherwise.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/04/09/matchsticks1-grid.jpg" alt="" /></p>
+<pre><code class="hljs">Input: matchsticks = [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]
+Output: <span class="hljs-literal">true</span>
+Explanation: You can form <span class="hljs-keyword">a</span> square <span class="hljs-keyword">with</span> <span class="hljs-built_in">length</span> <span class="hljs-number">2</span>, <span class="hljs-literal">one</span> side <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> square came <span class="hljs-literal">two</span> sticks <span class="hljs-keyword">with</span> <span class="hljs-built_in">length</span> <span class="hljs-number">1.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: matchsticks = [<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+Output: <span class="hljs-literal">false</span>
+Explanation: You cannot find a way to form a square with all the matchsticks.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= matchsticks.length &lt;= 15</code></p></li>
+<li><p><code>1 &lt;= matchsticks[i] &lt;= 108</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">makesquare</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] matchsticks)</span> </span>{
+        <span class="hljs-keyword">if</span> (matchsticks.length &lt; <span class="hljs-number">4</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+        }
+        <span class="hljs-keyword">int</span> per = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> ele : matchsticks) {
+            per = ele + per;
+        }
+        <span class="hljs-keyword">if</span> (per % <span class="hljs-number">4</span> != <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+        }
+        Arrays.sort(matchsticks);
+        <span class="hljs-keyword">int</span> side = per / <span class="hljs-number">4</span>;
+        <span class="hljs-keyword">int</span>[] sides = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {side, side, side, side};
+        <span class="hljs-keyword">return</span> help(matchsticks, matchsticks.length - <span class="hljs-number">1</span>, sides);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">help</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span>[] side)</span> </span>{
+        <span class="hljs-keyword">if</span> (i == -<span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> side[<span class="hljs-number">0</span>] == <span class="hljs-number">0</span> &amp;&amp; side[<span class="hljs-number">1</span>] == <span class="hljs-number">0</span> &amp;&amp; side[<span class="hljs-number">2</span>] == <span class="hljs-number">0</span> &amp;&amp; side[<span class="hljs-number">3</span>] == <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">4</span>; j++) {
+            <span class="hljs-keyword">if</span> (nums[i] &gt; side[j]) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            side[j] -= nums[i];
+            <span class="hljs-keyword">if</span> (help(nums, i - <span class="hljs-number">1</span>, side)) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+            }
+            side[j] += nums[i];
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

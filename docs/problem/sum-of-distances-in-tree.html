@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Sum of Distances in Tree - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>834. Sum of Distances in Tree</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/tree">Tree</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/graph">Graph</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/distribute-coins-in-binary-tree.html">Distribute Coins in Binary Tree</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/count-nodes-with-the-highest-score.html">Count Nodes With the Highest Score</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is an undirected connected tree with <code>n</code> nodes labeled from <code>0</code> to <code>n - 1</code> and <code>n - 1</code> edges.</p>
+<p>You are given the integer <code>n</code> and the array <code>edges</code> where <code>edges[i] = [ai, bi]</code> indicates that there is an edge between nodes <code>ai</code> and <code>bi</code> in the tree.</p>
+<p>Return an array <code>answer</code> of length <code>n</code> where <code>answer[i]</code> is the sum of the distances between the <code>ith</code> node in the tree and all other nodes.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/07/23/lc-sumdist1.jpg" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">6</span>, edges = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>]]
+Output: [<span class="hljs-number">8</span>,<span class="hljs-number">12</span>,<span class="hljs-number">6</span>,<span class="hljs-number">10</span>,<span class="hljs-number">10</span>,<span class="hljs-number">10</span>]
+Explanation: The tree <span class="hljs-keyword">is</span> shown above.
+We can see that dist(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>) + dist(<span class="hljs-number">0</span>,<span class="hljs-number">2</span>) + dist(<span class="hljs-number">0</span>,<span class="hljs-number">3</span>) + dist(<span class="hljs-number">0</span>,<span class="hljs-number">4</span>) + dist(<span class="hljs-number">0</span>,<span class="hljs-number">5</span>)
+equals <span class="hljs-number">1</span> + <span class="hljs-number">1</span> + <span class="hljs-number">2</span> + <span class="hljs-number">2</span> + <span class="hljs-number">2</span> = <span class="hljs-number">8.</span>
+Hence, answer[<span class="hljs-number">0</span>] = <span class="hljs-number">8</span>, <span class="hljs-keyword">and</span> so on.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/07/23/lc-sumdist2.jpg" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span><span class="hljs-string">,</span> <span class="hljs-string">edges</span> <span class="hljs-string">=</span> <span class="hljs-string">[]</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-string">[0]</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/07/23/lc-sumdist3.jpg" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">2</span>, edges = [[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]]
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= n &lt;= 3 * 104</code></p></li>
+<li><p><code>edges.length == n - 1</code></p></li>
+<li><p><code>edges[i].length == 2</code></p></li>
+<li><p><code>0 &lt;= ai, bi &lt; n</code></p></li>
+<li><p><code>ai != bi</code></p></li>
+<li><p>The given input represents a valid tree.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> n;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] count;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] answer;
+    <span class="hljs-keyword">private</span> List&lt;Integer&gt;[] graph;
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">postorder</span><span class="hljs-params">(<span class="hljs-keyword">int</span> node, <span class="hljs-keyword">int</span> parent)</span> </span>{
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> child : graph[node]) {
+            <span class="hljs-keyword">if</span> (child != parent) {
+                postorder(child, node);
+                count[node] += count[child];
+                answer[node] += answer[child] + count[child];
+            }
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">preorder</span><span class="hljs-params">(<span class="hljs-keyword">int</span> node, <span class="hljs-keyword">int</span> parent)</span> </span>{
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> child : graph[node]) {
+            <span class="hljs-keyword">if</span> (child != parent) {
+                answer[child] = answer[node] - count[child] + n - count[child];
+                preorder(child, node);
+            }
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] sumOfDistancesInTree(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[][] edges) {
+        <span class="hljs-keyword">this</span>.n = n;
+        count = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        answer = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        graph = <span class="hljs-keyword">new</span> List[n];
+        Arrays.fill(count, <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            graph[i] = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] edge : edges) {
+            graph[edge[<span class="hljs-number">0</span>]].add(edge[<span class="hljs-number">1</span>]);
+            graph[edge[<span class="hljs-number">1</span>]].add(edge[<span class="hljs-number">0</span>]);
+        }
+        postorder(<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>);
+        preorder(<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>);
+        <span class="hljs-keyword">return</span> answer;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

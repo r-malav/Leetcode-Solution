@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Smallest Good Base - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>483. Smallest Good Base</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/math">Math</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/binary-search">Binary Search</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an integer <code>n</code> represented as a string, return **the smallest *<em>good base</em>* of** <code>n</code>.</p>
+<p>We call <code>k &gt;= 2</code> a <strong>good base</strong> of <code>n</code>, if all digits of <code>n</code> base <code>k</code> are <code>1</code>'s.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-string">"13"</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-string">"3"</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-number">13</span> <span class="hljs-string">base</span> <span class="hljs-number">3</span> <span class="hljs-string">is</span> <span class="hljs-number">111</span><span class="hljs-string">.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-string">"4681"</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-string">"8"</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-number">4681</span> <span class="hljs-string">base</span> <span class="hljs-number">8</span> <span class="hljs-string">is</span> <span class="hljs-number">11111</span><span class="hljs-string">.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-string">"1000000000000000000"</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-string">"999999999999999999"</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-number">1000000000000000000</span> <span class="hljs-string">base</span> <span class="hljs-number">999999999999999999</span> <span class="hljs-string">is</span> <span class="hljs-number">11</span><span class="hljs-string">.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n</code> is an integer in the range <code>[3, 1018]</code>.</p></li>
+<li><p><code>n</code> does not contain any leading zeros.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@param <span class="hljs-type">{string}</span> <span class="hljs-variable">n</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{string}</span></span>
+ */</span>
+<span class="hljs-keyword">var</span> smallestGoodBase = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">n</span>) </span>{
+   <span class="hljs-keyword">const</span> N = BigInt(n), bigint2 = BigInt(<span class="hljs-number">2</span>), bigint1 = BigInt(<span class="hljs-number">1</span>), bigint0 = BigInt(<span class="hljs-number">0</span>)
+   <span class="hljs-keyword">let</span> maxLen = countLength(N, bigint2) <span class="hljs-comment">// result at most maxLen 1s</span>
+   <span class="hljs-keyword">const</span> findInHalf = <span class="hljs-function">(<span class="hljs-params">length, smaller = bigint2, bigger = N</span>) =&gt;</span> {
+      <span class="hljs-keyword">if</span> (smaller &gt; bigger){
+         <span class="hljs-keyword">return</span> [<span class="hljs-literal">false</span>];
+      };
+      <span class="hljs-keyword">if</span> (smaller == bigger) {
+         <span class="hljs-keyword">return</span> [valueOf1s(smaller, length) == N, smaller]
+      };
+      <span class="hljs-keyword">let</span> mid = (smaller + bigger) / bigint2;
+      <span class="hljs-keyword">let</span> val = valueOf1s(mid, length);
+      <span class="hljs-keyword">if</span>(val == N){
+         <span class="hljs-keyword">return</span> [<span class="hljs-literal">true</span>, mid];
+      };
+      <span class="hljs-keyword">if</span> (val &gt; N){
+         <span class="hljs-keyword">return</span> findInHalf(length, smaller, mid - bigint1);
+      };
+      <span class="hljs-keyword">return</span> findInHalf(length, mid + bigint1, bigger);
+   };
+   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> length = maxLen; length &gt; <span class="hljs-number">0</span>; length--) {
+      <span class="hljs-keyword">let</span> [found, base] = findInHalf(length);
+      <span class="hljs-keyword">if</span>(found){
+         <span class="hljs-keyword">return</span> <span class="hljs-string">''</span> + base;
+      }
+   };
+   <span class="hljs-keyword">return</span> <span class="hljs-string">''</span> + (N - <span class="hljs-number">1</span>);
+   <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">valueOf1s</span>(<span class="hljs-params">base, lengthOf1s</span>) </span>{
+      <span class="hljs-keyword">let</span> t = bigint1
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">1</span>; i &lt; lengthOf1s; i++) {
+         t *= base
+         t += bigint1
+      }
+      <span class="hljs-keyword">return</span> t
+   }
+   <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">countLength</span>(<span class="hljs-params">N, base</span>) </span>{
+      <span class="hljs-keyword">let</span> t = N, len = <span class="hljs-number">0</span>
+      <span class="hljs-keyword">while</span> (t &gt; bigint0) {
+         t /= base
+         len++
+      }
+      <span class="hljs-keyword">return</span> len
+   }
+};
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -3,17 +3,17 @@
 <p>Each element in the array represents your maximum jump length at that position.</p>
 <p>Your goal is to reach the last index in the minimum number of jumps.</p>
 <p><strong>Example:</strong></p>
-<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>]
-Outpu<span class="hljs-variable">t:</span> <span class="hljs-number">2</span>
-Explanation: The minimum <span class="hljs-keyword">number</span> of <span class="hljs-keyword">jumps</span> <span class="hljs-keyword">to</span> reach the <span class="hljs-keyword">last</span> <span class="hljs-built_in">index</span> <span class="hljs-keyword">is</span> <span class="hljs-number">2</span>.
-    Jump <span class="hljs-number">1</span> step from <span class="hljs-built_in">index</span> <span class="hljs-number">0</span> <span class="hljs-keyword">to</span> <span class="hljs-number">1</span>, then <span class="hljs-number">3</span> steps <span class="hljs-keyword">to</span> the <span class="hljs-keyword">last</span> <span class="hljs-built_in">index</span>.
+<pre><code class="hljs">Input: [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>]
+Output: <span class="hljs-number">2</span>
+Explanation: The minimum number of jumps to reach the last index <span class="hljs-keyword">is</span> <span class="hljs-number">2.</span>
+    Jump <span class="hljs-number">1</span> step <span class="hljs-keyword">from</span> index <span class="hljs-number">0</span> to <span class="hljs-number">1</span>, then <span class="hljs-number">3</span> steps to the last index.
 </code></pre>
 <p><strong>Note:</strong></p>
 <p>You can assume that you can always reach the last index.</p>
 <h2 id="solution">Solution</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * @param {number[]} nums
- * @return {number}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">nums</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> jump = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">nums</span>) </span>{
   <span class="hljs-keyword">var</span> len = nums.length;

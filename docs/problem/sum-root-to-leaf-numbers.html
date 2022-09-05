@@ -2,7 +2,7 @@
 <p>Given a binary tree containing digits from <code>0-9</code> only, each root-to-leaf path could represent a number.</p>
 <p>An example is the root-to-leaf path <code>1-&gt;2-&gt;3</code> which represents the number <code>123</code>.</p>
 <p>Find the total sum of all root-to-leaf numbers.</p>
-<p><strong>Note:</strong> A leaf is a node with no children.</p>
+<p><strong>Note:</strong>&nbsp;A leaf is a node with no children.</p>
 <p><strong>Example:</strong></p>
 <pre><code class="hljs">Input: [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
     <span class="hljs-number">1</span>
@@ -10,23 +10,23 @@
   <span class="hljs-number">2</span>   <span class="hljs-number">3</span>
 Output: <span class="hljs-number">25</span>
 Explanation:
-The root-<span class="hljs-built_in">to</span>-leaf path <span class="hljs-number">1</span>-&gt;<span class="hljs-number">2</span> represents <span class="hljs-keyword">the</span> <span class="hljs-built_in">number</span> <span class="hljs-number">12.</span>
-The root-<span class="hljs-built_in">to</span>-leaf path <span class="hljs-number">1</span>-&gt;<span class="hljs-number">3</span> represents <span class="hljs-keyword">the</span> <span class="hljs-built_in">number</span> <span class="hljs-number">13.</span>
-Therefore, <span class="hljs-built_in">sum</span> = <span class="hljs-number">12</span> + <span class="hljs-number">13</span> = <span class="hljs-number">25.</span>
+The root-to-leaf path <span class="hljs-number">1</span>-&gt;<span class="hljs-number">2</span> represents the number <span class="hljs-number">12.</span>
+The root-to-leaf path <span class="hljs-number">1</span>-&gt;<span class="hljs-number">3</span> represents the number <span class="hljs-number">13.</span>
+Therefore, sum = <span class="hljs-number">12</span> + <span class="hljs-number">13</span> = <span class="hljs-number">25.</span>
 </code></pre>
 <p><strong>Example 2:</strong></p>
 <pre><code class="hljs">Input: [<span class="hljs-number">4</span>,<span class="hljs-number">9</span>,<span class="hljs-number">0</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>]
     <span class="hljs-number">4</span>
    / \
   <span class="hljs-number">9</span>   <span class="hljs-number">0</span>
- / \
+&amp;nbsp;/ \
 <span class="hljs-number">5</span>   <span class="hljs-number">1</span>
 Output: <span class="hljs-number">1026</span>
 Explanation:
-The root-<span class="hljs-built_in">to</span>-leaf path <span class="hljs-number">4</span>-&gt;<span class="hljs-number">9</span>-&gt;<span class="hljs-number">5</span> represents <span class="hljs-keyword">the</span> <span class="hljs-built_in">number</span> <span class="hljs-number">495.</span>
-The root-<span class="hljs-built_in">to</span>-leaf path <span class="hljs-number">4</span>-&gt;<span class="hljs-number">9</span>-&gt;<span class="hljs-number">1</span> represents <span class="hljs-keyword">the</span> <span class="hljs-built_in">number</span> <span class="hljs-number">491.</span>
-The root-<span class="hljs-built_in">to</span>-leaf path <span class="hljs-number">4</span>-&gt;<span class="hljs-number">0</span> represents <span class="hljs-keyword">the</span> <span class="hljs-built_in">number</span> <span class="hljs-number">40.</span>
-Therefore, <span class="hljs-built_in">sum</span> = <span class="hljs-number">495</span> + <span class="hljs-number">491</span> + <span class="hljs-number">40</span> = <span class="hljs-number">1026.</span>
+The root-to-leaf path <span class="hljs-number">4</span>-&gt;<span class="hljs-number">9</span>-&gt;<span class="hljs-number">5</span> represents the number <span class="hljs-number">495.</span>
+The root-to-leaf path <span class="hljs-number">4</span>-&gt;<span class="hljs-number">9</span>-&gt;<span class="hljs-number">1</span> represents the number <span class="hljs-number">491.</span>
+The root-to-leaf path <span class="hljs-number">4</span>-&gt;<span class="hljs-number">0</span> represents the number <span class="hljs-number">40.</span>
+Therefore, sum = <span class="hljs-number">495</span> + <span class="hljs-number">491</span> + <span class="hljs-number">40</span> = <span class="hljs-number">1026.</span>
 </code></pre>
 <h2 id="solution">Solution</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
@@ -37,8 +37,8 @@ Therefore, <span class="hljs-built_in">sum</span> = <span class="hljs-number">49
  * }
  */</span>
 <span class="hljs-comment">/**
- * @param {TreeNode} root
- * @return {number}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{TreeNode}</span> <span class="hljs-variable">root</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> sumNumbers = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">root</span>) </span>{
   <span class="hljs-keyword">return</span> sum(<span class="hljs-number">0</span>, root);

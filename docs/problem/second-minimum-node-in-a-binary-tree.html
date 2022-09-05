@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Second Minimum Node In a Binary Tree - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>671. Second Minimum Node In a Binary Tree</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/tree">Tree</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/binary-tree">Binary Tree</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/kth-smallest-element-in-a-bst.html">Kth Smallest Element in a BST</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a non-empty special binary tree consisting of nodes with the non-negative value, where each node in this tree has exactly <code>two</code> or <code>zero</code> sub-node. If the node has two sub-nodes, then this node's value is the smaller value among its two sub-nodes. More formally, the property&nbsp;<code>root.val = min(root.left.val, root.right.val)</code>&nbsp;always holds.</p>
+<p>Given such a binary tree, you need to output the <strong>second minimum</strong> value in the set made of all the nodes' value in the whole tree.</p>
+<p>If no such second minimum value exists, output -1 instead.</p>
+<p>&nbsp;</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/10/15/smbt1.jpg" alt="" /></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">5</span>,<span class="hljs-number">7</span>]
+Output: <span class="hljs-number">5</span>
+Explanation: The smallest value <span class="hljs-keyword">is</span> <span class="hljs-number">2</span>, the second smallest value <span class="hljs-keyword">is</span> <span class="hljs-number">5.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/10/15/smbt2.jpg" alt="" /></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]
+Output: <span class="hljs-number">-1</span>
+Explanation: The smallest value <span class="hljs-keyword">is</span> <span class="hljs-number">2</span>, but there isn<span class="hljs-string">'t any second smallest value.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p>The number of nodes in the tree is in the range <code>[1, 25]</code>.</p></li>
+<li><p><code>1 &lt;= Node.val &lt;= 231 - 1</code></p></li>
+<li><p><code>root.val == min(root.left.val, root.right.val)</code>&nbsp;for each internal node of the tree.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">int</span> min = Integer.MAX_VALUE;
+    <span class="hljs-keyword">int</span> secMin = -<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">int</span> diff = Integer.MAX_VALUE;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">findSecondMinimumValue</span><span class="hljs-params">(TreeNode root)</span> </span>{
+        <span class="hljs-keyword">if</span> (root == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">if</span> (root.val &lt; min) {
+            min = root.val;
+        }
+        <span class="hljs-keyword">if</span> (root.val != min &amp;&amp; Math.abs(root.val - min) &lt; diff) {
+            secMin = root.val;
+            diff = Math.abs(root.val - min);
+        }
+        findSecondMinimumValue(root.left);
+        findSecondMinimumValue(root.right);
+        <span class="hljs-keyword">return</span> secMin;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

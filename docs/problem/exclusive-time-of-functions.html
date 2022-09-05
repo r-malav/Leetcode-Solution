@@ -1,0 +1,97 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Exclusive Time of Functions - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>636. Exclusive Time of Functions</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/stack">Stack</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>On a <strong>single-threaded</strong> CPU, we execute a program containing <code>n</code> functions. Each function has a unique ID between <code>0</code> and <code>n-1</code>.</p>
+<p>Function calls are <strong>stored in a call stack</strong>: when a function call starts, its ID is pushed onto the stack, and when a function call ends, its ID is popped off the stack. The function whose ID is at the top of the stack is <strong>the current function being executed</strong>. Each time a function starts or ends, we write a log with the ID, whether it started or ended, and the timestamp.</p>
+<p>You are given a list <code>logs</code>, where <code>logs[i]</code> represents the <code>ith</code> log message formatted as a string <code>"{function_id}:{"start" | "end"}:{timestamp}"</code>. For example, <code>"0:start:3"</code> means a function call with function ID <code>0</code> <strong>started at the beginning</strong> of timestamp <code>3</code>, and <code>"1:end:2"</code> means a function call with function ID <code>1</code> <strong>ended at the end</strong> of timestamp <code>2</code>. Note that a function can be called <strong>multiple times, possibly recursively</strong>.</p>
+<p>A function's <strong>exclusive time</strong> is the sum of execution times for all function calls in the program. For example, if a function is called twice, one call executing for <code>2</code> time units and another call executing for <code>1</code> time unit, the <strong>exclusive time</strong> is <code>2 + 1 = 3</code>.</p>
+<p>Return **the *<em>exclusive time</em>* of each function in an array, where the value at the <strong><code>ith</code></strong> index represents the exclusive time for the function with ID **<code>i</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/04/05/diag1b.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">2</span>, logs = [<span class="hljs-string">"0:start:0"</span>,<span class="hljs-string">"1:start:2"</span>,<span class="hljs-string">"1:end:5"</span>,<span class="hljs-string">"0:end:6"</span>]
+Output: [<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+Explanation:
+Function <span class="hljs-number">0</span> starts <span class="hljs-keyword">at</span> <span class="hljs-keyword">the</span> beginning <span class="hljs-keyword">of</span> <span class="hljs-built_in">time</span> <span class="hljs-number">0</span>, <span class="hljs-keyword">then</span> <span class="hljs-keyword">it</span> executes <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> units <span class="hljs-keyword">of</span> <span class="hljs-built_in">time</span> <span class="hljs-keyword">and</span> reaches <span class="hljs-keyword">the</span> <span class="hljs-function"><span class="hljs-keyword">end</span> <span class="hljs-title">of</span> <span class="hljs-title">time</span> <span class="hljs-title">1</span>.</span>
+Function <span class="hljs-number">1</span> starts <span class="hljs-keyword">at</span> <span class="hljs-keyword">the</span> beginning <span class="hljs-keyword">of</span> <span class="hljs-built_in">time</span> <span class="hljs-number">2</span>, executes <span class="hljs-keyword">for</span> <span class="hljs-number">4</span> units <span class="hljs-keyword">of</span> <span class="hljs-built_in">time</span>, <span class="hljs-keyword">and</span> <span class="hljs-keyword">ends</span> <span class="hljs-keyword">at</span> <span class="hljs-keyword">the</span> <span class="hljs-function"><span class="hljs-keyword">end</span> <span class="hljs-title">of</span> <span class="hljs-title">time</span> <span class="hljs-title">5</span>.</span>
+Function <span class="hljs-number">0</span> resumes execution <span class="hljs-keyword">at</span> <span class="hljs-keyword">the</span> beginning <span class="hljs-keyword">of</span> <span class="hljs-built_in">time</span> <span class="hljs-number">6</span> <span class="hljs-keyword">and</span> executes <span class="hljs-keyword">for</span> <span class="hljs-number">1</span> unit <span class="hljs-keyword">of</span> <span class="hljs-built_in">time</span>.
+So <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">0</span> <span class="hljs-title">spends</span> <span class="hljs-title">2</span> + <span class="hljs-title">1</span> = <span class="hljs-title">3</span> <span class="hljs-title">units</span> <span class="hljs-title">of</span> <span class="hljs-title">total</span> <span class="hljs-title">time</span> <span class="hljs-title">executing</span>, <span class="hljs-title">and</span> <span class="hljs-title">function</span> <span class="hljs-title">1</span> <span class="hljs-title">spends</span> <span class="hljs-title">4</span> <span class="hljs-title">units</span> <span class="hljs-title">of</span> <span class="hljs-title">total</span> <span class="hljs-title">time</span> <span class="hljs-title">executing</span>.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">1</span>, logs = [<span class="hljs-string">"0:start:0"</span>,<span class="hljs-string">"0:start:2"</span>,<span class="hljs-string">"0:end:5"</span>,<span class="hljs-string">"0:start:6"</span>,<span class="hljs-string">"0:end:6"</span>,<span class="hljs-string">"0:end:7"</span>]
+Output: [<span class="hljs-number">8</span>]
+Explanation:
+<span class="hljs-keyword">Function</span> <span class="hljs-number">0</span> starts at the beginning of <span class="hljs-built_in">time</span> <span class="hljs-number">0</span>, executes <span class="hljs-keyword">for</span> <span class="hljs-number">2</span> units of <span class="hljs-built_in">time</span>, <span class="hljs-keyword">and</span> recursively calls itself.
+<span class="hljs-keyword">Function</span> <span class="hljs-number">0</span> (recursive <span class="hljs-keyword">call</span>) starts at the beginning of <span class="hljs-built_in">time</span> <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> executes <span class="hljs-keyword">for</span> <span class="hljs-number">4</span> units of <span class="hljs-built_in">time</span>.
+<span class="hljs-keyword">Function</span> <span class="hljs-number">0</span> (initial <span class="hljs-keyword">call</span>) resumes execution <span class="hljs-keyword">then</span> immediately calls itself again.
+<span class="hljs-keyword">Function</span> <span class="hljs-number">0</span> (<span class="hljs-number">2</span>nd recursive <span class="hljs-keyword">call</span>) starts at the beginning of <span class="hljs-built_in">time</span> <span class="hljs-number">6</span> <span class="hljs-keyword">and</span> executes <span class="hljs-keyword">for</span> <span class="hljs-number">1</span> unit of <span class="hljs-built_in">time</span>.
+<span class="hljs-keyword">Function</span> <span class="hljs-number">0</span> (initial <span class="hljs-keyword">call</span>) resumes execution at the beginning of <span class="hljs-built_in">time</span> <span class="hljs-number">7</span> <span class="hljs-keyword">and</span> executes <span class="hljs-keyword">for</span> <span class="hljs-number">1</span> unit of <span class="hljs-built_in">time</span>.
+So <span class="hljs-keyword">function</span> <span class="hljs-number">0</span> spends <span class="hljs-number">2</span> + <span class="hljs-number">4</span> + <span class="hljs-number">1</span> + <span class="hljs-number">1</span> = <span class="hljs-number">8</span> units of total <span class="hljs-built_in">time</span> executing.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">2</span>, logs = [<span class="hljs-string">"0:start:0"</span>,<span class="hljs-string">"0:start:2"</span>,<span class="hljs-string">"0:end:5"</span>,<span class="hljs-string">"1:start:6"</span>,<span class="hljs-string">"1:end:6"</span>,<span class="hljs-string">"0:end:7"</span>]
+Output: [<span class="hljs-number">7</span>,<span class="hljs-number">1</span>]
+Explanation:
+Function <span class="hljs-number">0</span> starts <span class="hljs-keyword">at</span> <span class="hljs-keyword">the</span> beginning <span class="hljs-keyword">of</span> <span class="hljs-built_in">time</span> <span class="hljs-number">0</span>, executes <span class="hljs-keyword">for</span> <span class="hljs-number">2</span> units <span class="hljs-keyword">of</span> <span class="hljs-built_in">time</span>, <span class="hljs-keyword">and</span> recursively calls itself.
+Function <span class="hljs-number">0</span> (recursive call) starts <span class="hljs-keyword">at</span> <span class="hljs-keyword">the</span> beginning <span class="hljs-keyword">of</span> <span class="hljs-built_in">time</span> <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> executes <span class="hljs-keyword">for</span> <span class="hljs-number">4</span> units <span class="hljs-keyword">of</span> <span class="hljs-built_in">time</span>.
+Function <span class="hljs-number">0</span> (initial call) resumes execution <span class="hljs-keyword">then</span> immediately calls <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">1</span>.</span>
+Function <span class="hljs-number">1</span> starts <span class="hljs-keyword">at</span> <span class="hljs-keyword">the</span> beginning <span class="hljs-keyword">of</span> <span class="hljs-built_in">time</span> <span class="hljs-number">6</span>, executes <span class="hljs-number">1</span> unit <span class="hljs-keyword">of</span> <span class="hljs-built_in">time</span>, <span class="hljs-keyword">and</span> <span class="hljs-keyword">ends</span> <span class="hljs-keyword">at</span> <span class="hljs-keyword">the</span> <span class="hljs-function"><span class="hljs-keyword">end</span> <span class="hljs-title">of</span> <span class="hljs-title">time</span> <span class="hljs-title">6</span>.</span>
+Function <span class="hljs-number">0</span> resumes execution <span class="hljs-keyword">at</span> <span class="hljs-keyword">the</span> beginning <span class="hljs-keyword">of</span> <span class="hljs-built_in">time</span> <span class="hljs-number">6</span> <span class="hljs-keyword">and</span> executes <span class="hljs-keyword">for</span> <span class="hljs-number">2</span> units <span class="hljs-keyword">of</span> <span class="hljs-built_in">time</span>.
+So <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">0</span> <span class="hljs-title">spends</span> <span class="hljs-title">2</span> + <span class="hljs-title">4</span> + <span class="hljs-title">1</span> = <span class="hljs-title">7</span> <span class="hljs-title">units</span> <span class="hljs-title">of</span> <span class="hljs-title">total</span> <span class="hljs-title">time</span> <span class="hljs-title">executing</span>, <span class="hljs-title">and</span> <span class="hljs-title">function</span> <span class="hljs-title">1</span> <span class="hljs-title">spends</span> <span class="hljs-title">1</span> <span class="hljs-title">unit</span> <span class="hljs-title">of</span> <span class="hljs-title">total</span> <span class="hljs-title">time</span> <span class="hljs-title">executing</span>.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= n &lt;= 100</code></p></li>
+<li><p><code>1 &lt;= logs.length &lt;= 500</code></p></li>
+<li><p><code>0 &lt;= function_id &lt; n</code></p></li>
+<li><p><code>0 &lt;= timestamp &lt;= 109</code></p></li>
+<li><p>No two start events will happen at the same timestamp.</p></li>
+<li><p>No two end events will happen at the same timestamp.</p></li>
+<li><p>Each function has an <code>"end"</code> log for each <code>"start"</code> log.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] exclusiveTime(<span class="hljs-keyword">int</span> n, List&lt;String&gt; logs) {
+        Deque&lt;Log&gt; stack = <span class="hljs-keyword">new</span> ArrayDeque&lt;&gt;();
+        <span class="hljs-keyword">int</span>[] result = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        <span class="hljs-keyword">for</span> (String content : logs) {
+            Log log = <span class="hljs-keyword">new</span> Log(content);
+            <span class="hljs-keyword">if</span> (log.isStart) {
+                stack.push(log);
+            } <span class="hljs-keyword">else</span> {
+                Log top = stack.pop();
+                <span class="hljs-keyword">int</span> executionTime = log.time - top.time + <span class="hljs-number">1</span>;
+                result[top.id] += executionTime - top.waitingTime;
+                <span class="hljs-keyword">if</span> (!stack.isEmpty()) {
+                    stack.peek().waitingTime += executionTime;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> result;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Log</span> </span>{
+        <span class="hljs-keyword">int</span> id;
+        <span class="hljs-keyword">boolean</span> isStart;
+        <span class="hljs-keyword">int</span> time;
+        <span class="hljs-keyword">int</span> waitingTime;
+
+        Log(String content) {
+
+            String[] tokens = content.split(<span class="hljs-string">":"</span>);
+
+            id = Integer.parseInt(tokens[<span class="hljs-number">0</span>]);
+            isStart = tokens[<span class="hljs-number">1</span>].equals(<span class="hljs-string">"start"</span>);
+            time = Integer.parseInt(tokens[<span class="hljs-number">2</span>]);
+
+            waitingTime = <span class="hljs-number">0</span>;
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

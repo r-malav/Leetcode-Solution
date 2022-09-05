@@ -2,20 +2,26 @@
 <p>You are playing the following Nim Game with your friend: There is a heap of stones on the table, each time one of you take turns to remove 1 to 3 stones. The one who removes the last stone will be the winner. You will take the first turn to remove the stones.</p>
 <p>Both of you are very clever and have optimal strategies for the game. Write a function to determine whether you can win the game given the number of stones in the heap.</p>
 <p><strong>Example:</strong></p>
-<pre><code class="hljs">Input: <span class="hljs-number">4</span>
-Output: <span class="hljs-keyword">false</span> 
-Explanation: <span class="hljs-keyword">If</span> there are <span class="hljs-number">4</span> stones <span class="hljs-keyword">in</span> the heap, <span class="hljs-keyword">then</span> you will never win the game;
-             No matter <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">or</span> <span class="hljs-number">3</span> stones you <span class="hljs-keyword">remove</span>, the last stone will always be 
-             removed <span class="hljs-keyword">by</span> your friend.
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-number">4</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-literal">false</span> 
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">If</span> <span class="hljs-string">there</span> <span class="hljs-string">are</span> <span class="hljs-number">4</span> <span class="hljs-string">stones</span> <span class="hljs-string">in</span> <span class="hljs-string">the</span> <span class="hljs-string">heap,</span> <span class="hljs-string">then</span> <span class="hljs-string">you</span> <span class="hljs-string">will</span> <span class="hljs-string">never</span> <span class="hljs-string">win</span> <span class="hljs-string">the</span> <span class="hljs-string">game;</span>
+<span class="hljs-string">&amp;nbsp;</span>            <span class="hljs-literal">No</span> <span class="hljs-string">matter</span> <span class="hljs-number">1</span><span class="hljs-string">,</span> <span class="hljs-number">2</span><span class="hljs-string">,</span> <span class="hljs-string">or</span> <span class="hljs-number">3</span> <span class="hljs-string">stones</span> <span class="hljs-string">you</span> <span class="hljs-string">remove,</span> <span class="hljs-string">the</span> <span class="hljs-string">last</span> <span class="hljs-string">stone</span> <span class="hljs-string">will</span> <span class="hljs-string">always</span> <span class="hljs-string">be</span> 
+<span class="hljs-string">&amp;nbsp;</span>            <span class="hljs-string">removed</span> <span class="hljs-string">by</span> <span class="hljs-string">your</span> <span class="hljs-string">friend.</span>
 </code></pre>
 <h2 id="solution">Solution</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * @param {number} n
- * @return {boolean}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">n</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{boolean}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> canWinNim = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">n</span>) </span>{
     <span class="hljs-keyword">return</span> n % <span class="hljs-number">4</span> ? <span class="hljs-literal">true</span> : <span class="hljs-literal">false</span>;
 };
+</code></pre>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">canWinNim</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-keyword">return</span> n % <span class="hljs-number">4</span> != <span class="hljs-number">0</span>;
+    }
+}
 </code></pre>
 <p><strong>Explain:</strong></p>
 <p>nope.</p>

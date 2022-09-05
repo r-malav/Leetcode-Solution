@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Product of Word Lengths - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>318. Maximum Product of Word Lengths</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/bit-manipulation">Bit Manipulation</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a string array <code>words</code>, return <strong>the maximum value of</strong> <code>length(word[i]) * length(word[j])</code> <strong>where the two words do not share common letters</strong>. If no such two words exist, return <code>0</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> words = [<span class="hljs-string">"abcw"</span>,<span class="hljs-string">"baz"</span>,<span class="hljs-string">"foo"</span>,<span class="hljs-string">"bar"</span>,<span class="hljs-string">"xtfn"</span>,<span class="hljs-string">"abcdef"</span>]
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">16</span>
+<span class="hljs-symbol">Explanation:</span> The two words can be <span class="hljs-string">"abcw"</span>, <span class="hljs-string">"xtfn"</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> words = [<span class="hljs-string">"a"</span>,<span class="hljs-string">"ab"</span>,<span class="hljs-string">"abc"</span>,<span class="hljs-string">"d"</span>,<span class="hljs-string">"cd"</span>,<span class="hljs-string">"bcd"</span>,<span class="hljs-string">"abcd"</span>]
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">4</span>
+<span class="hljs-symbol">Explanation:</span> The two words can be <span class="hljs-string">"ab"</span>, <span class="hljs-string">"cd"</span>.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> words = [<span class="hljs-string">"a"</span>,<span class="hljs-string">"aa"</span>,<span class="hljs-string">"aaa"</span>,<span class="hljs-string">"aaaa"</span>]
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">0</span>
+<span class="hljs-symbol">Explanation:</span> No such pair of words.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>2 &lt;= words.length &lt;= 1000</code></p></li>
+<li><p><code>1 &lt;= words[i].length &lt;= 1000</code></p></li>
+<li><p><code>words[i]</code> consists only of lowercase English letters.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxProduct</span><span class="hljs-params">(String[] words)</span> </span>{
+        <span class="hljs-keyword">int</span> n = words.length;
+        <span class="hljs-keyword">int</span> res = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span>[] masks = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            masks[i] = getMask(words[i]);
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = i + <span class="hljs-number">1</span>; j &lt; n; j++) {
+                <span class="hljs-keyword">if</span> ((masks[i] &amp; masks[j]) == <span class="hljs-number">0</span>) {
+                    res = Math.max(res, words[i].length() * words[j].length());
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getMask</span><span class="hljs-params">(String s)</span> </span>{
+        <span class="hljs-keyword">int</span> mask = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+            <span class="hljs-keyword">char</span> c = s.charAt(i);
+            mask = mask | (<span class="hljs-number">1</span> &lt;&lt; (c - <span class="hljs-string">'a'</span>));
+        }
+        <span class="hljs-keyword">return</span> mask;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

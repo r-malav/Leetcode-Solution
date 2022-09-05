@@ -2,15 +2,15 @@
 <p>Given an array where elements are sorted in ascending order, convert it to a height balanced BST.</p>
 <p>For this problem, a height-balanced binary tree is defined as a binary tree in which the depth of the two subtrees of <strong>every</strong> node never differ by more than 1.</p>
 <p><strong>Example:</strong></p>
-<pre><code class="hljs">Given the sorted array: [<span class="hljs-string">-10</span>,<span class="hljs-string">-3</span>,0,5,9],
+<pre><code class="hljs">Given the sorted <span class="hljs-built_in">array</span>: [<span class="hljs-number">-10</span>,<span class="hljs-number">-3</span>,<span class="hljs-number">0</span>,<span class="hljs-number">5</span>,<span class="hljs-number">9</span>],
 
-One possible answer is: [0,<span class="hljs-string">-3</span>,9,<span class="hljs-string">-10</span>,null,5], which represents the following height balanced BST:
+One possible answer <span class="hljs-keyword">is</span>: [<span class="hljs-number">0</span>,<span class="hljs-number">-3</span>,<span class="hljs-number">9</span>,<span class="hljs-number">-10</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">5</span>], which represents the following height balanced BST:
 
-      0
+      <span class="hljs-number">0</span>
      / \
-   <span class="hljs-string">-3</span>   9
+   <span class="hljs-number">-3</span>   <span class="hljs-number">9</span>
    /   /
- <span class="hljs-string">-10</span>  5
+ <span class="hljs-number">-10</span>  <span class="hljs-number">5</span>
 </code></pre>
 <h2 id="solution">Solution</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
@@ -21,8 +21,8 @@ One possible answer is: [0,<span class="hljs-string">-3</span>,9,<span class="hl
  * }
  */</span>
 <span class="hljs-comment">/**
- * @param {number[]} nums
- * @return {TreeNode}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">nums</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{TreeNode}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> sortedArrayToBST = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">nums</span>) </span>{
   <span class="hljs-keyword">return</span> helper(nums, <span class="hljs-number">0</span>, nums.length - <span class="hljs-number">1</span>);

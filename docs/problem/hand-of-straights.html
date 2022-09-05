@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Hand of Straights - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>846. Hand of Straights</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/hash-table">Hash Table</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/greedy">Greedy</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Alice has some number of cards and she wants to rearrange the cards into groups so that each group is of size <code>groupSize</code>, and consists of <code>groupSize</code> consecutive cards.</p>
+<p>Given an integer array <code>hand</code> where <code>hand[i]</code> is the value written on the <code>ith</code> card and an integer <code>groupSize</code>, return <code>true</code> if she can rearrange the cards, or <code>false</code> otherwise.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: hand = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>], groupSize = <span class="hljs-number">3</span>
+Output: <span class="hljs-literal">true</span>
+Explanation: Alice<span class="hljs-string">'s hand can be rearranged as [1,2,3],[2,3,4],[6,7,8]</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">hand</span> <span class="hljs-string">=</span> <span class="hljs-string">[1,2,3,4,5],</span> <span class="hljs-string">groupSize</span> <span class="hljs-string">=</span> <span class="hljs-number">4</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-literal">false</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">Alice's</span> <span class="hljs-string">hand</span> <span class="hljs-string">can</span> <span class="hljs-string">not</span> <span class="hljs-string">be</span> <span class="hljs-string">rearranged</span> <span class="hljs-string">into</span> <span class="hljs-string">groups</span> <span class="hljs-string">of</span> <span class="hljs-number">4</span><span class="hljs-string">.</span>
+
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= hand.length &lt;= 104</code></p></li>
+<li><p><code>0 &lt;= hand[i] &lt;= 109</code></p></li>
+<li><p><code>1 &lt;= groupSize &lt;= hand.length</code></p></li>
+</ul>
+<p>&nbsp;
+<strong>Note:</strong> This question is the same as 1296: https://leetcode.com/problems/divide-array-in-sets-of-k-consecutive-numbers/</p>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isNStraightHand</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] hand, <span class="hljs-keyword">int</span> groupSize)</span> </span>{
+        <span class="hljs-keyword">int</span> len = hand.length;
+        <span class="hljs-keyword">if</span> (len % groupSize != <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+        }
+        Arrays.sort(hand);
+        Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> num : hand) {
+            <span class="hljs-keyword">int</span> cnt = map.getOrDefault(num, <span class="hljs-number">0</span>);
+            map.put(num, ++cnt);
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> num : hand) {
+            <span class="hljs-keyword">int</span> cnt = map.get(num);
+            <span class="hljs-keyword">if</span> (cnt &lt;= <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            map.put(num, --cnt);
+
+            <span class="hljs-keyword">int</span> loop = <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">while</span> (loop &lt; groupSize) {
+                <span class="hljs-keyword">int</span> curCnt = map.getOrDefault(num + loop, <span class="hljs-number">0</span>);
+                <span class="hljs-keyword">if</span> (curCnt &lt;= <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+                }
+                map.put(num + loop, --curCnt);
+                ++loop;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

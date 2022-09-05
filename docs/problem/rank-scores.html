@@ -18,37 +18,14 @@
 |<span class="hljs-string"> 4.00  </span>|<span class="hljs-string"> 1    </span>|
 |<span class="hljs-string"> 4.00  </span>|<span class="hljs-string"> 1    </span>|
 |<span class="hljs-string"> 3.85  </span>|<span class="hljs-string"> 2    </span>|
-|<span class="hljs-string"> 3.65  </span>|<span class="hljs-string"> 3    </span>|
+|<span class="hljs-string">&amp;nbsp;3.65  </span>|<span class="hljs-string"> 3    </span>|
 |<span class="hljs-string"> 3.65  </span>|<span class="hljs-string"> 3    </span>|
 |<span class="hljs-string"> 3.50  </span>|<span class="hljs-string"> 4    </span>|
 +-------+------+
 </code></pre>
-<h2 id="solution-1">Solution 1</h2>
+<h2 id="solution">Solution</h2>
 <pre><code class="hljs lang-javascript"># Write your MySQL query statement below
-SELECT
-  Score,
-  (SELECT count(distinct Score) FROM Scores WHERE Score &gt;= s.Score) as Rank
-FROM
-  Scores s
-ORDER BY
-  Score DESC
-</code></pre>
-<p><strong>Explain:</strong></p>
-<p>nope.</p>
-<p><strong>Complexity:</strong></p>
-<ul>
-<li>Time complexity :</li>
-<li>Space complexity :</li>
-</ul>
-<h2 id="solution-2">Solution 2</h2>
-<pre><code class="hljs lang-javascript"># Write your MySQL query statement below
-SELECT
-  Score,
-  (SELECT count(*) FROM (SELECT distinct Score as s FROM Scores) tmp WHERE s &gt;= Score) as Rank
-FROM
-  Scores
-ORDER BY
-  Score DESC
+select Score, DENSE_RANK() OVER(order by Score Desc) as "Rank" from Scores order by "Rank" Asc;
 </code></pre>
 <p><strong>Explain:</strong></p>
 <p>nope.</p>

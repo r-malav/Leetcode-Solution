@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>My Calendar III - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>732. My Calendar III</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/binary-search">Binary Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/design">Design</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/segment-tree">Segment Tree</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/ordered-set">Ordered Set</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/my-calendar-i.html">My Calendar I</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/my-calendar-ii.html">My Calendar II</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/count-integers-in-intervals.html">Count Integers in Intervals</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A <code>k</code>-booking happens when <code>k</code> events have some non-empty intersection (i.e., there is some time that is common to all <code>k</code> events.)</p>
+<p>You are given some events <code>[start, end)</code>, after each given event, return an integer <code>k</code> representing the maximum <code>k</code>-booking between all the previous events.</p>
+<p>Implement the <code>MyCalendarThree</code> class:</p>
+<ul>
+<li><p><code>MyCalendarThree()</code> Initializes the object.</p></li>
+<li><p><code>int book(int start, int end)</code> Returns an integer <code>k</code> representing the largest integer such that there exists a <code>k</code>-booking in the calendar.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input
+[<span class="hljs-string">"MyCalendarThree"</span>, <span class="hljs-string">"book"</span>, <span class="hljs-string">"book"</span>, <span class="hljs-string">"book"</span>, <span class="hljs-string">"book"</span>, <span class="hljs-string">"book"</span>, <span class="hljs-string">"book"</span>]
+[[], [<span class="hljs-number">10</span>, <span class="hljs-number">20</span>], [<span class="hljs-number">50</span>, <span class="hljs-number">60</span>], [<span class="hljs-number">10</span>, <span class="hljs-number">40</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">15</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">10</span>], [<span class="hljs-number">25</span>, <span class="hljs-number">55</span>]]
+Output
+[<span class="hljs-literal">null</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>]
+
+Explanation
+MyCalendarThree myCalendarThree = new MyCalendarThree();
+myCalendarThree.book(<span class="hljs-number">10</span>, <span class="hljs-number">20</span>); <span class="hljs-comment">// return 1, The first event can be booked and is disjoint, so the maximum k-booking is a 1-booking.</span>
+myCalendarThree.book(<span class="hljs-number">50</span>, <span class="hljs-number">60</span>); <span class="hljs-comment">// return 1, The second event can be booked and is disjoint, so the maximum k-booking is a 1-booking.</span>
+myCalendarThree.book(<span class="hljs-number">10</span>, <span class="hljs-number">40</span>); <span class="hljs-comment">// return 2, The third event [10, 40) intersects the first event, and the maximum k-booking is a 2-booking.</span>
+myCalendarThree.book(<span class="hljs-number">5</span>, <span class="hljs-number">15</span>); <span class="hljs-comment">// return 3, The remaining events cause the maximum K-booking to be only a 3-booking.</span>
+myCalendarThree.book(<span class="hljs-number">5</span>, <span class="hljs-number">10</span>); <span class="hljs-comment">// return 3</span>
+myCalendarThree.book(<span class="hljs-number">25</span>, <span class="hljs-number">55</span>); <span class="hljs-comment">// return 3</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>0 &lt;= start &lt; end &lt;= 109</code></p></li>
+<li><p>At most <code>400</code> calls will be made to <code>book</code>.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-javascript">
+<span class="hljs-keyword">var</span> MyCalendarThree = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">this</span>.list = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>();
+};
+
+<span class="hljs-comment">/** 
+ * @param {number} start 
+ * @param {number} end
+ * @return {number}
+ */</span>
+MyCalendarThree.prototype.book = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">start, end</span>) </span>{
+    <span class="hljs-keyword">let</span> tmp = <span class="hljs-keyword">this</span>.list.get(start);
+    tmp = tmp === <span class="hljs-literal">undefined</span> ? <span class="hljs-number">1</span> : ++tmp;
+    <span class="hljs-keyword">this</span>.list.set(start, tmp);
+    tmp = <span class="hljs-keyword">this</span>.list.get(end);
+    tmp = tmp === <span class="hljs-literal">undefined</span> ? <span class="hljs-number">-1</span> : --tmp;
+    <span class="hljs-keyword">this</span>.list.set(end, tmp);
+
+    <span class="hljs-keyword">let</span> tmpList = <span class="hljs-built_in">Array</span>.from(<span class="hljs-keyword">this</span>.list);
+    tmpList.sort(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);
+
+    <span class="hljs-keyword">let</span> max = <span class="hljs-number">0</span>, val = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; tmpList.length; ++i){
+        <span class="hljs-keyword">let</span> tmp = tmpList[i][<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">if</span>(tmp !== <span class="hljs-literal">undefined</span>){
+            val += tmp;
+            max = <span class="hljs-built_in">Math</span>.max(max, val);
+        }
+    }
+    <span class="hljs-keyword">return</span> max;
+};
+
+<span class="hljs-comment">/** 
+ * Your MyCalendarThree object will be instantiated and called as such:
+ * var obj = new MyCalendarThree()
+ * var param_1 = obj.book(start,end)
+ */</span>
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

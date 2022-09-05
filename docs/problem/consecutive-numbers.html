@@ -20,15 +20,15 @@
 +-----------------+</span>
 </code></pre>
 <h2 id="solution-1">Solution 1</h2>
-<pre><code class="hljs lang-sql"># Write your MySQL query statement below
-select distinct A.Num as ConsecutiveNums
-  from Logs A
-  left join logs B
-    on A.Id = B.Id - 1
-  left join logs C
-    on B.Id = C.Id - 1
-  where A.Num = B.Num
-    and B.Num = C.Num
+<pre><code class="hljs lang-sql"><span class="hljs-comment"># Write your MySQL query statement below</span>
+<span class="hljs-keyword">select</span> <span class="hljs-keyword">distinct</span> A.Num <span class="hljs-keyword">as</span> ConsecutiveNums
+  <span class="hljs-keyword">from</span> <span class="hljs-keyword">Logs</span> A
+  <span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span> <span class="hljs-keyword">logs</span> B
+    <span class="hljs-keyword">on</span> A.Id = B.Id - <span class="hljs-number">1</span>
+  <span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span> <span class="hljs-keyword">logs</span> C
+    <span class="hljs-keyword">on</span> B.Id = C.Id - <span class="hljs-number">1</span>
+  <span class="hljs-keyword">where</span> A.Num = B.Num
+    <span class="hljs-keyword">and</span> B.Num = C.Num
 </code></pre>
 <p><strong>Explain:</strong></p>
 <p>nope.</p>
@@ -38,13 +38,13 @@ select distinct A.Num as ConsecutiveNums
 <li>Space complexity :</li>
 </ul>
 <h2 id="solution-2">Solution 2</h2>
-<pre><code class="hljs lang-sql"># Write your MySQL query statement below
-select distinct A.Num as ConsecutiveNums
-  from Logs A, logs B, logs C
-  where A.Num = B.Num
-    and B.Num = C.Num
-    and A.Id = B.Id - 1
-    and B.Id = C.Id - 1
+<pre><code class="hljs lang-sql"><span class="hljs-comment"># Write your MySQL query statement below</span>
+<span class="hljs-keyword">select</span> <span class="hljs-keyword">distinct</span> A.Num <span class="hljs-keyword">as</span> ConsecutiveNums
+  <span class="hljs-keyword">from</span> <span class="hljs-keyword">Logs</span> A, <span class="hljs-keyword">logs</span> B, <span class="hljs-keyword">logs</span> C
+  <span class="hljs-keyword">where</span> A.Num = B.Num
+    <span class="hljs-keyword">and</span> B.Num = C.Num
+    <span class="hljs-keyword">and</span> A.Id = B.Id - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">and</span> B.Id = C.Id - <span class="hljs-number">1</span>
 </code></pre>
 <p><strong>Explain:</strong></p>
 <p>nope.</p>

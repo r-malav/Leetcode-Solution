@@ -1,0 +1,98 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Implement Stack using Queues - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>225. Implement Stack using Queues</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/stack">Stack</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/design">Design</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/queue">Queue</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/implement-queue-using-stacks.html">Implement Queue using Stacks</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Implement a last-in-first-out (LIFO) stack using only two queues. The implemented stack should support all the functions of a normal stack (<code>push</code>, <code>top</code>, <code>pop</code>, and <code>empty</code>).</p>
+<p>Implement the <code>MyStack</code> class:</p>
+<ul>
+<li><p><code>void push(int x)</code> Pushes element x to the top of the stack.</p></li>
+<li><p><code>int pop()</code> Removes the element on the top of the stack and returns it.</p></li>
+<li><p><code>int top()</code> Returns the element on the top of the stack.</p></li>
+<li><p><code>boolean empty()</code> Returns <code>true</code> if the stack is empty, <code>false</code> otherwise.</p></li>
+</ul>
+<p><strong>Notes:</strong></p>
+<ul>
+<li><p>You must use <strong>only</strong> standard operations of a queue, which means that only <code>push to back</code>, <code>peek/pop from front</code>, <code>size</code> and <code>is empty</code> operations are valid.</p></li>
+<li><p>Depending on your language, the queue may not be supported natively. You may simulate a queue using a list or deque (double-ended queue) as long as you use only a queue's standard operations.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input
+[<span class="hljs-string">"MyStack"</span>, <span class="hljs-string">"push"</span>, <span class="hljs-string">"push"</span>, <span class="hljs-string">"top"</span>, <span class="hljs-string">"pop"</span>, <span class="hljs-string">"empty"</span>]
+[[], [<span class="hljs-number">1</span>], [<span class="hljs-number">2</span>], [], [], []]
+Output
+[<span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">false</span>]
+
+Explanation
+MyStack myStack = <span class="hljs-keyword">new</span> MyStack();
+myStack.<span class="hljs-keyword">push</span>(<span class="hljs-number">1</span>);
+myStack.<span class="hljs-keyword">push</span>(<span class="hljs-number">2</span>);
+myStack.top(); <span class="hljs-comment">// return 2</span>
+myStack.<span class="hljs-keyword">pop</span>(); <span class="hljs-comment">// return 2</span>
+myStack.empty(); <span class="hljs-comment">// return False</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= x &lt;= 9</code></p></li>
+<li><p>At most <code>100</code> calls will be made to <code>push</code>, <code>pop</code>, <code>top</code>, and <code>empty</code>.</p></li>
+<li><p>All the calls to <code>pop</code> and <code>top</code> are valid.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Follow-up:</strong> Can you implement the stack using only one queue?</p>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyStack</span> </span>{
+    <span class="hljs-keyword">private</span> Queue&lt;Integer&gt; queueOne;
+    <span class="hljs-keyword">private</span> Queue&lt;Integer&gt; queueTwo;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> top;
+
+    <span class="hljs-comment">// Initialize your data structure here.</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">MyStack</span><span class="hljs-params">()</span> </span>{
+        queueOne = <span class="hljs-keyword">new</span> LinkedList&lt;&gt;();
+        queueTwo = <span class="hljs-keyword">new</span> LinkedList&lt;&gt;();
+        top = <span class="hljs-number">0</span>;
+    }
+
+    <span class="hljs-comment">// Push element x onto stack.</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">push</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span> </span>{
+        queueOne.add(x);
+        top = x;
+    }
+
+    <span class="hljs-comment">// Removes the element on top of the stack and returns that element.</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">pop</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">while</span> (queueOne.size() &gt; <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">int</span> val = queueOne.remove();
+            top = val;
+            queueTwo.add(val);
+        }
+        <span class="hljs-keyword">int</span> popValue = queueOne.remove();
+        queueOne.addAll(queueTwo);
+        queueTwo.clear();
+        <span class="hljs-keyword">return</span> popValue;
+    }
+
+    <span class="hljs-comment">// Get the top element.</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">top</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> top;
+    }
+
+    <span class="hljs-comment">// Returns whether the stack is empty.</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">empty</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> queueOne.isEmpty();
+    }
+}
+
+<span class="hljs-comment">/**
+ * Your MyStack object will be instantiated and called as such:
+ * MyStack obj = new MyStack();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * int param_3 = obj.top();
+ * boolean param_4 = obj.empty();
+ */</span>
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

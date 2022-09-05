@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Score After Flipping Matrix - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>861. Score After Flipping Matrix</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/greedy">Greedy</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/bit-manipulation">Bit Manipulation</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/remove-all-ones-with-row-and-column-flips.html">Remove All Ones With Row and Column Flips</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an <code>m x n</code> binary matrix <code>grid</code>.</p>
+<p>A <strong>move</strong> consists of choosing any row or column and toggling each value in that row or column (i.e., changing all <code>0</code>'s to <code>1</code>'s, and all <code>1</code>'s to <code>0</code>'s).</p>
+<p>Every row of the matrix is interpreted as a binary number, and the <strong>score</strong> of the matrix is the sum of these numbers.</p>
+<p>Return **the highest possible *<em>score</em>* after making any number of <strong>moves</strong> (including zero moves)**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/07/23/lc-toogle1.jpg" alt="" /></p>
+<pre><code class="hljs">Input: <span class="hljs-built_in">grid</span> = [[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]]
+Output: <span class="hljs-number">39</span>
+Explanation: <span class="hljs-number">0b1111</span> + <span class="hljs-number">0b1001</span> + <span class="hljs-number">0b1111</span> = <span class="hljs-number">15</span> + <span class="hljs-number">9</span> + <span class="hljs-number">15</span> = <span class="hljs-number">39</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: grid = <span class="hljs-string">[[0]]</span>
+Output: <span class="hljs-number">1</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == grid.length</code></p></li>
+<li><p><code>n == grid[i].length</code></p></li>
+<li><p><code>1 &lt;= m, n &lt;= 20</code></p></li>
+<li><p><code>grid[i][j]</code> is either <code>0</code> or <code>1</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">matrixScore</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] grid)</span> </span>{
+        <span class="hljs-keyword">int</span> m = grid.length;
+        <span class="hljs-keyword">int</span> n = grid[<span class="hljs-number">0</span>].length;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+            <span class="hljs-keyword">if</span> (grid[i][<span class="hljs-number">0</span>] == <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++) {
+                    <span class="hljs-keyword">if</span> (grid[i][j] == <span class="hljs-number">0</span>) {
+                        grid[i][j] = <span class="hljs-number">1</span>;
+                    } <span class="hljs-keyword">else</span> {
+                        grid[i][j] = <span class="hljs-number">0</span>;
+                    }
+                }
+            }
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>; j &lt; n; j++) {
+            <span class="hljs-keyword">int</span> ones = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] ints : grid) {
+                <span class="hljs-keyword">if</span> (ints[j] == <span class="hljs-number">1</span>) {
+                    ones++;
+                }
+            }
+            <span class="hljs-keyword">if</span> (ones &lt;= m / <span class="hljs-number">2</span>) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+                    <span class="hljs-keyword">if</span> (grid[i][j] == <span class="hljs-number">1</span>) {
+                        grid[i][j] = <span class="hljs-number">0</span>;
+                    } <span class="hljs-keyword">else</span> {
+                        grid[i][j] = <span class="hljs-number">1</span>;
+                    }
+                }
+            }
+        }
+        <span class="hljs-keyword">int</span> result = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] ints : grid) {
+            StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++) {
+                sb.append(ints[j]);
+            }
+            result += Integer.parseInt(sb.toString(), <span class="hljs-number">2</span>);
+        }
+        <span class="hljs-keyword">return</span> result;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

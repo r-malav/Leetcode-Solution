@@ -1,23 +1,23 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Text Justification - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>68. Text Justification</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
-<p>Given an array of words and a width <strong>maxWidth</strong>, format the text such that each line has exactly <strong>maxWidth</strong> characters and is fully (left and right) justified.</p>
+<p>Given an array of words and a width&nbsp;<strong>maxWidth</strong>, format the text such that each line has exactly <strong>maxWidth</strong> characters and is fully (left and right) justified.</p>
 <p>You should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces <code>' '</code> when necessary so that each line has exactly <strong>maxWidth</strong> characters.</p>
 <p>Extra spaces between words should be distributed as evenly as possible. If the number of spaces on a line do not divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right.</p>
 <p>For the last line of text, it should be left justified and no <strong>extra</strong> space is inserted between words.</p>
 <p><strong>Note:</strong></p>
 <ul>
-<li>A word is defined as a character sequence consisting of non-space characters only.</li>
-<li>Each word's length is guaranteed to be greater than 0 and not exceed <strong>maxWidth</strong>.</li>
-<li>The input array <code>words</code> contains at least one word.</li>
+<li>A word is defined as a character sequence consisting&nbsp;of non-space characters only.</li>
+<li>Each word's length is&nbsp;guaranteed to be greater than 0 and not exceed <strong>maxWidth</strong>.</li>
+<li>The input array <code>words</code>&nbsp;contains at least one word.</li>
 </ul>
 <p><strong>Example 1:</strong></p>
-<pre><code class="hljs"><span class="hljs-section">Input:</span>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span>
 words = [<span class="hljs-string">"This"</span>, <span class="hljs-string">"is"</span>, <span class="hljs-string">"an"</span>, <span class="hljs-string">"example"</span>, <span class="hljs-string">"of"</span>, <span class="hljs-string">"text"</span>, <span class="hljs-string">"justification."</span>]
-maxWidth = 16
-<span class="hljs-section">Output:</span>
+maxWidth = <span class="hljs-number">16</span>
+<span class="hljs-symbol">Output:</span>
 [
-   <span class="hljs-string">"This    is    an"</span>,
-   <span class="hljs-string">"example  of text"</span>,
-   <span class="hljs-string">"justification.  "</span>
+<span class="hljs-variable">&amp;nbsp</span>; <span class="hljs-variable">&amp;nbsp</span>;<span class="hljs-string">"This &amp;nbsp; &amp;nbsp;is &amp;nbsp; &amp;nbsp;an"</span>,
+<span class="hljs-variable">&amp;nbsp</span>; <span class="hljs-variable">&amp;nbsp</span>;<span class="hljs-string">"example &amp;nbsp;of text"</span>,
+<span class="hljs-variable">&amp;nbsp</span>; <span class="hljs-variable">&amp;nbsp</span>;<span class="hljs-string">"justification. &amp;nbsp;"</span>
 ]
 </code></pre>
 <p><strong>Example 2:</strong></p>
@@ -26,34 +26,34 @@ words = [<span class="hljs-string">"What"</span>,<span class="hljs-string">"must
 maxWidth = 16
 Output:
 [
-  <span class="hljs-string">"What   must   be"</span>,
-  <span class="hljs-string">"acknowledgment  "</span>,
-  <span class="hljs-string">"shall be        "</span>
+&amp;nbsp; <span class="hljs-string">"What &amp;nbsp; must &amp;nbsp; be"</span>,
+&amp;nbsp; <span class="hljs-string">"acknowledgment &amp;nbsp;"</span>,
+&amp;nbsp; <span class="hljs-string">"shall be &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;"</span>
 ]
 Explanation:<span class="hljs-built_in"> Note </span>that the last line is <span class="hljs-string">"shall be    "</span> instead of <span class="hljs-string">"shall     be"</span>,
-             because the last line must be left-justified instead of fully-justified.
+&amp;nbsp;            because the last line must be left-justified instead of fully-justified.
             <span class="hljs-built_in"> Note </span>that the second line is also left-justified becase it contains only one word.
 </code></pre>
 <p><strong>Example 3:</strong></p>
-<pre><code class="hljs"><span class="hljs-section">Input:</span>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span>
 words = [<span class="hljs-string">"Science"</span>,<span class="hljs-string">"is"</span>,<span class="hljs-string">"what"</span>,<span class="hljs-string">"we"</span>,<span class="hljs-string">"understand"</span>,<span class="hljs-string">"well"</span>,<span class="hljs-string">"enough"</span>,<span class="hljs-string">"to"</span>,<span class="hljs-string">"explain"</span>,
-         <span class="hljs-string">"to"</span>,<span class="hljs-string">"a"</span>,<span class="hljs-string">"computer."</span>,<span class="hljs-string">"Art"</span>,<span class="hljs-string">"is"</span>,<span class="hljs-string">"everything"</span>,<span class="hljs-string">"else"</span>,<span class="hljs-string">"we"</span>,<span class="hljs-string">"do"</span>]
-maxWidth = 20
-<span class="hljs-section">Output:</span>
+<span class="hljs-variable">&amp;nbsp</span>;        <span class="hljs-string">"to"</span>,<span class="hljs-string">"a"</span>,<span class="hljs-string">"computer."</span>,<span class="hljs-string">"Art"</span>,<span class="hljs-string">"is"</span>,<span class="hljs-string">"everything"</span>,<span class="hljs-string">"else"</span>,<span class="hljs-string">"we"</span>,<span class="hljs-string">"do"</span>]
+maxWidth = <span class="hljs-number">20</span>
+<span class="hljs-symbol">Output:</span>
 [
-  <span class="hljs-string">"Science  is  what we"</span>,
-  <span class="hljs-string">"understand      well"</span>,
-  <span class="hljs-string">"enough to explain to"</span>,
-  <span class="hljs-string">"a  computer.  Art is"</span>,
-  <span class="hljs-string">"everything  else  we"</span>,
-  <span class="hljs-string">"do                  "</span>
+<span class="hljs-variable">&amp;nbsp</span>; <span class="hljs-string">"Science &amp;nbsp;is &amp;nbsp;what we"</span>,
+  <span class="hljs-string">"understand &amp;nbsp; &amp;nbsp; &amp;nbsp;well"</span>,
+<span class="hljs-variable">&amp;nbsp</span>; <span class="hljs-string">"enough to explain to"</span>,
+<span class="hljs-variable">&amp;nbsp</span>; <span class="hljs-string">"a &amp;nbsp;computer. &amp;nbsp;Art is"</span>,
+<span class="hljs-variable">&amp;nbsp</span>; <span class="hljs-string">"everything &amp;nbsp;else &amp;nbsp;we"</span>,
+<span class="hljs-variable">&amp;nbsp</span>; <span class="hljs-string">"do &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;"</span>
 ]
 </code></pre>
 <h2 id="solution">Solution</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * @param {string[]} words
- * @param {number} maxWidth
- * @return {string[]}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{string[]}</span> <span class="hljs-variable">words</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">maxWidth</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{string[]}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> fullJustify = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">words, maxWidth</span>) </span>{
   <span class="hljs-keyword">var</span> len = words.length;

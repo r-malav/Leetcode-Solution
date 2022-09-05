@@ -1,0 +1,29 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Transpose File - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>194. Transpose File</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/shell">Shell</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a text file <code>file.txt</code>, transpose its content.</p>
+<p>You may assume that each row has the same number of columns, and each field is separated by the <code>' '</code> character.</p>
+<p><strong>Example:</strong></p>
+<p>If <code>file.txt</code> has the following content:</p>
+<pre><code class="hljs"><span class="hljs-attr">name</span> <span class="hljs-string">age</span>
+<span class="hljs-attr">alice</span> <span class="hljs-string">21</span>
+<span class="hljs-attr">ryan</span> <span class="hljs-string">30</span>
+</code></pre>
+<p>Output the following:</p>
+<pre><code class="hljs">name alice ryan
+age <span class="hljs-number">21</span> <span class="hljs-number">30</span>
+</code></pre>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-bash"><span class="hljs-comment"># Read from the file file.txt and print its transposed content to stdout.</span>
+wordcount=$(head -1 file.txt | wc -w)
+col_n=1
+<span class="hljs-keyword">while</span> [[ <span class="hljs-variable">$col_n</span> -le <span class="hljs-variable">$wordcount</span> ]]; <span class="hljs-keyword">do</span>
+    awk <span class="hljs-string">"{ print \$<span class="hljs-variable">$col_n</span> }"</span> file.txt | paste -sd <span class="hljs-string">" "</span>
+    col_n=$((col_n + 1))
+<span class="hljs-keyword">done</span>
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

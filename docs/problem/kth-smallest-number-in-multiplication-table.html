@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Kth Smallest Number in Multiplication Table - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>668. Kth Smallest Number in Multiplication Table</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/math">Math</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/binary-search">Binary Search</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/kth-smallest-element-in-a-sorted-matrix.html">Kth Smallest Element in a Sorted Matrix</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/find-k-th-smallest-pair-distance.html">Find K-th Smallest Pair Distance</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/k-th-smallest-prime-fraction.html">K-th Smallest Prime Fraction</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Nearly everyone has used the Multiplication Table. The multiplication table of size <code>m x n</code> is an integer matrix <code>mat</code> where <code>mat[i][j] == i * j</code> (<strong>1-indexed</strong>).</p>
+<p>Given three integers <code>m</code>, <code>n</code>, and <code>k</code>, return **the *<em><code>kth</code></em>* smallest element in the <strong><code>m x n</code></strong> multiplication table**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/05/02/multtable1-grid.jpg" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">m</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span><span class="hljs-string">,</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span><span class="hljs-string">,</span> <span class="hljs-string">k</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">3</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">The</span> <span class="hljs-string">5th</span> <span class="hljs-string">smallest</span> <span class="hljs-string">number</span> <span class="hljs-string">is</span> <span class="hljs-number">3</span><span class="hljs-string">.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/05/02/multtable2-grid.jpg" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">m</span> <span class="hljs-string">=</span> <span class="hljs-number">2</span><span class="hljs-string">,</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span><span class="hljs-string">,</span> <span class="hljs-string">k</span> <span class="hljs-string">=</span> <span class="hljs-number">6</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">6</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">The</span> <span class="hljs-string">6th</span> <span class="hljs-string">smallest</span> <span class="hljs-string">number</span> <span class="hljs-string">is</span> <span class="hljs-number">6</span><span class="hljs-string">.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= m, n &lt;= 3 * 104</code></p></li>
+<li><p><code>1 &lt;= k &lt;= m * n</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">m</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">n</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">k</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
+ */</span>
+<span class="hljs-keyword">var</span> findKthNumber = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">m, n, k</span>) </span>{
+    <span class="hljs-comment">// Check how many numbers per row x is greater than</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">enough</span>(<span class="hljs-params">x</span>) </span>{
+        <span class="hljs-keyword">let</span> count = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">1</span>; i &lt;= m; i++) {
+            count += <span class="hljs-built_in">Math</span>.min(<span class="hljs-built_in">Math</span>.floor(x / i), n);
+        }
+        <span class="hljs-keyword">return</span> count &gt;= k;
+    }
+
+    <span class="hljs-keyword">let</span> lo = <span class="hljs-number">1</span>, hi = m * n;
+    <span class="hljs-comment">// Binary search template</span>
+    <span class="hljs-keyword">while</span> (lo &lt; hi) {
+        <span class="hljs-keyword">let</span> mi = lo + <span class="hljs-built_in">Math</span>.floor((hi - lo) / <span class="hljs-number">2</span>);
+        <span class="hljs-keyword">if</span> (enough(mi)) hi = mi;
+        <span class="hljs-keyword">else</span> lo = mi + <span class="hljs-number">1</span>;
+    }
+    <span class="hljs-keyword">return</span> lo;
+};
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

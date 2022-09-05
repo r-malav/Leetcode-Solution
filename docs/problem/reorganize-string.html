@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Reorganize String - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>767. Reorganize String</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/hash-table">Hash Table</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/greedy">Greedy</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/sorting">Sorting</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/heap-priority-queue">Heap (Priority Queue)</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/counting">Counting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/rearrange-string-k-distance-apart.html">Rearrange String k Distance Apart</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/task-scheduler.html">Task Scheduler</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/longest-happy-string.html">Longest Happy String</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a string <code>s</code>, rearrange the characters of <code>s</code> so that any two adjacent characters are not the same.</p>
+<p>Return <strong>any possible rearrangement of</strong> <code>s</code> <strong>or return</strong> <code>""</code> <strong>if not possible</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> s = <span class="hljs-string">"aab"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">"aba"</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> s = <span class="hljs-string">"aaab"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">""</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 500</code></p></li>
+<li><p><code>s</code> consists of lowercase English letters.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">reorganizeString</span><span class="hljs-params">(String s)</span> </span>{
+        <span class="hljs-keyword">int</span>[] hash = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">26</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+            hash[s.charAt(i) - <span class="hljs-string">'a'</span>]++;
+        }
+        <span class="hljs-keyword">int</span> max = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> letter = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; hash.length; i++) {
+            <span class="hljs-keyword">if</span> (hash[i] &gt; max) {
+                max = hash[i];
+                letter = i;
+            }
+        }
+        <span class="hljs-keyword">if</span> (max &gt; (s.length() + <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-string">""</span>;
+        }
+        <span class="hljs-keyword">char</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-keyword">char</span>[s.length()];
+        <span class="hljs-keyword">int</span> idx = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (hash[letter] &gt; <span class="hljs-number">0</span>) {
+            res[idx] = (<span class="hljs-keyword">char</span>) (letter + <span class="hljs-string">'a'</span>);
+            idx += <span class="hljs-number">2</span>;
+            hash[letter]--;
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; hash.length; i++) {
+            <span class="hljs-keyword">while</span> (hash[i] &gt; <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">if</span> (idx &gt;= res.length) {
+                    idx = <span class="hljs-number">1</span>;
+                }
+                res[idx] = (<span class="hljs-keyword">char</span>) (i + <span class="hljs-string">'a'</span>);
+                idx += <span class="hljs-number">2</span>;
+                hash[i]--;
+            }
+        }
+        <span class="hljs-keyword">return</span> String.valueOf(res);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Self Crossing - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>335. Self Crossing</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/math">Math</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/geometry">Geometry</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an array of integers <code>distance</code>.</p>
+<p>You start at point <code>(0,0)</code> on an <strong>X-Y</strong> plane and you move <code>distance[0]</code> meters to the north, then <code>distance[1]</code> meters to the west, <code>distance[2]</code> meters to the south, <code>distance[3]</code> meters to the east, and so on. In other words, after each move, your direction changes counter-clockwise.</p>
+<p>Return <code>true</code> if your path crosses itself, and <code>false</code> if it does not.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/03/14/selfcross1-plane.jpg" alt="" /></p>
+<pre><code class="hljs">Input: distance = [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
+Output: <span class="hljs-literal">true</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/03/14/selfcross2-plane.jpg" alt="" /></p>
+<pre><code class="hljs">Input: distance = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+Output: <span class="hljs-literal">false</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/03/14/selfcross3-plane.jpg" alt="" /></p>
+<pre><code class="hljs">Input: distance = [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]
+Output: <span class="hljs-literal">true</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;=&amp;nbsp;distance.length &lt;= 105</code></p></li>
+<li><p><code>1 &lt;=&amp;nbsp;distance[i] &lt;= 105</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">distance</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{boolean}</span></span>
+ */</span>
+<span class="hljs-keyword">var</span> isSelfCrossing = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">distance</span>) </span>{
+    <span class="hljs-keyword">for</span> ( <span class="hljs-keyword">var</span> i = <span class="hljs-number">3</span>; i &lt; distance.length; i++ ){
+    <span class="hljs-comment">// i. [2, 1, 1, 2] </span>
+    <span class="hljs-keyword">if</span> (distance[i - <span class="hljs-number">3</span>] &amp;&amp; distance[i] &gt;= distance[i - <span class="hljs-number">2</span>] &amp;&amp; distance[i - <span class="hljs-number">1</span>] &lt;= distance[i - <span class="hljs-number">3</span> ]) 
+      <span class="hljs-keyword">return</span>  <span class="hljs-literal">true</span> ;
+    <span class="hljs-comment">// ii. [1, 1, 2, 1, 1] </span>
+    <span class="hljs-keyword">if</span> (distance[i - <span class="hljs-number">4</span>] &amp;&amp; distance[i - <span class="hljs-number">3</span>] === distance[i - <span class="hljs-number">1</span>] &amp;&amp; distance[ i - <span class="hljs-number">4</span>] + distance[i] &gt;= distance[i - <span class="hljs-number">2</span> ]) 
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> ;
+    <span class="hljs-comment">// iii. [1, 1, 2, 2, 1, 1] </span>
+    <span class="hljs-keyword">if</span> (distance[i - <span class="hljs-number">5</span>] &amp;&amp; distance[i - <span class="hljs-number">4</span>] &lt;= distance[i <span class="hljs-number">-2</span>] &amp;&amp; distance[i] + distance[i - <span class="hljs-number">4</span>] &gt;= distance[i <span class="hljs-number">-2</span> ] 
+      &amp;&amp; distance[i - <span class="hljs-number">3</span>] &gt;= distance[i - <span class="hljs-number">1</span>] &amp;&amp; distance[i - <span class="hljs-number">5</span>] + distance[i - <span class="hljs-number">1</span>] &gt;= distance[i - <span class="hljs-number">3</span> ]) 
+      <span class="hljs-keyword">return</span>  <span class="hljs-literal">true</span> ;
+    }
+    <span class="hljs-keyword">return</span>  <span class="hljs-literal">false</span> ;
+};
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

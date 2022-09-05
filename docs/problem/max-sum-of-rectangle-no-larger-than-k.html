@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Max Sum of Rectangle No Larger Than K - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>363. Max Sum of Rectangle No Larger Than K</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/binary-search">Binary Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/matrix">Matrix</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/prefix-sum">Prefix Sum</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/ordered-set">Ordered Set</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an <code>m x n</code> matrix <code>matrix</code> and an integer <code>k</code>, return <strong>the max sum of a rectangle in the matrix such that its sum is no larger than</strong> <code>k</code>.</p>
+<p>It is <strong>guaranteed</strong> that there will be a rectangle with a sum no larger than <code>k</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/03/18/sum-grid.jpg" alt="" /></p>
+<pre><code class="hljs">Input: matrix = [[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">3</span>]], k = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">2</span>
+Explanation: Because the sum of the blue rectangle [[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">-2</span>, <span class="hljs-number">3</span>]] <span class="hljs-keyword">is</span> <span class="hljs-number">2</span>, <span class="hljs-keyword">and</span> <span class="hljs-number">2</span> <span class="hljs-keyword">is</span> the max number no larger than k (k = <span class="hljs-number">2</span>).
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: matrix = [[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">-1</span>]], k = <span class="hljs-number">3</span>
+Output: <span class="hljs-number">3</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == matrix.length</code></p></li>
+<li><p><code>n == matrix[i].length</code></p></li>
+<li><p><code>1 &lt;= m, n &lt;= 100</code></p></li>
+<li><p><code>-100 &lt;= matrix[i][j] &lt;= 100</code></p></li>
+<li><p><code>-105 &lt;= k &lt;= 105</code></p></li>
+</ul>
+<p>&nbsp;
+<strong>Follow up:</strong> What if the number of rows is much larger than the number of columns?</p>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxSumSubmatrix</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] matrix, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">int</span> m = matrix.length, n = matrix[<span class="hljs-number">0</span>].length;
+        <span class="hljs-keyword">int</span> res = Integer.MIN_VALUE;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> c1 = <span class="hljs-number">0</span>; c1 &lt; n; c1++) {
+            <span class="hljs-keyword">int</span>[] presum = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[m];
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> c2 = c1; c2 &lt; n; c2++) {
+                TreeSet&lt;Integer&gt; set = <span class="hljs-keyword">new</span> TreeSet&lt;Integer&gt;();
+                set.add(<span class="hljs-number">0</span>);
+                <span class="hljs-keyword">int</span> val = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> r = <span class="hljs-number">0</span>; r &lt; m; r++) {
+                    presum[r] += matrix[r][c2];
+                    val += presum[r];
+                    Integer prev = set.ceiling(val - k);
+                    <span class="hljs-keyword">if</span> (prev != <span class="hljs-keyword">null</span>) {
+                        res = Math.max(res, val - prev);
+                    }
+                    set.add(val);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

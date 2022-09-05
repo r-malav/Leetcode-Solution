@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Range Sum Query 2D - Immutable - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>304. Range Sum Query 2D - Immutable</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/design">Design</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/matrix">Matrix</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/prefix-sum">Prefix Sum</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/range-sum-query-immutable.html">Range Sum Query - Immutable</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/range-sum-query-2d-mutable.html">Range Sum Query 2D - Mutable</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a 2D matrix <code>matrix</code>, handle multiple queries of the following type:</p>
+<ul>
+<li>Calculate the <strong>sum</strong> of the elements of <code>matrix</code> inside the rectangle defined by its <strong>upper left corner</strong> <code>(row1, col1)</code> and <strong>lower right corner</strong> <code>(row2, col2)</code>.</li>
+</ul>
+<p>Implement the <code>NumMatrix</code> class:</p>
+<ul>
+<li><p><code>NumMatrix(int[][] matrix)</code> Initializes the object with the integer matrix <code>matrix</code>.</p></li>
+<li><p><code>int sumRegion(int row1, int col1, int row2, int col2)</code> Returns the <strong>sum</strong> of the elements of <code>matrix</code> inside the rectangle defined by its <strong>upper left corner</strong> <code>(row1, col1)</code> and <strong>lower right corner</strong> <code>(row2, col2)</code>.</p></li>
+</ul>
+<p>You must design an algorithm where <code>sumRegion</code> works on <code>O(1)</code> time complexity.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/03/14/sum-grid.jpg" alt="" /></p>
+<pre><code class="hljs">Input
+[<span class="hljs-string">"NumMatrix"</span>, <span class="hljs-string">"sumRegion"</span>, <span class="hljs-string">"sumRegion"</span>, <span class="hljs-string">"sumRegion"</span>]
+[[[[<span class="hljs-number">3</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">7</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">0</span>, <span class="hljs-number">5</span>]]], [<span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>]]
+Output
+[<span class="hljs-literal">null</span>, <span class="hljs-number">8</span>, <span class="hljs-number">11</span>, <span class="hljs-number">12</span>]
+
+Explanation
+NumMatrix numMatrix = new NumMatrix([[<span class="hljs-number">3</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">7</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">0</span>, <span class="hljs-number">5</span>]]);
+numMatrix.sumRegion(<span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>); <span class="hljs-comment">// return 8 (i.e sum of the red rectangle)</span>
+numMatrix.sumRegion(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>); <span class="hljs-comment">// return 11 (i.e sum of the green rectangle)</span>
+numMatrix.sumRegion(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>); <span class="hljs-comment">// return 12 (i.e sum of the blue rectangle)</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == matrix.length</code></p></li>
+<li><p><code>n == matrix[i].length</code></p></li>
+<li><p><code>1 &lt;= m, n &lt;= 200</code></p></li>
+<li><p><code>-104 &lt;= matrix[i][j] &lt;= 104</code></p></li>
+<li><p><code>0 &lt;= row1 &lt;= row2 &lt; m</code></p></li>
+<li><p><code>0 &lt;= col1 &lt;= col2 &lt; n</code></p></li>
+<li><p>At most <code>104</code> calls will be made to <code>sumRegion</code>.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NumMatrix</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[][] tot;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">NumMatrix</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] matrix)</span> </span>{
+        <span class="hljs-keyword">if</span> (matrix == <span class="hljs-keyword">null</span> || matrix.length == <span class="hljs-number">0</span> || matrix[<span class="hljs-number">0</span>].length == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span>;
+        }
+        <span class="hljs-comment">// The dimensions of this tot matrix is actually 1 bigger than the given matrix, cool!</span>
+        tot = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[matrix.length + <span class="hljs-number">1</span>][matrix[<span class="hljs-number">0</span>].length + <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; matrix.length; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; matrix[<span class="hljs-number">0</span>].length; j++) {
+                tot[i + <span class="hljs-number">1</span>][j + <span class="hljs-number">1</span>] = matrix[i][j] + tot[i + <span class="hljs-number">1</span>][j] + tot[i][j + <span class="hljs-number">1</span>] - tot[i][j];
+            }
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">sumRegion</span><span class="hljs-params">(<span class="hljs-keyword">int</span> row1, <span class="hljs-keyword">int</span> col1, <span class="hljs-keyword">int</span> row2, <span class="hljs-keyword">int</span> col2)</span> </span>{
+        <span class="hljs-keyword">return</span> tot[row2 + <span class="hljs-number">1</span>][col2 + <span class="hljs-number">1</span>]
+                - tot[row2 + <span class="hljs-number">1</span>][col1]
+                - tot[row1][col2 + <span class="hljs-number">1</span>]
+                + tot[row1][col1];
+    }
+}
+
+<span class="hljs-comment">/**
+ * Your NumMatrix object will be instantiated and called as such:
+ * NumMatrix obj = new NumMatrix(matrix);
+ * int param_1 = obj.sumRegion(row1,col1,row2,col2);
+ */</span>
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

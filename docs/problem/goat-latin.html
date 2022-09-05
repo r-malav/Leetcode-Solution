@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Goat Latin - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>824. Goat Latin</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a string <code>sentence</code> that consist of words separated by spaces. Each word consists of lowercase and uppercase letters only.</p>
+<p>We would like to convert the sentence to "Goat Latin" (a made-up language similar to Pig Latin.) The rules of Goat Latin are as follows:</p>
+<pre><code>If a word begins with a vowel (<code>'a'</code>, <code>'e'</code>, <code>'i'</code>, <code>'o'</code>, or <code>'u'</code>), append <code>"ma"</code> to the end of the word.
+</code></pre>
+<ul>
+<li><p>For example, the word <code>"apple"</code> becomes <code>"applema"</code>.</p>
+<p>If a word begins with a consonant (i.e., not a vowel), remove the first letter and append it to the end, then add <code>"ma"</code>.</p></li>
+<li><p>For example, the word <code>"goat"</code> becomes <code>"oatgma"</code>.</p>
+<p>Add one letter <code>'a'</code> to the end of each word per its word index in the sentence, starting with <code>1</code>.</p></li>
+<li><p>For example, the first word gets <code>"a"</code> added to the end, the second word gets <code>"aa"</code> added to the end, and so on.</p></li>
+</ul>
+<p>Return** the final sentence representing the conversion from sentence to Goat Latin**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> sentence = <span class="hljs-string">"I speak Goat Latin"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">"Imaa peaksmaaa oatGmaaaa atinLmaaaaa"</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> sentence = <span class="hljs-string">"The quick brown fox jumped over the lazy dog"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">"heTmaa uickqmaaa rownbmaaaa oxfmaaaaa umpedjmaaaaaa overmaaaaaaa hetmaaaaaaaa azylmaaaaaaaaa ogdmaaaaaaaaaa"</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= sentence.length &lt;= 150</code></p></li>
+<li><p><code>sentence</code> consists of English letters and spaces.</p></li>
+<li><p><code>sentence</code> has no leading or trailing spaces.</p></li>
+<li><p>All the words in <code>sentence</code> are separated by a single space.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">toGoatLatin</span><span class="hljs-params">(String sentence)</span> </span>{
+        String[] splits = sentence.split(<span class="hljs-string">" "</span>);
+        StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();
+        StringBuilder a = <span class="hljs-keyword">new</span> StringBuilder();
+        <span class="hljs-keyword">for</span> (String word : splits) {
+            <span class="hljs-keyword">if</span> (isVowel(word.charAt(<span class="hljs-number">0</span>))) {
+                sb.append(word).append(<span class="hljs-string">"ma"</span>);
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">char</span> firstChar = word.charAt(<span class="hljs-number">0</span>);
+                sb.append(word.substring(<span class="hljs-number">1</span>)).append(firstChar).append(<span class="hljs-string">"ma"</span>);
+            }
+            a.append(<span class="hljs-string">"a"</span>);
+            sb.append(a);
+            sb.append(<span class="hljs-string">" "</span>);
+        }
+        <span class="hljs-keyword">return</span> sb.toString().trim();
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isVowel</span><span class="hljs-params">(<span class="hljs-keyword">char</span> c)</span> </span>{
+        <span class="hljs-keyword">return</span> c == <span class="hljs-string">'a'</span> || c == <span class="hljs-string">'e'</span> || c == <span class="hljs-string">'i'</span> || c == <span class="hljs-string">'o'</span> || c == <span class="hljs-string">'u'</span> || c == <span class="hljs-string">'A'</span> || c == <span class="hljs-string">'E'</span>
+                || c == <span class="hljs-string">'I'</span> || c == <span class="hljs-string">'O'</span> || c == <span class="hljs-string">'U'</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

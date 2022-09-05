@@ -2,9 +2,9 @@
 <p>You are given two <strong>non-empty</strong> linked lists representing two non-negative integers. The digits are stored in <strong>reverse order</strong> and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.</p>
 <p>You may assume the two numbers do not contain any leading zero, except the number 0 itself.</p>
 <p><strong>Example</strong></p>
-<pre><code class="hljs">Input: (<span class="hljs-number">2</span> -&gt; <span class="hljs-number">4</span> -&gt; <span class="hljs-number">3</span>) + (<span class="hljs-number">5</span> -&gt; <span class="hljs-number">6</span> -&gt; <span class="hljs-number">4</span>)
-Output: <span class="hljs-number">7</span> -&gt; <span class="hljs-number">0</span> -&gt; <span class="hljs-number">8</span>
-Explanation: <span class="hljs-number">342</span> + <span class="hljs-number">465</span> = <span class="hljs-number">807.</span>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">(2</span> <span class="hljs-string">-&gt;</span> <span class="hljs-number">4</span> <span class="hljs-string">-&gt;</span> <span class="hljs-number">3</span><span class="hljs-string">)</span> <span class="hljs-string">+</span> <span class="hljs-string">(5</span> <span class="hljs-string">-&gt;</span> <span class="hljs-number">6</span> <span class="hljs-string">-&gt;</span> <span class="hljs-number">4</span><span class="hljs-string">)</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">7</span> <span class="hljs-string">-&gt;</span> <span class="hljs-number">0</span> <span class="hljs-string">-&gt;</span> <span class="hljs-number">8</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-number">342</span> <span class="hljs-string">+</span> <span class="hljs-number">465</span> <span class="hljs-string">=</span> <span class="hljs-number">807</span><span class="hljs-string">.</span>
 </code></pre>
 <h2 id="solution">Solution</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
@@ -15,9 +15,9 @@ Explanation: <span class="hljs-number">342</span> + <span class="hljs-number">46
  * }
  */</span>
 <span class="hljs-comment">/**
- * @param {ListNode} l1
- * @param {ListNode} l2
- * @return {ListNode}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{ListNode}</span> <span class="hljs-variable">l1</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{ListNode}</span> <span class="hljs-variable">l2</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{ListNode}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> addTwoNumbers = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">l1, l2</span>) </span>{
   <span class="hljs-keyword">var</span> carry = <span class="hljs-number">0</span>;

@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Largest Palindrome Product - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>479. Largest Palindrome Product</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/math">Math</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an integer n, return **the *<em>largest palindromic integer</em>* that can be represented as the product of two <code>n</code>-digits integers**. Since the answer can be very large, return it *<em>modulo</em>* <code>1337</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">2</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">987</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-number">99</span> <span class="hljs-string">x</span> <span class="hljs-number">91</span> <span class="hljs-string">=</span> <span class="hljs-number">9009</span><span class="hljs-string">,</span> <span class="hljs-number">9009</span> <span class="hljs-string">%</span> <span class="hljs-number">1337</span> <span class="hljs-string">=</span> <span class="hljs-number">987</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">9</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= n &lt;= 8</code></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">largestPalindrome</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-keyword">long</span> pow10 = (<span class="hljs-keyword">long</span>) Math.pow(<span class="hljs-number">10</span>, n);
+        <span class="hljs-keyword">long</span> max = (pow10 - <span class="hljs-number">1</span>) * (pow10 - (<span class="hljs-keyword">long</span>) Math.sqrt(pow10) + <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">long</span> left = (max / pow10);
+        <span class="hljs-keyword">long</span> t = pow10 / <span class="hljs-number">11</span>;
+        t -= ~t &amp; <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">long</span> i = left; i &gt; <span class="hljs-number">0</span>; i--) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">long</span> j = t, num = gen(i); j &gt;= i / <span class="hljs-number">11</span>; j -= <span class="hljs-number">2</span>) {
+                <span class="hljs-keyword">if</span> (num % j == <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>) (num % <span class="hljs-number">1337</span>);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-number">9</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> <span class="hljs-title">gen</span><span class="hljs-params">(<span class="hljs-keyword">long</span> x)</span> </span>{
+        <span class="hljs-keyword">long</span> r = x;
+        <span class="hljs-keyword">while</span> (x &gt; <span class="hljs-number">0</span>) {
+            r = r * <span class="hljs-number">10</span> + x % <span class="hljs-number">10</span>;
+            x /= <span class="hljs-number">10</span>;
+        }
+        <span class="hljs-keyword">return</span> r;
+    }
+}
+</code></pre>
+<h2 id="solution-python">Solution (Python)</h2>
+<pre><code class="hljs lang-python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span><span class="hljs-params">(object)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">largestPalindrome</span><span class="hljs-params">(self, n)</span>:</span>
+        <span class="hljs-string">"""
+        :type n: int
+        :rtype: int
+        """</span>
+        <span class="hljs-keyword">if</span> n == <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">9</span>
+        <span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> xrange(<span class="hljs-number">2</span>, <span class="hljs-number">9</span> * <span class="hljs-number">10</span> ** (n - <span class="hljs-number">1</span>)):
+            hi = (<span class="hljs-number">10</span> ** n) - a
+            lo = int(str(hi)[::<span class="hljs-number">-1</span>])
+            <span class="hljs-keyword">if</span> a ** <span class="hljs-number">2</span> - <span class="hljs-number">4</span> * lo &lt; <span class="hljs-number">0</span>:
+                <span class="hljs-keyword">continue</span>
+            <span class="hljs-keyword">if</span> (a ** <span class="hljs-number">2</span> - <span class="hljs-number">4</span> * lo) ** <span class="hljs-number">.5</span> == int((a ** <span class="hljs-number">2</span> - <span class="hljs-number">4</span> * lo) ** <span class="hljs-number">.5</span>):
+                <span class="hljs-keyword">return</span> (lo + <span class="hljs-number">10</span> ** n * (<span class="hljs-number">10</span> ** n - a)) % <span class="hljs-number">1337</span>
+
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

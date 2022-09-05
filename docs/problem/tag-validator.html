@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Tag Validator - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>591. Tag Validator</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/stack">Stack</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/add-bold-tag-in-string.html">Add Bold Tag in String</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a string representing a code snippet, implement a tag validator to parse the code and return whether it is valid.</p>
+<p>A code snippet is valid if all the following rules hold:</p>
+<ul>
+<li><p>The code must be wrapped in a <strong>valid closed tag</strong>. Otherwise, the code is invalid.</p></li>
+<li><p>A <strong>closed tag</strong> (not necessarily valid) has exactly the following format : <code>&lt;TAG_NAME&gt;TAG_CONTENT&lt;/TAG_NAME&gt;</code>. Among them, <code>&lt;TAG_NAME&gt;</code> is the start tag, and <code>&lt;/TAG_NAME&gt;</code> is the end tag. The TAG<em>NAME in start and end tags should be the same. A closed tag is <strong>valid</strong> if and only if the TAG</em>NAME and TAG_CONTENT are valid.</p></li>
+<li><p>A <strong>valid</strong> <code>TAG_NAME</code> only contain <strong>upper-case letters</strong>, and has length in range [1,9]. Otherwise, the <code>TAG_NAME</code> is <strong>invalid</strong>.</p></li>
+<li><p>A <strong>valid</strong> <code>TAG_CONTENT</code> may contain other <strong>valid closed tags</strong>, <strong>cdata</strong> and any characters (see note1) <strong>EXCEPT</strong> unmatched <code>&lt;</code>, unmatched start and end tag, and unmatched or closed tags with invalid TAG_NAME. Otherwise, the <code>TAG_CONTENT</code> is <strong>invalid</strong>.</p></li>
+<li><p>A start tag is unmatched if no end tag exists with the same TAG_NAME, and vice versa. However, you also need to consider the issue of unbalanced when tags are nested.</p></li>
+<li><p>A <code>&lt;</code> is unmatched if you cannot find a subsequent <code>&gt;</code>. And when you find a <code>&lt;</code> or <code>&lt;/</code>, all the subsequent characters until the next <code>&gt;</code> should be parsed as TAG_NAME (not necessarily valid).</p></li>
+<li><p>The cdata has the following format : <code>&lt;![CDATA[CDATA_CONTENT]]&gt;</code>. The range of <code>CDATA_CONTENT</code> is defined as the characters between <code>&lt;![CDATA[</code> and the <strong>first subsequent</strong> <code>]]&gt;</code>.</p></li>
+<li><p><code>CDATA_CONTENT</code> may contain <strong>any characters</strong>. The function of cdata is to forbid the validator to parse <code>CDATA_CONTENT</code>, so even it has some characters that can be parsed as tag (no matter valid or invalid), you should treat it as <strong>regular characters</strong>.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: code = <span class="hljs-string">"This is the first line ]]&gt;"</span>
+Output: <span class="hljs-literal">true</span>
+Explanation: 
+The code is wrapped <span class="hljs-keyword">in</span> <span class="hljs-keyword">a</span> closed tag :  <span class="hljs-keyword">and</span> . 
+The TAG_NAME is valid, <span class="hljs-keyword">the</span> TAG_CONTENT consists <span class="hljs-keyword">of</span> some <span class="hljs-keyword">characters</span> <span class="hljs-keyword">and</span> cdata. 
+Although CDATA_CONTENT has <span class="hljs-keyword">an</span> unmatched <span class="hljs-built_in">start</span> tag <span class="hljs-keyword">with</span> invalid TAG_NAME, <span class="hljs-keyword">it</span> should be considered <span class="hljs-keyword">as</span> plain <span class="hljs-keyword">text</span>, <span class="hljs-keyword">not</span> parsed <span class="hljs-keyword">as</span> <span class="hljs-keyword">a</span> tag.
+So TAG_CONTENT is valid, <span class="hljs-keyword">and</span> <span class="hljs-keyword">then</span> <span class="hljs-keyword">the</span> code is valid. Thus <span class="hljs-literal">return</span> <span class="hljs-literal">true</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: code = <span class="hljs-string">"&gt;&gt;  ![cdata[]] ]&gt;]]&gt;]]&gt;&gt;]"</span>
+Output: <span class="hljs-literal">true</span>
+Explanation:
+We first separate the code into : start_tag|tag_content|end_tag.
+<span class="hljs-function"><span class="hljs-title">start_tag</span> -&gt;</span> <span class="hljs-string">""</span>
+<span class="hljs-function"><span class="hljs-title">end_tag</span> -&gt;</span> <span class="hljs-string">""</span>
+tag_content could also be separated into : text1|cdata|text2.
+<span class="hljs-function"><span class="hljs-title">text1</span> -&gt;</span> <span class="hljs-string">"&gt;&gt;  ![cdata[]] "</span>
+<span class="hljs-function"><span class="hljs-title">cdata</span> -&gt;</span> <span class="hljs-string">"]&gt;]]&gt;"</span>, <span class="hljs-keyword">where</span> the CDATA_CONTENT <span class="hljs-keyword">is</span> <span class="hljs-string">"]&gt;"</span>
+<span class="hljs-function"><span class="hljs-title">text2</span> -&gt;</span> <span class="hljs-string">"]]&gt;&gt;]"</span>
+The reason why start_tag <span class="hljs-keyword">is</span> NOT <span class="hljs-string">"&gt;&gt;"</span> <span class="hljs-keyword">is</span> because of the rule <span class="hljs-number">6</span>.
+The reason why cdata <span class="hljs-keyword">is</span> NOT <span class="hljs-string">"]&gt;]]&gt;]]&gt;"</span> <span class="hljs-keyword">is</span> because of the rule <span class="hljs-number">7</span>.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-string">Input:</span> code = <span class="hljs-string">"  **    **"</span>
+<span class="hljs-string">Output:</span> <span class="hljs-literal">false</span>
+<span class="hljs-string">Explanation:</span> Unbalanced. If <span class="hljs-string">""</span> is closed, then <span class="hljs-string">""</span> must be unmatched, and vice versa.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= code.length &lt;= 500</code></p></li>
+<li><p><code>code</code> consists of English letters, digits, <code>'&lt;'</code>, <code>'&gt;'</code>, <code>'/'</code>, <code>'!'</code>, <code>'['</code>, <code>']'</code>, <code>'.'</code>, and <code>' '</code>.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isValid</span><span class="hljs-params">(String code)</span> </span>{
+        Stack&lt;String&gt; stack = <span class="hljs-keyword">new</span> Stack&lt;&gt;();
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; code.length();){
+            <span class="hljs-keyword">if</span>(i&gt;<span class="hljs-number">0</span> &amp;&amp; stack.isEmpty()) <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            <span class="hljs-keyword">if</span>(code.startsWith(<span class="hljs-string">"&lt;![CDATA["</span>, i)){
+                <span class="hljs-keyword">int</span> j = i+<span class="hljs-number">9</span>;
+                i = code.indexOf(<span class="hljs-string">"]]&gt;"</span>, j);
+                <span class="hljs-keyword">if</span>(i &lt; <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+                i += <span class="hljs-number">3</span>;
+            }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(code.startsWith(<span class="hljs-string">"&lt;/"</span>, i)){
+                <span class="hljs-keyword">int</span> j = i + <span class="hljs-number">2</span>;
+                i = code.indexOf(<span class="hljs-string">'&gt;'</span>, j);
+                <span class="hljs-keyword">if</span>(i &lt; <span class="hljs-number">0</span> || i == j || i - j &gt; <span class="hljs-number">9</span>) <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+                <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> k = j; k &lt; i; k++){
+                    <span class="hljs-keyword">if</span>(!Character.isUpperCase(code.charAt(k))) <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+                }
+                String s = code.substring(j, i++);
+                <span class="hljs-keyword">if</span>(stack.isEmpty() || !stack.pop().equals(s)) <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(code.startsWith(<span class="hljs-string">"&lt;"</span>, i)){
+                <span class="hljs-keyword">int</span> j = i + <span class="hljs-number">1</span>;
+                i = code.indexOf(<span class="hljs-string">'&gt;'</span>, j);
+                <span class="hljs-keyword">if</span>(i &lt; <span class="hljs-number">0</span> || i == j || i - j &gt; <span class="hljs-number">9</span>) <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+                <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> k = j; k &lt; i; k++){
+                    <span class="hljs-keyword">if</span>(!Character.isUpperCase(code.charAt(k))) <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+                }
+                String s = code.substring(j, i++);
+                stack.push(s);
+            }<span class="hljs-keyword">else</span>{
+                i++;
+            }
+        }
+        <span class="hljs-keyword">return</span> stack.isEmpty();
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

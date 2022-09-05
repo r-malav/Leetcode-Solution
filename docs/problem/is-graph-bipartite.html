@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Is Graph Bipartite? - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>785. Is Graph Bipartite?</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/union-find">Union Find</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/graph">Graph</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is an <strong>undirected</strong> graph with <code>n</code> nodes, where each node is numbered between <code>0</code> and <code>n - 1</code>. You are given a 2D array <code>graph</code>, where <code>graph[u]</code> is an array of nodes that node <code>u</code> is adjacent to. More formally, for each <code>v</code> in <code>graph[u]</code>, there is an undirected edge between node <code>u</code> and node <code>v</code>. The graph has the following properties:</p>
+<ul>
+<li><p>There are no self-edges (<code>graph[u]</code> does not contain <code>u</code>).</p></li>
+<li><p>There are no parallel edges (<code>graph[u]</code> does not contain duplicate values).</p></li>
+<li><p>If <code>v</code> is in <code>graph[u]</code>, then <code>u</code> is in <code>graph[v]</code> (the graph is undirected).</p></li>
+<li><p>The graph may not be connected, meaning there may be two nodes <code>u</code> and <code>v</code> such that there is no path between them.</p></li>
+</ul>
+<p>A graph is <strong>bipartite</strong> if the nodes can be partitioned into two independent sets <code>A</code> and <code>B</code> such that <strong>every</strong> edge in the graph connects a node in set <code>A</code> and a node in set <code>B</code>.</p>
+<p>Return <code>true</code>** if and only if it is <strong>bipartite</strong>**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/10/21/bi2.jpg" alt="" /></p>
+<pre><code class="hljs">Input: graph = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>]]
+Output: <span class="hljs-literal">false</span>
+Explanation: There <span class="hljs-keyword">is</span> no way to partition the nodes <span class="hljs-built_in">int</span>o two independent sets such that every edge connects a node <span class="hljs-keyword">in</span> one <span class="hljs-keyword">and</span> a node <span class="hljs-keyword">in</span> the other.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/10/21/bi1.jpg" alt="" /></p>
+<pre><code class="hljs">Input: graph = [[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>]]
+Output: <span class="hljs-literal">true</span>
+Explanation: We can partition the nodes <span class="hljs-built_in">int</span>o two sets: {<span class="hljs-number">0</span>, <span class="hljs-number">2</span>} <span class="hljs-keyword">and</span> {<span class="hljs-number">1</span>, <span class="hljs-number">3</span>}.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>graph.length == n</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 100</code></p></li>
+<li><p><code>0 &lt;= graph[u].length &lt; n</code></p></li>
+<li><p><code>0 &lt;= graph[u][i] &lt;= n - 1</code></p></li>
+<li><p><code>graph[u]</code>&nbsp;does not contain&nbsp;<code>u</code>.</p></li>
+<li><p>All the values of <code>graph[u]</code> are <strong>unique</strong>.</p></li>
+<li><p>If <code>graph[u]</code> contains <code>v</code>, then <code>graph[v]</code> contains <code>u</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isBipartite</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] graph)</span> </span>{
+        <span class="hljs-keyword">int</span> n = graph.length;
+        <span class="hljs-keyword">int</span>[] color = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> (color[i] == <span class="hljs-number">0</span> &amp;&amp; !helper(graph, i, -<span class="hljs-number">1</span>, color)) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">helper</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] graph, <span class="hljs-keyword">int</span> curr, <span class="hljs-keyword">int</span> c, <span class="hljs-keyword">int</span>[] color)</span> </span>{
+        <span class="hljs-keyword">if</span> (color[curr] == c) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+        }
+        color[curr] = c;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> x : graph[curr]) {
+            <span class="hljs-keyword">if</span> (color[x] == c || !helper(graph, x, c * -<span class="hljs-number">1</span>, color)) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

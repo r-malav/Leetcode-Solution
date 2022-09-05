@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Number of Refueling Stops - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>871. Minimum Number of Refueling Stops</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/greedy">Greedy</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/heap-priority-queue">Heap (Priority Queue)</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A car travels from a starting position to a destination which is <code>target</code> miles east of the starting position.</p>
+<p>There are gas stations along the way. The gas stations are represented as an array <code>stations</code> where <code>stations[i] = [positioni, fueli]</code> indicates that the <code>ith</code> gas station is <code>positioni</code> miles east of the starting position and has <code>fueli</code> liters of gas.</p>
+<p>The car starts with an infinite tank of gas, which initially has <code>startFuel</code> liters of fuel in it. It uses one liter of gas per one mile that it drives. When the car reaches a gas station, it may stop and refuel, transferring all the gas from the station into the car.</p>
+<p>Return <strong>the minimum number of refueling stops the car must make in order to reach its destination</strong>. If it cannot reach the destination, return <code>-1</code>.</p>
+<p>Note that if the car reaches a gas station with <code>0</code> fuel left, the car can still refuel there. If the car reaches the destination with <code>0</code> fuel left, it is still considered to have arrived.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">target</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span><span class="hljs-string">,</span> <span class="hljs-string">startFuel</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span><span class="hljs-string">,</span> <span class="hljs-string">stations</span> <span class="hljs-string">=</span> <span class="hljs-string">[]</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">0</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">We</span> <span class="hljs-string">can</span> <span class="hljs-string">reach</span> <span class="hljs-string">the</span> <span class="hljs-string">target</span> <span class="hljs-string">without</span> <span class="hljs-string">refueling.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">target</span> <span class="hljs-string">=</span> <span class="hljs-number">100</span><span class="hljs-string">,</span> <span class="hljs-string">startFuel</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span><span class="hljs-string">,</span> <span class="hljs-string">stations</span> <span class="hljs-string">=</span> <span class="hljs-string">[[10,100]]</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">-1</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">We</span> <span class="hljs-string">can</span> <span class="hljs-string">not</span> <span class="hljs-string">reach</span> <span class="hljs-string">the</span> <span class="hljs-string">target</span> <span class="hljs-string">(or</span> <span class="hljs-string">even</span> <span class="hljs-string">the</span> <span class="hljs-string">first</span> <span class="hljs-string">gas</span> <span class="hljs-string">station).</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: target = <span class="hljs-number">100</span>, startFuel = <span class="hljs-number">10</span>, stations = [[<span class="hljs-number">10</span>,<span class="hljs-number">60</span>],[<span class="hljs-number">20</span>,<span class="hljs-number">30</span>],[<span class="hljs-number">30</span>,<span class="hljs-number">30</span>],[<span class="hljs-number">60</span>,<span class="hljs-number">40</span>]]
+Output: <span class="hljs-number">2</span>
+Explanation: We start with <span class="hljs-number">10</span> liters of fuel.
+We drive to position <span class="hljs-number">10</span>, expending <span class="hljs-number">10</span> liters of fuel.  We <span class="hljs-built_in">ref</span>uel <span class="hljs-keyword">from</span> <span class="hljs-number">0</span> liters to <span class="hljs-number">60</span> liters of gas.
+Then, we drive <span class="hljs-keyword">from</span> position <span class="hljs-number">10</span> to position <span class="hljs-number">60</span> (expending <span class="hljs-number">50</span> liters of fuel),
+<span class="hljs-keyword">and</span> <span class="hljs-built_in">ref</span>uel <span class="hljs-keyword">from</span> <span class="hljs-number">10</span> liters to <span class="hljs-number">50</span> liters of gas.  We then drive to <span class="hljs-keyword">and</span> reach the target.
+We made <span class="hljs-number">2</span> <span class="hljs-built_in">ref</span>ueling stops along the way, so we <span class="hljs-keyword">return</span> <span class="hljs-number">2.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= target, startFuel &lt;= 109</code></p></li>
+<li><p><code>0 &lt;= stations.length &lt;= 500</code></p></li>
+<li><p><code>0 &lt;= positioni &lt;= positioni+1 &lt; target</code></p></li>
+<li><p><code>1 &lt;= fueli &lt; 109</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">target</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">startFuel</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[][]}</span> <span class="hljs-variable">stations</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
+ */</span>
+<span class="hljs-keyword">var</span> minRefuelStops = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">target, startFuel, stations</span>) </span>{
+    <span class="hljs-keyword">let</span> n = stations.length, pq = <span class="hljs-keyword">new</span> MaxPriorityQueue(), ans = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">let</span> dist = i === n ? target : stations[i][<span class="hljs-number">0</span>]
+        <span class="hljs-keyword">while</span> (startFuel &lt; dist) {
+            <span class="hljs-keyword">if</span> (!pq.size()) <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>
+            startFuel += pq.dequeue().element, ans++
+        }
+        <span class="hljs-keyword">if</span> (i &lt; n) pq.enqueue(stations[i][<span class="hljs-number">1</span>])
+    }
+    <span class="hljs-keyword">return</span> ans
+};
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

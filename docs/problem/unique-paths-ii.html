@@ -8,21 +8,21 @@
 <p><strong>Example 1:</strong></p>
 <pre><code class="hljs">Input:
 [
-  [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],
-  [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],
-  [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]
+&amp;nbsp; [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],
+&amp;nbsp; [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],
+&amp;nbsp; [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]
 ]
 Output: <span class="hljs-number">2</span>
 Explanation:
-There <span class="hljs-keyword">is</span> one obstacle <span class="hljs-built_in">in</span> the middle of the <span class="hljs-number">3</span>x3 grid above.
+There <span class="hljs-keyword">is</span> one obstacle <span class="hljs-keyword">in</span> the middle of the <span class="hljs-number">3</span>x3 grid above.
 There are two ways to reach the bottom-right corner:
-<span class="hljs-number">1</span>. R<span class="hljs-function"><span class="hljs-title">ight</span> -&gt;</span> R<span class="hljs-function"><span class="hljs-title">ight</span> -&gt;</span> D<span class="hljs-function"><span class="hljs-title">own</span> -&gt;</span> Down
-<span class="hljs-number">2</span>. D<span class="hljs-function"><span class="hljs-title">own</span> -&gt;</span> D<span class="hljs-function"><span class="hljs-title">own</span> -&gt;</span> R<span class="hljs-function"><span class="hljs-title">ight</span> -&gt;</span> Right
+<span class="hljs-number">1.</span> Right -&gt; Right -&gt; Down -&gt; Down
+<span class="hljs-number">2.</span> Down -&gt; Down -&gt; Right -&gt; Right
 </code></pre>
 <h2 id="solution">Solution</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * @param {number[][]} obstacleGrid
- * @return {number}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[][]}</span> <span class="hljs-variable">obstacleGrid</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> uniquePathsWithObstacles = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">obstacleGrid</span>) </span>{
   <span class="hljs-keyword">var</span> m = obstacleGrid.length;

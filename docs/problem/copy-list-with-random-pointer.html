@@ -3,37 +3,31 @@
 <p>Return a deep copy of the list.</p>
 <h2 id="solution">Solution</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * Definition for singly-linked list with a random pointer.
- * function RandomListNode(label) {
- *     this.label = label;
- *     this.next = this.random = null;
- * }
+ * // Definition for a Node.
+ * function Node(val, next, random) {
+ *    this.val = val;
+ *    this.next = next;
+ *    this.random = random;
+ * };
  */</span>
 
 <span class="hljs-comment">/**
- * @param {RandomListNode} head
- * @return {RandomListNode}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{Node}</span> <span class="hljs-variable">head</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{Node}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> copyRandomList = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">head</span>) </span>{
-  <span class="hljs-keyword">if</span> (!head) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
-
-  <span class="hljs-keyword">var</span> map = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>();
-  <span class="hljs-keyword">var</span> now = <span class="hljs-literal">null</span>;
-
-  now = head;
-  <span class="hljs-keyword">while</span> (now) {
-    map.set(now, <span class="hljs-keyword">new</span> RandomListNode(now.label));
-    now = now.next;
-  }
-
-  now = head;
-  <span class="hljs-keyword">while</span> (now) {
-    map.get(now).next = map.get(now.next) || <span class="hljs-literal">null</span>;
-    map.get(now).random = map.get(now.random) || <span class="hljs-literal">null</span>;
-    now = now.next;
-  }
-
-  <span class="hljs-keyword">return</span> map.get(head);
+    <span class="hljs-keyword">let</span> pmap = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>(), dummy = {}, curr = head, copy = dummy;
+    <span class="hljs-keyword">while</span> (curr) {
+        <span class="hljs-keyword">let</span> newNode = <span class="hljs-keyword">new</span> Node(curr.val, <span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>);
+        pmap.set(curr, newNode);
+        copy.next = newNode, copy = newNode, curr = curr.next;
+    }
+    curr = head, copy = dummy.next;
+    <span class="hljs-keyword">while</span> (curr) {
+        copy.random = pmap.get(curr.random);
+        curr = curr.next, copy = copy.next;
+    }
+    <span class="hljs-keyword">return</span> dummy.next;
 };
 </code></pre>
 <p><strong>Explain:</strong></p>

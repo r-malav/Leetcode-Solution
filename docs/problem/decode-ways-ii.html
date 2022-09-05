@@ -1,0 +1,137 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Decode Ways II - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>639. Decode Ways II</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/decode-ways.html">Decode Ways</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/number-of-ways-to-separate-numbers.html">Number of Ways to Separate Numbers</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/number-of-ways-to-divide-a-long-corridor.html">Number of Ways to Divide a Long Corridor</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A message containing letters from <code>A-Z</code> can be <strong>encoded</strong> into numbers using the following mapping:</p>
+<pre><code class="hljs"><span class="hljs-string">'A'</span> -&gt; <span class="hljs-string">"1"</span>
+<span class="hljs-string">'B'</span> -&gt; <span class="hljs-string">"2"</span>
+...
+<span class="hljs-string">'Z'</span> -&gt; <span class="hljs-string">"26"</span>
+</code></pre>
+<p>To <strong>decode</strong> an encoded message, all the digits must be grouped then mapped back into letters using the reverse of the mapping above (there may be multiple ways). For example, <code>"11106"</code> can be mapped into:</p>
+<ul>
+<li><p><code>"AAJF"</code> with the grouping <code>(1 1 10 6)</code></p></li>
+<li><p><code>"KJF"</code> with the grouping <code>(11 10 6)</code></p></li>
+</ul>
+<p>Note that the grouping <code>(1 11 06)</code> is invalid because <code>"06"</code> cannot be mapped into <code>'F'</code> since <code>"6"</code> is different from <code>"06"</code>.</p>
+<p><strong>In addition</strong> to the mapping above, an encoded message may contain the <code>'*'</code> character, which can represent any digit from <code>'1'</code> to <code>'9'</code> (<code>'0'</code> is excluded). For example, the encoded message <code>"1*"</code> may represent any of the encoded messages <code>"11"</code>, <code>"12"</code>, <code>"13"</code>, <code>"14"</code>, <code>"15"</code>, <code>"16"</code>, <code>"17"</code>, <code>"18"</code>, or <code>"19"</code>. Decoding <code>"1*"</code> is equivalent to decoding <strong>any</strong> of the encoded messages it can represent.</p>
+<p>Given a string <code>s</code> consisting of digits and <code>'*'</code> characters, return **the *<em>number</em>* of ways to <strong>decode</strong> it**.</p>
+<p>Since the answer may be very large, return it <strong>modulo</strong> <code>109 + 7</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"*"</span>
+Output: <span class="hljs-number">9</span>
+Explanation: The encoded message can represent <span class="hljs-keyword">any</span> <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> encoded messages <span class="hljs-string">"1"</span>, <span class="hljs-string">"2"</span>, <span class="hljs-string">"3"</span>, <span class="hljs-string">"4"</span>, <span class="hljs-string">"5"</span>, <span class="hljs-string">"6"</span>, <span class="hljs-string">"7"</span>, <span class="hljs-string">"8"</span>, <span class="hljs-keyword">or</span> <span class="hljs-string">"9"</span>.
+Each <span class="hljs-keyword">of</span> these can be decoded <span class="hljs-built_in">to</span> <span class="hljs-keyword">the</span> strings <span class="hljs-string">"A"</span>, <span class="hljs-string">"B"</span>, <span class="hljs-string">"C"</span>, <span class="hljs-string">"D"</span>, <span class="hljs-string">"E"</span>, <span class="hljs-string">"F"</span>, <span class="hljs-string">"G"</span>, <span class="hljs-string">"H"</span>, <span class="hljs-keyword">and</span> <span class="hljs-string">"I"</span> respectively.
+Hence, there are <span class="hljs-keyword">a</span> total <span class="hljs-keyword">of</span> <span class="hljs-number">9</span> ways <span class="hljs-built_in">to</span> decode <span class="hljs-string">"*"</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> s = <span class="hljs-string">"1*"</span>
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-number">18</span>
+Explanation: The encoded message can represent any of the encoded <span class="hljs-keyword">messages</span> <span class="hljs-string">"11"</span>, <span class="hljs-string">"12"</span>, <span class="hljs-string">"13"</span>, <span class="hljs-string">"14"</span>, <span class="hljs-string">"15"</span>, <span class="hljs-string">"16"</span>, <span class="hljs-string">"17"</span>, <span class="hljs-string">"18"</span>, <span class="hljs-built_in">or</span> <span class="hljs-string">"19"</span>.
+Each of these encoded <span class="hljs-keyword">messages</span> have <span class="hljs-number">2</span> ways <span class="hljs-keyword">to</span> <span class="hljs-keyword">be</span> decoded (<span class="hljs-keyword">e</span>.g. <span class="hljs-string">"11"</span> can <span class="hljs-keyword">be</span> decoded <span class="hljs-keyword">to</span> <span class="hljs-string">"AA"</span> <span class="hljs-built_in">or</span> <span class="hljs-string">"K"</span>).
+Hence, there are <span class="hljs-keyword">a</span> total of <span class="hljs-number">9</span> * <span class="hljs-number">2</span> = <span class="hljs-number">18</span> ways <span class="hljs-keyword">to</span> decode <span class="hljs-string">"1*"</span>.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> s = <span class="hljs-string">"2*"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">15</span>
+<span class="hljs-symbol">Explanation:</span> The encoded message can represent any of the encoded messages <span class="hljs-string">"21"</span>, <span class="hljs-string">"22"</span>, <span class="hljs-string">"23"</span>, <span class="hljs-string">"24"</span>, <span class="hljs-string">"25"</span>, <span class="hljs-string">"26"</span>, <span class="hljs-string">"27"</span>, <span class="hljs-string">"28"</span>, <span class="hljs-keyword">or </span><span class="hljs-string">"29"</span>.
+<span class="hljs-string">"21"</span>, <span class="hljs-string">"22"</span>, <span class="hljs-string">"23"</span>, <span class="hljs-string">"24"</span>, <span class="hljs-string">"25"</span>, <span class="hljs-keyword">and </span><span class="hljs-string">"26"</span> have <span class="hljs-number">2</span> ways of <span class="hljs-keyword">being </span>decoded, <span class="hljs-keyword">but </span><span class="hljs-string">"27"</span>, <span class="hljs-string">"28"</span>, <span class="hljs-keyword">and </span><span class="hljs-string">"29"</span> only have <span class="hljs-number">1</span> way.
+Hence, there are a total of (<span class="hljs-number">6</span> * <span class="hljs-number">2</span>) + (<span class="hljs-number">3</span> * <span class="hljs-number">1</span>) = <span class="hljs-number">12</span> + <span class="hljs-number">3</span> = <span class="hljs-number">15</span> ways to decode <span class="hljs-string">"2*"</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 105</code></p></li>
+<li><p><code>s[i]</code> is a digit or <code>'*'</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">numDecodings</span><span class="hljs-params">(String s)</span> </span>{
+        <span class="hljs-keyword">if</span> (s.charAt(<span class="hljs-number">0</span>) == <span class="hljs-string">'0'</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">long</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[s.length() + <span class="hljs-number">1</span>];
+        dp[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;
+        dp[<span class="hljs-number">1</span>] = s.charAt(<span class="hljs-number">0</span>) == <span class="hljs-string">'*'</span> ? <span class="hljs-number">9</span> : <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">char</span>[] ch = s.toCharArray();
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">2</span>; i &lt;= ch.length; i++) {
+            <span class="hljs-keyword">if</span> (ch[i - <span class="hljs-number">1</span>] == <span class="hljs-string">'0'</span>) {
+                <span class="hljs-keyword">if</span> (ch[i - <span class="hljs-number">2</span>] == <span class="hljs-string">'1'</span> || ch[i - <span class="hljs-number">2</span>] == <span class="hljs-string">'2'</span>) {
+                    dp[i] = dp[i - <span class="hljs-number">2</span>];
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ch[i - <span class="hljs-number">2</span>] == <span class="hljs-string">'*'</span>) {
+                    dp[i] = <span class="hljs-number">2</span> * dp[i - <span class="hljs-number">2</span>];
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+                }
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ch[i - <span class="hljs-number">1</span>] &gt;= <span class="hljs-string">'1'</span> &amp;&amp; ch[i - <span class="hljs-number">1</span>] &lt;= <span class="hljs-string">'6'</span>) {
+                dp[i] = dp[i - <span class="hljs-number">1</span>];
+                <span class="hljs-keyword">if</span> (ch[i - <span class="hljs-number">2</span>] == <span class="hljs-string">'1'</span> || ch[i - <span class="hljs-number">2</span>] == <span class="hljs-string">'2'</span>) {
+                    dp[i] += dp[i - <span class="hljs-number">2</span>];
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ch[i - <span class="hljs-number">2</span>] == <span class="hljs-string">'*'</span>) {
+                    dp[i] += <span class="hljs-number">2</span> * dp[i - <span class="hljs-number">2</span>];
+                }
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ch[i - <span class="hljs-number">1</span>] &gt;= <span class="hljs-string">'7'</span> &amp;&amp; ch[i - <span class="hljs-number">1</span>] &lt;= <span class="hljs-string">'9'</span>) {
+                dp[i] = dp[i - <span class="hljs-number">1</span>];
+                <span class="hljs-keyword">if</span> (ch[i - <span class="hljs-number">2</span>] == <span class="hljs-string">'1'</span> || ch[i - <span class="hljs-number">2</span>] == <span class="hljs-string">'*'</span>) {
+                    dp[i] += dp[i - <span class="hljs-number">2</span>];
+                }
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ch[i - <span class="hljs-number">1</span>] == <span class="hljs-string">'*'</span>) {
+                dp[i] = <span class="hljs-number">9</span> * dp[i - <span class="hljs-number">1</span>];
+                <span class="hljs-keyword">if</span> (ch[i - <span class="hljs-number">2</span>] == <span class="hljs-string">'1'</span>) {
+                    dp[i] += <span class="hljs-number">9</span> * dp[i - <span class="hljs-number">2</span>];
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ch[i - <span class="hljs-number">2</span>] == <span class="hljs-string">'2'</span>) {
+                    dp[i] += <span class="hljs-number">6</span> * dp[i - <span class="hljs-number">2</span>];
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ch[i - <span class="hljs-number">2</span>] == <span class="hljs-string">'*'</span>) {
+                    dp[i] += <span class="hljs-number">15</span> * dp[i - <span class="hljs-number">2</span>];
+                }
+            }
+            dp[i] %= <span class="hljs-number">1000000007</span>;
+        }
+
+        <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>) dp[s.length()];
+    }
+}
+</code></pre>
+<h2 id="solution-c">Solution (C++)</h2>
+<pre><code class="hljs lang-cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> {</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">numDecodings</span><span class="hljs-params">(<span class="hljs-built_in">string</span> s)</span> </span>{
+        <span class="hljs-keyword">int</span> n = s.size(), M = <span class="hljs-number">1e9</span> + <span class="hljs-number">7</span>;
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">long</span>&gt; <span class="hljs-title">dp</span><span class="hljs-params">(n + <span class="hljs-number">1</span>, <span class="hljs-number">0</span>)</span></span>;
+        dp[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">if</span> (s[<span class="hljs-number">0</span>] == <span class="hljs-string">'0'</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        dp[<span class="hljs-number">1</span>] = (s[<span class="hljs-number">0</span>] == <span class="hljs-string">'*'</span>) ? <span class="hljs-number">9</span> : <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">2</span>; i &lt;= n; ++i) {
+            <span class="hljs-keyword">if</span> (s[i - <span class="hljs-number">1</span>] == <span class="hljs-string">'0'</span>) {
+                <span class="hljs-keyword">if</span> (s[i - <span class="hljs-number">2</span>] == <span class="hljs-string">'1'</span> || s[i - <span class="hljs-number">2</span>] == <span class="hljs-string">'2'</span>) {
+                    dp[i] += dp[i - <span class="hljs-number">2</span>];
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (s[i - <span class="hljs-number">2</span>] == <span class="hljs-string">'*'</span>) {
+                    dp[i] += <span class="hljs-number">2</span> * dp[i - <span class="hljs-number">2</span>];
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+                }
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (s[i - <span class="hljs-number">1</span>] &gt;= <span class="hljs-string">'1'</span> &amp;&amp; s[i - <span class="hljs-number">1</span>] &lt;= <span class="hljs-string">'9'</span>) {
+                dp[i] += dp[i - <span class="hljs-number">1</span>];
+                <span class="hljs-keyword">if</span> (s[i - <span class="hljs-number">2</span>] == <span class="hljs-string">'1'</span> || (s[i - <span class="hljs-number">2</span>] == <span class="hljs-string">'2'</span> &amp;&amp; s[i - <span class="hljs-number">1</span>] &lt;= <span class="hljs-string">'6'</span>)) {
+                    dp[i] += dp[i - <span class="hljs-number">2</span>];
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (s[i - <span class="hljs-number">2</span>] == <span class="hljs-string">'*'</span>) {
+                    dp[i] += (s[i - <span class="hljs-number">1</span>] &lt;= <span class="hljs-string">'6'</span>) ? (<span class="hljs-number">2</span> * dp[i - <span class="hljs-number">2</span>]) : dp[i - <span class="hljs-number">2</span>];
+                }
+            } <span class="hljs-keyword">else</span> { <span class="hljs-comment">// s[i - 1] == '*'</span>
+                dp[i] += <span class="hljs-number">9</span> * dp[i - <span class="hljs-number">1</span>];
+                <span class="hljs-keyword">if</span> (s[i - <span class="hljs-number">2</span>] == <span class="hljs-string">'1'</span>) dp[i] += <span class="hljs-number">9</span> * dp[i - <span class="hljs-number">2</span>];
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (s[i - <span class="hljs-number">2</span>] == <span class="hljs-string">'2'</span>) dp[i] += <span class="hljs-number">6</span> * dp[i - <span class="hljs-number">2</span>];
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (s[i - <span class="hljs-number">2</span>] == <span class="hljs-string">'*'</span>) dp[i] += <span class="hljs-number">15</span> * dp[i - <span class="hljs-number">2</span>];
+            }
+            dp[i] %= M;
+        }
+        <span class="hljs-keyword">return</span> dp[n];
+    }
+};
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

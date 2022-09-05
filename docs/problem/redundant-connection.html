@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Redundant Connection - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>684. Redundant Connection</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/union-find">Union Find</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/graph">Graph</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/redundant-connection-ii.html">Redundant Connection II</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/accounts-merge.html">Accounts Merge</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/maximum-employees-to-be-invited-to-a-meeting.html">Maximum Employees to Be Invited to a Meeting</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>In this problem, a tree is an <strong>undirected graph</strong> that is connected and has no cycles.</p>
+<p>You are given a graph that started as a tree with <code>n</code> nodes labeled from <code>1</code> to <code>n</code>, with one additional edge added. The added edge has two <strong>different</strong> vertices chosen from <code>1</code> to <code>n</code>, and was not an edge that already existed. The graph is represented as an array <code>edges</code> of length <code>n</code> where <code>edges[i] = [ai, bi]</code> indicates that there is an edge between nodes <code>ai</code> and <code>bi</code> in the graph.</p>
+<p>Return **an edge that can be removed so that the resulting graph is a tree of *<em><code>n</code></em>* nodes**. If there are multiple answers, return the answer that occurs last in the input.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/05/02/reduntant1-1-graph.jpg" alt="" /></p>
+<pre><code class="hljs">Input: edges = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]]
+Output: [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/05/02/reduntant1-2-graph.jpg" alt="" /></p>
+<pre><code class="hljs">Input: edges = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">5</span>]]
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">4</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == edges.length</code></p></li>
+<li><p><code>3 &lt;= n &lt;= 1000</code></p></li>
+<li><p><code>edges[i].length == 2</code></p></li>
+<li><p><code>1 &lt;= ai &lt; bi &lt;= edges.length</code></p></li>
+<li><p><code>ai != bi</code></p></li>
+<li><p>There are no repeated edges.</p></li>
+<li><p>The given graph is connected.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] par;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] findRedundantConnection(<span class="hljs-keyword">int</span>[][] edges) {
+        <span class="hljs-keyword">int</span>[] ans = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">2</span>];
+        <span class="hljs-keyword">int</span> n = edges.length;
+        par = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n + <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            par[i] = i;
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] edge : edges) {
+            <span class="hljs-keyword">int</span> lx = find(edge[<span class="hljs-number">0</span>]);
+            <span class="hljs-keyword">int</span> ly = find(edge[<span class="hljs-number">1</span>]);
+            <span class="hljs-keyword">if</span> (lx != ly) {
+                par[lx] = ly;
+            } <span class="hljs-keyword">else</span> {
+                ans[<span class="hljs-number">0</span>] = edge[<span class="hljs-number">0</span>];
+                ans[<span class="hljs-number">1</span>] = edge[<span class="hljs-number">1</span>];
+            }
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span> </span>{
+        <span class="hljs-keyword">if</span> (par[x] == x) {
+            <span class="hljs-keyword">return</span> x;
+        }
+        <span class="hljs-keyword">return</span> find(par[x]);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

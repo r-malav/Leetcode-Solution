@@ -2,24 +2,24 @@
 <p>Given a <strong>non-empty</strong> binary tree, find the maximum path sum.</p>
 <p>For this problem, a path is defined as any sequence of nodes from some starting node to any node in the tree along the parent-child connections. The path must contain <strong>at least one node</strong> and does not need to go through the root.</p>
 <p><strong>Example 1:</strong></p>
-<pre><code class="hljs"><span class="hljs-attribute">Input</span>: [1,2,3]
+<pre><code class="hljs">Input: [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
 
-<span class="avrasm">       <span class="hljs-number">1</span>
+       <span class="hljs-number">1</span>
       / \
      <span class="hljs-number">2</span>   <span class="hljs-number">3</span>
 
-<span class="hljs-symbol">Output:</span> <span class="hljs-number">6</span></span>
+Output: <span class="hljs-number">6</span>
 </code></pre>
 <p><strong>Example 2:</strong></p>
-<pre><code class="hljs"><span class="hljs-attribute">Input</span>: [-10,9,20,null,null,15,7]
+<pre><code class="hljs"><span class="hljs-meta">Input</span>: [-10,9,20,<span class="hljs-meta">null</span>,<span class="hljs-meta">null</span>,15,7]
 
-<span class="haml">   -<span class="ruby"><span class="hljs-number">10</span>
-</span><span class="hljs-comment">   / \</span>
-  9  20
-<span class="hljs-comment">    /  \</span>
-   15   7
+<span class="hljs-variable">&amp;nbsp</span>;  -10
+<span class="hljs-variable">&amp;nbsp</span>; <span class="hljs-variable">&amp;nbsp</span>;/ \
+<span class="hljs-variable">&amp;nbsp</span>; 9 <span class="hljs-variable">&amp;nbsp</span>;20
+<span class="hljs-variable">&amp;nbsp</span>; <span class="hljs-variable">&amp;nbsp</span>; / <span class="hljs-variable">&amp;nbsp</span>;\
+<span class="hljs-variable">&amp;nbsp</span>; <span class="hljs-variable">&amp;nbsp</span>;15 <span class="hljs-variable">&amp;nbsp</span>; 7
 
-Output: 42</span>
+<span class="hljs-meta">Output</span>: 42
 </code></pre>
 <h2 id="solution">Solution</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
@@ -30,8 +30,8 @@ Output: 42</span>
  * }
  */</span>
 <span class="hljs-comment">/**
- * @param {TreeNode} root
- * @return {number}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{TreeNode}</span> <span class="hljs-variable">root</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> maxPathSum = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">root</span>) </span>{
   <span class="hljs-keyword">var</span> max = <span class="hljs-built_in">Number</span>.MIN_SAFE_INTEGER;

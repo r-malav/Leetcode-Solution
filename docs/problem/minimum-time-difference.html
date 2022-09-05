@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Time Difference - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>539. Minimum Time Difference</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/math">Math</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/minimum-cost-to-set-cooking-time.html">Minimum Cost to Set Cooking Time</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a list of 24-hour clock time points in <strong>"HH:MM"</strong> format, return **the minimum *<em>minutes</em>* difference between any two time-points in the list**.
+&nbsp;
+*<em>Example 1:</em>*</p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> timePoints = [<span class="hljs-string">"23:59"</span>,<span class="hljs-string">"00:00"</span>]
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">1</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> timePoints = [<span class="hljs-string">"00:00"</span>,<span class="hljs-string">"23:59"</span>,<span class="hljs-string">"00:00"</span>]
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">0</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>2 &lt;= timePoints.length &lt;= 2 * 104</code></p></li>
+<li><p><code>timePoints[i]</code> is in the format <strong>"HH:MM"</strong>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">findMinDifference</span><span class="hljs-params">(List&lt;String&gt; timePoints)</span> </span>{
+        <span class="hljs-keyword">if</span> (timePoints.size() &lt; <span class="hljs-number">300</span>) {
+            <span class="hljs-keyword">return</span> smallInputSize(timePoints);
+        }
+        <span class="hljs-keyword">return</span> largeInputSize(timePoints);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">largeInputSize</span><span class="hljs-params">(List&lt;String&gt; timePoints)</span> </span>{
+        <span class="hljs-keyword">boolean</span>[] times = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[<span class="hljs-number">60</span> * <span class="hljs-number">24</span>];
+        <span class="hljs-keyword">for</span> (String time : timePoints) {
+            <span class="hljs-keyword">int</span> hours = Integer.parseInt(time.substring(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>));
+            <span class="hljs-keyword">int</span> minutes = Integer.parseInt(time.substring(<span class="hljs-number">3</span>, <span class="hljs-number">5</span>));
+            <span class="hljs-keyword">if</span> (times[hours * <span class="hljs-number">60</span> + minutes]) {
+                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+            }
+            times[hours * <span class="hljs-number">60</span> + minutes] = <span class="hljs-keyword">true</span>;
+        }
+        <span class="hljs-keyword">int</span> prev = -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> min = <span class="hljs-number">60</span> * <span class="hljs-number">24</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; (times.length + times.length / <span class="hljs-number">2</span>); i++) {
+            <span class="hljs-keyword">if</span> (i &lt; times.length) {
+                <span class="hljs-keyword">if</span> (times[i] &amp;&amp; prev == -<span class="hljs-number">1</span>) {
+                    prev = i;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (times[i]) {
+                    min = Math.min(min, i - prev);
+                    prev = i;
+                }
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">if</span> (times[i - times.length] &amp;&amp; prev == -<span class="hljs-number">1</span>) {
+                    prev = i;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (times[i - times.length]) {
+                    min = Math.min(min, i - prev);
+                    prev = i;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> min;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">smallInputSize</span><span class="hljs-params">(List&lt;String&gt; timePoints)</span> </span>{
+        <span class="hljs-keyword">int</span>[] times = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[timePoints.size()];
+        <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (String time : timePoints) {
+            <span class="hljs-keyword">int</span> hours = Integer.parseInt(time.substring(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>));
+            <span class="hljs-keyword">int</span> minutes = Integer.parseInt(time.substring(<span class="hljs-number">3</span>, <span class="hljs-number">5</span>));
+            times[j++] = hours * <span class="hljs-number">60</span> + minutes;
+        }
+        Arrays.sort(times);
+        <span class="hljs-keyword">int</span> min = <span class="hljs-number">60</span> * <span class="hljs-number">24</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt;= times.length; i++) {
+            <span class="hljs-keyword">if</span> (i == times.length) {
+                min = Math.min(min, (times[<span class="hljs-number">0</span>] + <span class="hljs-number">60</span> * <span class="hljs-number">24</span>) - times[times.length - <span class="hljs-number">1</span>]);
+            } <span class="hljs-keyword">else</span> {
+                min = Math.min(min, times[i] - times[i - <span class="hljs-number">1</span>]);
+            }
+            <span class="hljs-keyword">if</span> (min == <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> min;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

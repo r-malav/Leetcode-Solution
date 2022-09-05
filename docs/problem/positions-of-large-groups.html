@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Positions of Large Groups - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>830. Positions of Large Groups</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/divide-a-string-into-groups-of-size-k.html">Divide a String Into Groups of Size k</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>In a string <code>s</code>&nbsp;of lowercase letters, these letters form consecutive groups of the same character.</p>
+<p>For example, a string like <code>s = "abbxxxxzyy"</code> has the groups <code>"a"</code>, <code>"bb"</code>, <code>"xxxx"</code>, <code>"z"</code>, and&nbsp;<code>"yy"</code>.</p>
+<p>A group is identified by an interval&nbsp;<code>[start, end]</code>, where&nbsp;<code>start</code>&nbsp;and&nbsp;<code>end</code>&nbsp;denote the start and end&nbsp;indices (inclusive) of the group. In the above example,&nbsp;<code>"xxxx"</code>&nbsp;has the interval&nbsp;<code>[3,6]</code>.</p>
+<p>A group is considered&nbsp;<strong>large</strong>&nbsp;if it has 3 or more characters.</p>
+<p>Return&nbsp;**the intervals of every *<em>large</em>* group sorted in&nbsp;<strong>increasing order by start index</strong>**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-keyword">Input</span>: s = "abbxxxxzzy"
+Output: [[<span class="hljs-number">3</span>,<span class="hljs-number">6</span>]]
+Explanation: "xxxx" <span class="hljs-keyword">is</span> the <span class="hljs-keyword">only</span> <span class="hljs-keyword">large</span> <span class="hljs-keyword">group</span> <span class="hljs-keyword">with</span> <span class="hljs-keyword">start</span> <span class="hljs-keyword">index</span> <span class="hljs-number">3</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">end</span> <span class="hljs-keyword">index</span> <span class="hljs-number">6.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-keyword">Input</span>: s = "abc"
+Output: []
+Explanation: We have <span class="hljs-keyword">groups</span> "a", "b", <span class="hljs-keyword">and</span> "c", <span class="hljs-keyword">none</span> <span class="hljs-keyword">of</span> which are <span class="hljs-keyword">large</span> <span class="hljs-keyword">groups</span>.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"abcdddeeeeaabbbcd"</span>
+Output: <span class="hljs-string">[[3,5],[6,9],[12,14]]</span>
+Explanation: The large groups are <span class="hljs-string">"ddd"</span>, <span class="hljs-string">"eeee"</span>, <span class="hljs-keyword">and</span> <span class="hljs-string">"bbb"</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 1000</code></p></li>
+<li><p><code>s</code> contains lowercase English letters only.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; largeGroupPositions(String s) {
+        List&lt;List&lt;Integer&gt;&gt; map = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (i &lt; s.length()) {
+            <span class="hljs-keyword">int</span> j = i;
+            <span class="hljs-keyword">while</span> (j &lt; s.length() &amp;&amp; s.charAt(j) == s.charAt(i)) {
+                j++;
+            }
+            <span class="hljs-keyword">if</span> ((j - <span class="hljs-number">1</span>) - i + <span class="hljs-number">1</span> &gt;= <span class="hljs-number">3</span>) {
+                map.add(Arrays.asList(i, j - <span class="hljs-number">1</span>));
+            }
+            i = j;
+        }
+        <span class="hljs-keyword">return</span> map;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

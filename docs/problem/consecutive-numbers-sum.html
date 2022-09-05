@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Consecutive Numbers Sum - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>829. Consecutive Numbers Sum</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/math">Math</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/enumeration">Enumeration</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an integer <code>n</code>, return **the number of ways you can write *<em><code>n</code></em>* as the sum of consecutive positive integers.**</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">2</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-number">5</span> <span class="hljs-string">=</span> <span class="hljs-number">2</span> <span class="hljs-string">+</span> <span class="hljs-number">3</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">9</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">3</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-number">9</span> <span class="hljs-string">=</span> <span class="hljs-number">4</span> <span class="hljs-string">+</span> <span class="hljs-number">5</span> <span class="hljs-string">=</span> <span class="hljs-number">2</span> <span class="hljs-string">+</span> <span class="hljs-number">3</span> <span class="hljs-string">+</span> <span class="hljs-number">4</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">15</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">4</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-number">15</span> <span class="hljs-string">=</span> <span class="hljs-number">8</span> <span class="hljs-string">+</span> <span class="hljs-number">7</span> <span class="hljs-string">=</span> <span class="hljs-number">4</span> <span class="hljs-string">+</span> <span class="hljs-number">5</span> <span class="hljs-string">+</span> <span class="hljs-number">6</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span> <span class="hljs-string">+</span> <span class="hljs-number">2</span> <span class="hljs-string">+</span> <span class="hljs-number">3</span> <span class="hljs-string">+</span> <span class="hljs-number">4</span> <span class="hljs-string">+</span> <span class="hljs-number">5</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= n &lt;= 109</code></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">consecutiveNumbersSum</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i * i &lt;= n; i++) {
+            <span class="hljs-keyword">if</span> (n % i &gt; <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-keyword">int</span> j = n / i;
+            <span class="hljs-keyword">if</span> (i % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>) {
+                ans++;
+            }
+            <span class="hljs-keyword">if</span> (j != i &amp;&amp; j % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>) {
+                ans++;
+            }
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

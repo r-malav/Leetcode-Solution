@@ -17,13 +17,13 @@
 +----------+</span>
 </code></pre>
 <h2 id="solution-1">Solution 1</h2>
-<pre><code class="hljs lang-sql"># Write your MySQL query statement below
-select
-  a.Name as Employee
-  from Employee a
-  left join Employee b
-  on a.ManagerId = b.Id
-  where a.Salary &gt; b.Salary
+<pre><code class="hljs lang-sql"><span class="hljs-comment"># Write your MySQL query statement below</span>
+<span class="hljs-keyword">select</span>
+  a.Name <span class="hljs-keyword">as</span> Employee
+  <span class="hljs-keyword">from</span> Employee a
+  <span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span> Employee b
+  <span class="hljs-keyword">on</span> a.ManagerId = b.Id
+  <span class="hljs-keyword">where</span> a.Salary &gt; b.Salary
 </code></pre>
 <p><strong>Explain:</strong></p>
 <p>nope.</p>
@@ -33,12 +33,12 @@ select
 <li>Space complexity :</li>
 </ul>
 <h2 id="solution-2">Solution 2</h2>
-<pre><code class="hljs lang-sql"># Write your MySQL query statement below
-select
-  a.Name as Employee
-  from Employee a, Employee b
-  where a.ManagerId = b.Id
-    and a.Salary &gt; b.Salary
+<pre><code class="hljs lang-sql"><span class="hljs-comment"># Write your MySQL query statement below</span>
+<span class="hljs-keyword">select</span>
+  a.Name <span class="hljs-keyword">as</span> Employee
+  <span class="hljs-keyword">from</span> Employee a, Employee b
+  <span class="hljs-keyword">where</span> a.ManagerId = b.Id
+    <span class="hljs-keyword">and</span> a.Salary &gt; b.Salary
 </code></pre>
 <p><strong>Explain:</strong></p>
 <p>nope.</p>

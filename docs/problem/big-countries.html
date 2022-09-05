@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Big Countries - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>595. Big Countries</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/database">Database</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Table: <code>World</code></p>
+<pre><code class="hljs">+<span class="hljs-comment">-------------+---------+</span>
+| <span class="hljs-keyword">Column</span> <span class="hljs-type">Name</span> | <span class="hljs-keyword">Type</span>    |
++<span class="hljs-comment">-------------+---------+</span>
+| <span class="hljs-type">name</span>        | <span class="hljs-type">varchar</span> |
+| continent   | <span class="hljs-type">varchar</span> |
+| area        | <span class="hljs-type">int</span>     |
+| population  | <span class="hljs-type">int</span>     |
+| gdp         | <span class="hljs-type">int</span>     |
++<span class="hljs-comment">-------------+---------+</span>
+<span class="hljs-type">name</span> <span class="hljs-keyword">is</span> the <span class="hljs-keyword">primary key</span> <span class="hljs-keyword">column</span> <span class="hljs-keyword">for</span> this <span class="hljs-keyword">table</span>.
+<span class="hljs-keyword">Each</span> <span class="hljs-keyword">row</span> <span class="hljs-keyword">of</span> this <span class="hljs-keyword">table</span> gives information about the <span class="hljs-type">name</span> <span class="hljs-keyword">of</span> a country, the continent <span class="hljs-keyword">to</span> which it belongs, its area, the population, <span class="hljs-keyword">and</span> its GDP <span class="hljs-keyword">value</span>.
+</code></pre>
+<p>&nbsp;</p>
+<p>A country is <strong>big</strong> if:</p>
+<ul>
+<li><p>it has an area of at least&nbsp;three million (i.e., <code>3000000 km2</code>), or</p></li>
+<li><p>it has a population of at least&nbsp;twenty-five million (i.e., <code>25000000</code>).</p></li>
+</ul>
+<p>Write an SQL query to report the name, population, and area of the <strong>big countries</strong>.</p>
+<p>Return the result table in <strong>any order</strong>.</p>
+<p>The query result format is in the following example.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: 
+<span class="hljs-section">World table:
++-------------+-----------+---------+------------+--------------+</span>
+<span class="hljs-section">| name        | continent | area    | population | gdp          |
++-------------+-----------+---------+------------+--------------+</span>
+| Afghanistan | Asia      | 652230  | 25500100   | 20343000000  |
+| Albania     | Europe    | 28748   | 2831741    | 12960000000  |
+| Algeria     | Africa    | 2381741 | 37100000   | 188681000000 |
+| Andorra     | Europe    | 468     | 78115      | 3712000000   |
+<span class="hljs-section">| Angola      | Africa    | 1246700 | 20609294   | 100990000000 |
++-------------+-----------+---------+------------+--------------+</span>
+<span class="hljs-section">Output: 
++-------------+------------+---------+</span>
+<span class="hljs-section">| name        | population | area    |
++-------------+------------+---------+</span>
+| Afghanistan | 25500100   | 652230  |
+<span class="hljs-section">| Algeria     | 37100000   | 2381741 |
++-------------+------------+---------+</span>
+</code></pre>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-sql"><span class="hljs-comment"># Write your MySQL query statement below</span>
+<span class="hljs-keyword">select</span> <span class="hljs-keyword">name</span>, population, area
+<span class="hljs-keyword">from</span> world
+<span class="hljs-keyword">where</span> area &gt;= <span class="hljs-number">3000000</span>
+<span class="hljs-keyword">or</span> population &gt;= <span class="hljs-number">25000000</span>
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

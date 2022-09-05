@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Race Car - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>818. Race Car</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Your car starts at position <code>0</code> and speed <code>+1</code> on an infinite number line. Your car can go into negative positions. Your car drives automatically according to a sequence of instructions <code>'A'</code> (accelerate) and <code>'R'</code> (reverse):</p>
+<pre><code>When you get an instruction <code>'A'</code>, your car does the following:
+</code></pre>
+<ul>
+<li><p><code>position += speed</code></p></li>
+<li><p><code>speed *= 2</code></p>
+<p>When you get an instruction <code>'R'</code>, your car does the following:</p></li>
+<li><p>If your speed is positive then <code>speed = -1</code></p></li>
+<li><p>otherwise <code>speed = 1</code></p>
+<p>Your position stays the same.</p></li>
+</ul>
+<p>For example, after commands <code>"AAR"</code>, your car goes to positions <code>0 --&gt; 1 --&gt; 3 --&gt; 3</code>, and your speed goes to <code>1 --&gt; 2 --&gt; 4 --&gt; -1</code>.</p>
+<p>Given a target position <code>target</code>, return <strong>the length of the shortest sequence of instructions to get there</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">target</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">2</span>
+<span class="hljs-attr">Explanation:</span> 
+<span class="hljs-string">The</span> <span class="hljs-string">shortest</span> <span class="hljs-string">instruction</span> <span class="hljs-string">sequence</span> <span class="hljs-string">is</span> <span class="hljs-string">"AA"</span><span class="hljs-string">.</span>
+<span class="hljs-string">Your</span> <span class="hljs-string">position</span> <span class="hljs-string">goes</span> <span class="hljs-string">from</span> <span class="hljs-number">0</span> <span class="hljs-string">--&gt;</span> <span class="hljs-number">1</span> <span class="hljs-string">--&gt;</span> <span class="hljs-number">3</span><span class="hljs-string">.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">target</span> <span class="hljs-string">=</span> <span class="hljs-number">6</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">5</span>
+<span class="hljs-attr">Explanation:</span> 
+<span class="hljs-string">The</span> <span class="hljs-string">shortest</span> <span class="hljs-string">instruction</span> <span class="hljs-string">sequence</span> <span class="hljs-string">is</span> <span class="hljs-string">"AAARA"</span><span class="hljs-string">.</span>
+<span class="hljs-string">Your</span> <span class="hljs-string">position</span> <span class="hljs-string">goes</span> <span class="hljs-string">from</span> <span class="hljs-number">0</span> <span class="hljs-string">--&gt;</span> <span class="hljs-number">1</span> <span class="hljs-string">--&gt;</span> <span class="hljs-number">3</span> <span class="hljs-string">--&gt;</span> <span class="hljs-number">7</span> <span class="hljs-string">--&gt;</span> <span class="hljs-number">7</span> <span class="hljs-string">--&gt;</span> <span class="hljs-number">6</span><span class="hljs-string">.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= target &lt;= 104</code></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">racecar</span><span class="hljs-params">(<span class="hljs-keyword">int</span> target)</span> </span>{
+        Queue&lt;<span class="hljs-keyword">int</span>[]&gt; queue = <span class="hljs-keyword">new</span> LinkedList&lt;&gt;();
+        queue.add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>});
+        <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+            <span class="hljs-keyword">int</span>[] arr = queue.poll();
+            <span class="hljs-keyword">if</span> (arr[<span class="hljs-number">0</span>] == target) {
+                <span class="hljs-keyword">return</span> arr[<span class="hljs-number">2</span>];
+            }
+            queue.add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {arr[<span class="hljs-number">0</span>] + arr[<span class="hljs-number">1</span>], <span class="hljs-number">2</span> * arr[<span class="hljs-number">1</span>], <span class="hljs-number">1</span> + arr[<span class="hljs-number">2</span>]});
+            <span class="hljs-keyword">if</span> ((arr[<span class="hljs-number">0</span>] + arr[<span class="hljs-number">1</span>]) &gt; target &amp;&amp; arr[<span class="hljs-number">1</span>] &gt; <span class="hljs-number">0</span>) {
+                queue.add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {arr[<span class="hljs-number">0</span>], -<span class="hljs-number">1</span>, <span class="hljs-number">1</span> + arr[<span class="hljs-number">2</span>]});
+            }
+            <span class="hljs-keyword">if</span> ((arr[<span class="hljs-number">0</span>]) + arr[<span class="hljs-number">1</span>] &lt; target &amp;&amp; (arr[<span class="hljs-number">1</span>] &lt; <span class="hljs-number">0</span>)) {
+                queue.add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {arr[<span class="hljs-number">0</span>], <span class="hljs-number">1</span>, <span class="hljs-number">1</span> + arr[<span class="hljs-number">2</span>]});
+            }
+        }
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

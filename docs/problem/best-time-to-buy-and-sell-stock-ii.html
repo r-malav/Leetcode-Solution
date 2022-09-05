@@ -5,25 +5,25 @@
 <p><strong>Example 1:</strong></p>
 <pre><code class="hljs">Input: [<span class="hljs-number">7</span>,<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">4</span>]
 Output: <span class="hljs-number">7</span>
-Explanation: Buy <span class="hljs-keyword">on</span> <span class="hljs-built_in">day</span> <span class="hljs-number">2</span> (price = <span class="hljs-number">1</span>) <span class="hljs-keyword">and</span> sell <span class="hljs-keyword">on</span> <span class="hljs-built_in">day</span> <span class="hljs-number">3</span> (price = <span class="hljs-number">5</span>), profit = <span class="hljs-number">5</span><span class="hljs-number">-1</span> = <span class="hljs-number">4.</span>
-             Then buy <span class="hljs-keyword">on</span> <span class="hljs-built_in">day</span> <span class="hljs-number">4</span> (price = <span class="hljs-number">3</span>) <span class="hljs-keyword">and</span> sell <span class="hljs-keyword">on</span> <span class="hljs-built_in">day</span> <span class="hljs-number">5</span> (price = <span class="hljs-number">6</span>), profit = <span class="hljs-number">6</span><span class="hljs-number">-3</span> = <span class="hljs-number">3.</span>
+Explanation: Buy on day <span class="hljs-number">2</span> (price = <span class="hljs-number">1</span>) <span class="hljs-keyword">and</span> sell on day <span class="hljs-number">3</span> (price = <span class="hljs-number">5</span>), profit = <span class="hljs-number">5</span><span class="hljs-number">-1</span> = <span class="hljs-number">4.</span>
+&amp;nbsp;            Then buy on day <span class="hljs-number">4</span> (price = <span class="hljs-number">3</span>) <span class="hljs-keyword">and</span> sell on day <span class="hljs-number">5</span> (price = <span class="hljs-number">6</span>), profit = <span class="hljs-number">6</span><span class="hljs-number">-3</span> = <span class="hljs-number">3.</span>
 </code></pre>
 <p><strong>Example 2:</strong></p>
 <pre><code class="hljs">Input: [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]
 Output: <span class="hljs-number">4</span>
 Explanation: Buy <span class="hljs-keyword">on</span> <span class="hljs-built_in">day</span> <span class="hljs-number">1</span> (price = <span class="hljs-number">1</span>) <span class="hljs-keyword">and</span> sell <span class="hljs-keyword">on</span> <span class="hljs-built_in">day</span> <span class="hljs-number">5</span> (price = <span class="hljs-number">5</span>), profit = <span class="hljs-number">5</span><span class="hljs-number">-1</span> = <span class="hljs-number">4.</span>
-             Note <span class="hljs-keyword">that</span> you cannot buy <span class="hljs-keyword">on</span> <span class="hljs-built_in">day</span> <span class="hljs-number">1</span>, buy <span class="hljs-keyword">on</span> <span class="hljs-built_in">day</span> <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> sell them later, <span class="hljs-keyword">as</span> you are
-             engaging multiple transactions <span class="hljs-keyword">at</span> <span class="hljs-keyword">the</span> same <span class="hljs-built_in">time</span>. You must sell <span class="hljs-keyword">before</span> buying again.
+&amp;nbsp;            Note <span class="hljs-keyword">that</span> you cannot buy <span class="hljs-keyword">on</span> <span class="hljs-built_in">day</span> <span class="hljs-number">1</span>, buy <span class="hljs-keyword">on</span> <span class="hljs-built_in">day</span> <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> sell them later, <span class="hljs-keyword">as</span> you are
+&amp;nbsp;            engaging multiple transactions <span class="hljs-keyword">at</span> <span class="hljs-keyword">the</span> same <span class="hljs-built_in">time</span>. You must sell <span class="hljs-keyword">before</span> buying again.
 </code></pre>
 <p><strong>Example 3:</strong></p>
-<pre><code class="hljs"><span class="hljs-string">Input:</span> [<span class="hljs-number">7</span>,<span class="hljs-number">6</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]
-<span class="hljs-string">Output:</span> <span class="hljs-number">0</span>
-<span class="hljs-string">Explanation:</span> In <span class="hljs-keyword">this</span> <span class="hljs-keyword">case</span>, no transaction is done, i.e. max profit = <span class="hljs-number">0.</span>
+<pre><code class="hljs">Input: [<span class="hljs-number">7</span>,<span class="hljs-number">6</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]
+Output: <span class="hljs-number">0</span>
+Explanation: In <span class="hljs-keyword">this</span> <span class="hljs-keyword">case</span>, no transaction <span class="hljs-keyword">is</span> done, i.e. max profit = <span class="hljs-number">0.</span>
 </code></pre>
 <h2 id="solution">Solution</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * @param {number[]} prices
- * @return {number}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">prices</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> maxProfit = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">prices</span>) </span>{
   <span class="hljs-keyword">var</span> max = <span class="hljs-number">0</span>;

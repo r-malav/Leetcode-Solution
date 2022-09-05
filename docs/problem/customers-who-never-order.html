@@ -27,11 +27,11 @@
 +-----------+</span>
 </code></pre>
 <h2 id="solution-1">Solution 1</h2>
-<pre><code class="hljs lang-sql"># Write your MySQL query statement below
-select a.Name as Customers
-  from Customers a
-  where a.Id not in (
-    select b.CustomerId from Orders b
+<pre><code class="hljs lang-sql"><span class="hljs-comment"># Write your MySQL query statement below</span>
+<span class="hljs-keyword">select</span> a.Name <span class="hljs-keyword">as</span> Customers
+  <span class="hljs-keyword">from</span> Customers a
+  <span class="hljs-keyword">where</span> a.Id <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> (
+    <span class="hljs-keyword">select</span> b.CustomerId <span class="hljs-keyword">from</span> Orders b
   )
 </code></pre>
 <p><strong>Explain:</strong></p>
@@ -42,11 +42,11 @@ select a.Name as Customers
 <li>Space complexity :</li>
 </ul>
 <h2 id="solution-2">Solution 2</h2>
-<pre><code class="hljs lang-sql"># Write your MySQL query statement below
-select a.Name as Customers
-  from Customers a
-  where not exists (
-    select Id from Orders b where a.Id = b.CustomerId
+<pre><code class="hljs lang-sql"><span class="hljs-comment"># Write your MySQL query statement below</span>
+<span class="hljs-keyword">select</span> a.Name <span class="hljs-keyword">as</span> Customers
+  <span class="hljs-keyword">from</span> Customers a
+  <span class="hljs-keyword">where</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span> (
+    <span class="hljs-keyword">select</span> <span class="hljs-keyword">Id</span> <span class="hljs-keyword">from</span> Orders b <span class="hljs-keyword">where</span> a.Id = b.CustomerId
   )
 </code></pre>
 <p><strong>Explain:</strong></p>
@@ -57,12 +57,12 @@ select a.Name as Customers
 <li>Space complexity :</li>
 </ul>
 <h2 id="solution-3">Solution 3</h2>
-<pre><code class="hljs lang-sql"># Write your MySQL query statement below
-select a.Name as Customers
-  from Customers a
-  left join Orders b
-  on a.Id = b.CustomerId
-  where b.CustomerId is null
+<pre><code class="hljs lang-sql"><span class="hljs-comment"># Write your MySQL query statement below</span>
+<span class="hljs-keyword">select</span> a.Name <span class="hljs-keyword">as</span> Customers
+  <span class="hljs-keyword">from</span> Customers a
+  <span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span> Orders b
+  <span class="hljs-keyword">on</span> a.Id = b.CustomerId
+  <span class="hljs-keyword">where</span> b.CustomerId <span class="hljs-keyword">is</span> <span class="hljs-literal">null</span>
 </code></pre>
 <p><strong>Explain:</strong></p>
 <p>nope.</p>

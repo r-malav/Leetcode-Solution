@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Find K-th Smallest Pair Distance - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>719. Find K-th Smallest Pair Distance</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/two-pointers">Two Pointers</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/binary-search">Binary Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/find-k-pairs-with-smallest-sums.html">Find K Pairs with Smallest Sums</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/kth-smallest-element-in-a-sorted-matrix.html">Kth Smallest Element in a Sorted Matrix</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/find-k-closest-elements.html">Find K Closest Elements</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/kth-smallest-number-in-multiplication-table.html">Kth Smallest Number in Multiplication Table</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/k-th-smallest-prime-fraction.html">K-th Smallest Prime Fraction</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>The <strong>distance of a pair</strong> of integers <code>a</code> and <code>b</code> is defined as the absolute difference between <code>a</code> and <code>b</code>.</p>
+<p>Given an integer array <code>nums</code> and an integer <code>k</code>, return <strong>the</strong> <code>kth</code> **smallest *<em>distance among all the pairs</em>*** <code>nums[i]</code> *<em>and</em>* <code>nums[j]</code> <strong>where</strong> <code>0 &lt;= i &lt; j &lt; nums.length</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>], k = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">0</span>
+Explanation: Here are all the pairs:
+(<span class="hljs-number">1</span>,<span class="hljs-number">3</span>) -&gt; <span class="hljs-number">2</span>
+(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>) -&gt; <span class="hljs-number">0</span>
+(<span class="hljs-number">3</span>,<span class="hljs-number">1</span>) -&gt; <span class="hljs-number">2</span>
+Then the <span class="hljs-number">1</span>st smallest distance pair <span class="hljs-keyword">is</span> (<span class="hljs-number">1</span>,<span class="hljs-number">1</span>), <span class="hljs-keyword">and</span> its distance <span class="hljs-keyword">is</span> <span class="hljs-number">0.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>], k = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">0</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">6</span>,<span class="hljs-number">1</span>], k = <span class="hljs-number">3</span>
+Output: <span class="hljs-number">5</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == nums.length</code></p></li>
+<li><p><code>2 &lt;= n &lt;= 104</code></p></li>
+<li><p><code>0 &lt;= nums[i] &lt;= 106</code></p></li>
+<li><p><code>1 &lt;= k &lt;= n * (n - 1) / 2</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">nums</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">k</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
+ */</span>
+<span class="hljs-keyword">var</span> smallestDistancePair = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">nums, k</span>) </span>{
+    nums.sort(<span class="hljs-function">(<span class="hljs-params">a,b</span>) =&gt;</span> a-b);
+    <span class="hljs-keyword">let</span> lo = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">let</span> hi = nums[nums.length - <span class="hljs-number">1</span>] - nums[<span class="hljs-number">0</span>];
+
+    <span class="hljs-keyword">while</span> (lo &lt; hi) {
+        <span class="hljs-keyword">let</span> mi = lo + <span class="hljs-built_in">Math</span>.floor((hi-lo) / <span class="hljs-number">2</span>);
+        <span class="hljs-comment">// Sliding window</span>
+        <span class="hljs-keyword">let</span> count = <span class="hljs-number">0</span>, left = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> right = <span class="hljs-number">1</span>; right &lt; nums.length; ++right) {
+            <span class="hljs-comment">// Keep moving left pointer until we reach a difference between two pointers that is less than mi</span>
+            <span class="hljs-keyword">while</span> (nums[right] - nums[left] &gt; mi) left++;
+            <span class="hljs-comment">// Add the amount of pairs in the window to the count</span>
+            count += right - left;
+        }
+        <span class="hljs-comment">//count = number of pairs with distance &lt;= mi</span>
+        <span class="hljs-keyword">if</span> (count &gt;= k) hi = mi;
+        <span class="hljs-keyword">else</span> lo = mi + <span class="hljs-number">1</span>;
+    }
+    <span class="hljs-keyword">return</span> lo;
+};
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

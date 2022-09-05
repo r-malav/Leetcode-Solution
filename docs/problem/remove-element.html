@@ -12,11 +12,11 @@ It doesn<span class="hljs-symbol">'t</span> matter what you leave beyond the ret
 <p><strong>Example 2:</strong></p>
 <pre><code class="hljs">Given nums = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">0</span>,<span class="hljs-number">4</span>,<span class="hljs-number">2</span>], val = <span class="hljs-number">2</span>,
 
-Your function should return length = <span class="hljs-number">5</span>, with the first five elements of nums containing <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">0</span>, and <span class="hljs-number">4.</span>
+Your function should return length = <span class="hljs-number">5</span>, with the first five elements of nums containing&amp;nbsp;<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">0</span>, and&amp;nbsp;<span class="hljs-number">4.</span>
 
 Note that the order of those five elements can be arbitrary.
 
-It doesn't matter what values are set beyond the returned length.
+It doesn't matter what values are set beyond&amp;nbsp;the returned length.
 </code></pre>
 <p><strong>Clarification:</strong></p>
 <p>Confused why the returned value is an integer but your answer is an array?</p>
@@ -28,14 +28,14 @@ It doesn't matter what values are set beyond the returned length.
 <span class="hljs-comment">// any modification to nums in your function would be known by the caller.</span>
 <span class="hljs-comment">// using the length returned by your function, it prints the first len elements.</span>
 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>; i++) {
-    <span class="hljs-built_in">print</span>(nums[i]);
+&amp;nbsp; &amp;nbsp; <span class="hljs-built_in">print</span>(nums[i]);
 }
 </code></pre>
 <h2 id="solution">Solution</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * @param {number[]} nums
- * @param {number} val
- * @return {number}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">nums</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">val</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> removeElement = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">nums, val</span>) </span>{
   <span class="hljs-keyword">var</span> len = nums.length;

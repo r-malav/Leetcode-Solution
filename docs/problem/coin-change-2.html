@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Coin Change 2 - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>518. Coin Change 2</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/maximum-value-of-k-coins-from-piles.html">Maximum Value of K Coins From Piles</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an integer array <code>coins</code> representing coins of different denominations and an integer <code>amount</code> representing a total amount of money.</p>
+<p>Return <strong>the number of combinations that make up that amount</strong>. If that amount of money cannot be made up by any combination of the coins, return <code>0</code>.</p>
+<p>You may assume that you have an infinite number of each kind of coin.</p>
+<p>The answer is <strong>guaranteed</strong> to fit into a signed <strong>32-bit</strong> integer.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: amount = <span class="hljs-number">5</span>, coins = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>]
+Output: <span class="hljs-number">4</span>
+Explanation: there are four ways to make up the amount:
+<span class="hljs-number">5</span>=<span class="hljs-number">5</span>
+<span class="hljs-number">5</span>=<span class="hljs-number">2</span>+<span class="hljs-number">2</span>+<span class="hljs-number">1</span>
+<span class="hljs-number">5</span>=<span class="hljs-number">2</span>+<span class="hljs-number">1</span>+<span class="hljs-number">1</span>+<span class="hljs-number">1</span>
+<span class="hljs-number">5</span>=<span class="hljs-number">1</span>+<span class="hljs-number">1</span>+<span class="hljs-number">1</span>+<span class="hljs-number">1</span>+<span class="hljs-number">1</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">amount</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span><span class="hljs-string">,</span> <span class="hljs-string">coins</span> <span class="hljs-string">=</span> <span class="hljs-string">[2]</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">0</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">the</span> <span class="hljs-string">amount</span> <span class="hljs-string">of</span> <span class="hljs-number">3</span> <span class="hljs-string">cannot</span> <span class="hljs-string">be</span> <span class="hljs-string">made</span> <span class="hljs-string">up</span> <span class="hljs-string">just</span> <span class="hljs-string">with</span> <span class="hljs-string">coins</span> <span class="hljs-string">of</span> <span class="hljs-number">2</span><span class="hljs-string">.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">amount</span> <span class="hljs-string">=</span> <span class="hljs-number">10</span><span class="hljs-string">,</span> <span class="hljs-string">coins</span> <span class="hljs-string">=</span> <span class="hljs-string">[10]</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">1</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= coins.length &lt;= 300</code></p></li>
+<li><p><code>1 &lt;= coins[i] &lt;= 5000</code></p></li>
+<li><p>All the values of <code>coins</code> are <strong>unique</strong>.</p></li>
+<li><p><code>0 &lt;= amount &lt;= 5000</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">change</span><span class="hljs-params">(<span class="hljs-keyword">int</span> amount, <span class="hljs-keyword">int</span>[] coins)</span> </span>{
+        <span class="hljs-keyword">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[amount + <span class="hljs-number">1</span>];
+        dp[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> coin : coins) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = coin; i &lt;= amount; i++) {
+                dp[i] += dp[i - coin];
+            }
+        }
+        <span class="hljs-keyword">return</span> dp[amount];
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

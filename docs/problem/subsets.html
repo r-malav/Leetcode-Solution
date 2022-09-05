@@ -2,23 +2,23 @@
 <p>Given a set of <strong>distinct</strong> integers, <strong>nums</strong>, return all possible subsets (the power set).</p>
 <p><strong>Note:</strong> The solution set must not contain duplicate subsets.</p>
 <p><strong>Example:</strong></p>
-<pre><code class="hljs">Input: nums = <span class="hljs-comment">[1,2,3]</span>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
 Output:
-<span class="hljs-comment">[
-  <span class="hljs-comment">[3]</span>,
-  <span class="hljs-comment">[1]</span>,
-  <span class="hljs-comment">[2]</span>,
-  <span class="hljs-comment">[1,2,3]</span>,
-  <span class="hljs-comment">[1,3]</span>,
-  <span class="hljs-comment">[2,3]</span>,
-  <span class="hljs-comment">[1,2]</span>,
-  <span class="hljs-comment">[]</span>
-]</span>
+[
+  [<span class="hljs-number">3</span>],
+&amp;nbsp; [<span class="hljs-number">1</span>],
+&amp;nbsp; [<span class="hljs-number">2</span>],
+&amp;nbsp; [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],
+&amp;nbsp; [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],
+&amp;nbsp; [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],
+&amp;nbsp; [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],
+&amp;nbsp; []
+]
 </code></pre>
 <h2 id="solution">Solution</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * @param {number[]} nums
- * @return {number[][]}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">nums</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number[][]}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> subsets = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">nums</span>) </span>{
   <span class="hljs-keyword">var</span> res = [];

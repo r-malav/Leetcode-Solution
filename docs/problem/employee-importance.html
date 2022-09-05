@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Employee Importance - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>690. Employee Importance</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/hash-table">Hash Table</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/breadth-first-search">Breadth-First Search</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/nested-list-weight-sum.html">Nested List Weight Sum</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You have a data structure of employee information, including the employee's unique ID, importance value, and direct subordinates' IDs.</p>
+<p>You are given an array of employees <code>employees</code> where:</p>
+<ul>
+<li><p><code>employees[i].id</code> is the ID of the <code>ith</code> employee.</p></li>
+<li><p><code>employees[i].importance</code> is the importance value of the <code>ith</code> employee.</p></li>
+<li><p><code>employees[i].subordinates</code> is a list of the IDs of the direct subordinates of the <code>ith</code> employee.</p></li>
+</ul>
+<p>Given an integer <code>id</code> that represents an employee's ID, return **the *<em>total</em>* importance value of this employee and all their direct and indirect subordinates**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/05/31/emp1-tree.jpg" alt="" /></p>
+<pre><code class="hljs">Input: employees = [[<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,[]],[<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,[]]], id = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">11</span>
+Explanation: Employee <span class="hljs-number">1</span> has an importance value of <span class="hljs-number">5</span> <span class="hljs-keyword">and</span> has two direct subordinates: employee <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> employee <span class="hljs-number">3.</span>
+They both have an importance value of <span class="hljs-number">3.</span>
+Thus, the total importance value of employee <span class="hljs-number">1</span> <span class="hljs-keyword">is</span> <span class="hljs-number">5</span> + <span class="hljs-number">3</span> + <span class="hljs-number">3</span> = <span class="hljs-number">11.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/05/31/emp2-tree.jpg" alt="" /></p>
+<pre><code class="hljs">Input: employees = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,[<span class="hljs-number">5</span>]],[<span class="hljs-number">5</span>,<span class="hljs-number">-3</span>,[]]], id = <span class="hljs-number">5</span>
+Output: <span class="hljs-number">-3</span>
+Explanation: Employee <span class="hljs-number">5</span> has an importance value of <span class="hljs-number">-3</span> <span class="hljs-keyword">and</span> has no direct subordinates.
+Thus, the total importance value of employee <span class="hljs-number">5</span> <span class="hljs-keyword">is</span> <span class="hljs-number">-3.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= employees.length &lt;= 2000</code></p></li>
+<li><p><code>1 &lt;= employees[i].id &lt;= 2000</code></p></li>
+<li><p>All <code>employees[i].id</code> are <strong>unique</strong>.</p></li>
+<li><p><code>-100 &lt;= employees[i].importance &lt;= 100</code></p></li>
+<li><p>One employee has at most one direct leader and may have several subordinates.</p></li>
+<li><p>The IDs in <code>employees[i].subordinates</code> are valid IDs.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/*
+// Definition for Employee.
+class Employee {
+    public int id;
+    public int importance;
+    public List&lt;Integer&gt; subordinates;
+};
+*/</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getImportance</span><span class="hljs-params">(List&lt;Employee&gt; employees, <span class="hljs-keyword">int</span> id)</span> </span>{
+        Map&lt;Integer, Employee&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">for</span> (Employee emp : employees) {
+            map.put(emp.id, emp);
+        }
+        <span class="hljs-keyword">return</span> calculateImportance(id, map);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">calculateImportance</span><span class="hljs-params">(<span class="hljs-keyword">int</span> id, Map&lt;Integer, Employee&gt; map)</span> </span>{
+        Employee employee = map.get(id);
+        <span class="hljs-keyword">int</span> sum = employee.importance;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> sub : employee.subordinates) {
+            sum += calculateImportance(sub, map);
+        }
+        <span class="hljs-keyword">return</span> sum;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

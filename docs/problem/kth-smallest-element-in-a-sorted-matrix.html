@@ -1,0 +1,127 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Kth Smallest Element in a Sorted Matrix - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>378. Kth Smallest Element in a Sorted Matrix</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/stack">Stack</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/greedy">Greedy</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an <code>n x n</code> <code>matrix</code> where each of the rows and columns is sorted in ascending order, return the <code>kth</code> smallest element in the matrix.</p>
+<p>Note that it is the <code>kth</code> smallest element in the sorted order, not the kth distinct element.</p>
+<p>You must find a solution with a memory complexity better than <code>O(n2)</code>.</p>
+<p><strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: matrix = [[<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">9</span>],[<span class="hljs-number">10</span>,<span class="hljs-number">11</span>,<span class="hljs-number">13</span>],[<span class="hljs-number">12</span>,<span class="hljs-number">13</span>,<span class="hljs-number">15</span>]], k = <span class="hljs-number">8</span>
+Output: <span class="hljs-number">13</span>
+Explanation: The elements <span class="hljs-keyword">in</span> the matrix are [<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">9</span>,<span class="hljs-number">10</span>,<span class="hljs-number">11</span>,<span class="hljs-number">12</span>,<span class="hljs-number">13</span>,<span class="hljs-number">13</span>,<span class="hljs-number">15</span>], <span class="hljs-keyword">and</span> the <span class="hljs-number">8</span>th smallest number <span class="hljs-keyword">is</span> <span class="hljs-number">13</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: matrix = <span class="hljs-string">[[-5]]</span>, k = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">-5</span>
+</code></pre>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[][]}</span> <span class="hljs-variable">matrix</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">k</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
+ */</span>
+<span class="hljs-keyword">var</span> kthSmallest = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">matrix, k</span>) </span>{
+  <span class="hljs-keyword">const</span> minHeap = Heap(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> a.val - b.val)(
+    matrix.map(<span class="hljs-function">(<span class="hljs-params">arr, rowIndex</span>) =&gt;</span> ({
+      <span class="hljs-attr">val</span>: arr[<span class="hljs-number">0</span>],
+      rowIndex,
+      <span class="hljs-attr">columnIndex</span>: <span class="hljs-number">0</span>,
+    })),
+  )
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">1</span>; i &lt; k; i++) {
+    <span class="hljs-keyword">const</span> { rowIndex, columnIndex } = minHeap.extract()
+    <span class="hljs-keyword">if</span> (matrix[rowIndex][columnIndex + <span class="hljs-number">1</span>] !== <span class="hljs-literal">undefined</span>) {
+      minHeap.add({
+        <span class="hljs-attr">val</span>: matrix[rowIndex][columnIndex + <span class="hljs-number">1</span>],
+        rowIndex,
+        <span class="hljs-attr">columnIndex</span>: columnIndex + <span class="hljs-number">1</span>,
+      })
+    }
+  }
+  <span class="hljs-keyword">return</span> minHeap.extract().val
+};
+
+<span class="hljs-keyword">const</span> swap = <span class="hljs-function">(<span class="hljs-params">a, b, arr</span>) =&gt;</span> { <span class="hljs-comment">// eslint-disable-line</span>
+  <span class="hljs-keyword">if</span> (a !== b) {
+    <span class="hljs-keyword">const</span> temp = arr[a]
+    arr[a] = arr[b] <span class="hljs-comment">// eslint-disable-line</span>
+    arr[b] = temp <span class="hljs-comment">// eslint-disable-line</span>
+  }
+}
+
+<span class="hljs-keyword">const</span> Heap = <span class="hljs-function"><span class="hljs-params">compareFn</span> =&gt;</span> <span class="hljs-function">(<span class="hljs-params">arr = []</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> left = <span class="hljs-function"><span class="hljs-params">index</span> =&gt;</span> <span class="hljs-number">2</span> * index + <span class="hljs-number">1</span>
+  <span class="hljs-keyword">const</span> right = <span class="hljs-function"><span class="hljs-params">index</span> =&gt;</span> <span class="hljs-number">2</span> * index + <span class="hljs-number">2</span>
+  <span class="hljs-keyword">const</span> parent = <span class="hljs-function"><span class="hljs-params">index</span> =&gt;</span> <span class="hljs-built_in">Math</span>.floor((index - <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>)
+  <span class="hljs-keyword">const</span> size = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> arr.length
+
+  <span class="hljs-comment">// log(n)</span>
+  <span class="hljs-keyword">const</span> heapify = <span class="hljs-function">(<span class="hljs-params">index</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> l = left(index)
+    <span class="hljs-keyword">const</span> r = right(index)
+    <span class="hljs-keyword">let</span> current = index
+    <span class="hljs-keyword">if</span> ((l &lt; size()) &amp;&amp; compareFn(arr[current], arr[l]) &gt; <span class="hljs-number">0</span>) {
+      current = l
+    }
+    <span class="hljs-keyword">if</span> ((r &lt; size()) &amp;&amp; compareFn(arr[current], arr[r]) &gt; <span class="hljs-number">0</span>) {
+      current = r
+    }
+    <span class="hljs-keyword">if</span> (current !== index) {
+      swap(current, index, arr)
+      heapify(current)
+    }
+  }
+  <span class="hljs-comment">// log(n)</span>
+  <span class="hljs-keyword">const</span> heapifyUp = <span class="hljs-function">(<span class="hljs-params">index</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> p = parent(index)
+    <span class="hljs-keyword">if</span> (p &gt;= <span class="hljs-number">0</span> &amp;&amp; compareFn(arr[p], arr[index]) &gt; <span class="hljs-number">0</span>) {
+      swap(p, index, arr)
+      heapifyUp(p)
+    }
+  }
+  <span class="hljs-comment">// O(n)</span>
+  <span class="hljs-keyword">const</span> buildHeap = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-built_in">Math</span>.floor(arr.length / <span class="hljs-number">2</span>); i &gt;= <span class="hljs-number">0</span>; i--) {
+      heapify(i)
+    }
+  }
+  <span class="hljs-keyword">const</span> extract = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+    swap(<span class="hljs-number">0</span>, arr.length - <span class="hljs-number">1</span>, arr)
+    <span class="hljs-keyword">const</span> top = arr.pop()
+    heapify(<span class="hljs-number">0</span>)
+    <span class="hljs-keyword">return</span> top
+  }
+  <span class="hljs-keyword">const</span> remove = <span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> index = arr.findIndex(<span class="hljs-function"><span class="hljs-params">x</span> =&gt;</span> compareFn(x, item) === <span class="hljs-number">0</span>)
+    <span class="hljs-keyword">if</span> (index === <span class="hljs-number">-1</span>) {
+      <span class="hljs-keyword">return</span>
+    }
+    arr[index] = arr.pop() <span class="hljs-comment">// eslint-disable-line</span>
+    <span class="hljs-keyword">const</span> p = parent(index)
+    <span class="hljs-keyword">if</span> (p &lt; <span class="hljs-number">0</span> || compareFn(p, arr[index]) &lt; <span class="hljs-number">0</span>) {
+      heapify(index)
+    } <span class="hljs-keyword">else</span> {
+      heapifyUp(index)
+    }
+  }
+  buildHeap()
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">getHeap</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> arr,
+    <span class="hljs-attr">peek</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+      <span class="hljs-keyword">if</span> (arr.length === <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>
+      }
+      <span class="hljs-keyword">return</span> arr[<span class="hljs-number">0</span>]
+    },
+    <span class="hljs-attr">add</span>: <span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> {
+      arr.push(item)
+      heapifyUp(arr.length - <span class="hljs-number">1</span>)
+    },
+    extract,
+    remove,
+    size,
+  }
+}
+</code></pre>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Construct the Rectangle - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>492. Construct the Rectangle</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/math">Math</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A web developer needs to know how to design a web page's size. So, given a specific rectangular web page’s area, your job by now is to design a rectangular web page, whose length L and width W satisfy the following requirements:</p>
+<ul>
+<li><p>The area of the rectangular web page you designed must equal to the given target area.</p></li>
+<li><p>The width <code>W</code> should not be larger than the length <code>L</code>, which means <code>L &gt;= W</code>.</p></li>
+<li><p>The difference between length <code>L</code> and width <code>W</code> should be as small as possible.</p></li>
+</ul>
+<p>Return <strong>an array <code>[L, W]</code> where <code>L</code> and <code>W</code> are the length and width of the&nbsp;web page you designed in sequence.</strong></p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: area = <span class="hljs-number">4</span>
+Output: [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]
+Explanation: The target area <span class="hljs-keyword">is</span> <span class="hljs-number">4</span>, <span class="hljs-keyword">and</span> all the possible ways to construct it are [<span class="hljs-number">1</span>,<span class="hljs-number">4</span>], [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>], [<span class="hljs-number">4</span>,<span class="hljs-number">1</span>]. 
+But according to requirement <span class="hljs-number">2</span>, [<span class="hljs-number">1</span>,<span class="hljs-number">4</span>] <span class="hljs-keyword">is</span> illegal; according to requirement <span class="hljs-number">3</span>,  [<span class="hljs-number">4</span>,<span class="hljs-number">1</span>] <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> optimal compared to [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]. So the length L <span class="hljs-keyword">is</span> <span class="hljs-number">2</span>, <span class="hljs-keyword">and</span> the width W <span class="hljs-keyword">is</span> <span class="hljs-number">2.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input:<span class="hljs-built_in"> area </span>= 37
+Output: [37,1]
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input:<span class="hljs-built_in"> area </span>= 122122
+Output: [427,286]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= area &lt;= 107</code></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-comment">/*
+      Algorithm:
+     - start with an index i from the square root all the way to 1;
+     - if at any time, area % i == 0 (so i is a divisor of area), then it's the closest solution.
+    */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] constructRectangle(<span class="hljs-keyword">int</span> area) {
+        <span class="hljs-keyword">int</span> low = (<span class="hljs-keyword">int</span>) Math.sqrt(area);
+        <span class="hljs-keyword">while</span> (low &gt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">if</span> (area % low == <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {area / low, low};
+            }
+            low--;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {<span class="hljs-number">0</span>, <span class="hljs-number">0</span>};
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

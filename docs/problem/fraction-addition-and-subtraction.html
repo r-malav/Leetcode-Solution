@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Fraction Addition and Subtraction - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>592. Fraction Addition and Subtraction</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/math">Math</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/simulation">Simulation</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/solve-the-equation.html">Solve the Equation</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a string <code>expression</code> representing an expression of fraction addition and subtraction, return the calculation result in string format.</p>
+<p>The final result should be an irreducible fraction. If your final result is an integer, change it to the format of a fraction that has a denominator <code>1</code>. So in this case, <code>2</code> should be converted to <code>2/1</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> expression = <span class="hljs-string">"-1/2+1/2"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">"0/1"</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> expression = <span class="hljs-string">"-1/2+1/2+1/3"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">"1/3"</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> expression = <span class="hljs-string">"1/3-1/2"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">"-1/6"</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p>The input string only contains <code>'0'</code> to <code>'9'</code>, <code>'/'</code>, <code>'+'</code> and <code>'-'</code>. So does the output.</p></li>
+<li><p>Each fraction (input and output) has the format <code>±numerator/denominator</code>. If the first input fraction or the output is positive, then <code>'+'</code> will be omitted.</p></li>
+<li><p>The input only contains valid <strong>irreducible fractions</strong>, where the <strong>numerator</strong> and <strong>denominator</strong> of each fraction will always be in the range <code>[1, 10]</code>. If the denominator is <code>1</code>, it means this fraction is actually an integer in a fraction format defined above.</p></li>
+<li><p>The number of given fractions will be in the range <code>[1, 10]</code>.</p></li>
+<li><p>The numerator and denominator of the <strong>final result</strong> are guaranteed to be valid and in the range of <strong>32-bit</strong> int.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">gcd</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a, <span class="hljs-keyword">int</span> b)</span> </span>{
+        <span class="hljs-keyword">return</span> a % b == <span class="hljs-number">0</span> ? b : gcd(b, a % b);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> String <span class="hljs-title">format</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a, <span class="hljs-keyword">int</span> b)</span> </span>{
+        <span class="hljs-keyword">int</span> gcd = Math.abs(gcd(a, b));
+        <span class="hljs-keyword">return</span> a / gcd + <span class="hljs-string">"/"</span> + (b / gcd);
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] parse(String s) {
+        <span class="hljs-keyword">int</span> idx = s.indexOf(<span class="hljs-string">"/"</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {
+            Integer.parseInt(s.substring(<span class="hljs-number">0</span>, idx)), Integer.parseInt(s.substring(idx + <span class="hljs-number">1</span>))
+        };
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">fractionAddition</span><span class="hljs-params">(String expression)</span> </span>{
+        <span class="hljs-keyword">int</span>[] rst = {<span class="hljs-number">0</span>, <span class="hljs-number">1</span>};
+        List&lt;<span class="hljs-keyword">int</span>[]&gt; list = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder().append(expression.charAt(<span class="hljs-number">0</span>));
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; expression.length(); i++) {
+            <span class="hljs-keyword">char</span> c = expression.charAt(i);
+            <span class="hljs-keyword">if</span> (c == <span class="hljs-string">'+'</span> || c == <span class="hljs-string">'-'</span>) {
+                list.add(parse(sb.toString()));
+                sb = <span class="hljs-keyword">new</span> StringBuilder().append(c);
+            } <span class="hljs-keyword">else</span> {
+                sb.append(c);
+            }
+        }
+        list.add(parse(sb.toString()));
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] num : list) {
+            rst = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {rst[<span class="hljs-number">0</span>] * num[<span class="hljs-number">1</span>] + rst[<span class="hljs-number">1</span>] * num[<span class="hljs-number">0</span>], rst[<span class="hljs-number">1</span>] * num[<span class="hljs-number">1</span>]};
+        }
+        <span class="hljs-keyword">return</span> format(rst[<span class="hljs-number">0</span>], rst[<span class="hljs-number">1</span>]);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

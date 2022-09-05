@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>License Key Formatting - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>482. License Key Formatting</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a license key represented as a string <code>s</code> that consists of only alphanumeric characters and dashes. The string is separated into <code>n + 1</code> groups by <code>n</code> dashes. You are also given an integer <code>k</code>.</p>
+<p>We want to reformat the string <code>s</code> such that each group contains exactly <code>k</code> characters, except for the first group, which could be shorter than <code>k</code> but still must contain at least one character. Furthermore, there must be a dash inserted between two groups, and you should convert all lowercase letters to uppercase.</p>
+<p>Return <strong>the reformatted license key</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"5F3Z-2e-9-w"</span>, k = 4
+Output: <span class="hljs-string">"5F3Z-2E9W"</span>
+Explanation: The string s has been split into two parts, each part has 4 characters.<span class="hljs-built_in">
+Note </span>that the two extra dashes are <span class="hljs-keyword">not</span> needed <span class="hljs-keyword">and</span> can be removed.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"2-5g-3-J"</span>, k = <span class="hljs-number">2</span>
+Output: <span class="hljs-string">"2-5G-3J"</span>
+Explanation: The <span class="hljs-keyword">string</span> s has been <span class="hljs-built_in">split</span> <span class="hljs-keyword">into</span> <span class="hljs-literal">three</span> parts, <span class="hljs-keyword">each</span> part has <span class="hljs-number">2</span> <span class="hljs-keyword">characters</span> except <span class="hljs-keyword">the</span> <span class="hljs-keyword">first</span> part <span class="hljs-keyword">as</span> <span class="hljs-keyword">it</span> could be shorter <span class="hljs-keyword">as</span> mentioned above.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 105</code></p></li>
+<li><p><code>s</code> consists of English letters, digits, and dashes <code>'-'</code>.</p></li>
+<li><p><code>1 &lt;= k &lt;= 104</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">licenseKeyFormatting</span><span class="hljs-params">(String s, <span class="hljs-keyword">int</span> k)</span> </span>{
+        StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();
+        <span class="hljs-keyword">int</span> cnt = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> occ = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> c : s.toCharArray()) {
+            <span class="hljs-keyword">if</span> (c == <span class="hljs-string">'-'</span>) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            cnt++;
+        }
+        <span class="hljs-keyword">int</span> l = cnt % k;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> c : s.toCharArray()) {
+            <span class="hljs-keyword">if</span> (c == <span class="hljs-string">'-'</span>) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-keyword">if</span> (occ == k) {
+                occ = <span class="hljs-number">0</span>;
+                sb.append(<span class="hljs-string">'-'</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (occ == l &amp;&amp; l != <span class="hljs-number">0</span>) {
+                l = <span class="hljs-number">0</span>;
+                occ = <span class="hljs-number">0</span>;
+                sb.append(<span class="hljs-string">'-'</span>);
+            }
+            sb.append(Character.toUpperCase(c));
+            occ++;
+        }
+        <span class="hljs-keyword">return</span> sb.toString();
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

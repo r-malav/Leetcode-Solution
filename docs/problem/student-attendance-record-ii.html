@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Student Attendance Record II - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>552. Student Attendance Record II</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/student-attendance-record-i.html">Student Attendance Record I</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>An attendance record for a student can be represented as a string where each character signifies whether the student was absent, late, or present on that day. The record only contains the following three characters:</p>
+<ul>
+<li><p><code>'A'</code>: Absent.</p></li>
+<li><p><code>'L'</code>: Late.</p></li>
+<li><p><code>'P'</code>: Present.</p></li>
+</ul>
+<p>Any student is eligible for an attendance award if they meet <strong>both</strong> of the following criteria:</p>
+<ul>
+<li><p>The student was absent (<code>'A'</code>) for <strong>strictly</strong> fewer than 2 days <strong>total</strong>.</p></li>
+<li><p>The student was <strong>never</strong> late (<code>'L'</code>) for 3 or more <strong>consecutive</strong> days.</p></li>
+</ul>
+<p>Given an integer <code>n</code>, return **the *<em>number</em>* of possible attendance records of length** <code>n</code>** that make a student eligible for an attendance award. The answer may be very large, so return it <strong>modulo</strong> **<code>109 + 7</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: n = 2
+Output: 8
+Explanation: There are 8 records <span class="hljs-keyword">with</span> <span class="hljs-keyword">length</span> <span class="hljs-number">2</span> that <span class="hljs-keyword">are</span> eligible <span class="hljs-keyword">for</span> an award:
+<span class="hljs-string">"PP"</span>, <span class="hljs-string">"AP"</span>, <span class="hljs-string">"PA"</span>, <span class="hljs-string">"LP"</span>, <span class="hljs-string">"PL"</span>, <span class="hljs-string">"AL"</span>, <span class="hljs-string">"LA"</span>, <span class="hljs-string">"LL"</span>
+<span class="hljs-keyword">Only</span> <span class="hljs-string">"AA"</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> eligible because there <span class="hljs-keyword">are</span> <span class="hljs-number">2</span> absences (there need <span class="hljs-keyword">to</span> be fewer <span class="hljs-keyword">than</span> <span class="hljs-number">2</span>).
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">3</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">10101</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">183236316</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= n &lt;= 105</code></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">checkRecord</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-keyword">if</span> (n == <span class="hljs-number">0</span> || n == <span class="hljs-number">1</span> || n == <span class="hljs-number">2</span>) {
+            <span class="hljs-keyword">return</span> n * <span class="hljs-number">3</span> + n * (n - <span class="hljs-number">1</span>);
+        }
+        <span class="hljs-keyword">long</span> mod = <span class="hljs-number">1000000007</span>;
+        <span class="hljs-keyword">long</span>[][] matrix = {
+            {<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>},
+            {<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>},
+            {<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>},
+            {<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>},
+            {<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>},
+            {<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>},
+        };
+        <span class="hljs-keyword">long</span>[][] e = quickPower(matrix, n - <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>)
+                ((Arrays.stream(e[<span class="hljs-number">0</span>]).sum() + Arrays.stream(e[<span class="hljs-number">1</span>]).sum() + Arrays.stream(e[<span class="hljs-number">3</span>]).sum())
+                        % mod);
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span>[][] quickPower(<span class="hljs-keyword">long</span>[][] a, <span class="hljs-keyword">int</span> times) {
+        <span class="hljs-keyword">int</span> n = a.length;
+        <span class="hljs-keyword">long</span>[][] e = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[n][n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            e[i][i] = <span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">while</span> (times != <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">if</span> (times % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>) {
+                e = multiple(e, a, n);
+            }
+            times &gt;&gt;= <span class="hljs-number">1</span>;
+            a = multiple(a, a, n);
+        }
+        <span class="hljs-keyword">return</span> e;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span>[][] multiple(<span class="hljs-keyword">long</span>[][] a, <span class="hljs-keyword">long</span>[][] b, <span class="hljs-keyword">int</span> n) {
+        <span class="hljs-keyword">long</span>[][] target = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[n][n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k = <span class="hljs-number">0</span>; k &lt; n; k++) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> l = <span class="hljs-number">0</span>; l &lt; n; l++) {
+                    target[j][k] += a[j][l] * b[l][k];
+                    target[j][k] %= <span class="hljs-number">1000000007</span>;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> target;
+    }
+}
+</code></pre>
+<h2 id="solution-python3">Solution (Python3)</h2>
+<pre><code class="hljs lang-python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">checkRecord</span><span class="hljs-params">(self, n: int)</span> -&gt; int:</span>
+        dp = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">7</span>]
+        m = <span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">7</span>
+
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">4</span>, n+<span class="hljs-number">1</span>):
+            dp.append((<span class="hljs-number">2</span> * dp[i<span class="hljs-number">-1</span>] - dp[i<span class="hljs-number">-4</span>])%m)
+
+        r = dp[n]
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>, n+<span class="hljs-number">1</span>):
+            r += (dp[i<span class="hljs-number">-1</span>] * dp[n-i])
+
+        <span class="hljs-keyword">return</span> r %m
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

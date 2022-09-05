@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Lowest Common Ancestor of a Binary Search Tree - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>235. Lowest Common Ancestor of a Binary Search Tree</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/tree">Tree</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/binary-search-tree">Binary Search Tree</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/binary-tree">Binary Tree</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/lowest-common-ancestor-of-a-binary-tree.html">Lowest Common Ancestor of a Binary Tree</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/smallest-common-region.html">Smallest Common Region</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/lowest-common-ancestor-of-a-binary-tree-ii.html">Lowest Common Ancestor of a Binary Tree II</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/lowest-common-ancestor-of-a-binary-tree-iii.html">Lowest Common Ancestor of a Binary Tree III</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/lowest-common-ancestor-of-a-binary-tree-iv.html">Lowest Common Ancestor of a Binary Tree IV</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a binary search tree (BST), find the lowest common ancestor (LCA) node of two given nodes in the BST.</p>
+<p>According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes <code>p</code> and <code>q</code> as the lowest node in <code>T</code> that has both <code>p</code> and <code>q</code> as descendants (where we allow <strong>a node to be a descendant of itself</strong>).”</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2018/12/14/binarysearchtree_improved.png" alt="" /></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">6</span>,<span class="hljs-number">2</span>,<span class="hljs-number">8</span>,<span class="hljs-number">0</span>,<span class="hljs-number">4</span>,<span class="hljs-number">7</span>,<span class="hljs-number">9</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>], p = <span class="hljs-number">2</span>, q = <span class="hljs-number">8</span>
+Output: <span class="hljs-number">6</span>
+Explanation: The LCA of nodes <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> <span class="hljs-number">8</span> <span class="hljs-keyword">is</span> <span class="hljs-number">6.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2018/12/14/binarysearchtree_improved.png" alt="" /></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">6</span>,<span class="hljs-number">2</span>,<span class="hljs-number">8</span>,<span class="hljs-number">0</span>,<span class="hljs-number">4</span>,<span class="hljs-number">7</span>,<span class="hljs-number">9</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>], p = <span class="hljs-number">2</span>, q = <span class="hljs-number">4</span>
+Output: <span class="hljs-number">2</span>
+Explanation: The LCA of nodes <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> <span class="hljs-number">4</span> <span class="hljs-keyword">is</span> <span class="hljs-number">2</span>, since a node can be a descendant of itself according to the LCA definition.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>], p = <span class="hljs-number">2</span>, q = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">2</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p>The number of nodes in the tree is in the range <code>[2, 105]</code>.</p></li>
+<li><p><code>-109 &lt;= Node.val &lt;= 109</code></p></li>
+<li><p>All <code>Node.val</code> are <strong>unique</strong>.</p></li>
+<li><p><code>p != q</code></p></li>
+<li><p><code>p</code> and <code>q</code> will exist in the BST.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */</span>
+
+<span class="hljs-comment">/**
+ * <span class="hljs-doctag">@param <span class="hljs-type">{TreeNode}</span> <span class="hljs-variable">root</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{TreeNode}</span> <span class="hljs-variable">p</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{TreeNode}</span> <span class="hljs-variable">q</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{TreeNode}</span></span>
+ */</span>
+<span class="hljs-keyword">var</span> lowestCommonAncestor = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">root, p, q</span>) </span>{
+  <span class="hljs-keyword">const</span> low = <span class="hljs-built_in">Math</span>.min(p.val, q.val)
+  <span class="hljs-keyword">const</span> high = <span class="hljs-built_in">Math</span>.max(p.val, q.val)
+  <span class="hljs-keyword">let</span> ancestor = <span class="hljs-literal">null</span>
+  <span class="hljs-keyword">const</span> aux = <span class="hljs-function">(<span class="hljs-params">node</span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (!node) {
+      <span class="hljs-keyword">return</span>
+    }
+    <span class="hljs-keyword">if</span> (node.val &gt;= low &amp;&amp; node.val &lt;= high) {
+      ancestor = node
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (node.val &lt;= low) {
+      aux(node.right)
+    } <span class="hljs-keyword">else</span> {
+      aux(node.left)
+    }
+  }
+  aux(root)
+  <span class="hljs-keyword">return</span> ancestor
+};
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

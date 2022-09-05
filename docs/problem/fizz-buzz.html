@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Fizz Buzz - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>412. Fizz Buzz</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/math">Math</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an integer <code>n</code>, return a <em>string array</em> <code>answer</code> <em>(1-indexed)</em> where:</p>
+<ul>
+<li><code>answer[i] == "FizzBuzz"</code> if <code>i</code> is divisible by <code>3</code> and <code>5</code>.</li>
+<li><code>answer[i] == "Fizz"</code> if <code>i</code> is divisible by <code>3</code>.</li>
+<li><code>answer[i] == "Buzz"</code> if <code>i</code> is divisible by <code>5</code>.</li>
+<li><code>answer[i] == i</code> (as a string) if none of the above conditions are true.</li>
+</ul>
+<p><strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> n = <span class="hljs-number">3</span>
+<span class="hljs-symbol">Output:</span> [<span class="hljs-string">"1"</span>,<span class="hljs-string">"2"</span>,<span class="hljs-string">"Fizz"</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> n = <span class="hljs-number">5</span>
+<span class="hljs-symbol">Output:</span> [<span class="hljs-string">"1"</span>,<span class="hljs-string">"2"</span>,<span class="hljs-string">"Fizz"</span>,<span class="hljs-string">"4"</span>,<span class="hljs-string">"Buzz"</span>]
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> n = <span class="hljs-number">15</span>
+<span class="hljs-symbol">Output:</span> [<span class="hljs-string">"1"</span>,<span class="hljs-string">"2"</span>,<span class="hljs-string">"Fizz"</span>,<span class="hljs-string">"4"</span>,<span class="hljs-string">"Buzz"</span>,<span class="hljs-string">"Fizz"</span>,<span class="hljs-string">"7"</span>,<span class="hljs-string">"8"</span>,<span class="hljs-string">"Fizz"</span>,<span class="hljs-string">"Buzz"</span>,<span class="hljs-string">"11"</span>,<span class="hljs-string">"Fizz"</span>,<span class="hljs-string">"13"</span>,<span class="hljs-string">"14"</span>,<span class="hljs-string">"FizzBuzz"</span>]
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= n &lt;= 104</code></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">n</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{string[]}</span></span>
+ */</span>
+<span class="hljs-keyword">var</span> fizzBuzz = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">n</span>) </span>{
+    <span class="hljs-keyword">let</span> res = []; <span class="hljs-comment">// empty array of the results</span>
+    <span class="hljs-keyword">let</span> line = <span class="hljs-string">""</span>; <span class="hljs-comment">// temp value that holds the current index's value before push</span>
+    n++; <span class="hljs-comment">// removes need to also check for == case</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">1</span>; i &lt; n; i++) {
+      <span class="hljs-keyword">if</span>(i % <span class="hljs-number">3</span> == <span class="hljs-number">0</span>) {
+        line = <span class="hljs-string">"Fizz"</span>;
+        <span class="hljs-keyword">if</span>(i % <span class="hljs-number">5</span> == <span class="hljs-number">0</span>) {
+          line += <span class="hljs-string">"Buzz"</span>;
+        }
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (i % <span class="hljs-number">5</span> == <span class="hljs-number">0</span>) {
+        line = <span class="hljs-string">"Buzz"</span>;
+      } <span class="hljs-keyword">else</span> {
+        line = i.toString();
+      }
+        res.push(line);
+    }
+
+    <span class="hljs-keyword">return</span> res;
+};
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity :</li>
+<li>Space complexity :</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

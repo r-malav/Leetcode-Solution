@@ -3,20 +3,20 @@
 <p><strong>Note:</strong></p>
 <p>The solution set must not contain duplicate quadruplets.</p>
 <p><strong>Example:</strong></p>
-<pre><code class="hljs">Given<span class="hljs-built_in"> array </span>nums = [1, 0, -1, 0, -2, 2],<span class="hljs-built_in"> and </span>target = 0.
+<pre><code class="hljs">Given <span class="hljs-built_in">array</span> nums = [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">-2</span>, <span class="hljs-number">2</span>], <span class="hljs-keyword">and</span> target = <span class="hljs-number">0.</span>
 
-A solution set is:
+A solution <span class="hljs-keyword">set</span> <span class="hljs-keyword">is</span>:
 [
-  [-1,  0, 0, 1],
-  [-2, -1, 1, 2],
-  [-2,  0, 0, 2]
+  [<span class="hljs-number">-1</span>,  <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>],
+  [<span class="hljs-number">-2</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+  [<span class="hljs-number">-2</span>,  <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2</span>]
 ]
 </code></pre>
 <h2 id="solution">Solution</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * @param {number[]} nums
- * @param {number} target
- * @return {number[][]}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">nums</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">target</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number[][]}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> fourSum = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">nums, target</span>) </span>{
   <span class="hljs-keyword">if</span> (nums.length &lt; <span class="hljs-number">4</span>) <span class="hljs-keyword">return</span> [];

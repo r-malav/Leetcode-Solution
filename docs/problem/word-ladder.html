@@ -24,21 +24,21 @@ Explanation: As one shortest transformation <span class="hljs-keyword">is</span>
 <span class="hljs-keyword">return</span> its length <span class="hljs-number">5.</span>
 </code></pre>
 <p><strong>Example 2:</strong></p>
-<pre><code class="hljs"><span class="hljs-section">Input:</span>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span>
 beginWord = <span class="hljs-string">"hit"</span>
 endWord = <span class="hljs-string">"cog"</span>
 wordList = [<span class="hljs-string">"hot"</span>,<span class="hljs-string">"dot"</span>,<span class="hljs-string">"dog"</span>,<span class="hljs-string">"lot"</span>,<span class="hljs-string">"log"</span>]
-
-<span class="hljs-section">Output: 0</span>
-
-<span class="hljs-section">Explanation: The endWord "cog" is not in wordList, therefore no possible transformation.</span>
+<span class="hljs-symbol">
+Output:</span><span class="hljs-variable">&amp;nbsp</span>;<span class="hljs-number">0</span>
+<span class="hljs-symbol">
+Explanation:</span><span class="hljs-variable">&amp;nbsp</span>;The endWord <span class="hljs-string">"cog"</span> is not in wordList, therefore no possible<span class="hljs-variable">&amp;nbsp</span>;transformation.
 </code></pre>
 <h2 id="solution">Solution</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * @param {string} beginWord
- * @param {string} endWord
- * @param {string[]} wordList
- * @return {number}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{string}</span> <span class="hljs-variable">beginWord</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{string}</span> <span class="hljs-variable">endWord</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{string[]}</span> <span class="hljs-variable">wordList</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> ladderLength = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">beginWord, endWord, wordList</span>) </span>{
   <span class="hljs-keyword">var</span> wordSet = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>(wordList);

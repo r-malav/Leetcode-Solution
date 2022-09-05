@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>All Paths From Source to Target - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>797. All Paths From Source to Target</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/backtracking">Backtracking</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/graph">Graph</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/number-of-ways-to-arrive-at-destination.html">Number of Ways to Arrive at Destination</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/number-of-increasing-paths-in-a-grid.html">Number of Increasing Paths in a Grid</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a directed acyclic graph (<strong>DAG</strong>) of <code>n</code> nodes labeled from <code>0</code> to <code>n - 1</code>, find all possible paths from node <code>0</code> to node <code>n - 1</code> and return them in <strong>any order</strong>.</p>
+<p>The graph is given as follows: <code>graph[i]</code> is a list of all nodes you can visit from node <code>i</code> (i.e., there is a directed edge from node <code>i</code> to node <code>graph[i][j]</code>).</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/09/28/all_1.jpg" alt="" /></p>
+<pre><code class="hljs">Input: graph = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">3</span>],[<span class="hljs-number">3</span>],[]]
+Output: [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]]
+Explanation: There are two paths: <span class="hljs-number">0</span> -&gt; <span class="hljs-number">1</span> -&gt; <span class="hljs-number">3</span> <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> -&gt; <span class="hljs-number">2</span> -&gt; <span class="hljs-number">3.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/09/28/all_2.jpg" alt="" /></p>
+<pre><code class="hljs">Input: graph = [[<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">3</span>],[<span class="hljs-number">4</span>],[]]
+Output: [[<span class="hljs-number">0</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>]]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == graph.length</code></p></li>
+<li><p><code>2 &lt;= n &lt;= 15</code></p></li>
+<li><p><code>0 &lt;= graph[i][j] &lt; n</code></p></li>
+<li><p><code>graph[i][j] != i</code> (i.e., there will be no self-loops).</p></li>
+<li><p>All the elements of <code>graph[i]</code> are <strong>unique</strong>.</p></li>
+<li><p>The input graph is <strong>guaranteed</strong> to be a <strong>DAG</strong>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> List&lt;List&lt;Integer&gt;&gt; res;
+
+    <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; allPathsSourceTarget(<span class="hljs-keyword">int</span>[][] graph) {
+        res = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        List&lt;Integer&gt; temp = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        temp.add(<span class="hljs-number">0</span>);
+        <span class="hljs-comment">// perform DFS</span>
+        solve(graph, temp, <span class="hljs-number">0</span>);
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">solve</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] graph, List&lt;Integer&gt; temp, <span class="hljs-keyword">int</span> lastNode)</span> </span>{
+        <span class="hljs-keyword">if</span> (lastNode == graph.length - <span class="hljs-number">1</span>) {
+            res.add(<span class="hljs-keyword">new</span> ArrayList&lt;&gt;(temp));
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> link : graph[lastNode]) {
+            temp.add(link);
+            solve(graph, temp, link);
+            temp.remove(temp.size() - <span class="hljs-number">1</span>);
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

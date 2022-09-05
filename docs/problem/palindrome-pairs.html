@@ -1,0 +1,73 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Palindrome Pairs - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>336. Palindrome Pairs</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/hash-table">Hash Table</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/trie">Trie</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/longest-palindromic-substring.html">Longest Palindromic Substring</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/shortest-palindrome.html">Shortest Palindrome</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/longest-palindrome-by-concatenating-two-letter-words.html">Longest Palindrome by Concatenating Two Letter Words</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a list of <strong>unique</strong> words, return all the pairs of the&nbsp;<strong><em>distinct</em></strong> indices <code>(i, j)</code> in the given list, so that the concatenation of the two words&nbsp;<code>words[i] + words[j]</code> is a palindrome.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: words = [<span class="hljs-string">"abcd"</span>,<span class="hljs-string">"dcba"</span>,<span class="hljs-string">"lls"</span>,<span class="hljs-string">"s"</span>,<span class="hljs-string">"sssll"</span>]
+<span class="hljs-symbol">Output</span>: [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">4</span>]]
+<span class="hljs-symbol">Explanation</span>: <span class="hljs-symbol">The</span> palindromes are [<span class="hljs-string">"dcbaabcd"</span>,<span class="hljs-string">"abcddcba"</span>,<span class="hljs-string">"slls"</span>,<span class="hljs-string">"llssssll"</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: words = [<span class="hljs-string">"bat"</span>,<span class="hljs-string">"tab"</span>,<span class="hljs-string">"cat"</span>]
+Output: <span class="hljs-string">[[0,1],[1,0]]</span>
+Explanation: The palindromes are [<span class="hljs-string">"battab"</span>,<span class="hljs-string">"tabbat"</span>]
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: words = [<span class="hljs-string">"a"</span>,<span class="hljs-string">""</span>]
+Output: <span class="hljs-string">[[0,1],[1,0]]</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= words.length &lt;= 5000</code></p></li>
+<li><p><code>0 &lt;= words[i].length &lt;= 300</code></p></li>
+<li><p><code>words[i]</code> consists of lower-case English letters.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@param <span class="hljs-type">{string[]}</span> <span class="hljs-variable">words</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number[][]}</span></span>
+ */</span>
+<span class="hljs-keyword">var</span> palindromePairs = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">words</span>) </span>{
+    <span class="hljs-keyword">let</span> wmap = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>(), ans = []
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; words.length; i++)
+        wmap.set(words[i], i)
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; words.length; i++) {
+        <span class="hljs-keyword">if</span> (words[i] === <span class="hljs-string">""</span>) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = <span class="hljs-number">0</span>; j &lt; words.length; j++)
+                <span class="hljs-keyword">if</span> (isPal(words[j]) &amp;&amp; j !== i)
+                    ans.push([i, j], [j, i])
+            <span class="hljs-keyword">continue</span>
+        }
+        <span class="hljs-keyword">let</span> bw = words[i].split(<span class="hljs-string">""</span>).reverse().join(<span class="hljs-string">""</span>)
+        <span class="hljs-keyword">let</span> res = wmap.get(bw)
+        <span class="hljs-keyword">if</span> (res !== <span class="hljs-literal">undefined</span> &amp;&amp; res !== i)
+            ans.push([i, res])
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = <span class="hljs-number">1</span>; j &lt; bw.length; j++) {
+            <span class="hljs-keyword">if</span> (isPal(bw, <span class="hljs-number">0</span>, j - <span class="hljs-number">1</span>)) {
+                <span class="hljs-keyword">let</span> res = wmap.get(bw.slice(j))
+                <span class="hljs-keyword">if</span> (res !== <span class="hljs-literal">undefined</span>)
+                    ans.push([i, res])
+            }
+            <span class="hljs-keyword">if</span> (isPal(bw, j)) {
+                <span class="hljs-keyword">let</span> res = wmap.get(bw.slice(<span class="hljs-number">0</span>,j))
+                <span class="hljs-keyword">if</span> (res !== <span class="hljs-literal">undefined</span>)
+                    ans.push([res, i])
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> ans
+};
+
+<span class="hljs-keyword">const</span> isPal = <span class="hljs-function">(<span class="hljs-params">word, i=<span class="hljs-number">0</span>, j=word.length<span class="hljs-number">-1</span></span>) =&gt;</span> {
+    <span class="hljs-keyword">while</span> (i &lt; j)
+        <span class="hljs-keyword">if</span> (word[i++] !== word[j--]) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

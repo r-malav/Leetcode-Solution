@@ -1,0 +1,101 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Map Sum Pairs - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>677. Map Sum Pairs</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/hash-table">Hash Table</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/design">Design</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/trie">Trie</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/sort-the-jumbled-numbers.html">Sort the Jumbled Numbers</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Design a map that allows you to do the following:</p>
+<ul>
+<li><p>Maps a string key to a given value.</p></li>
+<li><p>Returns the sum of the values that have a key with a prefix equal to a given string.</p></li>
+</ul>
+<p>Implement the <code>MapSum</code> class:</p>
+<ul>
+<li><p><code>MapSum()</code> Initializes the <code>MapSum</code> object.</p></li>
+<li><p><code>void insert(String key, int val)</code> Inserts the <code>key-val</code> pair into the map. If the <code>key</code> already existed, the original <code>key-value</code> pair will be overridden to the new one.</p></li>
+<li><p><code>int sum(string prefix)</code> Returns the sum of all the pairs' value whose <code>key</code> starts with the <code>prefix</code>.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-meta">Input</span>
+[<span class="hljs-string">"MapSum"</span>, <span class="hljs-string">"insert"</span>, <span class="hljs-string">"sum"</span>, <span class="hljs-string">"insert"</span>, <span class="hljs-string">"sum"</span>]
+[[], [<span class="hljs-string">"apple"</span>, 3], [<span class="hljs-string">"ap"</span>], [<span class="hljs-string">"app"</span>, 2], [<span class="hljs-string">"ap"</span>]]
+<span class="hljs-meta">Output</span>
+[<span class="hljs-meta">null</span>, <span class="hljs-meta">null</span>, 3, <span class="hljs-meta">null</span>, 5]
+
+Explanation
+MapSum mapSum = new Ma<span class="hljs-meta">pSum(</span>);
+mapSum.<span class="hljs-meta">insert</span>(<span class="hljs-string">"apple"</span>, 3);  
+mapSum<span class="hljs-meta">.sum(</span><span class="hljs-string">"ap"</span>);           // <span class="hljs-meta">return</span> 3 (apple = 3)
+mapSum.<span class="hljs-meta">insert</span>(<span class="hljs-string">"app"</span>, 2);    
+mapSum<span class="hljs-meta">.sum(</span><span class="hljs-string">"ap"</span>);           // <span class="hljs-meta">return</span> 5 (apple + app = 3 + 2 = 5)
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= key.length, prefix.length &lt;= 50</code></p></li>
+<li><p><code>key</code> and <code>prefix</code> consist of only lowercase English letters.</p></li>
+<li><p><code>1 &lt;= val &lt;= 1000</code></p></li>
+<li><p>At most <code>50</code> calls will be made to <code>insert</code> and <code>sum</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MapSum</span> </span>{
+    <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Node</span> </span>{
+        <span class="hljs-keyword">int</span> val;
+        Node[] child;
+
+        Node() {
+            child = <span class="hljs-keyword">new</span> Node[<span class="hljs-number">26</span>];
+            val = <span class="hljs-number">0</span>;
+        }
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Node root;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">MapSum</span><span class="hljs-params">()</span> </span>{
+        root = <span class="hljs-keyword">new</span> Node();
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">insert</span><span class="hljs-params">(String key, <span class="hljs-keyword">int</span> val)</span> </span>{
+        Node curr = root;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> c : key.toCharArray()) {
+            <span class="hljs-keyword">if</span> (curr.child[c - <span class="hljs-string">'a'</span>] == <span class="hljs-keyword">null</span>) {
+                curr.child[c - <span class="hljs-string">'a'</span>] = <span class="hljs-keyword">new</span> Node();
+            }
+            curr = curr.child[c - <span class="hljs-string">'a'</span>];
+        }
+        curr.val = val;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">sumHelper</span><span class="hljs-params">(Node root)</span> </span>{
+        <span class="hljs-keyword">int</span> o = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">26</span>; i++) {
+            <span class="hljs-keyword">if</span> (root.child[i] != <span class="hljs-keyword">null</span>) {
+                o += root.child[i].val + sumHelper(root.child[i]);
+            }
+        }
+        <span class="hljs-keyword">return</span> o;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">sum</span><span class="hljs-params">(String prefix)</span> </span>{
+        Node curr = root;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> c : prefix.toCharArray()) {
+            <span class="hljs-keyword">if</span> (curr.child[c - <span class="hljs-string">'a'</span>] == <span class="hljs-keyword">null</span>) {
+                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+            }
+            curr = curr.child[c - <span class="hljs-string">'a'</span>];
+        }
+        <span class="hljs-keyword">int</span> sum = curr.val;
+        <span class="hljs-keyword">return</span> sum + sumHelper(curr);
+    }
+}
+
+<span class="hljs-comment">/**
+ * Your MapSum object will be instantiated and called as such:
+ * MapSum obj = new MapSum();
+ * obj.insert(key,val);
+ * int param_2 = obj.sum(prefix);
+ */</span>
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Shortest Path Visiting All Nodes - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>877. Shortest Path Visiting All Nodes</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/bit-manipulation">Bit Manipulation</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/graph">Graph</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/bitmask">Bitmask</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You have an undirected, connected graph of <code>n</code> nodes labeled from <code>0</code> to <code>n - 1</code>. You are given an array <code>graph</code> where <code>graph[i]</code> is a list of all the nodes connected with node <code>i</code> by an edge.</p>
+<p>Return <strong>the length of the shortest path that visits every node</strong>. You may start and stop at any node, you may revisit nodes multiple times, and you may reuse edges.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/05/12/shortest1-graph.jpg" alt="" /></p>
+<pre><code class="hljs">Input: graph = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>]]
+Output: <span class="hljs-number">4</span>
+Explanation: One possible path <span class="hljs-keyword">is</span> [<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">3</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/05/12/shortest2-graph.jpg" alt="" /></p>
+<pre><code class="hljs">Input: graph = [[<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]]
+Output: <span class="hljs-number">4</span>
+Explanation: One possible path <span class="hljs-keyword">is</span> [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == graph.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 12</code></p></li>
+<li><p><code>0 &lt;= graph[i].length &lt;&amp;nbsp;n</code></p></li>
+<li><p><code>graph[i]</code> does not contain <code>i</code>.</p></li>
+<li><p>If <code>graph[a]</code> contains <code>b</code>, then <code>graph[b]</code> contains <code>a</code>.</p></li>
+<li><p>The input graph is always connected.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">shortestPathLength</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] graph)</span> </span>{
+        <span class="hljs-keyword">int</span> target = (<span class="hljs-number">1</span> &lt;&lt; graph.length) - <span class="hljs-number">1</span>;
+        Queue&lt;<span class="hljs-keyword">int</span>[]&gt; q = <span class="hljs-keyword">new</span> ArrayDeque&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; graph.length; ++i) {
+            q.offer(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {i, <span class="hljs-number">1</span> &lt;&lt; i});
+        }
+        <span class="hljs-keyword">int</span> steps = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">boolean</span>[][] visited = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[graph.length][target + <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+            <span class="hljs-keyword">int</span> size = q.size();
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; size; ++i) {
+                <span class="hljs-keyword">int</span>[] curr = q.poll();
+                <span class="hljs-keyword">int</span> currNode = Objects.requireNonNull(curr)[<span class="hljs-number">0</span>];
+                <span class="hljs-keyword">int</span> currState = curr[<span class="hljs-number">1</span>];
+                <span class="hljs-keyword">if</span> (currState == target) {
+                    <span class="hljs-keyword">return</span> steps;
+                }
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> n : graph[currNode]) {
+                    <span class="hljs-keyword">int</span> newState = currState | <span class="hljs-number">1</span> &lt;&lt; n;
+                    <span class="hljs-keyword">if</span> (visited[n][newState]) {
+                        <span class="hljs-keyword">continue</span>;
+                    }
+                    visited[n][newState] = <span class="hljs-keyword">true</span>;
+                    q.offer(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {n, newState});
+                }
+            }
+            ++steps;
+        }
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>K-th Smallest in Lexicographical Order - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>440. K-th Smallest in Lexicographical Order</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/trie">Trie</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/count-special-integers.html">Count Special Integers</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given two integers <code>n</code> and <code>k</code>, return <strong>the</strong> <code>kth</code> <strong>lexicographically smallest integer in the range</strong> <code>[1, n]</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">13</span>, k = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">10</span>
+Explanation: The lexicographical order <span class="hljs-keyword">is</span> [<span class="hljs-number">1</span>, <span class="hljs-number">10</span>, <span class="hljs-number">11</span>, <span class="hljs-number">12</span>, <span class="hljs-number">13</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>], so the second smallest number <span class="hljs-keyword">is</span> <span class="hljs-number">10.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span><span class="hljs-string">,</span> <span class="hljs-string">k</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">1</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= k &lt;= n &lt;= 109</code></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">findKthNumber</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">int</span> curr = <span class="hljs-number">1</span>;
+        k = k - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (k &gt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">int</span> steps = calSteps(n, curr, curr + <span class="hljs-number">1L</span>);
+            <span class="hljs-keyword">if</span> (steps &lt;= k) {
+                curr += <span class="hljs-number">1</span>;
+                k -= steps;
+            } <span class="hljs-keyword">else</span> {
+                curr *= <span class="hljs-number">10</span>;
+                k -= <span class="hljs-number">1</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> curr;
+    }
+
+    <span class="hljs-comment">// use long in case of overflow</span>
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">calSteps</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">long</span> n1, <span class="hljs-keyword">long</span> n2)</span> </span>{
+        <span class="hljs-keyword">long</span> steps = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (n1 &lt;= n) {
+            steps += Math.min(n + <span class="hljs-number">1L</span>, n2) - n1;
+            n1 *= <span class="hljs-number">10</span>;
+            n2 *= <span class="hljs-number">10</span>;
+        }
+        <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>) steps;
+    }
+}
+</code></pre>
+<h2 id="solution-javascript">Solution (Javascript)</h2>
+<pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">n</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">k</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
+ */</span>
+<span class="hljs-keyword">var</span> findKthNumber = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">n, k</span>) </span>{
+    <span class="hljs-keyword">let</span> i, prefix = <span class="hljs-string">''</span>;
+    <span class="hljs-keyword">while</span> (k !== <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">9</span>; i++) {
+            <span class="hljs-keyword">const</span> count = countForPrefix(n, prefix + i);
+            <span class="hljs-keyword">if</span> (count &lt; k)
+                k -= count;
+            <span class="hljs-keyword">else</span>
+                <span class="hljs-keyword">break</span>;
+        }
+        prefix = prefix + i;
+        k--; <span class="hljs-comment">// number equal to prefix</span>
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">parseInt</span>(prefix, <span class="hljs-number">10</span>);
+};
+
+<span class="hljs-comment">// Calculates the amount of</span>
+<span class="hljs-comment">// numbers &lt;= n that starts with prefix.</span>
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">countForPrefix</span> (<span class="hljs-params">n, prefix</span>) </span>{
+    <span class="hljs-keyword">let</span> a = <span class="hljs-built_in">parseInt</span>(prefix);
+    <span class="hljs-keyword">let</span> b = a + <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">if</span> (a &gt; n || a === <span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">let</span> res = <span class="hljs-number">1</span>;
+    a *= <span class="hljs-number">10</span>; b *= <span class="hljs-number">10</span>;
+    <span class="hljs-keyword">while</span> (a &lt;= n) {
+        res += <span class="hljs-built_in">Math</span>.min(n + <span class="hljs-number">1</span>, b) - a;
+        a *= <span class="hljs-number">10</span>; b *= <span class="hljs-number">10</span>;
+    }
+
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

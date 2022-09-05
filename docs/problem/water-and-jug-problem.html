@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Water and Jug Problem - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>365. Water and Jug Problem</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/math">Math</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/breadth-first-search">Breadth-First Search</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given two jugs with capacities <code>jug1Capacity</code> and <code>jug2Capacity</code> liters. There is an infinite amount of water supply available. Determine whether it is possible to measure exactly <code>targetCapacity</code> liters using these two jugs.</p>
+<p>If <code>targetCapacity</code> liters of water are measurable, you must have <code>targetCapacity</code> liters of water contained <strong>within one or both buckets</strong> by the end.</p>
+<p>Operations allowed:</p>
+<ul>
+<li><p>Fill any of the jugs with water.</p></li>
+<li><p>Empty any of the jugs.</p></li>
+<li><p>Pour water from one jug into another till the other jug is completely full, or the first jug itself is empty.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">jug1Capacity</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span><span class="hljs-string">,</span> <span class="hljs-string">jug2Capacity</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span><span class="hljs-string">,</span> <span class="hljs-string">targetCapacity</span> <span class="hljs-string">=</span> <span class="hljs-number">4</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">The</span> <span class="hljs-string">famous</span> <span class="hljs-string">Die</span> <span class="hljs-string">Hard</span> <span class="hljs-string">example</span> 
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">jug1Capacity</span> <span class="hljs-string">=</span> <span class="hljs-number">2</span><span class="hljs-string">,</span> <span class="hljs-string">jug2Capacity</span> <span class="hljs-string">=</span> <span class="hljs-number">6</span><span class="hljs-string">,</span> <span class="hljs-string">targetCapacity</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-literal">false</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">jug1Capacity</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span><span class="hljs-string">,</span> <span class="hljs-string">jug2Capacity</span> <span class="hljs-string">=</span> <span class="hljs-number">2</span><span class="hljs-string">,</span> <span class="hljs-string">targetCapacity</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-literal">true</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= jug1Capacity, jug2Capacity, targetCapacity &lt;= 106</code></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">gcd</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n1, <span class="hljs-keyword">int</span> n2)</span> </span>{
+        <span class="hljs-keyword">if</span> (n2 == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> n1;
+        }
+        <span class="hljs-keyword">return</span> gcd(n2, n1 % n2);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">canMeasureWater</span><span class="hljs-params">(<span class="hljs-keyword">int</span> jug1, <span class="hljs-keyword">int</span> jug2, <span class="hljs-keyword">int</span> target)</span> </span>{
+        <span class="hljs-keyword">if</span> (jug1 + jug2 &lt; target) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+        }
+        <span class="hljs-keyword">int</span> gcd = gcd(jug1, jug2);
+        <span class="hljs-keyword">return</span> target % gcd == <span class="hljs-number">0</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

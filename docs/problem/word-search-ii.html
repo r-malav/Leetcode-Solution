@@ -1,0 +1,169 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Word Search II - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>212. Word Search II</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an <code>m x n</code> <code>board</code> of characters and a list of strings <code>words</code>, return all words on the board.</p>
+<p>Each word must be constructed from letters of sequentially adjacent cells, where <strong>adjacent cells</strong> are horizontally or vertically neighboring. The same letter cell may not be used more than once in a word.</p>
+<p><strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: board = [[<span class="hljs-string">"o"</span>,<span class="hljs-string">"a"</span>,<span class="hljs-string">"a"</span>,<span class="hljs-string">"n"</span>],[<span class="hljs-string">"e"</span>,<span class="hljs-string">"t"</span>,<span class="hljs-string">"a"</span>,<span class="hljs-string">"e"</span>],[<span class="hljs-string">"i"</span>,<span class="hljs-string">"h"</span>,<span class="hljs-string">"k"</span>,<span class="hljs-string">"r"</span>],[<span class="hljs-string">"i"</span>,<span class="hljs-string">"f"</span>,<span class="hljs-string">"l"</span>,<span class="hljs-string">"v"</span>]], words = [<span class="hljs-string">"oath"</span>,<span class="hljs-string">"pea"</span>,<span class="hljs-string">"eat"</span>,<span class="hljs-string">"rain"</span>]
+<span class="hljs-symbol">Output</span>: [<span class="hljs-string">"eat"</span>,<span class="hljs-string">"oath"</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: board = [[<span class="hljs-string">"a"</span>,<span class="hljs-string">"b"</span>],[<span class="hljs-string">"c"</span>,<span class="hljs-string">"d"</span>]], words = [<span class="hljs-string">"abcb"</span>]
+<span class="hljs-symbol">Output</span>: []
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>m == board.length</code></li>
+<li><code>n == board[i].length</code></li>
+<li><code>1 &lt;= m, n &lt;= 12</code></li>
+<li><code>board[i][j]</code> is a lowercase English letter.</li>
+<li><code>1 &lt;= words.length &lt;= 3 * 10^4</code></li>
+<li><code>1 &lt;= words[i].length &lt;= 10</code></li>
+<li><code>words[i]</code> consists of lowercase English letters.</li>
+<li>All the strings of <code>words</code> are unique.</li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title">findWords</span><span class="hljs-params">(<span class="hljs-keyword">char</span>[][] board, String[] words)</span> </span>{
+        List&lt;String&gt; res = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        TrieNode root = buildTrie(words);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; board.length; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; board[<span class="hljs-number">0</span>].length; j++) {
+                dfs (board, i, j, root, res);
+            }
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">char</span>[][] board, <span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j, TrieNode p, List&lt;String&gt; res)</span> </span>{
+        <span class="hljs-keyword">char</span> c = board[i][j];
+        <span class="hljs-keyword">if</span> (c == <span class="hljs-string">'#'</span> || p.next[c - <span class="hljs-string">'a'</span>] == <span class="hljs-keyword">null</span>) <span class="hljs-keyword">return</span>;
+        p = p.next[c - <span class="hljs-string">'a'</span>];
+        <span class="hljs-keyword">if</span> (p.word != <span class="hljs-keyword">null</span>) {   <span class="hljs-comment">// found one</span>
+            res.add(p.word);
+            p.word = <span class="hljs-keyword">null</span>;     <span class="hljs-comment">// de-duplicate ie to avoid eg: board = ["a", "a"] and words = {"a"} </span>
+                                <span class="hljs-comment">// if we don't remove word then it gets added twice since it can be encircled twice due to the                                   //existance of duplicates</span>
+        }
+        board[i][j] = <span class="hljs-string">'#'</span>;
+        <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span>) dfs(board, i - <span class="hljs-number">1</span>, j ,p, res); 
+        <span class="hljs-keyword">if</span> (j &gt; <span class="hljs-number">0</span>) dfs(board, i, j - <span class="hljs-number">1</span>, p, res);
+        <span class="hljs-keyword">if</span> (i &lt; board.length - <span class="hljs-number">1</span>) dfs(board, i + <span class="hljs-number">1</span>, j, p, res); 
+        <span class="hljs-keyword">if</span> (j &lt; board[<span class="hljs-number">0</span>].length - <span class="hljs-number">1</span>) dfs(board, i, j + <span class="hljs-number">1</span>, p, res); 
+        board[i][j] = c;
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> TrieNode <span class="hljs-title">buildTrie</span><span class="hljs-params">(String[] words)</span> </span>{
+        TrieNode root = <span class="hljs-keyword">new</span> TrieNode();
+        <span class="hljs-keyword">for</span> (String w : words) {
+            TrieNode p = root;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> c : w.toCharArray()) {
+                <span class="hljs-keyword">int</span> i = c - <span class="hljs-string">'a'</span>;
+                <span class="hljs-keyword">if</span> (p.next[i] == <span class="hljs-keyword">null</span>) p.next[i] = <span class="hljs-keyword">new</span> TrieNode();
+                p = p.next[i];
+          }
+          p.word = w;
+        }
+        <span class="hljs-keyword">return</span> root;
+    }
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TrieNode</span> </span>{
+        TrieNode[] next = <span class="hljs-keyword">new</span> TrieNode[<span class="hljs-number">26</span>];
+        String word;
+    }
+}
+</code></pre>
+<h2 id="solution-javascript">Solution (Javascript)</h2>
+<pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@param <span class="hljs-type">{character[][]}</span> <span class="hljs-variable">board</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{string[]}</span> <span class="hljs-variable">words</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{string[]}</span></span>
+ */</span>
+<span class="hljs-keyword">var</span> findWords = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">board, words</span>) </span>{
+  <span class="hljs-keyword">if</span> (!board.length || !board[<span class="hljs-number">0</span>].length) {
+    <span class="hljs-keyword">return</span> [];
+  }
+  <span class="hljs-keyword">const</span> trie = <span class="hljs-keyword">new</span> Trie();
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> word <span class="hljs-keyword">of</span> words) {
+    trie.add(word);
+  }
+  <span class="hljs-keyword">const</span> m = board.length;
+  <span class="hljs-keyword">const</span> n = board[<span class="hljs-number">0</span>].length;
+  <span class="hljs-keyword">const</span> output = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>();
+  <span class="hljs-keyword">const</span> visited = [...new <span class="hljs-built_in">Array</span>(m)].map(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Array</span>(n).fill(<span class="hljs-literal">false</span>));
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = <span class="hljs-number">0</span>; j &lt; n; j++) {
+      <span class="hljs-keyword">if</span> (trie.startsWith(board[i][j])) {
+        dfs(board, m, n, trie, board[i][j], [i, j], output, visited);
+      }
+    }
+  }
+  <span class="hljs-keyword">return</span> [...output];
+};
+
+<span class="hljs-keyword">const</span> dirs = [[<span class="hljs-number">-1</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">-1</span>]];
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">dfs</span>(<span class="hljs-params">board, m, n, trie, selected, [x, y], output, visited</span>) </span>{
+  <span class="hljs-keyword">if</span> (trie.search(selected)) {
+    output.add(selected);
+  }
+  visited[x][y] = <span class="hljs-literal">true</span>;
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> [di, dj] <span class="hljs-keyword">of</span> dirs) {
+    <span class="hljs-keyword">const</span> i = x + di;
+    <span class="hljs-keyword">const</span> j = y + dj;
+    <span class="hljs-keyword">if</span> (isValid(i, j, m, n) &amp;&amp; !visited[i][j] &amp;&amp; trie.startsWith(selected + board[i][j])) {
+      dfs(board, m, n, trie, selected + board[i][j], [i, j], output, visited);
+    }
+  }
+  visited[x][y] = <span class="hljs-literal">false</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isValid</span>(<span class="hljs-params">i, j, m, n</span>) </span>{
+  <span class="hljs-keyword">if</span> (i &lt; <span class="hljs-number">0</span> || i &gt;= m || j &lt; <span class="hljs-number">0</span> || j &gt;= n) {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Node</span> </span>{
+  <span class="hljs-keyword">constructor</span>() {
+    <span class="hljs-keyword">this</span>.chars = {};
+    <span class="hljs-keyword">this</span>.isWord = <span class="hljs-literal">false</span>;
+  }
+}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Trie</span> </span>{
+  <span class="hljs-keyword">constructor</span>() {
+    <span class="hljs-keyword">this</span>.root = <span class="hljs-keyword">new</span> Node();
+  }
+
+  add(word) {
+    <span class="hljs-keyword">let</span> ptr = <span class="hljs-keyword">this</span>.root;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> c <span class="hljs-keyword">of</span> word) {
+      <span class="hljs-keyword">if</span> (!(c <span class="hljs-keyword">in</span> ptr.chars)) {
+        ptr.chars[c] = <span class="hljs-keyword">new</span> Node();
+      }
+      ptr = ptr.chars[c];
+    }
+    ptr.isWord = <span class="hljs-literal">true</span>;
+  }
+
+  startsWith(str) {
+    <span class="hljs-keyword">let</span> ptr = <span class="hljs-keyword">this</span>.root;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> c <span class="hljs-keyword">of</span> str) {
+      <span class="hljs-keyword">if</span> (!(c <span class="hljs-keyword">in</span> ptr.chars)) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+      }
+      ptr = ptr.chars[c];
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+  }
+
+  search(word) {
+    <span class="hljs-keyword">let</span> ptr = <span class="hljs-keyword">this</span>.root;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> c <span class="hljs-keyword">of</span> word) {
+      <span class="hljs-keyword">if</span> (!(c <span class="hljs-keyword">in</span> ptr.chars)) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+      }
+      ptr = ptr.chars[c];
+    }
+    <span class="hljs-keyword">return</span> ptr.isWord;
+  }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

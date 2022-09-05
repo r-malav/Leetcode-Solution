@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Longest Increasing Subsequence - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>300. Longest Increasing Subsequence</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/binary-search">Binary Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/increasing-triplet-subsequence.html">Increasing Triplet Subsequence</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/russian-doll-envelopes.html">Russian Doll Envelopes</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/maximum-length-of-pair-chain.html">Maximum Length of Pair Chain</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/number-of-longest-increasing-subsequence.html">Number of Longest Increasing Subsequence</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/minimum-ascii-delete-sum-for-two-strings.html">Minimum ASCII Delete Sum for Two Strings</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/minimum-number-of-removals-to-make-mountain-array.html">Minimum Number of Removals to Make Mountain Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/find-the-longest-valid-obstacle-course-at-each-position.html">Find the Longest Valid Obstacle Course at Each Position</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/minimum-operations-to-make-the-array-k-increasing.html">Minimum Operations to Make the Array K-Increasing</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/longest-ideal-subsequence.html">Longest Ideal Subsequence</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/maximum-number-of-books-you-can-take.html">Maximum Number of Books You Can Take</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an integer array <code>nums</code>, return the length of the longest strictly increasing subsequence.</p>
+<p>A <strong>subsequence</strong> is a sequence that can be derived from an array by deleting some or no elements without changing the order of the remaining elements. For example, <code>[3,6,2,7]</code> is a subsequence of the array <code>[0,3,1,6,2,2,7]</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">10</span>,<span class="hljs-number">9</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">7</span>,<span class="hljs-number">101</span>,<span class="hljs-number">18</span>]
+Output: <span class="hljs-number">4</span>
+Explanation: The longest increasing subsequence <span class="hljs-keyword">is</span> [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">7</span>,<span class="hljs-number">101</span>], therefore the length <span class="hljs-keyword">is</span> <span class="hljs-number">4.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+Output: <span class="hljs-number">4</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">7</span>,<span class="hljs-number">7</span>,<span class="hljs-number">7</span>,<span class="hljs-number">7</span>,<span class="hljs-number">7</span>,<span class="hljs-number">7</span>,<span class="hljs-number">7</span>]
+Output: <span class="hljs-number">1</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= nums.length &lt;= 2500</code></p></li>
+<li><p><code>-104 &lt;= nums[i] &lt;= 104</code></p></li>
+</ul>
+<p>&nbsp;
+<strong>Follow up:</strong>&nbsp;Can you come up with an algorithm that runs in&nbsp;<code>O(n log(n))</code> time complexity?</p>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">nums</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
+ */</span>
+<span class="hljs-keyword">var</span> lengthOfLIS = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">nums</span>) </span>{
+    <span class="hljs-comment">// Create dp array</span>
+    <span class="hljs-keyword">const</span> dp = <span class="hljs-built_in">Array</span>.from(nums, () =&gt; <span class="hljs-number">1</span>);
+    <span class="hljs-comment">// Max subsequence length</span>
+    <span class="hljs-keyword">let</span> max = <span class="hljs-number">1</span>
+    <span class="hljs-comment">// Check all increasing subsequences up to the current ith number in nums</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">1</span>; i &lt; nums.length; i++) {
+        <span class="hljs-comment">// Keep track of subsequence length in the dp array</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = <span class="hljs-number">0</span>; j &lt; i; j++) {
+            <span class="hljs-comment">// Only change dp value if the numbers are increasing</span>
+            <span class="hljs-keyword">if</span> (nums[i] &gt; nums[j]) {
+                <span class="hljs-comment">// Set the value to be the larget subsequence length</span>
+                dp[i] = <span class="hljs-built_in">Math</span>.max(dp[i], dp[j] + <span class="hljs-number">1</span>)
+                <span class="hljs-comment">// Check if this subsequence is the largest</span>
+                max = <span class="hljs-built_in">Math</span>.max(dp[i], max)
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> max;
+};
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

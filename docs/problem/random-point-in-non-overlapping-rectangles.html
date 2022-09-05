@@ -1,0 +1,100 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Random Point in Non-overlapping Rectangles - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>497. Random Point in Non-overlapping Rectangles</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/math">Math</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/binary-search">Binary Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/reservoir-sampling">Reservoir Sampling</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/prefix-sum">Prefix Sum</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/ordered-set">Ordered Set</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/randomized">Randomized</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/random-pick-with-weight.html">Random Pick with Weight</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/generate-random-point-in-a-circle.html">Generate Random Point in a Circle</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an array of non-overlapping axis-aligned rectangles <code>rects</code> where <code>rects[i] = [ai, bi, xi, yi]</code> indicates that <code>(ai, bi)</code> is the bottom-left corner point of the <code>ith</code> rectangle and <code>(xi, yi)</code> is the top-right corner point of the <code>ith</code> rectangle. Design an algorithm to pick a random integer point inside the space covered by one of the given rectangles. A point on the perimeter of a rectangle is included in the space covered by the rectangle.</p>
+<p>Any integer point inside the space covered by one of the given rectangles should be equally likely to be returned.</p>
+<p><strong>Note</strong> that an integer point is a point that has integer coordinates.</p>
+<p>Implement the <code>Solution</code> class:</p>
+<ul>
+<li><p><code>Solution(int[][] rects)</code> Initializes the object with the given rectangles <code>rects</code>.</p></li>
+<li><p><code>int[] pick()</code> Returns a random integer point <code>[u, v]</code> inside the space covered by one of the given rectangles.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/07/24/lc-pickrandomrec.jpg" alt="" /></p>
+<pre><code class="hljs">Input
+[<span class="hljs-string">"Solution"</span>, <span class="hljs-string">"pick"</span>, <span class="hljs-string">"pick"</span>, <span class="hljs-string">"pick"</span>, <span class="hljs-string">"pick"</span>, <span class="hljs-string">"pick"</span>]
+[[[[<span class="hljs-number">-2</span>, <span class="hljs-number">-2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>]]], [], [], [], [], []]
+Output
+[<span class="hljs-literal">null</span>, [<span class="hljs-number">1</span>, <span class="hljs-number">-2</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">-1</span>], [<span class="hljs-number">-1</span>, <span class="hljs-number">-2</span>], [<span class="hljs-number">-2</span>, <span class="hljs-number">-2</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>]]
+
+Explanation
+Solution solution = new Solution([[<span class="hljs-number">-2</span>, <span class="hljs-number">-2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>]]);
+solution.pick(); <span class="hljs-comment">// return [1, -2]</span>
+solution.pick(); <span class="hljs-comment">// return [1, -1]</span>
+solution.pick(); <span class="hljs-comment">// return [-1, -2]</span>
+solution.pick(); <span class="hljs-comment">// return [-2, -2]</span>
+solution.pick(); <span class="hljs-comment">// return [0, 0]</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= rects.length &lt;= 100</code></p></li>
+<li><p><code>rects[i].length == 4</code></p></li>
+<li><p><code>-109 &lt;= ai &lt; xi &lt;= 109</code></p></li>
+<li><p><code>-109 &lt;= bi &lt; yi &lt;= 109</code></p></li>
+<li><p><code>xi - ai &lt;= 2000</code></p></li>
+<li><p><code>yi - bi &lt;= 2000</code></p></li>
+<li><p>All the rectangles do not overlap.</p></li>
+<li><p>At most <code>104</code> calls will be made to <code>pick</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span>[] weights;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span>[][] rects;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Random random;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Solution</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] rects)</span> </span>{
+        <span class="hljs-keyword">this</span>.weights = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[rects.length];
+        <span class="hljs-keyword">this</span>.rects = rects;
+        <span class="hljs-keyword">this</span>.random = <span class="hljs-keyword">new</span> Random();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; rects.length; i++) {
+            <span class="hljs-keyword">int</span>[] rect = rects[i];
+            <span class="hljs-keyword">int</span> count = (<span class="hljs-number">1</span> + rect[<span class="hljs-number">2</span>] - rect[<span class="hljs-number">0</span>]) * (<span class="hljs-number">1</span> + rect[<span class="hljs-number">3</span>] - rect[<span class="hljs-number">1</span>]);
+            weights[i] = (i == <span class="hljs-number">0</span> ? <span class="hljs-number">0</span> : weights[i - <span class="hljs-number">1</span>]) + count;
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] pick() {
+        <span class="hljs-keyword">int</span> picked = <span class="hljs-number">1</span> + random.nextInt(weights[weights.length - <span class="hljs-number">1</span>]);
+        <span class="hljs-keyword">int</span> idx = findGreaterOrEqual(picked);
+        <span class="hljs-keyword">return</span> getRandomPoint(idx);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">findGreaterOrEqual</span><span class="hljs-params">(<span class="hljs-keyword">int</span> target)</span> </span>{
+        <span class="hljs-keyword">int</span> left = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> right = weights.length - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (left + <span class="hljs-number">1</span> &lt; right) {
+            <span class="hljs-keyword">int</span> mid = left + (right - left) / <span class="hljs-number">2</span>;
+            <span class="hljs-keyword">if</span> (weights[mid] &gt;= target) {
+                right = mid;
+            } <span class="hljs-keyword">else</span> {
+                left = mid + <span class="hljs-number">1</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> weights[left] &gt;= target ? left : right;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] getRandomPoint(<span class="hljs-keyword">int</span> idx) {
+        <span class="hljs-keyword">int</span>[] r = rects[idx];
+        <span class="hljs-keyword">int</span> left = r[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">int</span> right = r[<span class="hljs-number">2</span>];
+        <span class="hljs-keyword">int</span> bot = r[<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">int</span> top = r[<span class="hljs-number">3</span>];
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {
+            left + random.nextInt(right - left + <span class="hljs-number">1</span>), bot + random.nextInt(top - bot + <span class="hljs-number">1</span>)
+        };
+    }
+}
+
+<span class="hljs-comment">/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(rects);
+ * int[] param_1 = obj.pick();
+ */</span>
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

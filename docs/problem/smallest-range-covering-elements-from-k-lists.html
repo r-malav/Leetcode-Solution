@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Smallest Range Covering Elements from K Lists - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>632. Smallest Range Covering Elements from K Lists</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/hash-table">Hash Table</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/greedy">Greedy</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/sliding-window">Sliding Window</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/sorting">Sorting</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/heap-priority-queue">Heap (Priority Queue)</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/minimum-window-substring.html">Minimum Window Substring</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You have <code>k</code> lists of sorted integers in <strong>non-decreasing&nbsp;order</strong>. Find the <strong>smallest</strong> range that includes at least one number from each of the <code>k</code> lists.</p>
+<p>We define the range <code>[a, b]</code> is smaller than range <code>[c, d]</code> if <code>b - a &lt; d - c</code> <strong>or</strong> <code>a &lt; c</code> if <code>b - a == d - c</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [[<span class="hljs-number">4</span>,<span class="hljs-number">10</span>,<span class="hljs-number">15</span>,<span class="hljs-number">24</span>,<span class="hljs-number">26</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">9</span>,<span class="hljs-number">12</span>,<span class="hljs-number">20</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">18</span>,<span class="hljs-number">22</span>,<span class="hljs-number">30</span>]]
+Output: [<span class="hljs-number">20</span>,<span class="hljs-number">24</span>]
+Explanation: 
+List <span class="hljs-number">1</span>: [<span class="hljs-number">4</span>, <span class="hljs-number">10</span>, <span class="hljs-number">15</span>, <span class="hljs-number">24</span>,<span class="hljs-number">26</span>], <span class="hljs-number">24</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">in</span> range [<span class="hljs-number">20</span>,<span class="hljs-number">24</span>].
+List <span class="hljs-number">2</span>: [<span class="hljs-number">0</span>, <span class="hljs-number">9</span>, <span class="hljs-number">12</span>, <span class="hljs-number">20</span>], <span class="hljs-number">20</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">in</span> range [<span class="hljs-number">20</span>,<span class="hljs-number">24</span>].
+List <span class="hljs-number">3</span>: [<span class="hljs-number">5</span>, <span class="hljs-number">18</span>, <span class="hljs-number">22</span>, <span class="hljs-number">30</span>], <span class="hljs-number">22</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">in</span> range [<span class="hljs-number">20</span>,<span class="hljs-number">24</span>].
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]]
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>nums.length == k</code></p></li>
+<li><p><code>1 &lt;= k &lt;= 3500</code></p></li>
+<li><p><code>1 &lt;= nums[i].length &lt;= 50</code></p></li>
+<li><p><code>-105 &lt;= nums[i][j] &lt;= 105</code></p></li>
+<li><p><code>nums[i]</code>&nbsp;is sorted in <strong>non-decreasing</strong> order.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Triplet</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Comparable</span>&lt;<span class="hljs-title">Triplet</span>&gt; </span>{
+        <span class="hljs-keyword">int</span> value;
+        <span class="hljs-keyword">int</span> row;
+        <span class="hljs-keyword">int</span> idx;
+
+        Triplet(<span class="hljs-keyword">int</span> value, <span class="hljs-keyword">int</span> row, <span class="hljs-keyword">int</span> idx) {
+            <span class="hljs-keyword">this</span>.value = value;
+            <span class="hljs-keyword">this</span>.row = row;
+            <span class="hljs-keyword">this</span>.idx = idx;
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">compareTo</span><span class="hljs-params">(Triplet obj)</span> </span>{
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.value - obj.value;
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] smallestRange(List&lt;List&lt;Integer&gt;&gt; nums) {
+        PriorityQueue&lt;Triplet&gt; pq = <span class="hljs-keyword">new</span> PriorityQueue&lt;&gt;();
+        <span class="hljs-keyword">int</span> maxInPq = Integer.MIN_VALUE;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nums.size(); i++) {
+            pq.add(<span class="hljs-keyword">new</span> Triplet(nums.get(i).get(<span class="hljs-number">0</span>), i, <span class="hljs-number">0</span>));
+            <span class="hljs-keyword">if</span> (maxInPq &lt; nums.get(i).get(<span class="hljs-number">0</span>)) {
+                maxInPq = nums.get(i).get(<span class="hljs-number">0</span>);
+            }
+        }
+        <span class="hljs-keyword">int</span> rangeSize = maxInPq - Objects.requireNonNull(pq.peek()).value + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> rangeLeft = Objects.requireNonNull(pq.peek()).value;
+        <span class="hljs-keyword">int</span> rangeRight = maxInPq;
+        <span class="hljs-keyword">while</span> (<span class="hljs-keyword">true</span>) {
+            Triplet nextNumber = pq.remove();
+            <span class="hljs-keyword">if</span> (nextNumber.idx + <span class="hljs-number">1</span> &lt; nums.get(nextNumber.row).size()) {
+                <span class="hljs-keyword">int</span> val = nums.get(nextNumber.row).get(nextNumber.idx + <span class="hljs-number">1</span>);
+                <span class="hljs-keyword">if</span> (val &gt; maxInPq) {
+                    maxInPq = val;
+                }
+                pq.add(<span class="hljs-keyword">new</span> Triplet(val, nextNumber.row, nextNumber.idx + <span class="hljs-number">1</span>));
+                <span class="hljs-keyword">if</span> (maxInPq - Objects.requireNonNull(pq.peek()).value + <span class="hljs-number">1</span> &lt; rangeSize) {
+                    rangeSize = maxInPq - pq.peek().value + <span class="hljs-number">1</span>;
+                    rangeLeft = maxInPq;
+                    rangeRight = pq.peek().value;
+                }
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+        <span class="hljs-keyword">int</span>[] answer = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">2</span>];
+        answer[<span class="hljs-number">0</span>] = rangeLeft;
+        answer[<span class="hljs-number">1</span>] = rangeRight;
+        <span class="hljs-keyword">return</span> answer;
+    }
+}
+</code></pre>
+<h2 id="solution-python3">Solution (Python3)</h2>
+<pre><code class="hljs lang-python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">smallestRange</span><span class="hljs-params">(self, nums: List[List[int]])</span> -&gt; List[int]:</span>
+        minHeap = [(row[<span class="hljs-number">0</span>], i, <span class="hljs-number">0</span>) <span class="hljs-keyword">for</span> i, row <span class="hljs-keyword">in</span> enumerate(nums)]
+        heapq.heapify(minHeap)
+
+        maxRange = max(row[<span class="hljs-number">0</span>] <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> nums)
+        minRange = heapq.nsmallest(<span class="hljs-number">1</span>, minHeap)[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]
+        ans = [minRange, maxRange]
+
+        <span class="hljs-keyword">while</span> len(minHeap) == len(nums):
+            num, r, c = heapq.heappop(minHeap)
+            <span class="hljs-keyword">if</span> c + <span class="hljs-number">1</span> &lt; len(nums[r]):
+                heapq.heappush(minHeap, (nums[r][c + <span class="hljs-number">1</span>], r, c + <span class="hljs-number">1</span>))
+                maxRange = max(maxRange, nums[r][c + <span class="hljs-number">1</span>])
+                minRange = heapq.nsmallest(<span class="hljs-number">1</span>, minHeap)[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]
+                <span class="hljs-keyword">if</span> maxRange - minRange &lt; ans[<span class="hljs-number">1</span>] - ans[<span class="hljs-number">0</span>]:
+                    ans[<span class="hljs-number">0</span>], ans[<span class="hljs-number">1</span>] = minRange, maxRange
+
+        <span class="hljs-keyword">return</span> ans
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

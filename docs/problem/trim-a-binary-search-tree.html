@@ -1,40 +1,73 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Trim a Binary Search Tree - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>669. Trim a Binary Search Tree</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/tree">Tree</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
 <p>Given a binary search tree and the lowest and highest boundaries as <code>L</code> and <code>R</code>, trim the tree so that all its elements lies in <code>[L, R]</code> (R &gt;= L). You might need to change the root of the tree, so the result should return the new root of the trimmed binary search tree.</p>
 <p><strong>Example 1:</strong></p>
-<pre><code class="hljs"><span class="hljs-symbol">Input:</span> 
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> 
     <span class="hljs-number">1</span>
-   / \
+   <span class="hljs-string">/</span> <span class="hljs-string">\</span>
   <span class="hljs-number">0</span>   <span class="hljs-number">2</span>
 
-  L = <span class="hljs-number">1</span>
-  R = <span class="hljs-number">2</span>
+  <span class="hljs-string">L</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span>
+  <span class="hljs-string">R</span> <span class="hljs-string">=</span> <span class="hljs-number">2</span>
 
-<span class="hljs-symbol">Output:</span> 
+<span class="hljs-attr">Output:</span> 
     <span class="hljs-number">1</span>
-      \
+      <span class="hljs-string">\</span>
        <span class="hljs-number">2</span>
 </code></pre>
 <p><strong>Example 2:</strong></p>
-<pre><code class="hljs"><span class="hljs-symbol">Input:</span> 
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> 
     <span class="hljs-number">3</span>
-   / \
+   <span class="hljs-string">/</span> <span class="hljs-string">\</span>
   <span class="hljs-number">0</span>   <span class="hljs-number">4</span>
-   \
+   <span class="hljs-string">\</span>
     <span class="hljs-number">2</span>
-   /
+   <span class="hljs-string">/</span>
   <span class="hljs-number">1</span>
 
-  L = <span class="hljs-number">1</span>
-  R = <span class="hljs-number">3</span>
+  <span class="hljs-string">L</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span>
+  <span class="hljs-string">R</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span>
 
-<span class="hljs-symbol">Output:</span> 
+<span class="hljs-attr">Output:</span> 
       <span class="hljs-number">3</span>
-     / 
+     <span class="hljs-string">/</span> 
    <span class="hljs-number">2</span>   
-  /
+  <span class="hljs-string">/</span>
  <span class="hljs-number">1</span>
 </code></pre>
-<h2 id="solution">Solution</h2>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> TreeNode <span class="hljs-title">trimBST</span><span class="hljs-params">(TreeNode root, <span class="hljs-keyword">int</span> l, <span class="hljs-keyword">int</span> r)</span> </span>{
+        <span class="hljs-keyword">if</span> (root == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span> root;
+        }
+        <span class="hljs-keyword">if</span> (root.val &gt; r) {
+            <span class="hljs-keyword">return</span> trimBST(root.left, l, r);
+        }
+        <span class="hljs-keyword">if</span> (root.val &lt; l) {
+            <span class="hljs-keyword">return</span> trimBST(root.right, l, r);
+        }
+        root.left = trimBST(root.left, l, r);
+        root.right = trimBST(root.right, l, r);
+        <span class="hljs-keyword">return</span> root;
+    }
+}
+</code></pre>
+<h2 id="solution-javascript">Solution (Javascript)</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
  * Definition for a binary tree node.
  * function TreeNode(val) {
@@ -43,10 +76,10 @@
  * }
  */</span>
 <span class="hljs-comment">/**
- * @param {TreeNode} root
- * @param {number} L
- * @param {number} R
- * @return {TreeNode}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{TreeNode}</span> <span class="hljs-variable">root</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">L</span></span>
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">R</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{TreeNode}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> trimBST = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">root, L, R</span>) </span>{
   <span class="hljs-keyword">if</span> (!root) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;

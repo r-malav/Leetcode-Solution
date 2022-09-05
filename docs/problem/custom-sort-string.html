@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Custom Sort String - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>791. Custom Sort String</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/hash-table">Hash Table</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given two strings order and s. All the characters of <code>order</code> are <strong>unique</strong> and were sorted in some custom order previously.</p>
+<p>Permute the characters of <code>s</code> so that they match the order that <code>order</code> was sorted. More specifically, if a character <code>x</code> occurs before a character <code>y</code> in <code>order</code>, then <code>x</code> should occur before <code>y</code> in the permuted string.</p>
+<p>Return **any permutation of *<em><code>s</code></em>* that satisfies this property**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> <span class="hljs-keyword">order </span>= <span class="hljs-string">"cba"</span>, s = <span class="hljs-string">"abcd"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">"cbad"</span>
+<span class="hljs-symbol">Explanation:</span> 
+<span class="hljs-string">"a"</span>, <span class="hljs-string">"b"</span>, <span class="hljs-string">"c"</span> appear in <span class="hljs-keyword">order, </span>so the <span class="hljs-keyword">order </span>of <span class="hljs-string">"a"</span>, <span class="hljs-string">"b"</span>, <span class="hljs-string">"c"</span> <span class="hljs-keyword">should </span><span class="hljs-keyword">be </span><span class="hljs-string">"c"</span>, <span class="hljs-string">"b"</span>, <span class="hljs-keyword">and </span><span class="hljs-string">"a"</span>. 
+Since <span class="hljs-string">"d"</span> does not appear in <span class="hljs-keyword">order, </span>it can <span class="hljs-keyword">be </span><span class="hljs-built_in">at</span> any position in the returned string. <span class="hljs-string">"dcba"</span>, <span class="hljs-string">"cdba"</span>, <span class="hljs-string">"cbda"</span> are also valid outputs.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-meta">Input</span>: <span class="hljs-meta">order</span> = <span class="hljs-string">"cbafg"</span>, s = <span class="hljs-string">"abcd"</span>
+<span class="hljs-meta">Output</span>: <span class="hljs-string">"cbad"</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= order.length &lt;= 26</code></p></li>
+<li><p><code>1 &lt;= s.length &lt;= 200</code></p></li>
+<li><p><code>order</code> and <code>s</code> consist of lowercase English letters.</p></li>
+<li><p>All the characters of <code>order</code> are <strong>unique</strong>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">customSortString</span><span class="hljs-params">(String order, String s)</span> </span>{
+        <span class="hljs-keyword">int</span>[] ord = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">26</span>];
+        StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> c : s.toCharArray()) {
+            ord[c - <span class="hljs-string">'a'</span>]++;
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> c : order.toCharArray()) {
+            <span class="hljs-keyword">while</span> (ord[c - <span class="hljs-string">'a'</span>]-- &gt; <span class="hljs-number">0</span>) {
+                sb.append(c);
+            }
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> c : s.toCharArray()) {
+            <span class="hljs-keyword">while</span> (ord[c - <span class="hljs-string">'a'</span>]-- &gt; <span class="hljs-number">0</span>) {
+                sb.append(c);
+            }
+        }
+        <span class="hljs-keyword">return</span> sb.toString();
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

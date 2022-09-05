@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Largest Triangle Area - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>812. Largest Triangle Area</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/math">Math</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/geometry">Geometry</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/largest-perimeter-triangle.html">Largest Perimeter Triangle</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an array of points on the <strong>X-Y</strong> plane <code>points</code> where <code>points[i] = [xi, yi]</code>, return <strong>the area of the largest triangle that can be formed by any three different points</strong>. Answers within <code>10-5</code> of the actual answer will be accepted.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://s3-lc-upload.s3.amazonaws.com/uploads/2018/04/04/1027.png" alt="" /></p>
+<pre><code class="hljs">Input: points = [[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">0</span>]]
+Output: <span class="hljs-number">2.00000</span>
+Explanation: The five points are shown <span class="hljs-keyword">in</span> the above figure. The red triangle <span class="hljs-keyword">is</span> the largest.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: points = [[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]]
+Output: <span class="hljs-number">0.50000</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>3 &lt;= points.length &lt;= 50</code></p></li>
+<li><p><code>-50 &lt;= xi, yi &lt;= 50</code></p></li>
+<li><p>All the given points are <strong>unique</strong>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">double</span> <span class="hljs-title">largestTriangleArea</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] points)</span> </span>{
+        <span class="hljs-keyword">int</span> n = points.length;
+        <span class="hljs-keyword">double</span> max = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = i + <span class="hljs-number">1</span>; j &lt; n; j++) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k = j + <span class="hljs-number">1</span>; k &lt; n; k++) {
+                    <span class="hljs-keyword">double</span> area;
+                    <span class="hljs-keyword">int</span>[] a = points[i];
+                    <span class="hljs-keyword">int</span>[] b = points[j];
+                    <span class="hljs-keyword">int</span>[] c = points[k];
+                    area = Math.abs(area(a, b) + area(b, c) + area(c, a));
+                    <span class="hljs-keyword">if</span> (area &gt; max) {
+                        max = area;
+                    }
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> max;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">double</span> <span class="hljs-title">area</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] a, <span class="hljs-keyword">int</span>[] b)</span> </span>{
+        <span class="hljs-keyword">int</span> l = b[<span class="hljs-number">0</span>] - a[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">double</span> h = (a[<span class="hljs-number">1</span>] + b[<span class="hljs-number">1</span>] + <span class="hljs-number">200</span>) / <span class="hljs-number">2.0</span>;
+        <span class="hljs-keyword">return</span> l * h;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

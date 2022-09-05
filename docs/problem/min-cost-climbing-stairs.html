@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Min Cost Climbing Stairs - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>746. Min Cost Climbing Stairs</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/climbing-stairs.html">Climbing Stairs</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an integer array <code>cost</code> where <code>cost[i]</code> is the cost of <code>ith</code> step on a staircase. Once you pay the cost, you can either climb one or two steps.</p>
+<p>You can either start from the step with index <code>0</code>, or the step with index <code>1</code>.</p>
+<p>Return <strong>the minimum cost to reach the top of the floor</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: cost = [<span class="hljs-number">10</span>,<span class="hljs-number">15</span>,<span class="hljs-number">20</span>]
+Output: <span class="hljs-number">15</span>
+Explanation: You will start at index <span class="hljs-number">1.</span>
+- Pay <span class="hljs-number">15</span> <span class="hljs-keyword">and</span> climb two steps to reach the top.
+The total cost <span class="hljs-keyword">is</span> <span class="hljs-number">15.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: cost = [<span class="hljs-number">1</span>,<span class="hljs-number">100</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">100</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">100</span>,<span class="hljs-number">1</span>]
+Output: <span class="hljs-number">6</span>
+Explanation: You will start at index <span class="hljs-number">0.</span>
+- Pay <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> climb two steps to reach index <span class="hljs-number">2.</span>
+- Pay <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> climb two steps to reach index <span class="hljs-number">4.</span>
+- Pay <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> climb two steps to reach index <span class="hljs-number">6.</span>
+- Pay <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> climb one step to reach index <span class="hljs-number">7.</span>
+- Pay <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> climb two steps to reach index <span class="hljs-number">9.</span>
+- Pay <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> climb one step to reach the top.
+The total cost <span class="hljs-keyword">is</span> <span class="hljs-number">6.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>2 &lt;= cost.length &lt;= 1000</code></p></li>
+<li><p><code>0 &lt;= cost[i] &lt;= 999</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minCostClimbingStairs</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] cost)</span> </span>{
+        <span class="hljs-keyword">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[cost.length];
+        dp[<span class="hljs-number">0</span>] = cost[<span class="hljs-number">0</span>];
+        dp[<span class="hljs-number">1</span>] = cost[<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">2</span>; i &lt; cost.length; i++) {
+            dp[i] = cost[i] + Math.min(dp[i - <span class="hljs-number">1</span>], dp[i - <span class="hljs-number">2</span>]);
+        }
+        <span class="hljs-keyword">return</span> Math.min(dp[cost.length - <span class="hljs-number">1</span>], dp[cost.length - <span class="hljs-number">2</span>]);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

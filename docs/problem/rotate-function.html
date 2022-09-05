@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Rotate Function - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>396. Rotate Function</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/math">Math</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an integer array <code>nums</code> of length <code>n</code>.</p>
+<p>Assume <code>arrk</code> to be an array obtained by rotating <code>nums</code> by <code>k</code> positions clock-wise. We define the <strong>rotation function</strong> <code>F</code> on <code>nums</code> as follow:</p>
+<ul>
+<li><code>F(k) = 0 * arrk[0] + 1 * arrk[1] + ... + (n - 1) * arrk[n - 1].</code></li>
+</ul>
+<p>Return <strong>the maximum value of</strong> <code>F(0), F(1), ..., F(n-1)</code>.</p>
+<p>The test cases are generated so that the answer fits in a <strong>32-bit</strong> integer.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">6</span>]
+Output: <span class="hljs-number">26</span>
+Explanation:
+F(<span class="hljs-number">0</span>) = (<span class="hljs-number">0</span> * <span class="hljs-number">4</span>) + (<span class="hljs-number">1</span> * <span class="hljs-number">3</span>) + (<span class="hljs-number">2</span> * <span class="hljs-number">2</span>) + (<span class="hljs-number">3</span> * <span class="hljs-number">6</span>) = <span class="hljs-number">0</span> + <span class="hljs-number">3</span> + <span class="hljs-number">4</span> + <span class="hljs-number">18</span> = <span class="hljs-number">25</span>
+F(<span class="hljs-number">1</span>) = (<span class="hljs-number">0</span> * <span class="hljs-number">6</span>) + (<span class="hljs-number">1</span> * <span class="hljs-number">4</span>) + (<span class="hljs-number">2</span> * <span class="hljs-number">3</span>) + (<span class="hljs-number">3</span> * <span class="hljs-number">2</span>) = <span class="hljs-number">0</span> + <span class="hljs-number">4</span> + <span class="hljs-number">6</span> + <span class="hljs-number">6</span> = <span class="hljs-number">16</span>
+F(<span class="hljs-number">2</span>) = (<span class="hljs-number">0</span> * <span class="hljs-number">2</span>) + (<span class="hljs-number">1</span> * <span class="hljs-number">6</span>) + (<span class="hljs-number">2</span> * <span class="hljs-number">4</span>) + (<span class="hljs-number">3</span> * <span class="hljs-number">3</span>) = <span class="hljs-number">0</span> + <span class="hljs-number">6</span> + <span class="hljs-number">8</span> + <span class="hljs-number">9</span> = <span class="hljs-number">23</span>
+F(<span class="hljs-number">3</span>) = (<span class="hljs-number">0</span> * <span class="hljs-number">3</span>) + (<span class="hljs-number">1</span> * <span class="hljs-number">2</span>) + (<span class="hljs-number">2</span> * <span class="hljs-number">6</span>) + (<span class="hljs-number">3</span> * <span class="hljs-number">4</span>) = <span class="hljs-number">0</span> + <span class="hljs-number">2</span> + <span class="hljs-number">12</span> + <span class="hljs-number">12</span> = <span class="hljs-number">26</span>
+So the maximum value of F(<span class="hljs-number">0</span>), F(<span class="hljs-number">1</span>), F(<span class="hljs-number">2</span>), F(<span class="hljs-number">3</span>) <span class="hljs-keyword">is</span> F(<span class="hljs-number">3</span>) = <span class="hljs-number">26.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">nums</span> <span class="hljs-string">=</span> <span class="hljs-string">[100]</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">0</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == nums.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>-100 &lt;= nums[i] &lt;= 100</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxRotateFunction</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>{
+        <span class="hljs-keyword">int</span> allSum = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> len = nums.length;
+        <span class="hljs-keyword">int</span> f = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) {
+            f += i * nums[i];
+            allSum += nums[i];
+        }
+        <span class="hljs-keyword">int</span> max = f;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = len - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">1</span>; i--) {
+            f = f + allSum - len * nums[i];
+            max = Math.max(f, max);
+        }
+        <span class="hljs-keyword">return</span> max;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,16 +1,16 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Subarray - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>53. Maximum Subarray</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/divide-and-conquer">Divide and Conquer</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/best-time-to-buy-and-sell-stock.html">Best Time to Buy and Sell Stock</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/maximum-product-subarray.html">Maximum Product Subarray</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/degree-of-an-array.html">Degree of an Array</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
-<p>Given an integer array <code>nums</code>, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.</p>
+<p>Given an integer array <code>nums</code>, find the contiguous subarray&nbsp;(containing at least one number) which has the largest sum and return its sum.</p>
 <p><strong>Example:</strong></p>
-<pre><code class="hljs">Input: [<span class="hljs-string">-2</span>,1,<span class="hljs-string">-3</span>,4,<span class="hljs-string">-1</span>,2,1,<span class="hljs-string">-5</span>,4],
-Output: 6
-Explanation: [4,<span class="hljs-string">-1</span>,2,1] has the largest sum = 6.
+<pre><code class="hljs">Input: [<span class="hljs-number">-2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">-3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">-5</span>,<span class="hljs-number">4</span>],
+Output: <span class="hljs-number">6</span>
+Explanation:&amp;nbsp;[<span class="hljs-number">4</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>] has the largest sum = <span class="hljs-number">6.</span>
 </code></pre>
 <p><strong>Follow up:</strong></p>
 <p>If you have figured out the O(<strong>n</strong>) solution, try coding another solution using the divide and conquer approach, which is more subtle.</p>
 <h2 id="solution">Solution</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * @param {number[]} nums
- * @return {number}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[]}</span> <span class="hljs-variable">nums</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
  */</span>
 <span class="hljs-keyword">var</span> maxSubArray = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">nums</span>) </span>{
   <span class="hljs-keyword">var</span> len = nums.length;

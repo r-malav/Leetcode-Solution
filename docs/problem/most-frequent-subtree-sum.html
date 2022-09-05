@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Most Frequent Subtree Sum - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>508. Most Frequent Subtree Sum</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/hash-table">Hash Table</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/tree">Tree</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/binary-tree">Binary Tree</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/subtree-of-another-tree.html">Subtree of Another Tree</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/count-nodes-equal-to-sum-of-descendants.html">Count Nodes Equal to Sum of Descendants</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given the <code>root</code> of a binary tree, return the most frequent <strong>subtree sum</strong>. If there is a tie, return all the values with the highest frequency in any order.</p>
+<p>The <strong>subtree sum</strong> of a node is defined as the sum of all the node values formed by the subtree rooted at that node (including the node itself).</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/04/24/freq1-tree.jpg" alt="" /></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">-3</span>]
+Output: [<span class="hljs-number">2</span>,<span class="hljs-number">-3</span>,<span class="hljs-number">4</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/04/24/freq2-tree.jpg" alt="" /></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">-5</span>]
+Output: [<span class="hljs-number">2</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p>The number of nodes in the tree is in the range <code>[1, 104]</code>.</p></li>
+<li><p><code>-105 &lt;= Node.val &lt;= 105</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] findFrequentTreeSum(TreeNode root) {
+        ArrayList&lt;Integer&gt; arr = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        HashMap&lt;Integer, Integer&gt; hm = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        fun(root, hm);
+        <span class="hljs-keyword">int</span> maxvalue = Integer.MIN_VALUE;
+        <span class="hljs-keyword">for</span> (Map.Entry&lt;Integer, Integer&gt; map : hm.entrySet()) {
+            <span class="hljs-keyword">if</span> (map.getValue() &gt; maxvalue) {
+                maxvalue = map.getValue();
+            }
+        }
+        <span class="hljs-keyword">for</span> (Map.Entry&lt;Integer, Integer&gt; map : hm.entrySet()) {
+            <span class="hljs-keyword">if</span> (map.getValue() == maxvalue) {
+                arr.add(map.getKey());
+            }
+        }
+        <span class="hljs-keyword">int</span>[] newArr = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[arr.size()];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; arr.size(); i++) {
+            newArr[i] = arr.get(i);
+        }
+        <span class="hljs-keyword">return</span> newArr;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">fun</span><span class="hljs-params">(TreeNode node, HashMap&lt;Integer, Integer&gt; hm)</span> </span>{
+        <span class="hljs-keyword">if</span> (node == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">int</span> left = fun(node.left, hm);
+        <span class="hljs-keyword">int</span> right = fun(node.right, hm);
+        <span class="hljs-keyword">int</span> sum = node.val + left + right;
+        <span class="hljs-keyword">if</span> (hm.containsKey(sum)) {
+            hm.put(sum, hm.get(sum) + <span class="hljs-number">1</span>);
+        } <span class="hljs-keyword">else</span> {
+            hm.put(sum, <span class="hljs-number">0</span>);
+        }
+        <span class="hljs-keyword">return</span> sum;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

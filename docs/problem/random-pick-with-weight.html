@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Random Pick with Weight - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>528. Random Pick with Weight</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/math">Math</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/binary-search">Binary Search</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/prefix-sum">Prefix Sum</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/randomized">Randomized</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/random-pick-index.html">Random Pick Index</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/random-pick-with-blacklist.html">Random Pick with Blacklist</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/random-point-in-non-overlapping-rectangles.html">Random Point in Non-overlapping Rectangles</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>0-indexed</strong> array of positive integers <code>w</code> where <code>w[i]</code> describes the <strong>weight</strong> of the <code>ith</code> index.</p>
+<p>You need to implement the function <code>pickIndex()</code>, which <strong>randomly</strong> picks an index in the range <code>[0, w.length - 1]</code> (<strong>inclusive</strong>) and returns it. The <strong>probability</strong> of picking an index <code>i</code> is <code>w[i] / sum(w)</code>.</p>
+<ul>
+<li>For example, if <code>w = [1, 3]</code>, the probability of picking index <code>0</code> is <code>1 / (1 + 3) = 0.25</code> (i.e., <code>25%</code>), and the probability of picking index <code>1</code> is <code>3 / (1 + 3) = 0.75</code> (i.e., <code>75%</code>).</li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-keyword">Input</span>
+["Solution","pickIndex"]
+[[[<span class="hljs-number">1</span>]],[]]
+Output
+[<span class="hljs-keyword">null</span>,<span class="hljs-number">0</span>]
+
+Explanation
+Solution solution = <span class="hljs-built_in">new</span> Solution([<span class="hljs-number">1</span>]);
+solution.pickIndex(); // <span class="hljs-keyword">return</span> <span class="hljs-number">0.</span> The <span class="hljs-keyword">only</span> <span class="hljs-keyword">option</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">to</span> <span class="hljs-keyword">return</span> <span class="hljs-number">0</span> since there <span class="hljs-keyword">is</span> <span class="hljs-keyword">only</span> one element <span class="hljs-keyword">in</span> w.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input
+[<span class="hljs-string">"Solution"</span>,<span class="hljs-string">"pickIndex"</span>,<span class="hljs-string">"pickIndex"</span>,<span class="hljs-string">"pickIndex"</span>,<span class="hljs-string">"pickIndex"</span>,<span class="hljs-string">"pickIndex"</span>]
+[[[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>]],[],[],[],[],[]]
+Output
+[<span class="hljs-literal">null</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]
+
+Explanation
+Solution solution = new Solution([<span class="hljs-number">1</span>, <span class="hljs-number">3</span>]);
+solution.pickIndex(); <span class="hljs-comment">// return 1. It is returning the second element (index = 1) that has a probability of 3/4.</span>
+solution.pickIndex(); <span class="hljs-comment">// return 1</span>
+solution.pickIndex(); <span class="hljs-comment">// return 1</span>
+solution.pickIndex(); <span class="hljs-comment">// return 1</span>
+solution.pickIndex(); <span class="hljs-comment">// return 0. It is returning the first element (index = 0) that has a probability of 1/4.</span>
+
+Since <span class="hljs-keyword">this</span> <span class="hljs-keyword">is</span> a randomization problem, multiple answers are allowed.
+All of the following outputs can be considered correct:
+[<span class="hljs-literal">null</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]
+[<span class="hljs-literal">null</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]
+[<span class="hljs-literal">null</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]
+[<span class="hljs-literal">null</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]
+[<span class="hljs-literal">null</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]
+......
+<span class="hljs-keyword">and</span> so on.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= w.length &lt;= 104</code></p></li>
+<li><p><code>1 &lt;= w[i] &lt;= 105</code></p></li>
+<li><p><code>pickIndex</code> will be called at most <code>104</code> times.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> prefix;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Random random;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> TreeSet&lt;<span class="hljs-keyword">int</span>[]&gt; treeSet;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Solution</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] w)</span> </span>{
+        prefix = <span class="hljs-number">0</span>;
+        treeSet = <span class="hljs-keyword">new</span> TreeSet&lt;&gt;(Comparator.comparingInt(a -&gt; a[<span class="hljs-number">0</span>]));
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; w.length; i++) {
+            prefix += w[i];
+            treeSet.add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {prefix, i});
+        }
+        random = <span class="hljs-keyword">new</span> Random();
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">pickIndex</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">int</span> target = random.nextInt(prefix) + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">return</span> Objects.requireNonNull(treeSet.ceiling(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {target, <span class="hljs-number">1</span>}))[<span class="hljs-number">1</span>];
+    }
+}
+
+<span class="hljs-comment">/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(w);
+ * int param_1 = obj.pickIndex();
+ */</span>
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

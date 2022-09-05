@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Toeplitz Matrix - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>766. Toeplitz Matrix</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/valid-word-square.html">Valid Word Square</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an <code>m x n</code> <code>matrix</code>, return&nbsp;<strong><code>true</code>&nbsp;if the matrix is Toeplitz. Otherwise, return <code>false</code>.</strong></p>
+<p>A matrix is <strong>Toeplitz</strong> if every diagonal from top-left to bottom-right has the same elements.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/11/04/ex1.jpg" alt="" /></p>
+<pre><code class="hljs">Input: matrix = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">9</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]]
+Output: <span class="hljs-literal">true</span>
+Explanation:
+In the above grid, the&amp;nbsp;diagonals are:
+<span class="hljs-string">"[9]"</span>, <span class="hljs-string">"[5, 5]"</span>, <span class="hljs-string">"[1, 1, 1]"</span>, <span class="hljs-string">"[2, 2, 2]"</span>, <span class="hljs-string">"[3, 3]"</span>, <span class="hljs-string">"[4]"</span>.
+In each diagonal all elements are the same, so the answer <span class="hljs-keyword">is</span> True.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/11/04/ex2.jpg" alt="" /></p>
+<pre><code class="hljs">Input: matrix = <span class="hljs-string">[[1,2],[2,2]]</span>
+Output: <span class="hljs-literal">false</span>
+Explanation:
+The diagonal <span class="hljs-string">"[1, 2]"</span> has different elements.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == matrix.length</code></p></li>
+<li><p><code>n == matrix[i].length</code></p></li>
+<li><p><code>1 &lt;= m, n &lt;= 20</code></p></li>
+<li><p><code>0 &lt;= matrix[i][j] &lt;= 99</code></p></li>
+</ul>
+<p>&nbsp;
+<strong>Follow up:</strong></p>
+<ul>
+<li><p>What if the <code>matrix</code> is stored on disk, and the memory is limited such that you can only load at most one row of the matrix into the memory at once?</p></li>
+<li><p>What if the <code>matrix</code> is so large that you can only load up a partial row into the memory at once?</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isToeplitzMatrix</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] matrix)</span> </span>{
+        <span class="hljs-keyword">int</span> m = matrix.length;
+        <span class="hljs-keyword">int</span> n = matrix[<span class="hljs-number">0</span>].length;
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> sameVal = matrix[i][j];
+        <span class="hljs-keyword">while</span> (++i &lt; m &amp;&amp; ++j &lt; n) {
+            <span class="hljs-keyword">if</span> (matrix[i][j] != sameVal) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            }
+        }
+
+        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">1</span>, j = <span class="hljs-number">0</span>; i &lt; m; i++) {
+            <span class="hljs-keyword">int</span> tmpI = i;
+            <span class="hljs-keyword">int</span> tmpJ = j;
+            sameVal = matrix[i][j];
+            <span class="hljs-keyword">while</span> (++tmpI &lt; m &amp;&amp; ++tmpJ &lt; n) {
+                <span class="hljs-keyword">if</span> (matrix[tmpI][tmpJ] != sameVal) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+                }
+            }
+        }
+        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>, j = <span class="hljs-number">1</span>; j &lt; n; j++) {
+            <span class="hljs-keyword">int</span> tmpJ = j;
+            <span class="hljs-keyword">int</span> tmpI = i;
+            sameVal = matrix[tmpI][tmpJ];
+            <span class="hljs-keyword">while</span> (++tmpI &lt; m &amp;&amp; ++tmpJ &lt; n) {
+                <span class="hljs-keyword">if</span> (matrix[tmpI][tmpJ] != sameVal) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

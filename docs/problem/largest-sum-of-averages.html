@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Largest Sum of Averages - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>813. Largest Sum of Averages</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an integer array <code>nums</code> and an integer <code>k</code>. You can partition the array into <strong>at most</strong> <code>k</code> non-empty adjacent subarrays. The <strong>score</strong> of a partition is the sum of the averages of each subarray.</p>
+<p>Note that the partition must use every integer in <code>nums</code>, and that the score is not necessarily an integer.</p>
+<p>Return **the maximum *<em>score</em>* you can achieve of all the possible partitions**. Answers within <code>10-6</code> of the actual answer will be accepted.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">9</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">9</span>], k = <span class="hljs-number">3</span>
+Output: <span class="hljs-number">20.00000</span>
+Explanation: 
+The best choice <span class="hljs-keyword">is</span> to partition nums <span class="hljs-built_in">int</span>o [<span class="hljs-number">9</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">9</span>]. The answer <span class="hljs-keyword">is</span> <span class="hljs-number">9</span> + (<span class="hljs-number">1</span> + <span class="hljs-number">2</span> + <span class="hljs-number">3</span>) / <span class="hljs-number">3</span> + <span class="hljs-number">9</span> = <span class="hljs-number">20.</span>
+We could have also partitioned nums <span class="hljs-built_in">int</span>o [<span class="hljs-number">9</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">2</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">9</span>], <span class="hljs-keyword">for</span> example.
+That partition would lead to a score of <span class="hljs-number">5</span> + <span class="hljs-number">2</span> + <span class="hljs-number">6</span> = <span class="hljs-number">13</span>, which <span class="hljs-keyword">is</span> worse.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>], k = <span class="hljs-number">4</span>
+Output: <span class="hljs-number">20.50000</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= nums.length &lt;= 100</code></p></li>
+<li><p><code>1 &lt;= nums[i] &lt;= 104</code></p></li>
+<li><p><code>1 &lt;= k &lt;= nums.length</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">double</span> <span class="hljs-title">largestSumOfAverages</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">return</span> helper(nums, k, <span class="hljs-number">0</span>, <span class="hljs-keyword">new</span> Double[k + <span class="hljs-number">1</span>][nums.length]);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">double</span> <span class="hljs-title">helper</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> k, <span class="hljs-keyword">int</span> idx, Double[][] memo)</span> </span>{
+        <span class="hljs-keyword">if</span> (memo[k][idx] != <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span> memo[k][idx];
+        }
+        <span class="hljs-keyword">double</span> maxAvg = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">double</span> sum = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = idx; i &lt;= nums.length - k; i++) {
+            sum += nums[i];
+            <span class="hljs-keyword">if</span> (k - <span class="hljs-number">1</span> &gt; <span class="hljs-number">0</span>) {
+                maxAvg = Math.max(maxAvg, (sum / (i - idx + <span class="hljs-number">1</span>)) + helper(nums, k - <span class="hljs-number">1</span>, i + <span class="hljs-number">1</span>, memo));
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (i == nums.length - <span class="hljs-number">1</span>) {
+                maxAvg = Math.max(maxAvg, sum / (i - idx + <span class="hljs-number">1</span>));
+            }
+        }
+        memo[k][idx] = maxAvg;
+        <span class="hljs-keyword">return</span> maxAvg;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

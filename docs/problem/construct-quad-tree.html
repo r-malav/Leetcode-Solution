@@ -1,0 +1,146 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Construct Quad Tree - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>427. Construct Quad Tree</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/divide-and-conquer">Divide and Conquer</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/tree">Tree</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a <code>n * n</code> matrix <code>grid</code> of <code>0's</code> and <code>1's</code> only. We want to represent the <code>grid</code> with a Quad-Tree.</p>
+<p>Return <strong>the root of the Quad-Tree</strong> representing the <code>grid</code>.</p>
+<p>Notice that you can assign the value of a node to <strong>True</strong> or <strong>False</strong> when <code>isLeaf</code> is <strong>False</strong>, and both are <strong>accepted</strong> in the answer.</p>
+<p>A Quad-Tree is a tree data structure in which each internal node has exactly four children. Besides, each node has two attributes:</p>
+<ul>
+<li><p><code>val</code>: True if the node represents a grid of 1's or False if the node represents a grid of 0's.</p></li>
+<li><p><code>isLeaf</code>: True if the node is leaf node on the tree or False if the node has the four children.</p></li>
+</ul>
+<pre><code class="hljs">class <span class="hljs-keyword">Node</span> <span class="hljs-title">{
+    public</span> boolean val;
+    public boolean isLeaf;
+    public <span class="hljs-keyword">Node</span> <span class="hljs-title">topLeft</span>;
+    public <span class="hljs-keyword">Node</span> <span class="hljs-title">topRight</span>;
+    public <span class="hljs-keyword">Node</span> <span class="hljs-title">bottomLeft</span>;
+    public <span class="hljs-keyword">Node</span> <span class="hljs-title">bottomRight</span>;
+}
+</code></pre>
+<p>We can construct a Quad-Tree from a two-dimensional area using the following steps:</p>
+<ul>
+<li><p>If the current grid has the same value (i.e all <code>1's</code> or all <code>0's</code>) set <code>isLeaf</code> True and set <code>val</code> to the value of the grid and set the four children to Null and stop.</p></li>
+<li><p>If the current grid has different values, set <code>isLeaf</code> to False and set <code>val</code> to any value and divide the current grid into four sub-grids as shown in the photo.</p></li>
+<li><p>Recurse for each of the children with the proper sub-grid.</p></li>
+</ul>
+<p><img src="https://assets.leetcode.com/uploads/2020/02/11/new_top.png" alt="" /></p>
+<p>If you want to know more about the Quad-Tree, you can refer to the wiki.</p>
+<p><strong>Quad-Tree format:</strong></p>
+<p>The output represents the serialized format of a Quad-Tree using level order traversal, where <code>null</code> signifies a path terminator where no node exists below.</p>
+<p>It is very similar to the serialization of the binary tree. The only difference is that the node is represented as a list <code>[isLeaf, val]</code>.</p>
+<p>If the value of <code>isLeaf</code> or <code>val</code> is True we represent it as <strong>1</strong> in the list <code>[isLeaf, val]</code> and if the value of <code>isLeaf</code> or <code>val</code> is False we represent it as <strong>0</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/02/11/grid1.png" alt="" /></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]]
+Output: [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]]
+Explanation: The explanation of <span class="hljs-keyword">this</span> example <span class="hljs-keyword">is</span> shown below:
+Notice that <span class="hljs-number">0</span> represnts False <span class="hljs-keyword">and</span> <span class="hljs-number">1</span> represents True <span class="hljs-keyword">in</span> the photo representing the Quad-Tree.
+
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/02/12/e2mat.png" alt="" /></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]]
+Output: [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]]
+Explanation: All values <span class="hljs-keyword">in</span> the grid are <span class="hljs-keyword">not</span> the same. We divide the grid <span class="hljs-built_in">int</span>o four sub-grids.
+The topLeft, bottomLeft <span class="hljs-keyword">and</span> bottomRight each has the same value.
+The topRight have different values so we divide it <span class="hljs-built_in">int</span>o <span class="hljs-number">4</span> sub-grids where each has the same value.
+Explanation <span class="hljs-keyword">is</span> shown <span class="hljs-keyword">in</span> the photo below:
+
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == grid.length == grid[i].length</code></p></li>
+<li><p><code>n == 2x</code> where <code>0 &lt;= x &lt;= 6</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/*
+// Definition for a QuadTree node.
+class Node {
+    public boolean val;
+    public boolean isLeaf;
+    public Node topLeft;
+    public Node topRight;
+    public Node bottomLeft;
+    public Node bottomRight;
+
+
+    public Node() {
+        this.val = false;
+        this.isLeaf = false;
+        this.topLeft = null;
+        this.topRight = null;
+        this.bottomLeft = null;
+        this.bottomRight = null;
+    }
+
+    public Node(boolean val, boolean isLeaf) {
+        this.val = val;
+        this.isLeaf = isLeaf;
+        this.topLeft = null;
+        this.topRight = null;
+        this.bottomLeft = null;
+        this.bottomRight = null;
+    }
+
+    public Node(boolean val, boolean isLeaf, Node topLeft, Node topRight, Node bottomLeft, Node bottomRight) {
+        this.val = val;
+        this.isLeaf = isLeaf;
+        this.topLeft = topLeft;
+        this.topRight = topRight;
+        this.bottomLeft = bottomLeft;
+        this.bottomRight = bottomRight;
+    }
+};
+*/</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Node <span class="hljs-title">construct</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] grid)</span> </span>{
+        <span class="hljs-keyword">return</span> optimizedDfs(grid, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, grid.length);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> Node <span class="hljs-title">optimizedDfs</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] grid, <span class="hljs-keyword">int</span> rowStart, <span class="hljs-keyword">int</span> colStart, <span class="hljs-keyword">int</span> len)</span> </span>{
+        <span class="hljs-keyword">int</span> zeroCount = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> oneCount = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> row = rowStart; row &lt; rowStart + len; row++) {
+            <span class="hljs-keyword">boolean</span> isBreak = <span class="hljs-keyword">false</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> col = colStart; col &lt; colStart + len; col++) {
+                <span class="hljs-keyword">if</span> (grid[row][col] == <span class="hljs-number">0</span>) {
+                    zeroCount++;
+                } <span class="hljs-keyword">else</span> {
+                    oneCount++;
+                }
+                <span class="hljs-keyword">if</span> (oneCount &gt; <span class="hljs-number">0</span> &amp;&amp; zeroCount &gt; <span class="hljs-number">0</span>) {
+                    <span class="hljs-comment">// We really no need to scan all.</span>
+                    <span class="hljs-comment">// Once we know there are both 0 and 1 then we can break.</span>
+                    isBreak = <span class="hljs-keyword">true</span>;
+                    <span class="hljs-keyword">break</span>;
+                }
+            }
+            <span class="hljs-keyword">if</span> (isBreak) {
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+        <span class="hljs-keyword">if</span> (oneCount &gt; <span class="hljs-number">0</span> &amp;&amp; zeroCount &gt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">int</span> midLen = len / <span class="hljs-number">2</span>;
+            Node topLeft = optimizedDfs(grid, rowStart, colStart, midLen);
+            Node topRight = optimizedDfs(grid, rowStart, colStart + midLen, midLen);
+            Node bottomLeft = optimizedDfs(grid, rowStart + midLen, colStart, midLen);
+            Node bottomRight = optimizedDfs(grid, rowStart + midLen, colStart + midLen, midLen);
+            <span class="hljs-keyword">boolean</span> isLeaf = <span class="hljs-keyword">false</span>;
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Node(<span class="hljs-keyword">true</span>, isLeaf, topLeft, topRight, bottomLeft, bottomRight);
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">boolean</span> resultVal = oneCount &gt; <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">boolean</span> isLeaf = <span class="hljs-keyword">true</span>;
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Node(resultVal, isLeaf);
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -12,42 +12,47 @@
 </ul>
 <p>Visually, the graph looks like the following:</p>
 <pre><code class="hljs">       <span class="hljs-number">1</span>
-      <span class="hljs-string">/</span> <span class="hljs-string">\</span>
-     <span class="hljs-string">/</span>   <span class="hljs-string">\</span>
-    <span class="hljs-number">0</span> <span class="hljs-meta">---</span> <span class="hljs-number">2</span>
-         <span class="hljs-string">/</span> <span class="hljs-string">\</span>
+      / <span class="hljs-string">\</span>
+     /   <span class="hljs-string">\</span>
+    <span class="hljs-number">0</span> --- <span class="hljs-number">2</span>
+         / <span class="hljs-string">\</span>
          <span class="hljs-string">\_/</span>
 </code></pre>
 <h2 id="solution">Solution</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
- * Definition for undirected graph.
- * function UndirectedGraphNode(label) {
- *     this.label = label;
- *     this.neighbors = [];   // Array of UndirectedGraphNode
- * }
+ * // Definition for a Node.
+ * function Node(val, neighbors) {
+ *    this.val = val === undefined ? 0 : val;
+ *    this.neighbors = neighbors === undefined ? [] : neighbors;
+ * };
  */</span>
 
 <span class="hljs-comment">/**
- * @param {UndirectedGraphNode} graph
- * @return {UndirectedGraphNode}
+ * <span class="hljs-doctag">@param <span class="hljs-type">{Node}</span> <span class="hljs-variable">node</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{Node}</span></span>
  */</span>
-<span class="hljs-keyword">var</span> cloneGraph = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">graph</span>) </span>{
-  <span class="hljs-keyword">return</span> clone(graph, {});
-};
+<span class="hljs-keyword">var</span> cloneGraph = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">node</span>) </span>{
+    <span class="hljs-comment">// Nodes we have already copied</span>
+    <span class="hljs-keyword">const</span> visited = {};
 
-<span class="hljs-keyword">var</span> clone = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">node, map</span>) </span>{
-  <span class="hljs-keyword">if</span> (!node) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
-  <span class="hljs-keyword">if</span> (map[node.label]) <span class="hljs-keyword">return</span> map[node.label];
+    <span class="hljs-comment">// DFS function to copy graph</span>
+    <span class="hljs-keyword">const</span> dfs = <span class="hljs-function">(<span class="hljs-params">node</span>) =&gt;</span> {
+        <span class="hljs-keyword">if</span> (!node) <span class="hljs-keyword">return</span> node;
+        <span class="hljs-comment">// If we have seen this node before, return it</span>
+        <span class="hljs-keyword">if</span> (visited[node.val]!=<span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> visited[node.val];
 
-  <span class="hljs-keyword">var</span> cloneNode = <span class="hljs-keyword">new</span> UndirectedGraphNode(node.label);
+        <span class="hljs-comment">// Create base for copied node</span>
+        <span class="hljs-keyword">const</span> root = <span class="hljs-keyword">new</span> Node(node.val);
+        <span class="hljs-comment">// Add this copied node to group of nodes we hav copied</span>
+        visited[node.val] = root;
 
-  map[node.label] = cloneNode;
+        <span class="hljs-comment">// Add copied neighbors to the current copied node</span>
+        node.neighbors.forEach(<span class="hljs-function"><span class="hljs-params">n</span> =&gt;</span> root.neighbors.push(dfs(n)))
+        <span class="hljs-keyword">return</span> root;
+    }
 
-  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; node.neighbors.length; i++) {
-    cloneNode.neighbors.push(clone(node.neighbors[i], map));
-  }
-
-  <span class="hljs-keyword">return</span> cloneNode;
+    <span class="hljs-comment">// Return new copied graph</span>
+    <span class="hljs-keyword">return</span> dfs(node);
 };
 </code></pre>
 <p><strong>Explain:</strong></p>

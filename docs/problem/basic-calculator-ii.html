@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Basic Calculator II - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>227. Basic Calculator II</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/math">Math</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/stack">Stack</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/basic-calculator.html">Basic Calculator</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/expression-add-operators.html">Expression Add Operators</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/basic-calculator-iii.html">Basic Calculator III</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a string <code>s</code> which represents an expression, <strong>evaluate this expression and return its value</strong>.&nbsp;</p>
+<p>The integer division should truncate toward zero.</p>
+<p>You may assume that the given expression is always valid. All intermediate results will be in the range of <code>[-231, 231 - 1]</code>.</p>
+<p><strong>Note:</strong> You are not allowed to use any built-in function which evaluates strings as mathematical expressions, such as <code>eval()</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> s = <span class="hljs-string">"3+2*2"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">7</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> s = <span class="hljs-string">" 3/2 "</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">1</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> s = <span class="hljs-string">" 3+5 / 2 "</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">5</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 3 * 105</code></p></li>
+<li><p><code>s</code> consists of integers and operators <code>('+', '-', '*', '/')</code> separated by some number of spaces.</p></li>
+<li><p><code>s</code> represents <strong>a valid expression</strong>.</p></li>
+<li><p>All the integers in the expression are non-negative integers in the range <code>[0, 231 - 1]</code>.</p></li>
+<li><p>The answer is <strong>guaranteed</strong> to fit in a <strong>32-bit integer</strong>.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@param <span class="hljs-type">{string}</span> <span class="hljs-variable">s</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
+ */</span>
+<span class="hljs-keyword">var</span> calculate = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">s</span>) </span>{
+    <span class="hljs-keyword">let</span> sum = <span class="hljs-number">0</span>, prev = (curr = <span class="hljs-number">0</span>), currOperator = <span class="hljs-string">"+"</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; s.length; i++) {
+        <span class="hljs-keyword">if</span> (s[i] === <span class="hljs-string">" "</span>) <span class="hljs-keyword">continue</span>; 
+        <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/[0-9]/</span>.test(s[i])) {
+            curr = s[i++];
+            <span class="hljs-keyword">while</span> (<span class="hljs-regexp">/[0-9]/</span>.test(s[i])) curr = curr * <span class="hljs-number">10</span> + +s[i++];
+            i--;
+            <span class="hljs-keyword">if</span> (currOperator === <span class="hljs-string">"+"</span>) {
+                sum += +curr;
+                prev = curr;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (currOperator === <span class="hljs-string">"-"</span>) {
+                sum -= curr;
+                prev = -curr;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (currOperator === <span class="hljs-string">"*"</span>) {
+                sum -= prev;
+                sum += prev * curr;
+                prev = prev * curr;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (currOperator === <span class="hljs-string">"/"</span>) {
+                sum -= prev;
+                sum += +<span class="hljs-built_in">Math</span>.trunc(prev / curr);
+                prev = <span class="hljs-built_in">Math</span>.trunc(prev / curr);
+            }
+        } <span class="hljs-keyword">else</span> {
+            currOperator = s[i];
+        }
+    }
+    <span class="hljs-keyword">return</span> sum;
+};
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

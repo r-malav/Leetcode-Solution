@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Brick Wall - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>554. Brick Wall</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/hash-table">Hash Table</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/number-of-ways-to-build-sturdy-brick-wall.html">Number of Ways to Build Sturdy Brick Wall</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is a rectangular brick wall in front of you with <code>n</code> rows of bricks. The <code>ith</code> row has some number of bricks each of the same height (i.e., one unit) but they can be of different widths. The total width of each row is the same.</p>
+<p>Draw a vertical line from the top to the bottom and cross the least bricks. If your line goes through the edge of a brick, then the brick is not considered as crossed. You cannot draw a line just along one of the two vertical edges of the wall, in which case the line will obviously cross no bricks.</p>
+<p>Given the 2D array <code>wall</code> that contains the information about the wall, return <strong>the minimum number of crossed bricks after drawing such a vertical line</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/04/24/cutwall-grid.jpg" alt="" /></p>
+<pre><code class="hljs">Input: wall = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]]
+Output: <span class="hljs-number">2</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: wall = <span class="hljs-string">[[1],[1],[1]]</span>
+Output: <span class="hljs-number">3</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == wall.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 104</code></p></li>
+<li><p><code>1 &lt;= wall[i].length &lt;= 104</code></p></li>
+<li><p><code>1 &lt;= sum(wall[i].length) &lt;= 2 * 104</code></p></li>
+<li><p><code>sum(wall[i])</code> is the same for each row <code>i</code>.</p></li>
+<li><p><code>1 &lt;= wall[i][j] &lt;= 231 - 1</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">leastBricks</span><span class="hljs-params">(List&lt;List&lt;Integer&gt;&gt; wall)</span> </span>{
+        Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">for</span> (List&lt;Integer&gt; row : wall) {
+            <span class="hljs-keyword">int</span> sum = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; row.size() - <span class="hljs-number">1</span>; i++) {
+                sum += row.get(i);
+                <span class="hljs-keyword">if</span> (map.containsKey(sum)) {
+                    map.put(sum, map.get(sum) + <span class="hljs-number">1</span>);
+                } <span class="hljs-keyword">else</span> {
+                    map.put(sum, <span class="hljs-number">1</span>);
+                }
+            }
+        }
+        <span class="hljs-keyword">int</span> result = wall.size();
+        <span class="hljs-keyword">for</span> (Map.Entry&lt;Integer, Integer&gt; entry : map.entrySet()) {
+            result = Math.min(result, wall.size() - entry.getValue());
+        }
+        <span class="hljs-keyword">return</span> result;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

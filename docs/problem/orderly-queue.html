@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Orderly Queue - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>899. Orderly Queue</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/math">Math</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a string <code>s</code> and an integer <code>k</code>. You can choose one of the first <code>k</code> letters of <code>s</code> and append it at the end of the string..</p>
+<p>Return <strong>the lexicographically smallest string you could have after applying the mentioned step any number of moves</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"cba"</span>, k = <span class="hljs-number">1</span>
+Output: <span class="hljs-string">"acb"</span>
+Explanation: 
+In <span class="hljs-keyword">the</span> <span class="hljs-keyword">first</span> move, we move <span class="hljs-keyword">the</span> <span class="hljs-number">1</span>st <span class="hljs-keyword">character</span> <span class="hljs-string">'c'</span> <span class="hljs-built_in">to</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">end</span>, obtaining <span class="hljs-keyword">the</span> <span class="hljs-keyword">string</span> <span class="hljs-string">"bac"</span>.
+In <span class="hljs-keyword">the</span> <span class="hljs-keyword">second</span> move, we move <span class="hljs-keyword">the</span> <span class="hljs-number">1</span>st <span class="hljs-keyword">character</span> <span class="hljs-string">'b'</span> <span class="hljs-built_in">to</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">end</span>, obtaining <span class="hljs-keyword">the</span> final <span class="hljs-built_in">result</span> <span class="hljs-string">"acb"</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"baaca"</span>, k = <span class="hljs-number">3</span>
+Output: <span class="hljs-string">"aaabc"</span>
+Explanation: 
+In <span class="hljs-keyword">the</span> <span class="hljs-keyword">first</span> move, we move <span class="hljs-keyword">the</span> <span class="hljs-number">1</span>st <span class="hljs-keyword">character</span> <span class="hljs-string">'b'</span> <span class="hljs-built_in">to</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">end</span>, obtaining <span class="hljs-keyword">the</span> <span class="hljs-keyword">string</span> <span class="hljs-string">"aacab"</span>.
+In <span class="hljs-keyword">the</span> <span class="hljs-keyword">second</span> move, we move <span class="hljs-keyword">the</span> <span class="hljs-number">3</span>rd <span class="hljs-keyword">character</span> <span class="hljs-string">'c'</span> <span class="hljs-built_in">to</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">end</span>, obtaining <span class="hljs-keyword">the</span> final <span class="hljs-built_in">result</span> <span class="hljs-string">"aaabc"</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= k &lt;= s.length &lt;= 1000</code></p></li>
+<li><p><code>s</code> consist of lowercase English letters.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">orderlyQueue</span><span class="hljs-params">(String s, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">if</span> (k &gt; <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">char</span>[] ans = s.toCharArray();
+            Arrays.sort(ans);
+            <span class="hljs-keyword">return</span> String.valueOf(ans);
+        }
+        <span class="hljs-keyword">char</span> min = <span class="hljs-string">'z'</span>;
+        ArrayList&lt;Integer&gt; list = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+            <span class="hljs-keyword">char</span> cc = s.charAt(i);
+            <span class="hljs-keyword">if</span> (cc &lt; min) {
+                min = cc;
+            }
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+            <span class="hljs-keyword">if</span> (s.charAt(i) == min) {
+                list.add(i);
+            }
+        }
+        String ans = s;
+        <span class="hljs-keyword">for</span> (Integer integer : list) {
+            String after = s.substring(<span class="hljs-number">0</span>, integer);
+            String before = s.substring(integer);
+            String f = before + after;
+            <span class="hljs-keyword">if</span> (f.compareTo(ans) &lt; <span class="hljs-number">0</span>) {
+                ans = f;
+            }
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

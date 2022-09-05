@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Baseball Game - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>682. Baseball Game</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/stack">Stack</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/simulation">Simulation</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/crawler-log-folder.html">Crawler Log Folder</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are keeping score for a baseball game with strange rules. The game consists of several rounds, where the scores of past rounds may affect future rounds' scores.</p>
+<p>At the beginning of the game, you start with an empty record. You are given a list of strings <code>ops</code>, where <code>ops[i]</code> is the <code>ith</code> operation you must apply to the record and is one of the following:</p>
+<ul>
+<li><p>An integer <code>x</code> - Record a new score of <code>x</code>.</p></li>
+<li><p><code>"+"</code> - Record a new score that is the sum of the previous two scores. It is guaranteed there will always be two previous scores.</p></li>
+<li><p><code>"D"</code> - Record a new score that is double the previous score. It is guaranteed there will always be a previous score.</p></li>
+<li><p><code>"C"</code> - Invalidate the previous score, removing it from the record. It is guaranteed there will always be a previous score.</p></li>
+</ul>
+<p>Return <strong>the sum of all the scores on the record</strong>. The test cases are generated so that the answer fits in a 32-bit integer.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: ops = [<span class="hljs-string">"5"</span>,<span class="hljs-string">"2"</span>,<span class="hljs-string">"C"</span>,<span class="hljs-string">"D"</span>,<span class="hljs-string">"+"</span>]
+Output: <span class="hljs-number">30</span>
+Explanation:
+<span class="hljs-string">"5"</span> - Add <span class="hljs-number">5</span> <span class="hljs-keyword">to</span> <span class="hljs-keyword">the</span> <span class="hljs-built_in">record</span>, <span class="hljs-built_in">record</span> <span class="hljs-keyword">is</span> now [<span class="hljs-number">5</span>].
+<span class="hljs-string">"2"</span> - Add <span class="hljs-number">2</span> <span class="hljs-keyword">to</span> <span class="hljs-keyword">the</span> <span class="hljs-built_in">record</span>, <span class="hljs-built_in">record</span> <span class="hljs-keyword">is</span> now [<span class="hljs-number">5</span>, <span class="hljs-number">2</span>].
+<span class="hljs-string">"C"</span> - Invalidate <span class="hljs-keyword">and</span> remove <span class="hljs-keyword">the</span> previous score, <span class="hljs-built_in">record</span> <span class="hljs-keyword">is</span> now [<span class="hljs-number">5</span>].
+<span class="hljs-string">"D"</span> - Add <span class="hljs-number">2</span> * <span class="hljs-number">5</span> = <span class="hljs-number">10</span> <span class="hljs-keyword">to</span> <span class="hljs-keyword">the</span> <span class="hljs-built_in">record</span>, <span class="hljs-built_in">record</span> <span class="hljs-keyword">is</span> now [<span class="hljs-number">5</span>, <span class="hljs-number">10</span>].
+<span class="hljs-string">"+"</span> - Add <span class="hljs-number">5</span> + <span class="hljs-number">10</span> = <span class="hljs-number">15</span> <span class="hljs-keyword">to</span> <span class="hljs-keyword">the</span> <span class="hljs-built_in">record</span>, <span class="hljs-built_in">record</span> <span class="hljs-keyword">is</span> now [<span class="hljs-number">5</span>, <span class="hljs-number">10</span>, <span class="hljs-number">15</span>].
+The total sum <span class="hljs-keyword">is</span> <span class="hljs-number">5</span> + <span class="hljs-number">10</span> + <span class="hljs-number">15</span> = <span class="hljs-number">30.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: ops = [<span class="hljs-string">"5"</span>,<span class="hljs-string">"-2"</span>,<span class="hljs-string">"4"</span>,<span class="hljs-string">"C"</span>,<span class="hljs-string">"D"</span>,<span class="hljs-string">"9"</span>,<span class="hljs-string">"+"</span>,<span class="hljs-string">"+"</span>]
+Output: <span class="hljs-number">27</span>
+Explanation:
+<span class="hljs-string">"5"</span> - Add <span class="hljs-number">5</span> to the record, record <span class="hljs-keyword">is</span> now [<span class="hljs-number">5</span>].
+<span class="hljs-string">"-2"</span> - Add <span class="hljs-number">-2</span> to the record, record <span class="hljs-keyword">is</span> now [<span class="hljs-number">5</span>, <span class="hljs-number">-2</span>].
+<span class="hljs-string">"4"</span> - Add <span class="hljs-number">4</span> to the record, record <span class="hljs-keyword">is</span> now [<span class="hljs-number">5</span>, <span class="hljs-number">-2</span>, <span class="hljs-number">4</span>].
+<span class="hljs-string">"C"</span> - Invalidate <span class="hljs-keyword">and</span> remove the previous score, record <span class="hljs-keyword">is</span> now [<span class="hljs-number">5</span>, <span class="hljs-number">-2</span>].
+<span class="hljs-string">"D"</span> - Add <span class="hljs-number">2</span> * <span class="hljs-number">-2</span> = <span class="hljs-number">-4</span> to the record, record <span class="hljs-keyword">is</span> now [<span class="hljs-number">5</span>, <span class="hljs-number">-2</span>, <span class="hljs-number">-4</span>].
+<span class="hljs-string">"9"</span> - Add <span class="hljs-number">9</span> to the record, record <span class="hljs-keyword">is</span> now [<span class="hljs-number">5</span>, <span class="hljs-number">-2</span>, <span class="hljs-number">-4</span>, <span class="hljs-number">9</span>].
+<span class="hljs-string">"+"</span> - Add <span class="hljs-number">-4</span> + <span class="hljs-number">9</span> = <span class="hljs-number">5</span> to the record, record <span class="hljs-keyword">is</span> now [<span class="hljs-number">5</span>, <span class="hljs-number">-2</span>, <span class="hljs-number">-4</span>, <span class="hljs-number">9</span>, <span class="hljs-number">5</span>].
+<span class="hljs-string">"+"</span> - Add <span class="hljs-number">9</span> + <span class="hljs-number">5</span> = <span class="hljs-number">14</span> to the record, record <span class="hljs-keyword">is</span> now [<span class="hljs-number">5</span>, <span class="hljs-number">-2</span>, <span class="hljs-number">-4</span>, <span class="hljs-number">9</span>, <span class="hljs-number">5</span>, <span class="hljs-number">14</span>].
+The total sum <span class="hljs-keyword">is</span> <span class="hljs-number">5</span> + <span class="hljs-number">-2</span> + <span class="hljs-number">-4</span> + <span class="hljs-number">9</span> + <span class="hljs-number">5</span> + <span class="hljs-number">14</span> = <span class="hljs-number">27.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> ops = [<span class="hljs-string">"1"</span>,<span class="hljs-string">"C"</span>]
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-number">0</span>
+Explanation:
+<span class="hljs-string">"1"</span> - Add <span class="hljs-number">1</span> <span class="hljs-keyword">to</span> the record, record <span class="hljs-keyword">is</span> now [<span class="hljs-number">1</span>].
+<span class="hljs-string">"C"</span> - Invalidate <span class="hljs-built_in">and</span> <span class="hljs-built_in">remove</span> the <span class="hljs-keyword">previous</span> score, record <span class="hljs-keyword">is</span> now [].
+Since the record <span class="hljs-keyword">is</span> <span class="hljs-built_in">empty</span>, the total sum <span class="hljs-keyword">is</span> <span class="hljs-number">0</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= ops.length &lt;= 1000</code></p></li>
+<li><p><code>ops[i]</code> is <code>"C"</code>, <code>"D"</code>, <code>"+"</code>, or a string representing an integer in the range <code>[-3 * 104, 3 * 104]</code>.</p></li>
+<li><p>For operation <code>"+"</code>, there will always be at least two previous scores on the record.</p></li>
+<li><p>For operations <code>"C"</code> and <code>"D"</code>, there will always be at least one previous score on the record.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">calPoints</span><span class="hljs-params">(String[] ops)</span> </span>{
+        List&lt;Integer&gt; resultList = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;(ops.length);
+        <span class="hljs-keyword">for</span> (String op : ops) {
+            <span class="hljs-keyword">int</span> size = resultList.size();
+            <span class="hljs-keyword">if</span> (<span class="hljs-string">"C"</span>.equals(op)) {
+                resultList.remove(size - <span class="hljs-number">1</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-string">"D"</span>.equals(op)) {
+                resultList.add(resultList.get(size - <span class="hljs-number">1</span>) * <span class="hljs-number">2</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-string">"+"</span>.equals(op)) {
+                resultList.add(resultList.get(size - <span class="hljs-number">1</span>) + resultList.get(size - <span class="hljs-number">2</span>));
+            } <span class="hljs-keyword">else</span> {
+                resultList.add(Integer.parseInt(op));
+            }
+        }
+        <span class="hljs-keyword">return</span> resultList.stream().reduce(<span class="hljs-number">0</span>, Integer::sum);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

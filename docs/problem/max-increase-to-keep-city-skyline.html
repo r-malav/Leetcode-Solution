@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Max Increase to Keep City Skyline - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>807. Max Increase to Keep City Skyline</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/greedy">Greedy</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is a city composed of <code>n x n</code> blocks, where each block contains a single building shaped like a vertical square prism. You are given a <strong>0-indexed</strong> <code>n x n</code> integer matrix <code>grid</code> where <code>grid[r][c]</code> represents the <strong>height</strong> of the building located in the block at row <code>r</code> and column <code>c</code>.</p>
+<p>A city's <strong>skyline</strong> is the the outer contour formed by all the building when viewing the side of the city from a distance. The <strong>skyline</strong> from each cardinal direction north, east, south, and west may be different.</p>
+<p>We are allowed to increase the height of <strong>any number of buildings by any amount</strong> (the amount can be different per building). The height of a <code>0</code>-height building can also be increased. However, increasing the height of a building should <strong>not</strong> affect the city's <strong>skyline</strong> from any cardinal direction.</p>
+<p>Return **the *<em>maximum total sum</em>* that the height of the buildings can be increased by <strong>without</strong> changing the city's <strong>skyline</strong> from any cardinal direction**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/06/21/807-ex1.png" alt="" /></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">3</span>,<span class="hljs-number">0</span>,<span class="hljs-number">8</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">7</span>],[<span class="hljs-number">9</span>,<span class="hljs-number">2</span>,<span class="hljs-number">6</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]]
+Output: <span class="hljs-number">35</span>
+Explanation: The building heights are shown <span class="hljs-keyword">in</span> the center of the above image.
+The skylines when viewed <span class="hljs-keyword">from</span> each cardinal direction are drawn <span class="hljs-keyword">in</span> red.
+The grid after increasing the height of buildings without affecting skylines <span class="hljs-keyword">is</span>:
+gridNew = [ [<span class="hljs-number">8</span>, <span class="hljs-number">4</span>, <span class="hljs-number">8</span>, <span class="hljs-number">7</span>],
+            [<span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">7</span>, <span class="hljs-number">7</span>],
+            [<span class="hljs-number">9</span>, <span class="hljs-number">4</span>, <span class="hljs-number">8</span>, <span class="hljs-number">7</span>],
+            [<span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>] ]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]]
+Output: <span class="hljs-number">0</span>
+Explanation: Increasing the height of any building will result <span class="hljs-keyword">in</span> the skyline changing.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == grid.length</code></p></li>
+<li><p><code>n == grid[r].length</code></p></li>
+<li><p><code>2 &lt;= n &lt;= 50</code></p></li>
+<li><p><code>0 &lt;= grid[r][c] &lt;= 100</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxIncreaseKeepingSkyline</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] grid)</span> </span>{
+
+        <span class="hljs-keyword">int</span> rows = grid.length;
+        <span class="hljs-keyword">int</span> cols = grid[<span class="hljs-number">0</span>].length;
+        <span class="hljs-keyword">int</span>[] tallestR = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[rows];
+        <span class="hljs-keyword">int</span>[] tallestC = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[cols];
+        <span class="hljs-keyword">int</span> max;
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; rows; i++) {
+            max = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; cols; j++) {
+                <span class="hljs-keyword">if</span> (grid[i][j] &gt; max) {
+                    max = grid[i][j];
+                }
+            }
+            tallestR[i] = max;
+        }
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; cols; i++) {
+            max = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] ints : grid) {
+                <span class="hljs-keyword">if</span> (ints[i] &gt; max) {
+                    max = ints[i];
+                }
+            }
+            tallestC[i] = max;
+        }
+
+        <span class="hljs-keyword">int</span> increase = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; rows; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; cols; j++) {
+                <span class="hljs-keyword">if</span> (tallestR[i] &lt; tallestC[j]) {
+                    increase += tallestR[i] - grid[i][j];
+                    grid[i][j] += tallestR[i] - grid[i][j];
+                } <span class="hljs-keyword">else</span> {
+                    increase += tallestC[j] - grid[i][j];
+                    grid[i][j] += tallestC[j] - grid[i][j];
+                }
+            }
+        }
+
+        <span class="hljs-keyword">return</span> increase;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -5,19 +5,145 @@
 <p><strong>Follow up:</strong>
 Could you do both operations in <strong>O(1)</strong> time complexity?</p>
 <p><strong>Example:</strong></p>
-<pre><code class="hljs">LRUCache cache = new LRUCache( <span class="hljs-number">2</span> <span class="hljs-comment">/* capacity */</span> );
+<pre><code class="hljs">LRUCache <span class="hljs-keyword">cache</span> = new LRUCache( <span class="hljs-number">2</span> <span class="hljs-comment">/* capacity */</span> );
 
-cache.put(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>);
-cache.put(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>);
-cache.get(<span class="hljs-number">1</span>);       <span class="hljs-comment">// returns 1</span>
-cache.put(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>);    <span class="hljs-comment">// evicts key 2</span>
-cache.get(<span class="hljs-number">2</span>);       <span class="hljs-comment">// returns -1 (not found)</span>
-cache.put(<span class="hljs-number">4</span>, <span class="hljs-number">4</span>);    <span class="hljs-comment">// evicts key 1</span>
-cache.get(<span class="hljs-number">1</span>);       <span class="hljs-comment">// returns -1 (not found)</span>
-cache.get(<span class="hljs-number">3</span>);       <span class="hljs-comment">// returns 3</span>
-cache.get(<span class="hljs-number">4</span>);       <span class="hljs-comment">// returns 4</span>
+<span class="hljs-keyword">cache</span>.put(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>);
+<span class="hljs-keyword">cache</span>.put(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>);
+<span class="hljs-keyword">cache</span>.get(<span class="hljs-number">1</span>);       // <span class="hljs-keyword">returns</span> <span class="hljs-number">1</span>
+<span class="hljs-keyword">cache</span>.put(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>);    // evicts key <span class="hljs-number">2</span>
+<span class="hljs-keyword">cache</span>.get(<span class="hljs-number">2</span>);       // <span class="hljs-keyword">returns</span> <span class="hljs-number">-1</span> (<span class="hljs-keyword">not</span> <span class="hljs-built_in">found</span>)
+<span class="hljs-keyword">cache</span>.put(<span class="hljs-number">4</span>, <span class="hljs-number">4</span>);    // evicts key <span class="hljs-number">1</span>
+<span class="hljs-keyword">cache</span>.get(<span class="hljs-number">1</span>);       // <span class="hljs-keyword">returns</span> <span class="hljs-number">-1</span> (<span class="hljs-keyword">not</span> <span class="hljs-built_in">found</span>)
+<span class="hljs-keyword">cache</span>.get(<span class="hljs-number">3</span>);       // <span class="hljs-keyword">returns</span> <span class="hljs-number">3</span>
+<span class="hljs-keyword">cache</span>.get(<span class="hljs-number">4</span>);       // <span class="hljs-keyword">returns</span> <span class="hljs-number">4</span>
 </code></pre>
-<h2 id="solution">Solution</h2>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-keyword">import</span> java.util.HashMap;
+<span class="hljs-keyword">import</span> java.util.Map;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LRUCache</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LruCacheNode</span> </span>{
+        <span class="hljs-keyword">int</span> key;
+        <span class="hljs-keyword">int</span> value;
+        LruCacheNode prev;
+        LruCacheNode next;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">LruCacheNode</span><span class="hljs-params">(<span class="hljs-keyword">int</span> k, <span class="hljs-keyword">int</span> v)</span> </span>{
+            key = k;
+            value = v;
+        }
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> capacity;
+    <span class="hljs-keyword">private</span> Map&lt;Integer, LruCacheNode&gt; cacheMap = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+    <span class="hljs-comment">// insert here</span>
+    <span class="hljs-keyword">private</span> LruCacheNode head;
+    <span class="hljs-comment">// remove here</span>
+    <span class="hljs-keyword">private</span> LruCacheNode tail;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">LRUCache</span><span class="hljs-params">(<span class="hljs-keyword">int</span> cap)</span> </span>{
+        capacity = cap;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">get</span><span class="hljs-params">(<span class="hljs-keyword">int</span> key)</span> </span>{
+        LruCacheNode val = cacheMap.get(key);
+        <span class="hljs-keyword">if</span> (val == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+        }
+        moveToHead(val);
+        <span class="hljs-keyword">return</span> val.value;
+    }
+
+    <span class="hljs-comment">/*
+     * Scenarios :
+     * 1. Value key is already present.
+     *          update
+     *          move node to head
+     * 2. cache is not full
+     *          cache is empty (create node and assign head and tail)
+     *          cache is partially empty (add node to head and update head pointer)
+     * 3. cache is full
+     *          remove node at tail, update head, tail pointers
+     *          Recursively call put
+     *
+     *
+     * move node to head Scenarios
+     * 1. node is at head
+     * 2. node is at tail
+     * 3. node is in middle
+     *
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">put</span><span class="hljs-params">(<span class="hljs-keyword">int</span> key, <span class="hljs-keyword">int</span> value)</span> </span>{
+        LruCacheNode valNode = cacheMap.get(key);
+        <span class="hljs-keyword">if</span> (valNode != <span class="hljs-keyword">null</span>) {
+            valNode.value = value;
+            moveToHead(valNode);
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">if</span> (cacheMap.size() &lt; capacity) {
+                <span class="hljs-keyword">if</span> (cacheMap.size() == <span class="hljs-number">0</span>) {
+                    LruCacheNode node = <span class="hljs-keyword">new</span> LruCacheNode(key, value);
+                    cacheMap.put(key, node);
+                    head = node;
+                    tail = node;
+                } <span class="hljs-keyword">else</span> {
+                    LruCacheNode node = <span class="hljs-keyword">new</span> LruCacheNode(key, value);
+                    cacheMap.put(key, node);
+                    node.next = head;
+                    head.prev = node;
+                    head = node;
+                }
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// remove from tail</span>
+                LruCacheNode last = tail;
+                tail = last.prev;
+                <span class="hljs-keyword">if</span> (tail != <span class="hljs-keyword">null</span>) {
+                    tail.next = <span class="hljs-keyword">null</span>;
+                }
+                cacheMap.remove(last.key);
+                <span class="hljs-keyword">if</span> (cacheMap.size() == <span class="hljs-number">0</span>) {
+                    head = <span class="hljs-keyword">null</span>;
+                }
+                <span class="hljs-comment">// Call recursively</span>
+                put(key, value);
+            }
+        }
+    }
+
+    <span class="hljs-comment">/*
+     * check for 3 conditions
+     * 1. node is already at head
+     * 2. Node is tail node
+     * 3. Node in middle node
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">moveToHead</span><span class="hljs-params">(LruCacheNode node)</span> </span>{
+        <span class="hljs-keyword">if</span> (node == head) {
+            <span class="hljs-keyword">return</span>;
+        }
+        <span class="hljs-keyword">if</span> (node == tail) {
+            tail = node.prev;
+        }
+        <span class="hljs-comment">// node is not head, it should have some valid prev node</span>
+        LruCacheNode prev = node.prev;
+        LruCacheNode next = node.next;
+        prev.next = next;
+        <span class="hljs-keyword">if</span> (next != <span class="hljs-keyword">null</span>) {
+            next.prev = prev;
+        }
+        node.prev = <span class="hljs-keyword">null</span>;
+        node.next = head;
+        head.prev = node;
+        head = node;
+    }
+}
+
+<span class="hljs-comment">/*
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */</span>
+</code></pre>
+<h2 id="solution-javascript">Solution (Javascript)</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-keyword">var</span> List = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">key, val</span>) </span>{
   <span class="hljs-keyword">this</span>.key = key;
   <span class="hljs-keyword">this</span>.val = val;

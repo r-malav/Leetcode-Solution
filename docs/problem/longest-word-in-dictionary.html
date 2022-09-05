@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Longest Word in Dictionary - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>720. Longest Word in Dictionary</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/hash-table">Hash Table</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/trie">Trie</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/longest-word-in-dictionary-through-deleting.html">Longest Word in Dictionary through Deleting</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/implement-magic-dictionary.html">Implement Magic Dictionary</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/longest-word-with-all-prefixes.html">Longest Word With All Prefixes</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an array of strings <code>words</code> representing an English Dictionary, return <strong>the longest word in</strong> <code>words</code> <strong>that can be built one character at a time by other words in</strong> <code>words</code>.</p>
+<p>If there is more than one possible answer, return the longest word with the smallest lexicographical order. If there is no answer, return the empty string.</p>
+<p>Note that the word should be built from left to right with each additional character being added to the end of a previous word.&nbsp;</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: <span class="hljs-keyword">words</span> = [<span class="hljs-string">"w"</span>,<span class="hljs-string">"wo"</span>,<span class="hljs-string">"wor"</span>,<span class="hljs-string">"worl"</span>,<span class="hljs-string">"world"</span>]
+Output: <span class="hljs-string">"world"</span>
+Explanation: The <span class="hljs-built_in">word</span> <span class="hljs-string">"world"</span> can be built <span class="hljs-literal">one</span> <span class="hljs-keyword">character</span> <span class="hljs-keyword">at</span> <span class="hljs-keyword">a</span> <span class="hljs-built_in">time</span> <span class="hljs-keyword">by</span> <span class="hljs-string">"w"</span>, <span class="hljs-string">"wo"</span>, <span class="hljs-string">"wor"</span>, <span class="hljs-keyword">and</span> <span class="hljs-string">"worl"</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> words = [<span class="hljs-string">"a"</span>,<span class="hljs-string">"banana"</span>,<span class="hljs-string">"app"</span>,<span class="hljs-string">"appl"</span>,<span class="hljs-string">"ap"</span>,<span class="hljs-string">"apply"</span>,<span class="hljs-string">"apple"</span>]
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">"apple"</span>
+<span class="hljs-symbol">Explanation:</span> <span class="hljs-keyword">Both </span><span class="hljs-string">"apply"</span> <span class="hljs-keyword">and </span><span class="hljs-string">"apple"</span> can <span class="hljs-keyword">be </span><span class="hljs-keyword">built </span>from other words in the <span class="hljs-keyword">dictionary. </span>However, <span class="hljs-string">"apple"</span> is lexicographically smaller than <span class="hljs-string">"apply"</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= words.length &lt;= 1000</code></p></li>
+<li><p><code>1 &lt;= words[i].length &lt;= 30</code></p></li>
+<li><p><code>words[i]</code> consists of lowercase English letters.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Node root = <span class="hljs-keyword">new</span> Node();
+    <span class="hljs-keyword">private</span> String longestWord = <span class="hljs-string">""</span>;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Node</span> </span>{
+        Node[] children;
+        String str;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Node</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">this</span>.children = <span class="hljs-keyword">new</span> Node[<span class="hljs-number">26</span>];
+            <span class="hljs-keyword">this</span>.str = <span class="hljs-keyword">null</span>;
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">insert</span><span class="hljs-params">(Node curr, String word)</span> </span>{
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; word.length(); i++) {
+                <span class="hljs-keyword">char</span> ch = word.charAt(i);
+                <span class="hljs-keyword">if</span> (curr.children[ch - <span class="hljs-string">'a'</span>] == <span class="hljs-keyword">null</span>) {
+                    curr.children[ch - <span class="hljs-string">'a'</span>] = <span class="hljs-keyword">new</span> Node();
+                }
+                curr = curr.children[ch - <span class="hljs-string">'a'</span>];
+            }
+            curr.str = word;
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">longestWord</span><span class="hljs-params">(String[] words)</span> </span>{
+        <span class="hljs-keyword">for</span> (String word : words) {
+            root.insert(root, word);
+        }
+        dfs(root);
+        <span class="hljs-keyword">return</span> longestWord;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(Node curr)</span> </span>{
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">26</span>; i++) {
+            <span class="hljs-keyword">if</span> (curr.children[i] != <span class="hljs-keyword">null</span> &amp;&amp; curr.children[i].str != <span class="hljs-keyword">null</span>) {
+                <span class="hljs-keyword">if</span> (curr.children[i].str.length() &gt; longestWord.length()) {
+                    longestWord = curr.children[i].str;
+                }
+                dfs(curr.children[i]);
+            }
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>
