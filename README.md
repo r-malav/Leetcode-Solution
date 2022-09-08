@@ -1,4 +1,4 @@
-# LeetCode javascript solutions
+# LeetCode Java/Javascript solutions
 
 ## dev
 
