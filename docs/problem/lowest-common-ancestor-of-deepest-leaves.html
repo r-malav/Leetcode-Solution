@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Lowest Common Ancestor of Deepest Leaves - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1123. Lowest Common Ancestor of Deepest Leaves</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/tree">Tree</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-tree">Binary Tree</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/lowest-common-ancestor-of-a-binary-tree-iv.html">Lowest Common Ancestor of a Binary Tree IV</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given the <code>root</code> of a binary tree, return <strong>the lowest common ancestor of its deepest leaves</strong>.</p>
+<p>Recall that:</p>
+<ul>
+<li><p>The node of a binary tree is a leaf if and only if it has no children</p></li>
+<li><p>The depth of the root of the tree is <code>0</code>. if the depth of a node is <code>d</code>, the depth of each of its children is <code>d + 1</code>.</p></li>
+<li><p>The lowest common ancestor of a set <code>S</code> of nodes, is the node <code>A</code> with the largest depth such that every node in <code>S</code> is in the subtree with root <code>A</code>.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://s3-lc-upload.s3.amazonaws.com/uploads/2018/07/01/sketch1.png" alt="" /></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">3</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">8</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">7</span>,<span class="hljs-number">4</span>]
+Output: [<span class="hljs-number">2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">4</span>]
+Explanation: We <span class="hljs-keyword">return</span> the node with value <span class="hljs-number">2</span>, colored <span class="hljs-keyword">in</span> yellow <span class="hljs-keyword">in</span> the diagram.
+The nodes coloured <span class="hljs-keyword">in</span> blue are the deepest leaf-nodes of the tree.
+Note that nodes <span class="hljs-number">6</span>, <span class="hljs-number">0</span>, <span class="hljs-keyword">and</span> <span class="hljs-number">8</span> are also leaf nodes, but the depth of them <span class="hljs-keyword">is</span> <span class="hljs-number">2</span>, but the depth of nodes <span class="hljs-number">7</span> <span class="hljs-keyword">and</span> <span class="hljs-number">4</span> <span class="hljs-keyword">is</span> <span class="hljs-number">3.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">1</span>]
+Output: [<span class="hljs-number">1</span>]
+Explanation: The root is the deepest <span class="hljs-keyword">node</span> <span class="hljs-title">in</span> the tree, <span class="hljs-keyword">and</span> it's the lca of itself.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">2</span>]
+Output: [<span class="hljs-number">2</span>]
+Explanation: The deepest leaf node <span class="hljs-keyword">in</span> the tree <span class="hljs-keyword">is</span> <span class="hljs-number">2</span>, the lca of one node <span class="hljs-keyword">is</span> itself.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p>The number of nodes in the tree will be in the range <code>[1, 1000]</code>.</p></li>
+<li><p><code>0 &lt;= Node.val &lt;= 1000</code></p></li>
+<li><p>The values of the nodes in the tree are <strong>unique</strong>.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Note:</strong> This question is the same as 865: https://leetcode.com/problems/smallest-subtree-with-all-the-deepest-nodes/</p>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> TreeNode <span class="hljs-title">lcaDeepestLeaves</span><span class="hljs-params">(TreeNode root)</span> </span>{
+        <span class="hljs-keyword">if</span> (root == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+        }
+        <span class="hljs-keyword">int</span> leftDep = getDep(root.left);
+        <span class="hljs-keyword">int</span> rightDep = getDep(root.right);
+        <span class="hljs-keyword">if</span> (leftDep == rightDep) {
+            <span class="hljs-keyword">return</span> root;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">if</span> (leftDep &gt; rightDep) {
+                <span class="hljs-keyword">return</span> lcaDeepestLeaves(root.left);
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">return</span> lcaDeepestLeaves(root.right);
+            }
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getDep</span><span class="hljs-params">(TreeNode root)</span> </span>{
+        <span class="hljs-keyword">if</span> (root == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + Math.max(getDep(root.left), getDep(root.right));
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

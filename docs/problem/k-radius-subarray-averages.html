@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>K Radius Subarray Averages - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2090. K Radius Subarray Averages</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sliding-window">Sliding Window</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-size-subarray-sum.html">Minimum Size Subarray Sum</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/moving-average-from-data-stream.html">Moving Average from Data Stream</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/subarray-sum-equals-k.html">Subarray Sum Equals K</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-average-subarray-i.html">Maximum Average Subarray I</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/number-of-sub-arrays-of-size-k-and-average-greater-than-or-equal-to-threshold.html">Number of Sub-arrays of Size K and Average Greater than or Equal to Threshold</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>0-indexed</strong> array <code>nums</code> of <code>n</code> integers, and an integer <code>k</code>.</p>
+<p>The <strong>k-radius average</strong> for a subarray of <code>nums</code> <strong>centered</strong> at some index <code>i</code> with the <strong>radius</strong> <code>k</code> is the average of <strong>all</strong> elements in <code>nums</code> between the indices <code>i - k</code> and <code>i + k</code> (<strong>inclusive</strong>). If there are less than <code>k</code> elements before <strong>or</strong> after the index <code>i</code>, then the <strong>k-radius average</strong> is <code>-1</code>.</p>
+<p>Build and return **an array *<em><code>avgs</code></em>* of length <strong><code>n</code></strong> where <strong><code>avgs[i]</code></strong> is the <strong>k-radius average</strong> for the subarray centered at index **<code>i</code>.</p>
+<p>The <strong>average</strong> of <code>x</code> elements is the sum of the <code>x</code> elements divided by <code>x</code>, using <strong>integer division</strong>. The integer division truncates toward zero, which means losing its fractional part.</p>
+<ul>
+<li>For example, the average of four elements <code>2</code>, <code>3</code>, <code>1</code>, and <code>5</code> is <code>(2 + 3 + 1 + 5) / 4 = 11 / 4 = 2.75</code>, which truncates to <code>2</code>.</li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/11/07/eg1.png" alt="" /></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">7</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">9</span>,<span class="hljs-number">1</span>,<span class="hljs-number">8</span>,<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">6</span>], k = <span class="hljs-number">3</span>
+Output: [<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">4</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>]
+Explanation:
+- avg[<span class="hljs-number">0</span>], avg[<span class="hljs-number">1</span>], <span class="hljs-keyword">and</span> avg[<span class="hljs-number">2</span>] are <span class="hljs-number">-1</span> because there are less than k elements before each index.
+- The sum of the subarray centered at index <span class="hljs-number">3</span> with radius <span class="hljs-number">3</span> <span class="hljs-keyword">is</span>: <span class="hljs-number">7</span> + <span class="hljs-number">4</span> + <span class="hljs-number">3</span> + <span class="hljs-number">9</span> + <span class="hljs-number">1</span> + <span class="hljs-number">8</span> + <span class="hljs-number">5</span> = <span class="hljs-number">37.</span>
+  Using <span class="hljs-built_in">int</span>eger division, avg[<span class="hljs-number">3</span>] = <span class="hljs-number">37</span> / <span class="hljs-number">7</span> = <span class="hljs-number">5.</span>
+- For the subarray centered at index <span class="hljs-number">4</span>, avg[<span class="hljs-number">4</span>] = (<span class="hljs-number">4</span> + <span class="hljs-number">3</span> + <span class="hljs-number">9</span> + <span class="hljs-number">1</span> + <span class="hljs-number">8</span> + <span class="hljs-number">5</span> + <span class="hljs-number">2</span>) / <span class="hljs-number">7</span> = <span class="hljs-number">4.</span>
+- For the subarray centered at index <span class="hljs-number">5</span>, avg[<span class="hljs-number">5</span>] = (<span class="hljs-number">3</span> + <span class="hljs-number">9</span> + <span class="hljs-number">1</span> + <span class="hljs-number">8</span> + <span class="hljs-number">5</span> + <span class="hljs-number">2</span> + <span class="hljs-number">6</span>) / <span class="hljs-number">7</span> = <span class="hljs-number">4.</span>
+- avg[<span class="hljs-number">6</span>], avg[<span class="hljs-number">7</span>], <span class="hljs-keyword">and</span> avg[<span class="hljs-number">8</span>] are <span class="hljs-number">-1</span> because there are less than k elements after each index.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">100000</span>], k = <span class="hljs-number">0</span>
+Output: [<span class="hljs-number">100000</span>]
+Explanation:
+- The sum of the subarray centered at index <span class="hljs-number">0</span> with radius <span class="hljs-number">0</span> <span class="hljs-keyword">is</span>: <span class="hljs-number">100000.</span>
+  avg[<span class="hljs-number">0</span>] = <span class="hljs-number">100000</span> / <span class="hljs-number">1</span> = <span class="hljs-number">100000.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">8</span>], k = <span class="hljs-number">100000</span>
+Output: [<span class="hljs-number">-1</span>]
+Explanation: 
+- avg[<span class="hljs-number">0</span>] <span class="hljs-keyword">is</span> <span class="hljs-number">-1</span> because there are less than k elements before <span class="hljs-keyword">and</span> after index <span class="hljs-number">0.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == nums.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>0 &lt;= nums[i], k &lt;= 105</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] getAverages(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> k) {
+        <span class="hljs-comment">// initialize result array with -1</span>
+        <span class="hljs-keyword">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[nums.length];
+        Arrays.fill(res, -<span class="hljs-number">1</span>);
+        <span class="hljs-keyword">if</span> (nums.length &lt;= (k * <span class="hljs-number">2</span>)) {
+            <span class="hljs-comment">// return if not enough elements</span>
+            <span class="hljs-keyword">return</span> res;
+        }
+        <span class="hljs-keyword">long</span> sum = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">long</span> range = <span class="hljs-number">2</span> * k + <span class="hljs-number">1L</span>;
+        <span class="hljs-comment">// take sum of all elements from 0 to k*2 index</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">2</span> * k; ++i) {
+            sum += nums[i];
+        }
+        <span class="hljs-comment">// update first valid avg</span>
+        res[k] = (<span class="hljs-keyword">int</span>) (sum / range);
+        <span class="hljs-comment">// update other valid averages using sliding window</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = k + <span class="hljs-number">1</span>; i &lt; nums.length - k; ++i) {
+            sum = sum - nums[i - k - <span class="hljs-number">1</span>] + nums[i + k];
+            res[i] = (<span class="hljs-keyword">int</span>) (sum / range);
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

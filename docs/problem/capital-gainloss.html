@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Capital Gain/Loss - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1393. Capital Gain/Loss</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/database">Database</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Table: <code>Stocks</code></p>
+<pre><code class="hljs">+<span class="hljs-comment">---------------+---------+</span>
+| <span class="hljs-keyword">Column</span> <span class="hljs-type">Name</span>   | <span class="hljs-keyword">Type</span>    |
++<span class="hljs-comment">---------------+---------+</span>
+| stock_name    | <span class="hljs-type">varchar</span> |
+| operation     | enum    |
+| operation_day | <span class="hljs-type">int</span>     |
+| price         | <span class="hljs-type">int</span>     |
++<span class="hljs-comment">---------------+---------+</span>
+(stock_name, operation_day) <span class="hljs-keyword">is</span> the <span class="hljs-keyword">primary key</span> <span class="hljs-keyword">for</span> this <span class="hljs-keyword">table</span>.
+The operation <span class="hljs-keyword">column</span> <span class="hljs-keyword">is</span> an ENUM <span class="hljs-keyword">of</span> <span class="hljs-keyword">type</span> (<span class="hljs-string">'Sell'</span>, <span class="hljs-string">'Buy'</span>)
+<span class="hljs-keyword">Each</span> <span class="hljs-keyword">row</span> <span class="hljs-keyword">of</span> this <span class="hljs-keyword">table</span> indicates that the stock which has stock_name had an operation <span class="hljs-keyword">on</span> the day operation_day <span class="hljs-keyword">with</span> the price.
+It <span class="hljs-keyword">is</span> guaranteed that <span class="hljs-keyword">each</span> <span class="hljs-string">'Sell'</span> operation <span class="hljs-keyword">for</span> a stock has a corresponding <span class="hljs-string">'Buy'</span> operation <span class="hljs-keyword">in</span> a previous day. It <span class="hljs-keyword">is</span> <span class="hljs-keyword">also</span> guaranteed that <span class="hljs-keyword">each</span> <span class="hljs-string">'Buy'</span> operation <span class="hljs-keyword">for</span> a stock has a corresponding <span class="hljs-string">'Sell'</span> operation <span class="hljs-keyword">in</span> an upcoming day.
+</code></pre>
+<p>&nbsp;</p>
+<p>Write an SQL query to report the <strong>Capital gain/loss</strong> for each stock.</p>
+<p>The <strong>Capital gain/loss</strong> of a stock is the total gain or loss after buying and selling the stock one or many times.</p>
+<p>Return the result table in <strong>any order</strong>.</p>
+<p>The query result format is in the following example.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: 
+Stocks table:
++---------------+-----------+---------------+--------+
+|<span class="hljs-string"> stock_name    </span>|<span class="hljs-string"> operation </span>|<span class="hljs-string"> operation_day </span>|<span class="hljs-string"> price  </span>|
++---------------+-----------+---------------+--------+
+|<span class="hljs-string"> Leetcode      </span>|<span class="hljs-string"> Buy       </span>|<span class="hljs-string"> 1             </span>|<span class="hljs-string"> 1000   </span>|
+|<span class="hljs-string"> Corona Masks  </span>|<span class="hljs-string"> Buy       </span>|<span class="hljs-string"> 2             </span>|<span class="hljs-string"> 10     </span>|
+|<span class="hljs-string"> Leetcode      </span>|<span class="hljs-string"> Sell      </span>|<span class="hljs-string"> 5             </span>|<span class="hljs-string"> 9000   </span>|
+|<span class="hljs-string"> Handbags      </span>|<span class="hljs-string"> Buy       </span>|<span class="hljs-string"> 17            </span>|<span class="hljs-string"> 30000  </span>|
+|<span class="hljs-string"> Corona Masks  </span>|<span class="hljs-string"> Sell      </span>|<span class="hljs-string"> 3             </span>|<span class="hljs-string"> 1010   </span>|
+|<span class="hljs-string"> Corona Masks  </span>|<span class="hljs-string"> Buy       </span>|<span class="hljs-string"> 4             </span>|<span class="hljs-string"> 1000   </span>|
+|<span class="hljs-string"> Corona Masks  </span>|<span class="hljs-string"> Sell      </span>|<span class="hljs-string"> 5             </span>|<span class="hljs-string"> 500    </span>|
+|<span class="hljs-string"> Corona Masks  </span>|<span class="hljs-string"> Buy       </span>|<span class="hljs-string"> 6             </span>|<span class="hljs-string"> 1000   </span>|
+|<span class="hljs-string"> Handbags      </span>|<span class="hljs-string"> Sell      </span>|<span class="hljs-string"> 29            </span>|<span class="hljs-string"> 7000   </span>|
+|<span class="hljs-string"> Corona Masks  </span>|<span class="hljs-string"> Sell      </span>|<span class="hljs-string"> 10            </span>|<span class="hljs-string"> 10000  </span>|
++---------------+-----------+---------------+--------+
+Output: 
++---------------+-------------------+
+|<span class="hljs-string"> stock_name    </span>|<span class="hljs-string"> capital_gain_loss </span>|
++---------------+-------------------+
+|<span class="hljs-string"> Corona Masks  </span>|<span class="hljs-string"> 9500              </span>|
+|<span class="hljs-string"> Leetcode      </span>|<span class="hljs-string"> 8000              </span>|
+|<span class="hljs-string"> Handbags      </span>|<span class="hljs-string"> -23000            </span>|
++---------------+-------------------+
+Explanation: 
+Leetcode stock was bought at day 1 for 1000$ and was sold at day 5 for 9000$. Capital gain = 9000 - 1000 = 8000$.
+Handbags stock was bought at day 17 for 30000$ and was sold at day 29 for 7000$. Capital loss = 7000 - 30000 = -23000$.
+Corona Masks stock was bought at day 1 for 10$ and was sold at day 3 for 1010$. It was bought again at day 4 for 1000$ and was sold at day 5 for 500$. At last, it was bought at day 6 for 1000$ and was sold at day 10 for 10000$. Capital gain/loss is the sum of capital gains/losses for each ('Buy' --&gt; 'Sell') operation = (1010 - 10) + (500 - 1000) + (10000 - 1000) = 1000 - 500 + 9000 = 9500$.
+</code></pre>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-sql"><span class="hljs-comment"># Write your MySQL query statement below</span>
+<span class="hljs-keyword">select</span> stock_name, <span class="hljs-keyword">sum</span>(<span class="hljs-keyword">if</span>(operation=<span class="hljs-string">'sell'</span>, price,-price)) <span class="hljs-keyword">as</span> capital_gain_loss
+<span class="hljs-keyword">from</span> stocks
+<span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> stock_name
+</code></pre></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

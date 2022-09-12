@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Twin Sum of a Linked List - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2130. Maximum Twin Sum of a Linked List</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/linked-list">Linked List</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/two-pointers">Two Pointers</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/stack">Stack</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/reverse-linked-list.html">Reverse Linked List</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/palindrome-linked-list.html">Palindrome Linked List</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/middle-of-the-linked-list.html">Middle of the Linked List</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>In a linked list of size <code>n</code>, where <code>n</code> is <strong>even</strong>, the <code>ith</code> node (<strong>0-indexed</strong>) of the linked list is known as the <strong>twin</strong> of the <code>(n-1-i)th</code> node, if <code>0 &lt;= i &lt;= (n / 2) - 1</code>.</p>
+<ul>
+<li>For example, if <code>n = 4</code>, then node <code>0</code> is the twin of node <code>3</code>, and node <code>1</code> is the twin of node <code>2</code>. These are the only nodes with twins for <code>n = 4</code>.</li>
+</ul>
+<p>The **twin sum **is defined as the sum of a node and its twin.</p>
+<p>Given the <code>head</code> of a linked list with even length, return **the *<em>maximum twin sum</em>* of the linked list**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/12/03/eg1drawio.png" alt="" /></p>
+<pre><code class="hljs">Input: head = [<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]
+Output: <span class="hljs-number">6</span>
+Explanation:
+Nodes <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-number">1</span> are the twins of nodes <span class="hljs-number">3</span> <span class="hljs-keyword">and</span> <span class="hljs-number">2</span>, respectively. All have twin sum = <span class="hljs-number">6.</span>
+There are no other nodes with twins <span class="hljs-keyword">in</span> the linked list.
+Thus, the maximum twin sum of the linked list <span class="hljs-keyword">is</span> <span class="hljs-number">6.</span> 
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/12/03/eg2drawio.png" alt="" /></p>
+<pre><code class="hljs">Input: head = [<span class="hljs-number">4</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+Output: <span class="hljs-number">7</span>
+Explanation:
+The nodes with twins present <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span> linked list are:
+- Node <span class="hljs-number">0</span> <span class="hljs-keyword">is</span> the twin of node <span class="hljs-number">3</span> having a twin sum of <span class="hljs-number">4</span> + <span class="hljs-number">3</span> = <span class="hljs-number">7.</span>
+- Node <span class="hljs-number">1</span> <span class="hljs-keyword">is</span> the twin of node <span class="hljs-number">2</span> having a twin sum of <span class="hljs-number">2</span> + <span class="hljs-number">2</span> = <span class="hljs-number">4.</span>
+Thus, the maximum twin sum of the linked list <span class="hljs-keyword">is</span> max(<span class="hljs-number">7</span>, <span class="hljs-number">4</span>) = <span class="hljs-number">7.</span> 
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/12/03/eg3drawio.png" alt="" /></p>
+<pre><code class="hljs">Input: head = [<span class="hljs-number">1</span>,<span class="hljs-number">100000</span>]
+Output: <span class="hljs-number">100001</span>
+Explanation:
+There <span class="hljs-keyword">is</span> only one node with a twin <span class="hljs-keyword">in</span> the linked list having twin sum of <span class="hljs-number">1</span> + <span class="hljs-number">100000</span> = <span class="hljs-number">100001.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p>The number of nodes in the list is an <strong>even</strong> integer in the range <code>[2, 105]</code>.</p></li>
+<li><p><code>1 &lt;= Node.val &lt;= 105</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">pairSum</span><span class="hljs-params">(ListNode head)</span> </span>{
+        <span class="hljs-keyword">if</span> (head == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">int</span> maxSum = Integer.MIN_VALUE;
+        ListNode slow = head;
+        ListNode fast = head;
+        <span class="hljs-keyword">while</span> (fast != <span class="hljs-keyword">null</span> &amp;&amp; fast.next != <span class="hljs-keyword">null</span>) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        <span class="hljs-keyword">if</span> (slow.next == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span> head.val + slow.val;
+        }
+        ListNode tail = head;
+        ListNode pivot = reverse(slow);
+        <span class="hljs-keyword">while</span> (pivot != <span class="hljs-keyword">null</span>) {
+            maxSum = Math.max(maxSum, (tail.val + pivot.val));
+            tail = tail.next;
+            pivot = pivot.next;
+        }
+        <span class="hljs-keyword">return</span> maxSum;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> ListNode <span class="hljs-title">reverse</span><span class="hljs-params">(ListNode head)</span> </span>{
+        ListNode tail = head;
+        ListNode prev = <span class="hljs-keyword">null</span>;
+        <span class="hljs-keyword">while</span> (tail != <span class="hljs-keyword">null</span>) {
+            ListNode temp = tail.next;
+            tail.next = prev;
+            prev = tail;
+            tail = temp;
+        }
+        <span class="hljs-keyword">return</span> prev;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

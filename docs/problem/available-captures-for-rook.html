@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Available Captures for Rook - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>999. Available Captures for Rook</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/simulation">Simulation</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/count-unguarded-cells-in-the-grid.html">Count Unguarded Cells in the Grid</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>On an <code>8 x 8</code> chessboard, there is <strong>exactly one</strong> white rook <code>'R'</code> and some number of white bishops <code>'B'</code>, black pawns <code>'p'</code>, and empty squares <code>'.'</code>.</p>
+<p>When the rook moves, it chooses one of four cardinal directions (north, east, south, or west), then moves in that direction until it chooses to stop, reaches the edge of the board, captures a black pawn, or is blocked by a white bishop. A rook is considered <strong>attacking</strong> a pawn if the rook can capture the pawn on the rook's turn. The <strong>number of available captures</strong> for the white rook is the number of pawns that the rook is <strong>attacking</strong>.</p>
+<p>Return **the *<em>number of available captures</em>* for the white rook**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/02/20/1253_example_1_improved.PNG" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: board = [[<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>],[<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>],[<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"R"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"p"</span>],[<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>],[<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>],[<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>],[<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>],[<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>]]
+<span class="hljs-symbol">Output</span>: <span class="hljs-number">3</span>
+<span class="hljs-symbol">Explanation</span>: <span class="hljs-symbol">In</span> this example, the rook is attacking all the pawns.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/02/19/1253_example_2_improved.PNG" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: board = [[<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>],[<span class="hljs-string">"."</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>],[<span class="hljs-string">"."</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>],[<span class="hljs-string">"."</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"R"</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>],[<span class="hljs-string">"."</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>],[<span class="hljs-string">"."</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>],[<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>],[<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>]]
+<span class="hljs-symbol">Output</span>: <span class="hljs-number">0</span>
+<span class="hljs-symbol">Explanation</span>: <span class="hljs-symbol">The</span> bishops are blocking the rook from attacking any of the pawns.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/02/20/1253_example_3_improved.PNG" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: board = [[<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>],[<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>],[<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>],[<span class="hljs-string">"p"</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"R"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"."</span>],[<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>],[<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>],[<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"p"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>],[<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>]]
+<span class="hljs-symbol">Output</span>: <span class="hljs-number">3</span>
+<span class="hljs-symbol">Explanation</span>: <span class="hljs-symbol">The</span> rook is attacking the pawns at positions b5, d6, and f5.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>board.length == 8</code></p></li>
+<li><p><code>board[i].length == 8</code></p></li>
+<li><p><code>board[i][j]</code> is either <code>'R'</code>, <code>'.'</code>, <code>'B'</code>, or <code>'p'</code></p></li>
+<li><p>There is exactly one cell with <code>board[i][j] == 'R'</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] directions = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>, <span class="hljs-number">0</span>};
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">numRookCaptures</span><span class="hljs-params">(<span class="hljs-keyword">char</span>[][] board)</span> </span>{
+        <span class="hljs-keyword">int</span> m = board.length;
+        <span class="hljs-keyword">int</span> n = board[<span class="hljs-number">0</span>].length;
+        <span class="hljs-keyword">int</span> rowR = -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> colR = -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++) {
+                <span class="hljs-keyword">if</span> (board[i][j] == <span class="hljs-string">'R'</span>) {
+                    rowR = i;
+                    colR = j;
+                    <span class="hljs-keyword">break</span>;
+                }
+            }
+        }
+        <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++) {
+            <span class="hljs-keyword">int</span> neighborRow = rowR + directions[i];
+            <span class="hljs-keyword">int</span> neighborCol = colR + directions[i + <span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (neighborRow &gt;= <span class="hljs-number">0</span>
+                    &amp;&amp; neighborRow &lt; m
+                    &amp;&amp; neighborCol &gt;= <span class="hljs-number">0</span>
+                    &amp;&amp; neighborCol &lt; n
+                    &amp;&amp; board[neighborRow][neighborCol] != <span class="hljs-string">'B'</span>) {
+                <span class="hljs-keyword">if</span> (directions[i] == <span class="hljs-number">0</span> &amp;&amp; directions[i + <span class="hljs-number">1</span>] == <span class="hljs-number">1</span>) {
+                    <span class="hljs-keyword">while</span> (neighborCol &lt; n) {
+                        <span class="hljs-keyword">if</span> (board[neighborRow][neighborCol] == <span class="hljs-string">'p'</span>) {
+                            count++;
+                            <span class="hljs-keyword">break</span>;
+                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (board[neighborRow][neighborCol] == <span class="hljs-string">'B'</span>) {
+                            <span class="hljs-keyword">break</span>;
+                        } <span class="hljs-keyword">else</span> {
+                            neighborCol++;
+                        }
+                    }
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (directions[i] == <span class="hljs-number">1</span> &amp;&amp; directions[i + <span class="hljs-number">1</span>] == <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">while</span> (neighborRow &lt; m) {
+                        <span class="hljs-keyword">if</span> (board[neighborRow][neighborCol] == <span class="hljs-string">'p'</span>) {
+                            count++;
+                            <span class="hljs-keyword">break</span>;
+                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (board[neighborRow][neighborCol] == <span class="hljs-string">'B'</span>) {
+                            <span class="hljs-keyword">break</span>;
+                        } <span class="hljs-keyword">else</span> {
+                            neighborRow++;
+                        }
+                    }
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (directions[i] == <span class="hljs-number">0</span> &amp;&amp; directions[i + <span class="hljs-number">1</span>] == -<span class="hljs-number">1</span>) {
+                    <span class="hljs-keyword">while</span> (neighborCol &gt;= <span class="hljs-number">0</span>) {
+                        <span class="hljs-keyword">if</span> (board[neighborRow][neighborCol] == <span class="hljs-string">'p'</span>) {
+                            count++;
+                            <span class="hljs-keyword">break</span>;
+                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (board[neighborRow][neighborCol] == <span class="hljs-string">'B'</span>) {
+                            <span class="hljs-keyword">break</span>;
+                        } <span class="hljs-keyword">else</span> {
+                            neighborCol--;
+                        }
+                    }
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">while</span> (neighborRow &gt;= <span class="hljs-number">0</span>) {
+                        <span class="hljs-keyword">if</span> (board[neighborRow][neighborCol] == <span class="hljs-string">'p'</span>) {
+                            count++;
+                            <span class="hljs-keyword">break</span>;
+                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (board[neighborRow][neighborCol] == <span class="hljs-string">'B'</span>) {
+                            <span class="hljs-keyword">break</span>;
+                        } <span class="hljs-keyword">else</span> {
+                            neighborRow--;
+                        }
+                    }
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> count;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

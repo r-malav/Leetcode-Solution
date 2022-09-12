@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Cost to Cut a Stick - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1547. Minimum Cost to Cut a Stick</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/number-of-ways-to-divide-a-long-corridor.html">Number of Ways to Divide a Long Corridor</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a wooden stick of length <code>n</code> units. The stick is labelled from <code>0</code> to <code>n</code>. For example, a stick of length <strong>6</strong> is labelled as follows:</p>
+<p><img src="https://assets.leetcode.com/uploads/2020/07/21/statement.jpg" alt="" /></p>
+<p>Given an integer array <code>cuts</code> where <code>cuts[i]</code> denotes a position you should perform a cut at.</p>
+<p>You should perform the cuts in order, you can change the order of the cuts as you wish.</p>
+<p>The cost of one cut is the length of the stick to be cut, the total cost is the sum of costs of all cuts. When you cut a stick, it will be split into two smaller sticks (i.e. the sum of their lengths is the length of the stick before the cut). Please refer to the first example for a better explanation.</p>
+<p>Return <strong>the minimum total cost</strong> of the cuts.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/07/23/e1.jpg" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">7</span>, cuts = [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]
+Output: <span class="hljs-number">16</span>
+Explanation: Using cuts order = [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>] as <span class="hljs-keyword">in</span> the input leads to the following scenario:
+
+The first cut <span class="hljs-keyword">is</span> done to a rod of length <span class="hljs-number">7</span> so the cost <span class="hljs-keyword">is</span> <span class="hljs-number">7.</span> The second cut <span class="hljs-keyword">is</span> done to a rod of length <span class="hljs-number">6</span> (i.e. the second part of the first cut), the third <span class="hljs-keyword">is</span> done to a rod of length <span class="hljs-number">4</span> <span class="hljs-keyword">and</span> the last cut <span class="hljs-keyword">is</span> to a rod of length <span class="hljs-number">3.</span> The total cost <span class="hljs-keyword">is</span> <span class="hljs-number">7</span> + <span class="hljs-number">6</span> + <span class="hljs-number">4</span> + <span class="hljs-number">3</span> = <span class="hljs-number">20.</span>
+Rearranging the cuts to be [<span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>] <span class="hljs-keyword">for</span> example will lead to a scenario with total cost = <span class="hljs-number">16</span> (as shown <span class="hljs-keyword">in</span> the example photo <span class="hljs-number">7</span> + <span class="hljs-number">4</span> + <span class="hljs-number">3</span> + <span class="hljs-number">2</span> = <span class="hljs-number">16</span>).
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">9</span>, cuts = [<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">2</span>]
+Output: <span class="hljs-number">22</span>
+Explanation: If you <span class="hljs-keyword">try</span> the given cuts ordering the cost will be <span class="hljs-number">25.</span>
+There are much ordering with total cost &lt;= <span class="hljs-number">25</span>, <span class="hljs-keyword">for</span> example, the order [<span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>] has total cost = <span class="hljs-number">22</span> which <span class="hljs-keyword">is</span> the minimum possible.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>2 &lt;= n &lt;= 106</code></p></li>
+<li><p><code>1 &lt;= cuts.length &lt;= min(n - 1, 100)</code></p></li>
+<li><p><code>1 &lt;= cuts[i] &lt;= n - 1</code></p></li>
+<li><p>All the integers in <code>cuts</code> array are <strong>distinct</strong>.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minCost</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[] cuts)</span> </span>{
+        Arrays.sort(cuts);
+        <span class="hljs-keyword">int</span> m = cuts.length;
+        <span class="hljs-keyword">int</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[m + <span class="hljs-number">1</span>][m + <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt;= m; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt;= m - i; j++) {
+                <span class="hljs-keyword">int</span> k = j + i;
+                <span class="hljs-keyword">int</span> min = Integer.MAX_VALUE;
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> p = j; p &lt; k; p++) {
+                    min = Math.min(min, dp[j][p] + dp[p + <span class="hljs-number">1</span>][k]);
+                }
+                <span class="hljs-keyword">int</span> len = (k == m ? n : cuts[k]) - (j == <span class="hljs-number">0</span> ? <span class="hljs-number">0</span> : cuts[j - <span class="hljs-number">1</span>]);
+                dp[j][k] = min + len;
+            }
+        }
+        <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][m];
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Fair Distribution of Cookies - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2305. Fair Distribution of Cookies</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/backtracking">Backtracking</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bit-manipulation">Bit Manipulation</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bitmask">Bitmask</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/split-array-largest-sum.html">Split Array Largest Sum</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/split-array-with-equal-sum.html">Split Array with Equal Sum</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/partition-to-k-equal-sum-subsets.html">Partition to K Equal Sum Subsets</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-xor-sum-of-two-arrays.html">Minimum XOR Sum of Two Arrays</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/the-number-of-good-subsets.html">The Number of Good Subsets</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-number-of-work-sessions-to-finish-the-tasks.html">Minimum Number of Work Sessions to Finish the Tasks</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/partition-array-into-two-arrays-to-minimize-sum-difference.html">Partition Array Into Two Arrays to Minimize Sum Difference</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-rows-covered-by-columns.html">Maximum Rows Covered by Columns</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an integer array <code>cookies</code>, where <code>cookies[i]</code> denotes the number of cookies in the <code>ith</code> bag. You are also given an integer <code>k</code> that denotes the number of children to distribute <strong>all</strong> the bags of cookies to. All the cookies in the same bag must go to the same child and cannot be split up.</p>
+<p>The <strong>unfairness</strong> of a distribution is defined as the <strong>maximum</strong> <strong>total</strong> cookies obtained by a single child in the distribution.</p>
+<p>Return **the *<em>minimum</em>* unfairness of all distributions**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: cookies = [<span class="hljs-number">8</span>,<span class="hljs-number">15</span>,<span class="hljs-number">10</span>,<span class="hljs-number">20</span>,<span class="hljs-number">8</span>], k = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">31</span>
+Explanation: One optimal distribution <span class="hljs-keyword">is</span> [<span class="hljs-number">8</span>,<span class="hljs-number">15</span>,<span class="hljs-number">8</span>] <span class="hljs-keyword">and</span> [<span class="hljs-number">10</span>,<span class="hljs-number">20</span>]
+- The <span class="hljs-number">1</span>st child receives [<span class="hljs-number">8</span>,<span class="hljs-number">15</span>,<span class="hljs-number">8</span>] which has a total of <span class="hljs-number">8</span> + <span class="hljs-number">15</span> + <span class="hljs-number">8</span> = <span class="hljs-number">31</span> cookies.
+- The <span class="hljs-number">2</span>nd child receives [<span class="hljs-number">10</span>,<span class="hljs-number">20</span>] which has a total of <span class="hljs-number">10</span> + <span class="hljs-number">20</span> = <span class="hljs-number">30</span> cookies.
+The unfairness of the distribution <span class="hljs-keyword">is</span> max(<span class="hljs-number">31</span>,<span class="hljs-number">30</span>) = <span class="hljs-number">31.</span>
+It can be shown that there <span class="hljs-keyword">is</span> no distribution with an unfairness less than <span class="hljs-number">31.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: cookies = [<span class="hljs-number">6</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>], k = <span class="hljs-number">3</span>
+Output: <span class="hljs-number">7</span>
+Explanation: One optimal distribution <span class="hljs-keyword">is</span> [<span class="hljs-number">6</span>,<span class="hljs-number">1</span>], [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>], <span class="hljs-keyword">and</span> [<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
+- The <span class="hljs-number">1</span>st child receives [<span class="hljs-number">6</span>,<span class="hljs-number">1</span>] which has a total of <span class="hljs-number">6</span> + <span class="hljs-number">1</span> = <span class="hljs-number">7</span> cookies.
+- The <span class="hljs-number">2</span>nd child receives [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>] which has a total of <span class="hljs-number">3</span> + <span class="hljs-number">2</span> + <span class="hljs-number">2</span> = <span class="hljs-number">7</span> cookies.
+- The <span class="hljs-number">3</span>rd child receives [<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] which has a total of <span class="hljs-number">4</span> + <span class="hljs-number">1</span> + <span class="hljs-number">2</span> = <span class="hljs-number">7</span> cookies.
+The unfairness of the distribution <span class="hljs-keyword">is</span> max(<span class="hljs-number">7</span>,<span class="hljs-number">7</span>,<span class="hljs-number">7</span>) = <span class="hljs-number">7.</span>
+It can be shown that there <span class="hljs-keyword">is</span> no distribution with an unfairness less than <span class="hljs-number">7.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>2 &lt;= cookies.length &lt;= 8</code></p></li>
+<li><p><code>1 &lt;= cookies[i] &lt;= 105</code></p></li>
+<li><p><code>2 &lt;= k &lt;= cookies.length</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> res = Integer.MAX_VALUE;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">distributeCookies</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] c, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">int</span>[] nums = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[k];
+        dfs(c, nums, <span class="hljs-number">0</span>);
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] c, <span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> cur)</span> </span>{
+        <span class="hljs-keyword">if</span> (cur == c.length) {
+            <span class="hljs-keyword">int</span> r = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> num : nums) {
+                r = Math.max(r, num);
+            }
+            res = Math.min(res, r);
+            <span class="hljs-keyword">return</span>;
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+            <span class="hljs-keyword">if</span> (nums[i] + c[cur] &gt; res) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            nums[i] += c[cur];
+            dfs(c, nums, cur + <span class="hljs-number">1</span>);
+            nums[i] -= c[cur];
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

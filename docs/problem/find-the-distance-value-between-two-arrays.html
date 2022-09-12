@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Find the Distance Value Between Two Arrays - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1385. Find the Distance Value Between Two Arrays</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/two-pointers">Two Pointers</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given two integer arrays <code>arr1</code> and <code>arr2</code>, and the integer <code>d</code>, <strong>return the distance value between the two arrays</strong>.</p>
+<p>The distance value is defined as the number of elements <code>arr1[i]</code> such that there is not any element <code>arr2[j]</code> where <code>|arr1[i]-arr2[j]| &lt;= d</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: arr1 = [<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">8</span>], arr2 = [<span class="hljs-number">10</span>,<span class="hljs-number">9</span>,<span class="hljs-number">1</span>,<span class="hljs-number">8</span>], d = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">2</span>
+Explanation: 
+For arr1[<span class="hljs-number">0</span>]=<span class="hljs-number">4</span> we have: 
+|<span class="hljs-number">4</span><span class="hljs-number">-10</span>|=<span class="hljs-number">6</span> &gt; d=<span class="hljs-number">2</span> 
+|<span class="hljs-number">4</span><span class="hljs-number">-9</span>|=<span class="hljs-number">5</span> &gt; d=<span class="hljs-number">2</span> 
+|<span class="hljs-number">4</span><span class="hljs-number">-1</span>|=<span class="hljs-number">3</span> &gt; d=<span class="hljs-number">2</span> 
+|<span class="hljs-number">4</span><span class="hljs-number">-8</span>|=<span class="hljs-number">4</span> &gt; d=<span class="hljs-number">2</span> 
+For arr1[<span class="hljs-number">1</span>]=<span class="hljs-number">5</span> we have: 
+|<span class="hljs-number">5</span><span class="hljs-number">-10</span>|=<span class="hljs-number">5</span> &gt; d=<span class="hljs-number">2</span> 
+|<span class="hljs-number">5</span><span class="hljs-number">-9</span>|=<span class="hljs-number">4</span> &gt; d=<span class="hljs-number">2</span> 
+|<span class="hljs-number">5</span><span class="hljs-number">-1</span>|=<span class="hljs-number">4</span> &gt; d=<span class="hljs-number">2</span> 
+|<span class="hljs-number">5</span><span class="hljs-number">-8</span>|=<span class="hljs-number">3</span> &gt; d=<span class="hljs-number">2</span>
+For arr1[<span class="hljs-number">2</span>]=<span class="hljs-number">8</span> we have:
+|<span class="hljs-number">8</span><span class="hljs-number">-10</span>|=<span class="hljs-number">2</span> &lt;= d=<span class="hljs-number">2</span>
+|<span class="hljs-number">8</span><span class="hljs-number">-9</span>|=<span class="hljs-number">1</span> &lt;= d=<span class="hljs-number">2</span>
+|<span class="hljs-number">8</span><span class="hljs-number">-1</span>|=<span class="hljs-number">7</span> &gt; d=<span class="hljs-number">2</span>
+|<span class="hljs-number">8</span><span class="hljs-number">-8</span>|=<span class="hljs-number">0</span> &lt;= d=<span class="hljs-number">2</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: arr1 = [<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], arr2 = [<span class="hljs-number">-4</span>,<span class="hljs-number">-3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">10</span>,<span class="hljs-number">20</span>,<span class="hljs-number">30</span>], d = <span class="hljs-number">3</span>
+Output: <span class="hljs-number">2</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: arr1 = [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">100</span>,<span class="hljs-number">3</span>], arr2 = [<span class="hljs-number">-5</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">10</span>,<span class="hljs-number">-3</span>,<span class="hljs-number">7</span>], d = <span class="hljs-number">6</span>
+Output: <span class="hljs-number">1</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= arr1.length, arr2.length &lt;= 500</code></p></li>
+<li><p><code>-1000 &lt;= arr1[i], arr2[j] &lt;= 1000</code></p></li>
+<li><p><code>0 &lt;= d &lt;= 100</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">findTheDistanceValue</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] arr1, <span class="hljs-keyword">int</span>[] arr2, <span class="hljs-keyword">int</span> d)</span> </span>{
+        <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k : arr1) {
+            <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span> (; j &lt; arr2.length; j++) {
+                <span class="hljs-keyword">if</span> (Math.abs(k - arr2[j]) &lt;= d) {
+                    <span class="hljs-keyword">break</span>;
+                }
+            }
+            <span class="hljs-keyword">if</span> (j == arr2.length) {
+                count++;
+            }
+        }
+        <span class="hljs-keyword">return</span> count;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

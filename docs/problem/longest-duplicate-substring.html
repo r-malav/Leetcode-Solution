@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Longest Duplicate Substring - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1044. Longest Duplicate Substring</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sliding-window">Sliding Window</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/rolling-hash">Rolling Hash</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/suffix-array">Suffix Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-function">Hash Function</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a string <code>s</code>, consider all <strong>duplicated substrings</strong>: (contiguous) substrings of s that occur 2 or more times.&nbsp;The occurrences&nbsp;may overlap.</p>
+<p>Return <strong>any</strong> duplicated&nbsp;substring that has the longest possible length.&nbsp;If <code>s</code> does not have a duplicated substring, the answer is <code>""</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> s = <span class="hljs-string">"banana"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">"ana"</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> s = <span class="hljs-string">"abcd"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">""</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>2 &lt;= s.length &lt;= 3 * 104</code></p></li>
+<li><p><code>s</code> consists of lowercase English letters.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> MOD = (<span class="hljs-keyword">int</span>) <span class="hljs-number">1e9</span> + <span class="hljs-number">7</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span>[] hsh;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span>[] pw;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> List[] cnt = <span class="hljs-keyword">new</span> List[<span class="hljs-number">26</span>];
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">longestDupSubstring</span><span class="hljs-params">(String s)</span> </span>{
+        <span class="hljs-keyword">int</span> n = s.length();
+        <span class="hljs-keyword">int</span> base = <span class="hljs-number">131</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">26</span>; i++) {
+            cnt[i] = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        }
+        hsh = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[n + <span class="hljs-number">1</span>];
+        pw = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[n + <span class="hljs-number">1</span>];
+        pw[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>; j &lt;= n; j++) {
+            hsh[j] = (hsh[j - <span class="hljs-number">1</span>] * base + s.charAt(j - <span class="hljs-number">1</span>)) % MOD;
+            pw[j] = pw[j - <span class="hljs-number">1</span>] * base % MOD;
+            cnt[s.charAt(j - <span class="hljs-number">1</span>) - <span class="hljs-string">'a'</span>].add(j - <span class="hljs-number">1</span>);
+        }
+        String ans = <span class="hljs-string">""</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">26</span>; i++) {
+            <span class="hljs-keyword">if</span> (cnt[i].isEmpty()) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            List&lt;Integer&gt; idx = cnt[i];
+            Set&lt;Long&gt; set;
+            <span class="hljs-keyword">int</span> lo = <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">int</span> hi = n - idx.get(<span class="hljs-number">0</span>);
+            <span class="hljs-keyword">while</span> (lo &lt;= hi) {
+                <span class="hljs-keyword">int</span> len = (lo + hi) / <span class="hljs-number">2</span>;
+                set = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+                <span class="hljs-keyword">boolean</span> found = <span class="hljs-keyword">false</span>;
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> nxt : idx) {
+                    <span class="hljs-keyword">if</span> (nxt + len &lt;= n) {
+                        <span class="hljs-keyword">long</span> substrHash = getSubstrHash(nxt, nxt + len);
+                        <span class="hljs-keyword">if</span> (set.contains(substrHash)) {
+                            found = <span class="hljs-keyword">true</span>;
+                            <span class="hljs-keyword">if</span> (len + <span class="hljs-number">1</span> &gt; ans.length()) {
+                                ans = s.substring(nxt, nxt + len);
+                            }
+                            <span class="hljs-keyword">break</span>;
+                        }
+                        set.add(substrHash);
+                    }
+                }
+                <span class="hljs-keyword">if</span> (found) {
+                    lo = len + <span class="hljs-number">1</span>;
+                } <span class="hljs-keyword">else</span> {
+                    hi = len - <span class="hljs-number">1</span>;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> <span class="hljs-title">getSubstrHash</span><span class="hljs-params">(<span class="hljs-keyword">int</span> l, <span class="hljs-keyword">int</span> r)</span> </span>{
+        <span class="hljs-keyword">return</span> (hsh[r] - hsh[l] * pw[r - l] % MOD + MOD) % MOD;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

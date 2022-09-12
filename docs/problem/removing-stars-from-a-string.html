@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Removing Stars From a String - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2390. Removing Stars From a String</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/stack">Stack</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/simulation">Simulation</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/backspace-string-compare.html">Backspace String Compare</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/remove-all-adjacent-duplicates-in-string.html">Remove All Adjacent Duplicates In String</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a string <code>s</code>, which contains stars <code>*</code>.</p>
+<p>In one operation, you can:</p>
+<ul>
+<li><p>Choose a star in <code>s</code>.</p></li>
+<li><p>Remove the closest <strong>non-star</strong> character to its <strong>left</strong>, as well as remove the star itself.</p></li>
+</ul>
+<p>Return **the string after *<em>all</em>* stars have been removed**.</p>
+<p><strong>Note:</strong></p>
+<ul>
+<li><p>The input will be generated such that the operation is always possible.</p></li>
+<li><p>It can be shown that the resulting string will always be unique.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> s = <span class="hljs-string">"leet**cod*e"</span>
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-string">"lecoe"</span>
+Explanation: Performing the removals from <span class="hljs-keyword">left</span> <span class="hljs-keyword">to</span> righ<span class="hljs-variable">t:</span>
+- The closest character <span class="hljs-keyword">to</span> the <span class="hljs-number">1</span><span class="hljs-keyword">st</span> <span class="hljs-keyword">star</span> <span class="hljs-keyword">is</span> <span class="hljs-string">'t'</span> in <span class="hljs-string">"leet**cod*e"</span>. s becomes <span class="hljs-string">"lee*cod*e"</span>.
+- The closest character <span class="hljs-keyword">to</span> the <span class="hljs-number">2</span>nd <span class="hljs-keyword">star</span> <span class="hljs-keyword">is</span> <span class="hljs-string">'e'</span> in <span class="hljs-string">"lee*cod*e"</span>. s becomes <span class="hljs-string">"lecod*e"</span>.
+- The closest character <span class="hljs-keyword">to</span> the <span class="hljs-number">3</span>rd <span class="hljs-keyword">star</span> <span class="hljs-keyword">is</span> <span class="hljs-string">'d'</span> in <span class="hljs-string">"lecod*e"</span>. s becomes <span class="hljs-string">"lecoe"</span>.
+There are <span class="hljs-keyword">no</span> more stars, <span class="hljs-keyword">so</span> we <span class="hljs-keyword">return</span> <span class="hljs-string">"lecoe"</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> s = <span class="hljs-string">"erase*****"</span>
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-string">""</span>
+Explanation: The entire <span class="hljs-built_in">string</span> <span class="hljs-keyword">is</span> removed, <span class="hljs-keyword">so</span> we <span class="hljs-keyword">return</span> <span class="hljs-keyword">an</span> <span class="hljs-built_in">empty</span> <span class="hljs-built_in">string</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 105</code></p></li>
+<li><p><code>s</code> consists of lowercase English letters and stars <code>*</code>.</p></li>
+<li><p>The operation above can be performed on <code>s</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">removeStars</span><span class="hljs-params">(String s)</span> </span>{
+        StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();
+        <span class="hljs-keyword">int</span> stars = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = s.length() - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; --i) {
+            <span class="hljs-keyword">if</span> (s.charAt(i) == <span class="hljs-string">'*'</span>) {
+                ++stars;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (stars &gt; <span class="hljs-number">0</span>) {
+                --stars;
+            } <span class="hljs-keyword">else</span> {
+                sb.append(s.charAt(i));
+            }
+        }
+        <span class="hljs-keyword">return</span> sb.reverse().toString();
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

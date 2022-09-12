@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Largest Color Value in a Directed Graph - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1857. Largest Color Value in a Directed Graph</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/graph">Graph</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/topological-sort">Topological Sort</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/memoization">Memoization</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/counting">Counting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is a <strong>directed graph</strong> of <code>n</code> colored nodes and <code>m</code> edges. The nodes are numbered from <code>0</code> to <code>n - 1</code>.</p>
+<p>You are given a string <code>colors</code> where <code>colors[i]</code> is a lowercase English letter representing the <strong>color</strong> of the <code>ith</code> node in this graph (<strong>0-indexed</strong>). You are also given a 2D array <code>edges</code> where <code>edges[j] = [aj, bj]</code> indicates that there is a <strong>directed edge</strong> from node <code>aj</code> to node <code>bj</code>.</p>
+<p>A valid <strong>path</strong> in the graph is a sequence of nodes <code>x1 -&gt; x2 -&gt; x3 -&gt; ... -&gt; xk</code> such that there is a directed edge from <code>xi</code> to <code>xi+1</code> for every <code>1 &lt;= i &lt; k</code>. The <strong>color value</strong> of the path is the number of nodes that are colored the <strong>most frequently</strong> occurring color along that path.</p>
+<p>Return **the *<em>largest color value</em>* of any valid path in the given graph, or <strong><code>-1</code></strong> if the graph contains a cycle**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/04/21/leet1.png" alt="" /></p>
+<pre><code class="hljs">Input: colors = <span class="hljs-string">"abaca"</span>, edges = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]]
+Output: <span class="hljs-number">3</span>
+Explanation: The path <span class="hljs-number">0</span> -&gt; <span class="hljs-number">2</span> -&gt; <span class="hljs-number">3</span> -&gt; <span class="hljs-number">4</span> contains <span class="hljs-number">3</span> nodes that are colored <span class="hljs-string">"a"</span> (red <span class="hljs-keyword">in</span> the above image).
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/04/21/leet2.png" alt="" /></p>
+<pre><code class="hljs">Input: colors = <span class="hljs-string">"a"</span>, edges = [[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]]
+Output: <span class="hljs-number">-1</span>
+Explanation: There <span class="hljs-keyword">is</span> a cycle <span class="hljs-keyword">from</span> <span class="hljs-number">0</span> to <span class="hljs-number">0.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == colors.length</code></p></li>
+<li><p><code>m == edges.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>0 &lt;= m &lt;= 105</code></p></li>
+<li><p><code>colors</code> consists of lowercase English letters.</p></li>
+<li><p><code>0 &lt;= aj, bj&amp;nbsp;&lt; n</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">largestPathValue</span><span class="hljs-params">(String colors, <span class="hljs-keyword">int</span>[][] edges)</span> </span>{
+        <span class="hljs-keyword">int</span> len = colors.length();
+        List&lt;Integer&gt;[] graph = buildGraph(len, edges);
+        <span class="hljs-keyword">int</span>[] frequencies = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">26</span>];
+        HashMap&lt;Integer, <span class="hljs-keyword">int</span>[]&gt; calculatedFrequencies = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">int</span>[] status = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[len];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) {
+            <span class="hljs-keyword">if</span> (status[i] != <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-keyword">int</span>[] localMax = runDFS(graph, i, calculatedFrequencies, status, colors);
+            <span class="hljs-keyword">if</span> (localMax[<span class="hljs-number">26</span>] == -<span class="hljs-number">1</span>) {
+                Arrays.fill(frequencies, -<span class="hljs-number">1</span>);
+                <span class="hljs-keyword">break</span>;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> color = <span class="hljs-number">0</span>; color &lt; <span class="hljs-number">26</span>; color++) {
+                    frequencies[color] = Math.max(frequencies[color], localMax[color]);
+                }
+            }
+        }
+        <span class="hljs-keyword">int</span> max = Integer.MIN_VALUE;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> freq : frequencies) {
+            max = Math.max(max, freq);
+        }
+        <span class="hljs-keyword">return</span> max;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] runDFS(
+            List&lt;Integer&gt;[] graph,
+            <span class="hljs-keyword">int</span> node,
+            HashMap&lt;Integer, <span class="hljs-keyword">int</span>[]&gt; calculatedFrequencies,
+            <span class="hljs-keyword">int</span>[] status,
+            String colors) {
+        <span class="hljs-keyword">if</span> (calculatedFrequencies.containsKey(node)) {
+            <span class="hljs-keyword">return</span> calculatedFrequencies.get(node);
+        }
+        <span class="hljs-keyword">int</span>[] frequencies = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">27</span>];
+        <span class="hljs-keyword">if</span> (status[node] == <span class="hljs-number">1</span>) {
+            frequencies[<span class="hljs-number">26</span>] = -<span class="hljs-number">1</span>;
+            <span class="hljs-keyword">return</span> frequencies;
+        }
+        status[node] = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> neighbour : graph[node]) {
+            <span class="hljs-keyword">int</span>[] localMax = runDFS(graph, neighbour, calculatedFrequencies, status, colors);
+            <span class="hljs-keyword">if</span> (localMax[<span class="hljs-number">26</span>] == -<span class="hljs-number">1</span>) {
+                <span class="hljs-keyword">return</span> localMax;
+            }
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">26</span>; i++) {
+                frequencies[i] = Math.max(frequencies[i], localMax[i]);
+            }
+        }
+        status[node] = <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">int</span> color = colors.charAt(node) - <span class="hljs-string">'a'</span>;
+        frequencies[color]++;
+        calculatedFrequencies.put(node, frequencies);
+        <span class="hljs-keyword">return</span> frequencies;
+    }
+
+    <span class="hljs-keyword">private</span> List&lt;Integer&gt;[] buildGraph(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[][] edges) {
+        List&lt;Integer&gt;[] graph = <span class="hljs-keyword">new</span> ArrayList[n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            graph[i] = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] edge : edges) {
+            graph[edge[<span class="hljs-number">0</span>]].add(edge[<span class="hljs-number">1</span>]);
+        }
+        <span class="hljs-keyword">return</span> graph;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

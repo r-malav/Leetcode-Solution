@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Closest Dessert Cost - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1774. Closest Dessert Cost</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/backtracking">Backtracking</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You would like to make dessert and are preparing to buy the ingredients. You have <code>n</code> ice cream base flavors and <code>m</code> types of toppings to choose from. You must follow these rules when making your dessert:</p>
+<ul>
+<li><p>There must be <strong>exactly one</strong> ice cream base.</p></li>
+<li><p>You can add <strong>one or more</strong> types of topping or have no toppings at all.</p></li>
+<li><p>There are <strong>at most two</strong> of <strong>each type</strong> of topping.</p></li>
+</ul>
+<p>You are given three inputs:</p>
+<ul>
+<li><p><code>baseCosts</code>, an integer array of length <code>n</code>, where each <code>baseCosts[i]</code> represents the price of the <code>ith</code> ice cream base flavor.</p></li>
+<li><p><code>toppingCosts</code>, an integer array of length <code>m</code>, where each <code>toppingCosts[i]</code> is the price of <strong>one</strong> of the <code>ith</code> topping.</p></li>
+<li><p><code>target</code>, an integer representing your target price for dessert.</p></li>
+</ul>
+<p>You want to make a dessert with a total cost as close to <code>target</code> as possible.</p>
+<p>Return **the closest possible cost of the dessert to **<code>target</code>. If there are multiple, return **the *<em>lower</em>* one.**</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: baseCosts = [<span class="hljs-number">1</span>,<span class="hljs-number">7</span>], toppingCosts = [<span class="hljs-number">3</span>,<span class="hljs-number">4</span>], target = <span class="hljs-number">10</span>
+Output: <span class="hljs-number">10</span>
+Explanation: Consider the following combination (all <span class="hljs-number">0</span>-indexed):
+- Choose base <span class="hljs-number">1</span>: cost <span class="hljs-number">7</span>
+- Take <span class="hljs-number">1</span> of topping <span class="hljs-number">0</span>: cost <span class="hljs-number">1</span> x <span class="hljs-number">3</span> = <span class="hljs-number">3</span>
+- Take <span class="hljs-number">0</span> of topping <span class="hljs-number">1</span>: cost <span class="hljs-number">0</span> x <span class="hljs-number">4</span> = <span class="hljs-number">0</span>
+Total: <span class="hljs-number">7</span> + <span class="hljs-number">3</span> + <span class="hljs-number">0</span> = <span class="hljs-number">10.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: baseCosts = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], toppingCosts = [<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">100</span>], target = <span class="hljs-number">18</span>
+Output: <span class="hljs-number">17</span>
+Explanation: Consider the following combination (all <span class="hljs-number">0</span>-indexed):
+- Choose base <span class="hljs-number">1</span>: cost <span class="hljs-number">3</span>
+- Take <span class="hljs-number">1</span> of topping <span class="hljs-number">0</span>: cost <span class="hljs-number">1</span> x <span class="hljs-number">4</span> = <span class="hljs-number">4</span>
+- Take <span class="hljs-number">2</span> of topping <span class="hljs-number">1</span>: cost <span class="hljs-number">2</span> x <span class="hljs-number">5</span> = <span class="hljs-number">10</span>
+- Take <span class="hljs-number">0</span> of topping <span class="hljs-number">2</span>: cost <span class="hljs-number">0</span> x <span class="hljs-number">100</span> = <span class="hljs-number">0</span>
+Total: <span class="hljs-number">3</span> + <span class="hljs-number">4</span> + <span class="hljs-number">10</span> + <span class="hljs-number">0</span> = <span class="hljs-number">17.</span> You cannot make a dessert with a total cost of <span class="hljs-number">18.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: baseCosts = [<span class="hljs-number">3</span>,<span class="hljs-number">10</span>], toppingCosts = [<span class="hljs-number">2</span>,<span class="hljs-number">5</span>], target = <span class="hljs-number">9</span>
+Output: <span class="hljs-number">8</span>
+Explanation: It <span class="hljs-keyword">is</span> possible to make desserts with cost <span class="hljs-number">8</span> <span class="hljs-keyword">and</span> <span class="hljs-number">10.</span> Return <span class="hljs-number">8</span> as it <span class="hljs-keyword">is</span> the lower cost.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == baseCosts.length</code></p></li>
+<li><p><code>m == toppingCosts.length</code></p></li>
+<li><p><code>1 &lt;= n, m &lt;= 10</code></p></li>
+<li><p><code>1 &lt;= baseCosts[i], toppingCosts[i] &lt;= 104</code></p></li>
+<li><p><code>1 &lt;= target &lt;= 104</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> finalValue = Integer.MAX_VALUE;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">closestCost</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] baseCosts, <span class="hljs-keyword">int</span>[] toppingCosts, <span class="hljs-keyword">int</span> target)</span> </span>{
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> baseCost : baseCosts) {
+            closestCost(baseCost, toppingCosts, target, <span class="hljs-number">0</span>);
+        }
+        <span class="hljs-keyword">return</span> finalValue;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">closestCost</span><span class="hljs-params">(<span class="hljs-keyword">int</span> curCost, <span class="hljs-keyword">int</span>[] toppingCosts, <span class="hljs-keyword">int</span> target, <span class="hljs-keyword">int</span> index)</span> </span>{
+        <span class="hljs-keyword">if</span> (index &gt;= toppingCosts.length || curCost &gt;= target) {
+            <span class="hljs-keyword">if</span> (Math.abs(target - curCost) &lt; Math.abs(target - finalValue)) {
+                finalValue = curCost;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (Math.abs(target - curCost) == Math.abs(target - finalValue)
+                    &amp;&amp; target &lt; finalValue) {
+                finalValue = curCost;
+            }
+            <span class="hljs-keyword">return</span>;
+        }
+        closestCost(curCost, toppingCosts, target, index + <span class="hljs-number">1</span>);
+        closestCost(curCost + toppingCosts[index], toppingCosts, target, index + <span class="hljs-number">1</span>);
+        closestCost(curCost + toppingCosts[index] * <span class="hljs-number">2</span>, toppingCosts, target, index + <span class="hljs-number">1</span>);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

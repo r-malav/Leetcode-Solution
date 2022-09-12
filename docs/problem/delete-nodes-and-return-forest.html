@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Delete Nodes And Return Forest - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1110. Delete Nodes And Return Forest</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/tree">Tree</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-tree">Binary Tree</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/count-nodes-with-the-highest-score.html">Count Nodes With the Highest Score</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given the <code>root</code> of a binary tree, each node in the tree has a distinct value.</p>
+<p>After deleting all nodes with a value in <code>to_delete</code>, we are left with a forest (a disjoint union of trees).</p>
+<p>Return the roots of the trees in the remaining forest. You may return the result in any order.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/07/01/screen-shot-2019-07-01-at-53836-pm.png" alt="" /></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>], to_delete = [<span class="hljs-number">3</span>,<span class="hljs-number">5</span>]
+Output: [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">6</span>],[<span class="hljs-number">7</span>]]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">3</span>], to_delete = [<span class="hljs-number">3</span>]
+Output: [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>]]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p>The number of nodes in the given tree is at most <code>1000</code>.</p></li>
+<li><p>Each node has a distinct value between <code>1</code> and <code>1000</code>.</p></li>
+<li><p><code>to_delete.length &lt;= 1000</code></p></li>
+<li><p><code>to_delete</code> contains distinct values between <code>1</code> and <code>1000</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> Set&lt;Integer&gt; toDelete;
+    <span class="hljs-keyword">private</span> Queue&lt;TreeNode&gt; nodes = <span class="hljs-keyword">new</span> LinkedList&lt;&gt;();
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> TreeNode <span class="hljs-title">deleteAndSplit</span><span class="hljs-params">(TreeNode root)</span> </span>{
+        <span class="hljs-keyword">if</span> (root == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+        }
+        <span class="hljs-keyword">if</span> (toDelete.contains(root.val)) {
+            <span class="hljs-keyword">if</span> (root.left != <span class="hljs-keyword">null</span>) {
+                nodes.add(root.left);
+            }
+            <span class="hljs-keyword">if</span> (root.right != <span class="hljs-keyword">null</span>) {
+                nodes.add(root.right);
+            }
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+        }
+        root.left = deleteAndSplit(root.left);
+        root.right = deleteAndSplit(root.right);
+        <span class="hljs-keyword">return</span> root;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;TreeNode&gt; <span class="hljs-title">delNodes</span><span class="hljs-params">(TreeNode root, <span class="hljs-keyword">int</span>[] localToDelete)</span> </span>{
+        toDelete = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> node : localToDelete) {
+            toDelete.add(node);
+        }
+        nodes.add(root);
+        List&lt;TreeNode&gt; forests = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">while</span> (!nodes.isEmpty()) {
+            TreeNode node = nodes.poll();
+            node = deleteAndSplit(node);
+            <span class="hljs-keyword">if</span> (node != <span class="hljs-keyword">null</span>) {
+                forests.add(node);
+            }
+        }
+        <span class="hljs-keyword">return</span> forests;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

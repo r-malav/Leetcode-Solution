@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Count Good Nodes in Binary Tree - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1448. Count Good Nodes in Binary Tree</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/tree">Tree</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-tree">Binary Tree</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a binary tree <code>root</code>, a node <strong>X</strong> in the tree is named&nbsp;<strong>good</strong> if in the path from root to <strong>X</strong> there are no nodes with a value <strong>greater than</strong> X.</p>
+<p>Return the number of <strong>good</strong> nodes in the binary tree.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/04/02/test_sample_1.png" alt="" /></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">1</span>,<span class="hljs-number">5</span>]
+Output: <span class="hljs-number">4</span>
+Explanation: Nodes <span class="hljs-keyword">in</span> blue are good.
+Root Node (<span class="hljs-number">3</span>) <span class="hljs-keyword">is</span> always a good node.
+Node <span class="hljs-number">4</span> -&gt; (<span class="hljs-number">3</span>,<span class="hljs-number">4</span>) <span class="hljs-keyword">is</span> the maximum value <span class="hljs-keyword">in</span> the path starting <span class="hljs-keyword">from</span> the root.
+Node <span class="hljs-number">5</span> -&gt; (<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>) <span class="hljs-keyword">is</span> the maximum value <span class="hljs-keyword">in</span> the path
+Node <span class="hljs-number">3</span> -&gt; (<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>) <span class="hljs-keyword">is</span> the maximum value <span class="hljs-keyword">in</span> the path.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/04/02/test_sample_2.png" alt="" /></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">4</span>,<span class="hljs-number">2</span>]
+Output: <span class="hljs-number">3</span>
+Explanation: Node <span class="hljs-number">2</span> -&gt; (<span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>) <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> good, because <span class="hljs-string">"3"</span> <span class="hljs-keyword">is</span> higher than it.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-string">Input:</span> root = [<span class="hljs-number">1</span>]
+<span class="hljs-string">Output:</span> <span class="hljs-number">1</span>
+<span class="hljs-string">Explanation:</span> Root is considered <span class="hljs-keyword">as</span> good.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p>The number of nodes in the binary tree is in the range&nbsp;<code>[1, 10^5]</code>.</p></li>
+<li><p>Each node's value is between <code>[-10^4, 10^4]</code>.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">traverse</span><span class="hljs-params">(TreeNode root, <span class="hljs-keyword">int</span> max)</span> </span>{
+        <span class="hljs-keyword">if</span> (root == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span>;
+        }
+        <span class="hljs-keyword">if</span> (root.val &gt;= max) {
+            count += <span class="hljs-number">1</span>;
+            max = root.val;
+        }
+        traverse(root.left, max);
+        traverse(root.right, max);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">goodNodes</span><span class="hljs-params">(TreeNode root)</span> </span>{
+        traverse(root, Integer.MIN_VALUE);
+        <span class="hljs-keyword">return</span> count;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Operations on Tree - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1993. Operations on Tree</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/tree">Tree</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/design">Design</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/throne-inheritance.html">Throne Inheritance</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a tree with <code>n</code> nodes numbered from <code>0</code> to <code>n - 1</code> in the form of a parent array <code>parent</code> where <code>parent[i]</code> is the parent of the <code>ith</code> node. The root of the tree is node <code>0</code>, so <code>parent[0] = -1</code> since it has no parent. You want to design a data structure that allows users to lock, unlock, and upgrade nodes in the tree.</p>
+<p>The data structure should support the following functions:</p>
+<ul>
+<li><p><strong>Lock:</strong> <strong>Locks</strong> the given node for the given user and prevents other users from locking the same node. You may only lock a node using this function if the node is unlocked.</p></li>
+<li><p><strong>Unlock: Unlocks</strong> the given node for the given user. You may only unlock a node using this function if it is currently locked by the same user.
+<strong>Upgrade</strong><strong>: Locks</strong> the given node for the given user and <strong>unlocks</strong> all of its descendants <strong>regardless</strong> of who locked it. You may only upgrade a node if <strong>all</strong> 3 conditions are true:</p></li>
+<li><p>The node is unlocked,</p></li>
+<li><p>It has at least one locked descendant (by <strong>any</strong> user), and</p></li>
+<li><p>It does not have any locked ancestors.</p></li>
+</ul>
+<p>Implement the <code>LockingTree</code> class:</p>
+<ul>
+<li><p><code>LockingTree(int[] parent)</code> initializes the data structure with the parent array.</p></li>
+<li><p><code>lock(int num, int user)</code> returns <code>true</code> if it is possible for the user with id <code>user</code> to lock the node <code>num</code>, or <code>false</code> otherwise. If it is possible, the node <code>num</code> will become** locked** by the user with id <code>user</code>.</p></li>
+<li><p><code>unlock(int num, int user)</code> returns <code>true</code> if it is possible for the user with id <code>user</code> to unlock the node <code>num</code>, or <code>false</code> otherwise. If it is possible, the node <code>num</code> will become <strong>unlocked</strong>.</p></li>
+<li><p><code>upgrade(int num, int user)</code> returns <code>true</code> if it is possible for the user with id <code>user</code> to upgrade the node <code>num</code>, or <code>false</code> otherwise. If it is possible, the node <code>num</code> will be <strong>upgraded</strong>.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/07/29/untitled.png" alt="" /></p>
+<pre><code class="hljs">Input
+[<span class="hljs-string">"LockingTree"</span>, <span class="hljs-string">"lock"</span>, <span class="hljs-string">"unlock"</span>, <span class="hljs-string">"unlock"</span>, <span class="hljs-string">"lock"</span>, <span class="hljs-string">"upgrade"</span>, <span class="hljs-string">"lock"</span>]
+[[[-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>]], [<span class="hljs-number">2</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>]]
+Output
+[null, <span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>]
+
+Explanation
+LockingTree lockingTree = new LockingTree([-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>]);
+lockingTree.lock(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>);    // return <span class="hljs-literal">true</span> because <span class="hljs-keyword">node</span> <span class="hljs-title">2</span> is unlocked.
+                           // <span class="hljs-keyword">Node</span> <span class="hljs-title">2</span> will now be locked by <span class="hljs-keyword">user</span> <span class="hljs-title">2</span>.
+lockingTree.unlock(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>);  // return <span class="hljs-literal">false</span> because <span class="hljs-keyword">user</span> <span class="hljs-title">3</span> cannot unlock a <span class="hljs-keyword">node</span> <span class="hljs-title">locked</span> by <span class="hljs-keyword">user</span> <span class="hljs-title">2</span>.
+lockingTree.unlock(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>);  // return <span class="hljs-literal">true</span> because <span class="hljs-keyword">node</span> <span class="hljs-title">2</span> was previously locked by <span class="hljs-keyword">user</span> <span class="hljs-title">2</span>.
+                           // <span class="hljs-keyword">Node</span> <span class="hljs-title">2</span> will now be unlocked.
+lockingTree.lock(<span class="hljs-number">4</span>, <span class="hljs-number">5</span>);    // return <span class="hljs-literal">true</span> because <span class="hljs-keyword">node</span> <span class="hljs-title">4</span> is unlocked.
+                           // <span class="hljs-keyword">Node</span> <span class="hljs-title">4</span> will now be locked by <span class="hljs-keyword">user</span> <span class="hljs-title">5</span>.
+lockingTree.upgrade(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>); // return <span class="hljs-literal">true</span> because <span class="hljs-keyword">node</span> <span class="hljs-title">0</span> is unlocked <span class="hljs-keyword">and</span> has at least one locked descendant (<span class="hljs-keyword">node</span> <span class="hljs-title">4</span>).
+                           // <span class="hljs-keyword">Node</span> <span class="hljs-title">0</span> will now be locked by <span class="hljs-keyword">user</span> <span class="hljs-title">1</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">node</span> <span class="hljs-title">4</span> will now be unlocked.
+lockingTree.lock(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);    // return <span class="hljs-literal">false</span> because <span class="hljs-keyword">node</span> <span class="hljs-title">0</span> is already locked.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == parent.length</code></p></li>
+<li><p><code>2 &lt;= n &lt;= 2000</code></p></li>
+<li><p><code>0 &lt;= parent[i] &lt;= n - 1</code> for <code>i != 0</code></p></li>
+<li><p><code>parent[0] == -1</code></p></li>
+<li><p><code>0 &lt;= num &lt;= n - 1</code></p></li>
+<li><p><code>1 &lt;= user &lt;= 104</code></p></li>
+<li><p><code>parent</code> represents a valid tree.</p></li>
+<li><p>At most <code>2000</code> calls <strong>in total</strong> will be made to <code>lock</code>, <code>unlock</code>, and <code>upgrade</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LockingTree</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[][] a;
+    <span class="hljs-keyword">private</span> HashMap&lt;Integer, List&lt;Integer&gt;&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">LockingTree</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] parent)</span> </span>{
+        <span class="hljs-keyword">int</span> l = parent.length;
+        a = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[l][<span class="hljs-number">2</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; l; i++) {
+            a[i][<span class="hljs-number">0</span>] = parent[i];
+            a[i][<span class="hljs-number">1</span>] = -<span class="hljs-number">1</span>;
+            map.putIfAbsent(parent[i], <span class="hljs-keyword">new</span> ArrayList&lt;&gt;());
+            List&lt;Integer&gt; p = map.get(parent[i]);
+            p.add(i);
+            map.put(parent[i], p);
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">lock</span><span class="hljs-params">(<span class="hljs-keyword">int</span> num, <span class="hljs-keyword">int</span> user)</span> </span>{
+        <span class="hljs-keyword">int</span> userId = a[num][<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">if</span> (userId == -<span class="hljs-number">1</span>) {
+            a[num][<span class="hljs-number">1</span>] = user;
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">unlock</span><span class="hljs-params">(<span class="hljs-keyword">int</span> num, <span class="hljs-keyword">int</span> user)</span> </span>{
+        <span class="hljs-keyword">int</span> y = a[num][<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">if</span> (y == user) {
+            a[num][<span class="hljs-number">1</span>] = -<span class="hljs-number">1</span>;
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">upgrade</span><span class="hljs-params">(<span class="hljs-keyword">int</span> num, <span class="hljs-keyword">int</span> user)</span> </span>{
+        <span class="hljs-keyword">int</span> par = num;
+        <span class="hljs-keyword">while</span> (par &gt;= <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">int</span> lop = a[par][<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (lop != -<span class="hljs-number">1</span>) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            }
+            par = a[par][<span class="hljs-number">0</span>];
+        }
+        <span class="hljs-keyword">int</span> f = <span class="hljs-number">0</span>;
+        LinkedList&lt;Integer&gt; que = <span class="hljs-keyword">new</span> LinkedList&lt;&gt;();
+        <span class="hljs-keyword">int</span>[] v = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[a.length];
+        que.add(num);
+        v[num] = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (!que.isEmpty()) {
+            <span class="hljs-keyword">int</span> t = que.get(<span class="hljs-number">0</span>);
+            que.remove(<span class="hljs-number">0</span>);
+            List&lt;Integer&gt; p = map.getOrDefault(t, <span class="hljs-keyword">new</span> ArrayList&lt;&gt;());
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> e : p) {
+                <span class="hljs-keyword">if</span> (a[e][<span class="hljs-number">1</span>] != -<span class="hljs-number">1</span>) {
+                    f = <span class="hljs-number">1</span>;
+                    a[e][<span class="hljs-number">1</span>] = -<span class="hljs-number">1</span>;
+                }
+                <span class="hljs-keyword">if</span> (v[e] == <span class="hljs-number">0</span>) {
+                    que.add(e);
+                    v[e] = <span class="hljs-number">1</span>;
+                }
+            }
+        }
+        <span class="hljs-keyword">if</span> (f == <span class="hljs-number">1</span>) {
+            a[num][<span class="hljs-number">1</span>] = user;
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+}
+
+<span class="hljs-comment">/**
+ * Your LockingTree object will be instantiated and called as such:
+ * LockingTree obj = new LockingTree(parent);
+ * boolean param_1 = obj.lock(num,user);
+ * boolean param_2 = obj.unlock(num,user);
+ * boolean param_3 = obj.upgrade(num,user);
+ */</span>
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

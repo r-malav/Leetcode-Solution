@@ -1,0 +1,55 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Number of Arithmetic Triplets - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2367. Number of Arithmetic Triplets</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/two-pointers">Two Pointers</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/enumeration">Enumeration</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/two-sum.html">Two Sum</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/3sum.html">3Sum</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>0-indexed</strong>, <strong>strictly increasing</strong> integer array <code>nums</code> and a positive integer <code>diff</code>. A triplet <code>(i, j, k)</code> is an <strong>arithmetic triplet</strong> if the following conditions are met:</p>
+<ul>
+<li><p><code>i &lt; j &lt; k</code>,</p></li>
+<li><p><code>nums[j] - nums[i] == diff</code>, and</p></li>
+<li><p><code>nums[k] - nums[j] == diff</code>.</p></li>
+</ul>
+<p>Return **the number of unique **arithmetic triplets<strong>.</strong></p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">10</span>], diff = <span class="hljs-number">3</span>
+Output: <span class="hljs-number">2</span>
+Explanation:
+(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>) <span class="hljs-keyword">is</span> an arithmetic triplet because both <span class="hljs-number">7</span> - <span class="hljs-number">4</span> == <span class="hljs-number">3</span> <span class="hljs-keyword">and</span> <span class="hljs-number">4</span> - <span class="hljs-number">1</span> == <span class="hljs-number">3.</span>
+(<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>) <span class="hljs-keyword">is</span> an arithmetic triplet because both <span class="hljs-number">10</span> - <span class="hljs-number">7</span> == <span class="hljs-number">3</span> <span class="hljs-keyword">and</span> <span class="hljs-number">7</span> - <span class="hljs-number">4</span> == <span class="hljs-number">3.</span> 
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span>], diff = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">2</span>
+Explanation:
+(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>) <span class="hljs-keyword">is</span> an arithmetic triplet because both <span class="hljs-number">8</span> - <span class="hljs-number">6</span> == <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> <span class="hljs-number">6</span> - <span class="hljs-number">4</span> == <span class="hljs-number">2.</span>
+(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>) <span class="hljs-keyword">is</span> an arithmetic triplet because both <span class="hljs-number">9</span> - <span class="hljs-number">7</span> == <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> <span class="hljs-number">7</span> - <span class="hljs-number">5</span> == <span class="hljs-number">2.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>3 &lt;= nums.length &lt;= 200</code></p></li>
+<li><p><code>0 &lt;= nums[i] &lt;= 200</code></p></li>
+<li><p><code>1 &lt;= diff &lt;= 50</code></p></li>
+<li><p><code>nums</code> is <strong>strictly</strong> increasing.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">arithmeticTriplets</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> diff)</span> </span>{
+        Set&lt;Integer&gt; set = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> x : nums) {
+            set.add(x);
+        }
+        <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> x : nums) {
+            <span class="hljs-keyword">if</span> (set.contains(x - diff) &amp;&amp; set.contains(x + diff)) {
+                ans++;
+            }
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Rotating the Box - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1861. Rotating the Box</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/two-pointers">Two Pointers</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an <code>m x n</code> matrix of characters <code>box</code> representing a side-view of a box. Each cell of the box is one of the following:</p>
+<ul>
+<li><p>A stone <code>'#'</code></p></li>
+<li><p>A stationary obstacle <code>'*'</code></p></li>
+<li><p>Empty <code>'.'</code></p></li>
+</ul>
+<p>The box is rotated <strong>90 degrees clockwise</strong>, causing some of the stones to fall due to gravity. Each stone falls down until it lands on an obstacle, another stone, or the bottom of the box. Gravity <strong>does not</strong> affect the obstacles' positions, and the inertia from the box's rotation **does not **affect the stones' horizontal positions.</p>
+<p>It is <strong>guaranteed</strong> that each stone in <code>box</code> rests on an obstacle, another stone, or the bottom of the box.</p>
+<p>Return **an *<em><code>n x m</code></em>* matrix representing the box after the rotation described above**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/04/08/rotatingtheboxleetcodewithstones.png" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: box = [[<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>]]
+<span class="hljs-symbol">Output</span>: [[<span class="hljs-string">"."</span>],
+&amp;nbsp;        [<span class="hljs-string">"#"</span>],
+&amp;nbsp;        [<span class="hljs-string">"#"</span>]]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/04/08/rotatingtheboxleetcode2withstones.png" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: box = [[<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"*"</span>,<span class="hljs-string">"."</span>],
+&amp;nbsp;             [<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"*"</span>,<span class="hljs-string">"."</span>]]
+<span class="hljs-symbol">Output</span>: [[<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>],
+&amp;nbsp;        [<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>],
+&amp;nbsp;        [<span class="hljs-string">"*"</span>,<span class="hljs-string">"*"</span>],
+&amp;nbsp;        [<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>]]
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/04/08/rotatingtheboxleetcode3withstone.png" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: box = [[<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"*"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"*"</span>,<span class="hljs-string">"."</span>],
+&amp;nbsp;             [<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"*"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>],
+&amp;nbsp;             [<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>]]
+<span class="hljs-symbol">Output</span>: [[<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>],
+&amp;nbsp;        [<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>],
+&amp;nbsp;        [<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"*"</span>],
+&amp;nbsp;        [<span class="hljs-string">"#"</span>,<span class="hljs-string">"*"</span>,<span class="hljs-string">"."</span>],
+&amp;nbsp;        [<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"*"</span>],
+&amp;nbsp;        [<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>]]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == box.length</code></p></li>
+<li><p><code>n == box[i].length</code></p></li>
+<li><p><code>1 &lt;= m, n &lt;= 500</code></p></li>
+<li><p><code>box[i][j]</code> is either <code>'#'</code>, <code>'*'</code>, or <code>'.'</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">char</span>[][] rotateTheBox(<span class="hljs-keyword">char</span>[][] box) {
+        <span class="hljs-keyword">int</span> n = box.length;
+        <span class="hljs-keyword">int</span> m = box[<span class="hljs-number">0</span>].length;
+        <span class="hljs-keyword">char</span>[][] result = <span class="hljs-keyword">new</span> <span class="hljs-keyword">char</span>[m][n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">int</span> j = m - <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">int</span> idx = m - <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">while</span> (j &gt;= <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">if</span> (box[i][j] == <span class="hljs-string">'#'</span>) {
+                    result[j--][n - i - <span class="hljs-number">1</span>] = <span class="hljs-string">'.'</span>;
+                    result[idx--][n - i - <span class="hljs-number">1</span>] = <span class="hljs-string">'#'</span>;
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">char</span> c = box[i][j];
+                    result[j--][n - i - <span class="hljs-number">1</span>] = c;
+                    <span class="hljs-keyword">if</span> (c == <span class="hljs-string">'*'</span>) {
+                        idx = j;
+                    }
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> result;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

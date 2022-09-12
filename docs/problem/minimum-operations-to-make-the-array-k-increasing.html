@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Operations to Make the Array K-Increasing - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2111. Minimum Operations to Make the Array K-Increasing</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/longest-increasing-subsequence.html">Longest Increasing Subsequence</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-swaps-to-make-sequences-increasing.html">Minimum Swaps To Make Sequences Increasing</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>0-indexed</strong> array <code>arr</code> consisting of <code>n</code> positive integers, and a positive integer <code>k</code>.</p>
+<p>The array <code>arr</code> is called <strong>K-increasing</strong> if <code>arr[i-k] &lt;= arr[i]</code> holds for every index <code>i</code>, where <code>k &lt;= i &lt;= n-1</code>.</p>
+<pre><code>For example, <code>arr = [4, 1, 5, 2, 6, 2]</code> is K-increasing for <code>k = 2</code> because:
+</code></pre>
+<ul>
+<li><p><code>arr[0] &lt;= arr[2] (4 &lt;= 5)</code></p></li>
+<li><p><code>arr[1] &lt;= arr[3] (1 &lt;= 2)</code></p></li>
+<li><p><code>arr[2] &lt;= arr[4] (5 &lt;= 6)</code></p></li>
+<li><p><code>arr[3] &lt;= arr[5] (2 &lt;= 2)</code></p></li>
+
+<li><p>However, the same <code>arr</code> is not K-increasing for <code>k = 1</code> (because <code>arr[0] &gt; arr[1]</code>) or <code>k = 3</code> (because <code>arr[0] &gt; arr[3]</code>).</p></li>
+</ul>
+<p>In one <strong>operation</strong>, you can choose an index <code>i</code> and <strong>change</strong> <code>arr[i]</code> into <strong>any</strong> positive integer.</p>
+<p>Return **the *<em>minimum number of operations</em>* required to make the array K-increasing for the given **<code>k</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: arr = [<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>], k = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">4</span>
+Explanation:
+For k = <span class="hljs-number">1</span>, the resultant <span class="hljs-built_in">array</span> has to be non-decreasing.
+Some of the K-increasing <span class="hljs-built_in">array</span>s that can be formed are [<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span>], [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>], [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">4</span>]. All of them require <span class="hljs-number">4</span> operations.
+It <span class="hljs-keyword">is</span> suboptimal to change the <span class="hljs-built_in">array</span> to, <span class="hljs-keyword">for</span> example, [<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span>,<span class="hljs-number">10</span>] because it would take <span class="hljs-number">5</span> operations.
+It can be shown that we cannot make the <span class="hljs-built_in">array</span> K-increasing <span class="hljs-keyword">in</span> less than <span class="hljs-number">4</span> operations.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: arr = [<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>], k = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">0</span>
+Explanation:
+This <span class="hljs-keyword">is</span> the same example as the one <span class="hljs-keyword">in</span> the problem description.
+Here, <span class="hljs-keyword">for</span> every index i where <span class="hljs-number">2</span> &lt;= i &lt;= <span class="hljs-number">5</span>, arr[i<span class="hljs-number">-2</span>] &lt;= arr[i].
+Since the given <span class="hljs-built_in">array</span> <span class="hljs-keyword">is</span> already K-increasing, we <span class="hljs-keyword">do</span> <span class="hljs-keyword">not</span> need to perform any operations.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: arr = [4,1,5,2,6,2], k = 3
+Output: 2
+Explanation:
+Indices 3<span class="hljs-built_in"> and </span>5 are the only ones<span class="hljs-built_in"> not </span>satisfying arr[i-3] &lt;= arr[i] for 3 &lt;= i &lt;= 5.
+One of the ways we can make the<span class="hljs-built_in"> array </span>K-increasing is by changing arr[3] to 4<span class="hljs-built_in"> and </span>arr[5] to 5.
+The<span class="hljs-built_in"> array </span>will now be [4,1,5,4,6,5].
+Note that there can be other ways to make the<span class="hljs-built_in"> array </span>K-increasing, but none of them require less than 2 operations.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= arr.length &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= arr[i], k &lt;= arr.length</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">kIncreasing</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] a, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">int</span> n = a.length;
+        <span class="hljs-keyword">int</span> res = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> s = <span class="hljs-number">0</span>; s &lt; k; s++) {
+            List&lt;Integer&gt; dp = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = s; i &lt; n; i += k) {
+                <span class="hljs-keyword">if</span> (!bsearch(dp, a[i])) {
+                    dp.add(a[i]);
+                }
+            }
+            res += dp.size();
+        }
+        <span class="hljs-keyword">return</span> n - res;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">bsearch</span><span class="hljs-params">(List&lt;Integer&gt; dp, <span class="hljs-keyword">int</span> target)</span> </span>{
+        <span class="hljs-keyword">if</span> (dp.isEmpty()) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+        }
+        <span class="hljs-keyword">int</span> lo = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> hi = dp.size() - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (lo &lt; hi) {
+            <span class="hljs-keyword">int</span> mid = lo + (hi - lo) / <span class="hljs-number">2</span>;
+            <span class="hljs-keyword">if</span> (dp.get(mid) &lt;= target) {
+                lo = mid + <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> {
+                hi = mid;
+            }
+        }
+
+        <span class="hljs-keyword">if</span> (dp.get(lo) &gt; target) {
+            dp.set(lo, target);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

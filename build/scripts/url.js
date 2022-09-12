@@ -1,5 +1,5 @@
-const home = 'https://baffinlee.com/leetcode-javascript';
-const github = 'https://github.com/BaffinLee/leetcode-javascript';
+const home = 'https://curest0x1021.github.io/Leetcode-Solution';
+const github = 'https://github.com/curest0x1021/Leetcode-Solution';
 
 function difficulty (slug, num = 1) {
 	return num === 1 ? `${home}/difficulty/${slug}` : `${home}/difficulty/${slug}/page/${num}.html`;

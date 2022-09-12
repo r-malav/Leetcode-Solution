@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Consecutive Floors Without Special Floors - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2274. Maximum Consecutive Floors Without Special Floors</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/longest-consecutive-sequence.html">Longest Consecutive Sequence</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-gap.html">Maximum Gap</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Alice manages a company and has rented some floors of a building as office space. Alice has decided some of these floors should be <strong>special floors</strong>, used for relaxation only.</p>
+<p>You are given two integers <code>bottom</code> and <code>top</code>, which denote that Alice has rented all the floors from <code>bottom</code> to <code>top</code> (<strong>inclusive</strong>). You are also given the integer array <code>special</code>, where <code>special[i]</code> denotes a special floor that Alice has designated for relaxation.</p>
+<p>Return **the *<em>maximum</em>* number of consecutive floors without a special floor**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: bottom = <span class="hljs-number">2</span>, top = <span class="hljs-number">9</span>, special = [<span class="hljs-number">4</span>,<span class="hljs-number">6</span>]
+Output: <span class="hljs-number">3</span>
+Explanation: The following are the ranges (inclusive) of consecutive floors without a special floor:
+- (<span class="hljs-number">2</span>, <span class="hljs-number">3</span>) with a total amount of <span class="hljs-number">2</span> floors.
+- (<span class="hljs-number">5</span>, <span class="hljs-number">5</span>) with a total amount of <span class="hljs-number">1</span> floor.
+- (<span class="hljs-number">7</span>, <span class="hljs-number">9</span>) with a total amount of <span class="hljs-number">3</span> floors.
+Therefore, we <span class="hljs-keyword">return</span> the maximum number which <span class="hljs-keyword">is</span> <span class="hljs-number">3</span> floors.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: bottom = <span class="hljs-number">6</span>, top = <span class="hljs-number">8</span>, special = [<span class="hljs-number">7</span>,<span class="hljs-number">6</span>,<span class="hljs-number">8</span>]
+Output: <span class="hljs-number">0</span>
+Explanation: Every floor rented <span class="hljs-keyword">is</span> a special floor, so we <span class="hljs-keyword">return</span> <span class="hljs-number">0.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= special.length &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= bottom &lt;= special[i] &lt;= top &lt;= 109</code></p></li>
+<li><p>All the values of <code>special</code> are <strong>unique</strong>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxConsecutive</span><span class="hljs-params">(<span class="hljs-keyword">int</span> bottom, <span class="hljs-keyword">int</span> top, <span class="hljs-keyword">int</span>[] special)</span> </span>{
+        Arrays.sort(special);
+        <span class="hljs-keyword">int</span> start = bottom;
+        <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j : special) {
+            <span class="hljs-keyword">if</span> (j - start &gt; ans) {
+                ans = j - start;
+                start = j + <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> {
+                start = j + <span class="hljs-number">1</span>;
+            }
+        }
+        <span class="hljs-keyword">if</span> (ans &lt; top - special[special.length - <span class="hljs-number">1</span>]) {
+            ans = top - special[special.length - <span class="hljs-number">1</span>];
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Divide Intervals Into Minimum Number of Groups - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2406. Divide Intervals Into Minimum Number of Groups</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/merge-intervals.html">Merge Intervals</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-number-of-frogs-croaking.html">Minimum Number of Frogs Croaking</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/average-height-of-buildings-in-each-segment.html">Average Height of Buildings in Each Segment</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a 2D integer array <code>intervals</code> where <code>intervals[i] = [lefti, righti]</code> represents the <strong>inclusive</strong> interval <code>[lefti, righti]</code>.</p>
+<p>You have to divide the intervals into one or more <strong>groups</strong> such that each interval is in <strong>exactly</strong> one group, and no two intervals that are in the same group <strong>intersect</strong> each other.</p>
+<p>Return **the *<em>minimum</em>* number of groups you need to make**.</p>
+<p>Two intervals <strong>intersect</strong> if there is at least one common number between them. For example, the intervals <code>[1, 5]</code> and <code>[5, 8]</code> intersect.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: <span class="hljs-built_in">int</span>ervals = [[<span class="hljs-number">5</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">6</span>,<span class="hljs-number">8</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">10</span>]]
+Output: <span class="hljs-number">3</span>
+Explanation: We can divide the <span class="hljs-built_in">int</span>ervals <span class="hljs-built_in">int</span>o the following groups:
+- Group <span class="hljs-number">1</span>: [<span class="hljs-number">1</span>, <span class="hljs-number">5</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">8</span>].
+- Group <span class="hljs-number">2</span>: [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">10</span>].
+- Group <span class="hljs-number">3</span>: [<span class="hljs-number">1</span>, <span class="hljs-number">10</span>].
+It can be proven that it <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> possible to divide the <span class="hljs-built_in">int</span>ervals <span class="hljs-built_in">int</span>o fewer than <span class="hljs-number">3</span> groups.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: <span class="hljs-built_in">int</span>ervals = [[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">6</span>],[<span class="hljs-number">8</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">11</span>,<span class="hljs-number">13</span>]]
+Output: <span class="hljs-number">1</span>
+Explanation: None of the <span class="hljs-built_in">int</span>ervals overlap, so we can put all of them <span class="hljs-keyword">in</span> one group.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= intervals.length &lt;= 105</code></p></li>
+<li><p><code>intervals[i].length == 2</code></p></li>
+<li><p><code>1 &lt;= lefti &lt;= righti &lt;= 106</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minGroups</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] intervals)</span> </span>{
+        <span class="hljs-keyword">int</span> m = <span class="hljs-number">0</span>; 
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i[] : intervals){
+            m = Math.max(m,i[<span class="hljs-number">0</span>]);
+            m = Math.max(m,i[<span class="hljs-number">1</span>]);
+        }
+        <span class="hljs-keyword">long</span> arr[] = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[m+<span class="hljs-number">2</span>];
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> a[] : intervals){
+            arr[a[<span class="hljs-number">0</span>]] += <span class="hljs-number">1</span>;
+            arr[a[<span class="hljs-number">1</span>]+<span class="hljs-number">1</span>] -= <span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">long</span> max = <span class="hljs-number">0l</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt;= m +<span class="hljs-number">1</span>; i++){
+            arr[i] += arr[i-<span class="hljs-number">1</span>];
+            max = Math.max(max,arr[i]);
+
+        }
+        <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>)max;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

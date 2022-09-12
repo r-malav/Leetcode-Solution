@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Time to Collect All Apples in a Tree - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1443. Minimum Time to Collect All Apples in a Tree</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/tree">Tree</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an undirected tree consisting of <code>n</code> vertices numbered from <code>0</code> to <code>n-1</code>, which has some apples in their vertices. You spend 1 second to walk over one edge of the tree. **Return the minimum time in seconds you have to spend to collect all apples in the tree, starting at *<em>vertex 0</em>* and coming back to this vertex.**</p>
+<p>The edges of the undirected tree are given in the array <code>edges</code>, where <code>edges[i] = [ai, bi]</code> means that exists an edge connecting the vertices <code>ai</code> and <code>bi</code>. Additionally, there is a boolean array <code>hasApple</code>, where <code>hasApple[i] = true</code> means that vertex <code>i</code> has an apple; otherwise, it does not have any apple.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/04/23/min_time_collect_apple_1.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">7</span>, edges = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">6</span>]], hasApple = [<span class="hljs-literal">false</span>,<span class="hljs-literal">false</span>,<span class="hljs-literal">true</span>,<span class="hljs-literal">false</span>,<span class="hljs-literal">true</span>,<span class="hljs-literal">true</span>,<span class="hljs-literal">false</span>]
+Output: <span class="hljs-number">8</span> 
+Explanation: The figure above represents the given tree where red vertices have an apple. One optimal path to collect all apples <span class="hljs-keyword">is</span> shown by the green arrows.  
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/04/23/min_time_collect_apple_2.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">7</span>, edges = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">6</span>]], hasApple = [<span class="hljs-literal">false</span>,<span class="hljs-literal">false</span>,<span class="hljs-literal">true</span>,<span class="hljs-literal">false</span>,<span class="hljs-literal">false</span>,<span class="hljs-literal">true</span>,<span class="hljs-literal">false</span>]
+Output: <span class="hljs-number">6</span>
+Explanation: The figure above represents the given tree where red vertices have an apple. One optimal path to collect all apples <span class="hljs-keyword">is</span> shown by the green arrows.  
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">7</span>, edges = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">6</span>]], hasApple = [<span class="hljs-literal">false</span>,<span class="hljs-literal">false</span>,<span class="hljs-literal">false</span>,<span class="hljs-literal">false</span>,<span class="hljs-literal">false</span>,<span class="hljs-literal">false</span>,<span class="hljs-literal">false</span>]
+Output: <span class="hljs-number">0</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>edges.length == n - 1</code></p></li>
+<li><p><code>edges[i].length == 2</code></p></li>
+<li><p><code>0 &lt;= ai &lt; bi &lt;= n - 1</code></p></li>
+<li><p><code>fromi &lt; toi</code></p></li>
+<li><p><code>hasApple.length == n</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minTime</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[][] edges, List&lt;Boolean&gt; hasApple)</span> </span>{
+        Set&lt;Integer&gt; visited = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+        Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] edge : edges) {
+            <span class="hljs-keyword">int</span> vertexA = edge[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">int</span> vertexB = edge[<span class="hljs-number">1</span>];
+            graph.computeIfAbsent(vertexA, key -&gt; <span class="hljs-keyword">new</span> ArrayList&lt;&gt;()).add(vertexB);
+            graph.computeIfAbsent(vertexB, key -&gt; <span class="hljs-keyword">new</span> ArrayList&lt;&gt;()).add(vertexA);
+        }
+        visited.add(<span class="hljs-number">0</span>);
+        <span class="hljs-keyword">int</span> steps = helper(graph, hasApple, <span class="hljs-number">0</span>, visited);
+        <span class="hljs-keyword">return</span> steps &gt; <span class="hljs-number">0</span> ? steps - <span class="hljs-number">2</span> : <span class="hljs-number">0</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">helper</span><span class="hljs-params">(
+            Map&lt;Integer, List&lt;Integer&gt;&gt; graph,
+            List&lt;Boolean&gt; hasApple,
+            <span class="hljs-keyword">int</span> node,
+            Set&lt;Integer&gt; visited)</span> </span>{
+        <span class="hljs-keyword">int</span> steps = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> child : graph.getOrDefault(node, Collections.emptyList())) {
+            <span class="hljs-keyword">if</span> (visited.contains(child)) {
+                <span class="hljs-keyword">continue</span>;
+            } <span class="hljs-keyword">else</span> {
+                visited.add(child);
+            }
+            steps += helper(graph, hasApple, child, visited);
+        }
+        <span class="hljs-keyword">if</span> (steps &gt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> steps + <span class="hljs-number">2</span>;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (Boolean.TRUE.equals(hasApple.get(node))) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">2</span>;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

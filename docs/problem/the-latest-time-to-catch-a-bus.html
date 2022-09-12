@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>The Latest Time to Catch a Bus - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2332. The Latest Time to Catch a Bus</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/two-pointers">Two Pointers</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-speed-to-arrive-on-time.html">Minimum Speed to Arrive on Time</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>0-indexed</strong> integer array <code>buses</code> of length <code>n</code>, where <code>buses[i]</code> represents the departure time of the <code>ith</code> bus. You are also given a <strong>0-indexed</strong> integer array <code>passengers</code> of length <code>m</code>, where <code>passengers[j]</code> represents the arrival time of the <code>jth</code> passenger. All bus departure times are unique. All passenger arrival times are unique.</p>
+<p>You are given an integer <code>capacity</code>, which represents the <strong>maximum</strong> number of passengers that can get on each bus.</p>
+<p>When a passenger arrives, they will wait in line for the next available bus. You can get on a bus that departs at <code>x</code> minutes if you arrive at <code>y</code> minutes where <code>y &lt;= x</code>, and the bus is not full. Passengers with the <strong>earliest</strong> arrival times get on the bus first.</p>
+<p>More formally when a bus arrives, either:</p>
+<ul>
+<li><p>If <code>capacity</code> or fewer passengers are waiting for a bus, they will <strong>all</strong> get on the bus, or</p></li>
+<li><p>The <code>capacity</code> passengers with the <strong>earliest</strong> arrival times will get on the bus.</p></li>
+</ul>
+<p>Return <strong>the latest time you may arrive at the bus station to catch a bus</strong>. You <strong>cannot</strong> arrive at the same time as another passenger.</p>
+<p>**Note: **The arrays <code>buses</code> and <code>passengers</code> are not necessarily sorted.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: buses = [<span class="hljs-number">10</span>,<span class="hljs-number">20</span>], passengers = [<span class="hljs-number">2</span>,<span class="hljs-number">17</span>,<span class="hljs-number">18</span>,<span class="hljs-number">19</span>], capacity = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">16</span>
+Explanation: Suppose you arrive <span class="hljs-keyword">at</span> <span class="hljs-built_in">time</span> <span class="hljs-number">16.</span>
+At <span class="hljs-built_in">time</span> <span class="hljs-number">10</span>, <span class="hljs-keyword">the</span> <span class="hljs-keyword">first</span> bus departs <span class="hljs-keyword">with</span> <span class="hljs-keyword">the</span> <span class="hljs-number">0</span>th passenger. 
+At <span class="hljs-built_in">time</span> <span class="hljs-number">20</span>, <span class="hljs-keyword">the</span> <span class="hljs-keyword">second</span> bus departs <span class="hljs-keyword">with</span> you <span class="hljs-keyword">and</span> <span class="hljs-keyword">the</span> <span class="hljs-number">1</span>st passenger.
+Note that you may <span class="hljs-keyword">not</span> arrive <span class="hljs-keyword">at</span> <span class="hljs-keyword">the</span> same <span class="hljs-built_in">time</span> <span class="hljs-keyword">as</span> another passenger, which is why you must arrive <span class="hljs-keyword">before</span> <span class="hljs-keyword">the</span> <span class="hljs-number">1</span>st passenger <span class="hljs-built_in">to</span> <span class="hljs-keyword">catch</span> <span class="hljs-keyword">the</span> bus.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: buses = [<span class="hljs-number">20</span>,<span class="hljs-number">30</span>,<span class="hljs-number">10</span>], passengers = [<span class="hljs-number">19</span>,<span class="hljs-number">13</span>,<span class="hljs-number">26</span>,<span class="hljs-number">4</span>,<span class="hljs-number">25</span>,<span class="hljs-number">11</span>,<span class="hljs-number">21</span>], capacity = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">20</span>
+Explanation: Suppose you arrive at time <span class="hljs-number">20.</span>
+At time <span class="hljs-number">10</span>, the first bus departs with the <span class="hljs-number">3</span>rd passenger. 
+At time <span class="hljs-number">20</span>, the second bus departs with the <span class="hljs-number">5</span>th <span class="hljs-keyword">and</span> <span class="hljs-number">1</span>st passengers.
+At time <span class="hljs-number">30</span>, the third bus departs with the <span class="hljs-number">0</span>th passenger <span class="hljs-keyword">and</span> you.
+Notice <span class="hljs-keyword">if</span> you had arrived any later, then the <span class="hljs-number">6</span>th passenger would have taken your seat on the third bus.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == buses.length</code></p></li>
+<li><p><code>m == passengers.length</code></p></li>
+<li><p><code>1 &lt;= n, m, capacity &lt;= 105</code></p></li>
+<li><p><code>2 &lt;= buses[i], passengers[i] &lt;= 109</code></p></li>
+<li><p>Each element in <code>buses</code> is <strong>unique</strong>.</p></li>
+<li><p>Each element in <code>passengers</code> is <strong>unique</strong>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">latestTimeCatchTheBus</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] buses, <span class="hljs-keyword">int</span>[] passengers, <span class="hljs-keyword">int</span> capacity)</span> </span>{
+        <span class="hljs-comment">// sort arrays and move in arrays from left to right and find capacity in last bus</span>
+        <span class="hljs-comment">// if capcity is full in last bus then find time last passenger might have boarded then go</span>
+        <span class="hljs-comment">// backward till find a slot to replace last passenger</span>
+        <span class="hljs-comment">// if capacity is not full in last bus then start with last bus departure time and check if</span>
+        <span class="hljs-comment">// can board on last moment and go backward till find a available time slot</span>
+        Arrays.sort(buses);
+        Arrays.sort(passengers);
+        <span class="hljs-keyword">int</span> blen = buses.length;
+        <span class="hljs-keyword">int</span> plen = passengers.length;
+        <span class="hljs-keyword">int</span> b = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> p = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> c = <span class="hljs-number">0</span>;
+        <span class="hljs-comment">// find capacity in last bus</span>
+        <span class="hljs-keyword">while</span> (b &lt; blen &amp;&amp; p &lt; plen) {
+            <span class="hljs-keyword">if</span> (passengers[p] &lt;= buses[b] &amp;&amp; c &lt; capacity) {
+                c++;
+                p++;
+            }
+            <span class="hljs-keyword">if</span> (c == capacity || (p &lt; plen &amp;&amp; passengers[p] &gt; buses[b])) {
+                <span class="hljs-keyword">if</span> (b &lt; (blen - <span class="hljs-number">1</span>)) {
+                    c = <span class="hljs-number">0</span>;
+                }
+                b++;
+            }
+        }
+        <span class="hljs-keyword">int</span> start = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">if</span> (c == capacity) {
+            <span class="hljs-comment">// capcity is full in last bus, find time last passenger might have boarded</span>
+            start = Math.min(passengers[p - <span class="hljs-number">1</span>], buses[blen - <span class="hljs-number">1</span>]);
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// capacity is not full in last bus, start with last bus departure time and check if can</span>
+            <span class="hljs-comment">// board on last moment</span>
+            start = buses[blen - <span class="hljs-number">1</span>];
+        }
+        <span class="hljs-comment">// go backward till find a slot</span>
+        <span class="hljs-keyword">while</span> (p &gt; <span class="hljs-number">0</span> &amp;&amp; start == passengers[p - <span class="hljs-number">1</span>]) {
+            start--;
+            p--;
+        }
+        <span class="hljs-keyword">return</span> start;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

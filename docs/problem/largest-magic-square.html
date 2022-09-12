@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Largest Magic Square - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1895. Largest Magic Square</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/prefix-sum">Prefix Sum</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/magic-squares-in-grid.html">Magic Squares In Grid</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A <code>k x k</code> <strong>magic square</strong> is a <code>k x k</code> grid filled with integers such that every row sum, every column sum, and both diagonal sums are <strong>all equal</strong>. The integers in the magic square <strong>do not have to be distinct</strong>. Every <code>1 x 1</code> grid is trivially a <strong>magic square</strong>.</p>
+<p>Given an <code>m x n</code> integer <code>grid</code>, return **the *<em>size</em>* (i.e., the side length <strong><code>k</code></strong>) of the <strong>largest magic square</strong> that can be found within this grid**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/05/29/magicsquare-grid.jpg" alt="" /></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">7</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">6</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]]
+Output: <span class="hljs-number">3</span>
+Explanation: The largest magic square has a size of <span class="hljs-number">3.</span>
+Every row sum, column sum, <span class="hljs-keyword">and</span> diagonal sum of <span class="hljs-keyword">this</span> magic square <span class="hljs-keyword">is</span> equal to <span class="hljs-number">12.</span>
+- Row sums: <span class="hljs-number">5</span>+<span class="hljs-number">1</span>+<span class="hljs-number">6</span> = <span class="hljs-number">5</span>+<span class="hljs-number">4</span>+<span class="hljs-number">3</span> = <span class="hljs-number">2</span>+<span class="hljs-number">7</span>+<span class="hljs-number">3</span> = <span class="hljs-number">12</span>
+- Column sums: <span class="hljs-number">5</span>+<span class="hljs-number">5</span>+<span class="hljs-number">2</span> = <span class="hljs-number">1</span>+<span class="hljs-number">4</span>+<span class="hljs-number">7</span> = <span class="hljs-number">6</span>+<span class="hljs-number">3</span>+<span class="hljs-number">3</span> = <span class="hljs-number">12</span>
+- Diagonal sums: <span class="hljs-number">5</span>+<span class="hljs-number">4</span>+<span class="hljs-number">3</span> = <span class="hljs-number">6</span>+<span class="hljs-number">4</span>+<span class="hljs-number">2</span> = <span class="hljs-number">12</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/05/29/magicsquare2-grid.jpg" alt="" /></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">9</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">8</span>]]
+Output: <span class="hljs-number">2</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == grid.length</code></p></li>
+<li><p><code>n == grid[i].length</code></p></li>
+<li><p><code>1 &lt;= m, n &lt;= 50</code></p></li>
+<li><p><code>1 &lt;= grid[i][j] &lt;= 106</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">largestMagicSquare</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] grid)</span> </span>{
+        <span class="hljs-keyword">int</span> m = grid.length;
+        <span class="hljs-keyword">int</span> n = grid[<span class="hljs-number">0</span>].length;
+        <span class="hljs-keyword">int</span>[][] rows = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[m][n + <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">int</span>[][] cols = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[m + <span class="hljs-number">1</span>][n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++) {
+                <span class="hljs-comment">// cumulative sum for each row</span>
+                rows[i][j + <span class="hljs-number">1</span>] = rows[i][j] + grid[i][j];
+                <span class="hljs-comment">// cumulative sum for each column</span>
+                cols[i + <span class="hljs-number">1</span>][j] = cols[i][j] + grid[i][j];
+            }
+        }
+        <span class="hljs-comment">// start with the biggest side possible</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> side = Math.min(m, n); side &gt; <span class="hljs-number">1</span>; side--) {
+            <span class="hljs-comment">// check every square</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt;= m - side; i++) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt;= n - side; j++) {
+                    <span class="hljs-comment">// checks if a square with top left [i, j] and side length is magic</span>
+                    <span class="hljs-keyword">if</span> (magic(grid, rows, cols, i, j, side)) {
+                        <span class="hljs-keyword">return</span> side;
+                    }
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">magic</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] grid, <span class="hljs-keyword">int</span>[][] rows, <span class="hljs-keyword">int</span>[][] cols, <span class="hljs-keyword">int</span> r, <span class="hljs-keyword">int</span> c, <span class="hljs-keyword">int</span> side)</span> </span>{
+        <span class="hljs-keyword">int</span> sum = rows[r][c + side] - rows[r][c];
+        <span class="hljs-keyword">int</span> d1 = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> d2 = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k = <span class="hljs-number">0</span>; k &lt; side; k++) {
+            d1 += grid[r + k][c + k];
+            d2 += grid[r + side - <span class="hljs-number">1</span> - k][c + k];
+            <span class="hljs-comment">// check each row and column</span>
+            <span class="hljs-keyword">if</span> (rows[r + k][c + side] - rows[r + k][c] != sum
+                    || cols[r + side][c + k] - cols[r][c + k] != sum) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            }
+        }
+        <span class="hljs-comment">// checks both diagonals</span>
+        <span class="hljs-keyword">return</span> d1 == sum &amp;&amp; d2 == sum;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

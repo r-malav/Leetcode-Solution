@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Cinema Seat Allocation - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1386. Cinema Seat Allocation</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bit-manipulation">Bit Manipulation</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/booking-concert-tickets-in-groups.html">Booking Concert Tickets in Groups</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p><img src="https://assets.leetcode.com/uploads/2020/02/14/cinema_seats_1.png" alt="" /></p>
+<p>A cinema&nbsp;has <code>n</code>&nbsp;rows of seats, numbered from 1 to <code>n</code>&nbsp;and there are ten&nbsp;seats in each row, labelled from 1&nbsp;to 10&nbsp;as shown in the figure above.</p>
+<p>Given the array <code>reservedSeats</code> containing the numbers of seats already reserved, for example, <code>reservedSeats[i] = [3,8]</code>&nbsp;means the seat located in row <strong>3</strong> and labelled with <strong>8</strong>&nbsp;is already reserved.</p>
+<p><strong>Return the maximum number of four-person groups&nbsp;you can assign on the cinema&nbsp;seats.</strong> A four-person group&nbsp;occupies four&nbsp;adjacent seats <strong>in one single row</strong>. Seats across an aisle (such as [3,3]&nbsp;and [3,4]) are not considered to be adjacent, but there is an exceptional case&nbsp;on which an aisle split&nbsp;a four-person group, in that case, the aisle split&nbsp;a four-person group in the middle,&nbsp;which means to have two people on each side.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/02/14/cinema_seats_3.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">3</span>, reservedSeats = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">8</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">6</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">10</span>]]
+Output: <span class="hljs-number">4</span>
+Explanation: The figure above shows the optimal allocation <span class="hljs-keyword">for</span> four groups, where seats mark with blue are already reserved <span class="hljs-keyword">and</span> contiguous seats mark with orange are <span class="hljs-keyword">for</span> one group.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">2</span>, reservedSeats = [[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">8</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">6</span>]]
+Output: <span class="hljs-number">2</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">4</span>, reservedSeats = [[<span class="hljs-number">4</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">6</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">7</span>]]
+Output: <span class="hljs-number">4</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= n &lt;= 10^9</code></p></li>
+<li><p><code>1 &lt;=&amp;nbsp;reservedSeats.length &lt;= min(10*n, 10^4)</code></p></li>
+<li><p><code>reservedSeats[i].length == 2</code></p></li>
+<li><p><code>1&amp;nbsp;&lt;=&amp;nbsp;reservedSeats[i][0] &lt;= n</code></p></li>
+<li><p><code>1 &lt;=&amp;nbsp;reservedSeats[i][1] &lt;= 10</code></p></li>
+<li><p>All <code>reservedSeats[i]</code> are distinct.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxNumberOfFamilies</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[][] reservedSeats)</span> </span>{
+        Map&lt;Integer, <span class="hljs-keyword">int</span>[]&gt; occupiedFamilySeats = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] reservedSeat : reservedSeats) {
+            <span class="hljs-keyword">int</span> row = reservedSeat[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">int</span> col = reservedSeat[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (col == <span class="hljs-number">1</span> || col == <span class="hljs-number">10</span>) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-keyword">int</span>[] rowFamilySeats = occupiedFamilySeats.getOrDefault(row, <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">3</span>]);
+            <span class="hljs-keyword">if</span> (col == <span class="hljs-number">2</span> || col == <span class="hljs-number">3</span>) {
+                <span class="hljs-comment">// mark left family seating as occupied</span>
+                rowFamilySeats[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;
+                occupiedFamilySeats.put(row, rowFamilySeats);
+            }
+            <span class="hljs-keyword">if</span> (col == <span class="hljs-number">8</span> || col == <span class="hljs-number">9</span>) {
+                <span class="hljs-comment">// mark right family seating as occupied</span>
+                rowFamilySeats[<span class="hljs-number">2</span>] = <span class="hljs-number">1</span>;
+                occupiedFamilySeats.put(row, rowFamilySeats);
+            }
+            <span class="hljs-keyword">if</span> (col == <span class="hljs-number">4</span> || col == <span class="hljs-number">5</span>) {
+                <span class="hljs-comment">// mark left family seating as occupied</span>
+                rowFamilySeats[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;
+                <span class="hljs-comment">// mark min family seating as occupied</span>
+                rowFamilySeats[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;
+                occupiedFamilySeats.put(row, rowFamilySeats);
+            }
+            <span class="hljs-keyword">if</span> (col == <span class="hljs-number">6</span> || col == <span class="hljs-number">7</span>) {
+                <span class="hljs-comment">// mark min family seating as occupied</span>
+                rowFamilySeats[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;
+                <span class="hljs-comment">// mark right family seating as occupied</span>
+                rowFamilySeats[<span class="hljs-number">2</span>] = <span class="hljs-number">1</span>;
+                occupiedFamilySeats.put(row, rowFamilySeats);
+            }
+        }
+        <span class="hljs-comment">// max number of family seats per row is 2, so we start that minus the rows for which we</span>
+        <span class="hljs-comment">// have reservations</span>
+        <span class="hljs-keyword">int</span> count = n * <span class="hljs-number">2</span> - <span class="hljs-number">2</span> * occupiedFamilySeats.size();
+        <span class="hljs-comment">// for each row with reservations, count remaining family seatings</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] familySeats : occupiedFamilySeats.values()) {
+            <span class="hljs-keyword">if</span> (familySeats[<span class="hljs-number">0</span>] == <span class="hljs-number">0</span>) {
+                count++;
+            }
+            <span class="hljs-keyword">if</span> (familySeats[<span class="hljs-number">2</span>] == <span class="hljs-number">0</span>) {
+                count++;
+            }
+            <span class="hljs-keyword">if</span> (familySeats[<span class="hljs-number">0</span>] != <span class="hljs-number">0</span> &amp;&amp; familySeats[<span class="hljs-number">2</span>] != <span class="hljs-number">0</span> &amp;&amp; familySeats[<span class="hljs-number">1</span>] == <span class="hljs-number">0</span>) {
+                count++;
+            }
+        }
+        <span class="hljs-keyword">return</span> count;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

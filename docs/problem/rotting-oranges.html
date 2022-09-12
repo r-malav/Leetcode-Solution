@@ -1,0 +1,193 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Rotting Oranges - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>994. Rotting Oranges</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/walls-and-gates.html">Walls and Gates</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/detonate-the-maximum-bombs.html">Detonate the Maximum Bombs</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/escape-the-spreading-fire.html">Escape the Spreading Fire</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an <code>m x n</code> <code>grid</code> where each cell can have one of three values:</p>
+<ul>
+<li><p><code>0</code> representing an empty cell,</p></li>
+<li><p><code>1</code> representing a fresh orange, or</p></li>
+<li><p><code>2</code> representing a rotten orange.</p></li>
+</ul>
+<p>Every minute, any fresh orange that is <strong>4-directionally adjacent</strong> to a rotten orange becomes rotten.</p>
+<p>Return <strong>the minimum number of minutes that must elapse until no cell has a fresh orange</strong>. If <strong>this is impossible, return</strong> <code>-1</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/02/16/oranges.png" alt="" /></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]]
+Output: <span class="hljs-number">4</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]]
+Output: <span class="hljs-number">-1</span>
+Explanation: The orange <span class="hljs-keyword">in</span> the bottom left corner (row <span class="hljs-number">2</span>, column <span class="hljs-number">0</span>) <span class="hljs-keyword">is</span> never rotten, because rotting only happens <span class="hljs-number">4</span>-directionally.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">grid</span> <span class="hljs-string">=</span> <span class="hljs-string">[[0,2]]</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">0</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">Since</span> <span class="hljs-string">there</span> <span class="hljs-string">are</span> <span class="hljs-string">already</span> <span class="hljs-literal">no</span> <span class="hljs-string">fresh</span> <span class="hljs-string">oranges</span> <span class="hljs-string">at</span> <span class="hljs-string">minute</span> <span class="hljs-number">0</span><span class="hljs-string">,</span> <span class="hljs-string">the</span> <span class="hljs-string">answer</span> <span class="hljs-string">is</span> <span class="hljs-string">just</span> <span class="hljs-number">0</span><span class="hljs-string">.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == grid.length</code></p></li>
+<li><p><code>n == grid[i].length</code></p></li>
+<li><p><code>1 &lt;= m, n &lt;= 10</code></p></li>
+<li><p><code>grid[i][j]</code> is <code>0</code>, <code>1</code>, or <code>2</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">orangesRotting</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] grid)</span> </span>{
+        Queue&lt;<span class="hljs-keyword">int</span>[]&gt; queue = <span class="hljs-keyword">new</span> LinkedList&lt;&gt;();
+        <span class="hljs-keyword">int</span> row = grid.length;
+        <span class="hljs-keyword">int</span> col = grid[<span class="hljs-number">0</span>].length;
+        <span class="hljs-keyword">int</span> countActive = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; row; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; col; j++) {
+                <span class="hljs-keyword">if</span> (grid[i][j] == <span class="hljs-number">2</span>) {
+                    queue.add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {i, j});
+                }
+                <span class="hljs-keyword">if</span> (grid[i][j] != <span class="hljs-number">0</span>) {
+                    countActive++;
+                }
+            }
+        }
+        <span class="hljs-keyword">if</span> (countActive == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">int</span> countCurrent = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span>[] dx = {<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>};
+        <span class="hljs-keyword">int</span>[] dy = {<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>};
+        <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+            <span class="hljs-keyword">int</span> size = queue.size();
+            count += size;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; size; i++) {
+                <span class="hljs-keyword">int</span>[] arr = queue.poll();
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">4</span>; j++) {
+                    <span class="hljs-keyword">int</span> x = arr[<span class="hljs-number">0</span>] + dx[j];
+                    <span class="hljs-keyword">int</span> y = arr[<span class="hljs-number">1</span>] + dy[j];
+                    <span class="hljs-keyword">if</span> (x &lt; <span class="hljs-number">0</span> || y &lt; <span class="hljs-number">0</span> || x &gt;= row || y &gt;= col || grid[x][y] != <span class="hljs-number">1</span>) {
+                        <span class="hljs-keyword">continue</span>;
+                    }
+                    grid[x][y] = <span class="hljs-number">2</span>;
+                    queue.add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {x, y});
+                }
+            }
+            <span class="hljs-keyword">if</span> (!queue.isEmpty()) {
+                countCurrent++;
+            }
+        }
+        <span class="hljs-keyword">return</span> countActive == count ? countCurrent : -<span class="hljs-number">1</span>;
+    }
+}
+</code></pre>
+<h2 id="solution-javascript">Solution (Javascript)</h2>
+<pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number[][]}</span> <span class="hljs-variable">grid</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
+ */</span>
+<span class="hljs-keyword">var</span> orangesRotting = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">grid</span>) </span>{
+
+  <span class="hljs-keyword">if</span> (emptyOrchard(grid)) {
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+  } 
+
+  <span class="hljs-keyword">var</span> stopwatch = <span class="hljs-number">0</span>;
+
+  <span class="hljs-keyword">var</span> cycleOranges = <span class="hljs-function">(<span class="hljs-params">grid</span>) =&gt;</span> {
+
+    <span class="hljs-keyword">var</span> checked = [];
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; grid.length; i++) {
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> j = <span class="hljs-number">0</span>; j &lt; grid[i].length; j++) {
+        <span class="hljs-keyword">if</span> (grid[i][j] === <span class="hljs-number">2</span> &amp;&amp; !isDuplicate(checked, [i, j])) {
+          <span class="hljs-keyword">var</span> adjacent = adjacencies(grid, i, j);
+          <span class="hljs-keyword">if</span> (adjacent) {
+            adjacent.forEach(<span class="hljs-function"><span class="hljs-params">freshOrange</span> =&gt;</span> {
+              grid[freshOrange[<span class="hljs-number">0</span>]][freshOrange[<span class="hljs-number">1</span>]] = <span class="hljs-number">2</span>;
+              checked.push([freshOrange[<span class="hljs-number">0</span>], freshOrange[<span class="hljs-number">1</span>]]);
+            });
+          }  
+        }
+      }
+    }
+  stopwatch++;
+  <span class="hljs-keyword">return</span> adjacenciesRemain(grid) ? cycleOranges(grid) : <span class="hljs-literal">null</span>;
+  }
+  cycleOranges(grid);
+  <span class="hljs-keyword">return</span> stopwatch &gt; <span class="hljs-number">0</span> &amp;&amp; emptyOrchard(grid) ? stopwatch : <span class="hljs-number">-1</span>; 
+};
+
+
+<span class="hljs-comment">// checks the grid for any spoiled oranges with fresh adjacencies</span>
+
+<span class="hljs-keyword">var</span> adjacenciesRemain = <span class="hljs-function">(<span class="hljs-params">grid</span>) =&gt;</span> {
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; grid.length; i++) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> j = <span class="hljs-number">0</span>; j &lt; grid[i].length; j++) {
+      <span class="hljs-keyword">if</span> (grid[i][j] === <span class="hljs-number">2</span> &amp;&amp; adjacencies(grid, i, j)) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+      }
+    }
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+
+
+<span class="hljs-comment">// checks coordinates for all available adjacencies</span>
+
+<span class="hljs-keyword">var</span> adjacencies = <span class="hljs-function">(<span class="hljs-params">tree, i, j</span>) =&gt;</span> {
+  <span class="hljs-keyword">var</span> adjacent = [];
+
+  <span class="hljs-keyword">var</span> right = tree[i][j + <span class="hljs-number">1</span>];
+  <span class="hljs-keyword">var</span> left = tree[i][j - <span class="hljs-number">1</span>];
+  <span class="hljs-keyword">var</span> up = tree[i - <span class="hljs-number">1</span>] === <span class="hljs-literal">undefined</span> ? <span class="hljs-literal">undefined</span> : tree[i - <span class="hljs-number">1</span>][j]; 
+  <span class="hljs-keyword">var</span> down = tree[i + <span class="hljs-number">1</span>] === <span class="hljs-literal">undefined</span> ? <span class="hljs-literal">undefined</span> : tree[i + <span class="hljs-number">1</span>][j];
+
+  right === <span class="hljs-number">1</span> ? adjacent.push([i, j + <span class="hljs-number">1</span>]) : <span class="hljs-literal">null</span>;
+  up === <span class="hljs-number">1</span> ? adjacent.push([i - <span class="hljs-number">1</span>, j]) : <span class="hljs-literal">null</span>;
+  left === <span class="hljs-number">1</span> ? adjacent.push([i, j - <span class="hljs-number">1</span>]) : <span class="hljs-literal">null</span>;
+  down === <span class="hljs-number">1</span> ? adjacent.push([i + <span class="hljs-number">1</span>, j]) : <span class="hljs-literal">null</span>;
+
+  <span class="hljs-keyword">return</span> adjacent.length &gt; <span class="hljs-number">0</span> ? adjacent : <span class="hljs-literal">false</span>;
+
+}
+
+
+<span class="hljs-comment">// checks for authenticity of incoming array</span>
+
+<span class="hljs-keyword">var</span> isDuplicate = <span class="hljs-function">(<span class="hljs-params">arr1, arr2</span>) =&gt;</span> {
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; arr1.length; i++) {
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">JSON</span>.stringify(arr1[i]) === <span class="hljs-built_in">JSON</span>.stringify(arr2)) {
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+
+
+<span class="hljs-comment">// checks grid for the condition of having all rotten oranges or no oranges at all</span>
+
+<span class="hljs-keyword">var</span> emptyOrchard = <span class="hljs-function">(<span class="hljs-params">grid</span>) =&gt;</span> {
+
+  <span class="hljs-keyword">var</span> rotten = <span class="hljs-literal">false</span>;
+  <span class="hljs-keyword">var</span> fresh = <span class="hljs-literal">false</span>;
+  <span class="hljs-keyword">var</span> absent = <span class="hljs-literal">false</span>;
+
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; grid.length; i++) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> j = <span class="hljs-number">0</span>; j &lt; grid[i].length; j++) {
+      <span class="hljs-keyword">if</span> (grid[i][j] === <span class="hljs-number">2</span>) {
+        rotten = <span class="hljs-literal">true</span>;
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (grid[i][j] === <span class="hljs-number">1</span>) {
+        fresh = <span class="hljs-literal">true</span>;
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (grid[i][j] === <span class="hljs-number">0</span>) {
+        absent = <span class="hljs-literal">true</span>;
+      }
+    }
+  }
+  <span class="hljs-keyword">return</span> (rotten &amp;&amp; !fresh) || (absent &amp;&amp; !rotten &amp; !fresh);
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

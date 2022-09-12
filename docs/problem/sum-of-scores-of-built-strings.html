@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Sum of Scores of Built Strings - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2223. Sum of Scores of Built Strings</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/rolling-hash">Rolling Hash</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/suffix-array">Suffix Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string-matching">String Matching</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-function">Hash Function</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/longest-happy-prefix.html">Longest Happy Prefix</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are <strong>building</strong> a string <code>s</code> of length <code>n</code> <strong>one</strong> character at a time, <strong>prepending</strong> each new character to the <strong>front</strong> of the string. The strings are labeled from <code>1</code> to <code>n</code>, where the string with length <code>i</code> is labeled <code>si</code>.</p>
+<ul>
+<li>For example, for <code>s = "abaca"</code>, <code>s1 == "a"</code>, <code>s2 == "ca"</code>, <code>s3 == "aca"</code>, etc.</li>
+</ul>
+<p>The <strong>score</strong> of <code>si</code> is the length of the <strong>longest common prefix</strong> between <code>si</code> and <code>sn</code> (Note that <code>s == sn</code>).</p>
+<p>Given the final string <code>s</code>, return** the <strong>sum</strong> of the <strong>score</strong> of every **<code>si</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"babab"</span>
+Output: 9
+Explanation:
+<span class="hljs-keyword">For</span> s1 == <span class="hljs-string">"b"</span>, the longest common<span class="hljs-built_in"> prefix </span>is <span class="hljs-string">"b"</span> which has a score of 1.
+<span class="hljs-keyword">For</span> s2 == <span class="hljs-string">"ab"</span>, there is <span class="hljs-literal">no</span> common<span class="hljs-built_in"> prefix </span>so the score is 0.
+<span class="hljs-keyword">For</span> s3 == <span class="hljs-string">"bab"</span>, the longest common<span class="hljs-built_in"> prefix </span>is <span class="hljs-string">"bab"</span> which has a score of 3.
+<span class="hljs-keyword">For</span> s4 == <span class="hljs-string">"abab"</span>, there is <span class="hljs-literal">no</span> common<span class="hljs-built_in"> prefix </span>so the score is 0.
+<span class="hljs-keyword">For</span> s5 == <span class="hljs-string">"babab"</span>, the longest common<span class="hljs-built_in"> prefix </span>is <span class="hljs-string">"babab"</span> which has a score of 5.
+The sum of the scores is 1 + 0 + 3 + 0 + 5 = 9, so we return 9.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"azbazbzaz"</span>
+Output: 14
+Explanation: 
+<span class="hljs-keyword">For</span> s2 == <span class="hljs-string">"az"</span>, the longest common<span class="hljs-built_in"> prefix </span>is <span class="hljs-string">"az"</span> which has a score of 2.
+<span class="hljs-keyword">For</span> s6 == <span class="hljs-string">"azbzaz"</span>, the longest common<span class="hljs-built_in"> prefix </span>is <span class="hljs-string">"azb"</span> which has a score of 3.
+<span class="hljs-keyword">For</span> s9 == <span class="hljs-string">"azbazbzaz"</span>, the longest common<span class="hljs-built_in"> prefix </span>is <span class="hljs-string">"azbazbzaz"</span> which has a score of 9.
+<span class="hljs-keyword">For</span> all other si, the score is 0.
+The sum of the scores is 2 + 3 + 9 = 14, so we return 14.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 105</code></p></li>
+<li><p><code>s</code> consists of lowercase English letters.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">long</span> <span class="hljs-title">sumScores</span><span class="hljs-params">(String s)</span> </span>{
+        <span class="hljs-keyword">int</span> n = s.length();
+        <span class="hljs-keyword">char</span>[] ss = s.toCharArray();
+        <span class="hljs-keyword">int</span>[] z = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        <span class="hljs-keyword">int</span> l = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> r = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> (i &lt;= r) {
+                z[i] = Math.min(z[i - l], r - i + <span class="hljs-number">1</span>);
+            }
+            <span class="hljs-keyword">while</span> (i + z[i] &lt; n &amp;&amp; ss[z[i]] == ss[i + z[i]]) {
+                z[i]++;
+            }
+            <span class="hljs-keyword">if</span> (i + z[i] - <span class="hljs-number">1</span> &gt; r) {
+                l = i;
+                r = i + z[i] - <span class="hljs-number">1</span>;
+            }
+        }
+        <span class="hljs-keyword">long</span> sum = n;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            sum += z[i];
+        }
+        <span class="hljs-keyword">return</span> sum;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

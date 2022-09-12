@@ -1,0 +1,97 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Vowel Spellchecker - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>966. Vowel Spellchecker</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a <code>wordlist</code>, we want to implement a spellchecker that converts a query word into a correct word.</p>
+<p>For a given <code>query</code> word, the spell checker handles two categories of spelling mistakes:</p>
+<pre><code>Capitalization: If the query matches a word in the wordlist (**case-insensitive**), then the query word is returned with the same case as the case in the wordlist.
+</code></pre>
+<ul>
+<li><p>Example: <code>wordlist = ["yellow"]</code>, <code>query = "YellOw"</code>: <code>correct = "yellow"</code></p></li>
+<li><p>Example: <code>wordlist = ["Yellow"]</code>, <code>query = "yellow"</code>: <code>correct = "Yellow"</code></p></li>
+<li><p>Example: <code>wordlist = ["yellow"]</code>, <code>query = "yellow"</code>: <code>correct = "yellow"</code></p>
+<p>Vowel Errors: If after replacing the vowels <code>('a', 'e', 'i', 'o', 'u')</code> of the query word with any vowel individually, it matches a word in the wordlist (<strong>case-insensitive</strong>), then the query word is returned with the same case as the match in the wordlist.</p></li>
+<li><p>Example: <code>wordlist = ["YellOw"]</code>, <code>query = "yollow"</code>: <code>correct = "YellOw"</code></p></li>
+<li><p>Example: <code>wordlist = ["YellOw"]</code>, <code>query = "yeellow"</code>: <code>correct = ""</code> (no match)</p></li>
+<li><p>Example: <code>wordlist = ["YellOw"]</code>, <code>query = "yllw"</code>: <code>correct = ""</code> (no match)</p></li>
+</ul>
+<p>In addition, the spell checker operates under the following precedence rules:</p>
+<ul>
+<li><p>When the query exactly matches a word in the wordlist (<strong>case-sensitive</strong>), you should return the same word back.</p></li>
+<li><p>When the query matches a word up to capitlization, you should return the first such match in the wordlist.</p></li>
+<li><p>When the query matches a word up to vowel errors, you should return the first such match in the wordlist.</p></li>
+<li><p>If the query has no matches in the wordlist, you should return the empty string.</p></li>
+</ul>
+<p>Given some <code>queries</code>, return a list of words <code>answer</code>, where <code>answer[i]</code> is the correct word for <code>query = queries[i]</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: wordlist = [<span class="hljs-string">"KiTe"</span>,<span class="hljs-string">"kite"</span>,<span class="hljs-string">"hare"</span>,<span class="hljs-string">"Hare"</span>], queries = [<span class="hljs-string">"kite"</span>,<span class="hljs-string">"Kite"</span>,<span class="hljs-string">"KiTe"</span>,<span class="hljs-string">"Hare"</span>,<span class="hljs-string">"HARE"</span>,<span class="hljs-string">"Hear"</span>,<span class="hljs-string">"hear"</span>,<span class="hljs-string">"keti"</span>,<span class="hljs-string">"keet"</span>,<span class="hljs-string">"keto"</span>]
+<span class="hljs-symbol">Output</span>: [<span class="hljs-string">"kite"</span>,<span class="hljs-string">"KiTe"</span>,<span class="hljs-string">"KiTe"</span>,<span class="hljs-string">"Hare"</span>,<span class="hljs-string">"hare"</span>,<span class="hljs-string">""</span>,<span class="hljs-string">""</span>,<span class="hljs-string">"KiTe"</span>,<span class="hljs-string">""</span>,<span class="hljs-string">"KiTe"</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: wordlist = [<span class="hljs-string">"yellow"</span>], queries = [<span class="hljs-string">"YellOw"</span>]
+<span class="hljs-symbol">Output</span>: [<span class="hljs-string">"yellow"</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= wordlist.length, queries.length &lt;= 5000</code></p></li>
+<li><p><code>1 &lt;= wordlist[i].length, queries[i].length &lt;= 7</code></p></li>
+<li><p><code>wordlist[i]</code> and <code>queries[i]</code> consist only of only English letters.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> Set&lt;String&gt; matched;
+    <span class="hljs-keyword">private</span> Map&lt;String, String&gt; capitalizations;
+    <span class="hljs-keyword">private</span> Map&lt;String, String&gt; vowelErrors;
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isVowel</span><span class="hljs-params">(<span class="hljs-keyword">char</span> w)</span> </span>{
+        <span class="hljs-keyword">return</span> w == <span class="hljs-string">'a'</span> || w == <span class="hljs-string">'e'</span> || w == <span class="hljs-string">'i'</span> || w == <span class="hljs-string">'o'</span> || w == <span class="hljs-string">'u'</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> String <span class="hljs-title">removeVowels</span><span class="hljs-params">(String word)</span> </span>{
+        StringBuilder s = <span class="hljs-keyword">new</span> StringBuilder();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> w : word.toCharArray()) {
+            s.append(isVowel(w) ? <span class="hljs-string">'*'</span> : w);
+        }
+        <span class="hljs-keyword">return</span> s.toString();
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> String <span class="hljs-title">solveQuery</span><span class="hljs-params">(String query)</span> </span>{
+        <span class="hljs-keyword">if</span> (matched.contains(query)) {
+            <span class="hljs-keyword">return</span> query;
+        }
+        String word = query.toLowerCase();
+        <span class="hljs-keyword">if</span> (capitalizations.containsKey(word)) {
+            <span class="hljs-keyword">return</span> capitalizations.get(word);
+        }
+        word = removeVowels(word);
+        <span class="hljs-keyword">if</span> (vowelErrors.containsKey(word)) {
+            <span class="hljs-keyword">return</span> vowelErrors.get(word);
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-string">""</span>;
+    }
+
+    <span class="hljs-keyword">public</span> String[] spellchecker(String[] wordlist, String[] queries) {
+        String[] answer = <span class="hljs-keyword">new</span> String[queries.length];
+        matched = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+        capitalizations = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        vowelErrors = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">for</span> (String word : wordlist) {
+            matched.add(word);
+            String s = word.toLowerCase();
+            capitalizations.putIfAbsent(s, word);
+            s = removeVowels(s);
+            vowelErrors.putIfAbsent(s, word);
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; queries.length; i++) {
+            answer[i] = solveQuery(queries[i]);
+        }
+        <span class="hljs-keyword">return</span> answer;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Non-Zero Product of the Array Elements - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1969. Minimum Non-Zero Product of the Array Elements</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/recursion">Recursion</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a positive integer <code>p</code>. Consider an array <code>nums</code> (<strong>1-indexed</strong>) that consists of the integers in the <strong>inclusive</strong> range <code>[1, 2p - 1]</code> in their binary representations. You are allowed to do the following operation <strong>any</strong> number of times:</p>
+<ul>
+<li><p>Choose two elements <code>x</code> and <code>y</code> from <code>nums</code>.</p></li>
+<li><p>Choose a bit in <code>x</code> and swap it with its corresponding bit in <code>y</code>. Corresponding bit refers to the bit that is in the <strong>same position</strong> in the other integer.</p></li>
+</ul>
+<p>For example, if <code>x = 1101</code> and <code>y = 0011</code>, after swapping the <code>2nd</code> bit from the right, we have <code>x = 1111</code> and <code>y = 0001</code>.</p>
+<p>Find the <strong>minimum non-zero</strong> product of <code>nums</code> after performing the above operation <strong>any</strong> number of times. Return <strong>this product</strong>** <strong>modulo</strong> **<code>109 + 7</code>.</p>
+<p><strong>Note:</strong> The answer should be the minimum product <strong>before</strong> the modulo operation is done.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">p</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">1</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">nums</span> <span class="hljs-string">=</span> <span class="hljs-string">[1].</span>
+<span class="hljs-string">There</span> <span class="hljs-string">is</span> <span class="hljs-string">only</span> <span class="hljs-string">one</span> <span class="hljs-string">element,</span> <span class="hljs-string">so</span> <span class="hljs-string">the</span> <span class="hljs-string">product</span> <span class="hljs-string">equals</span> <span class="hljs-string">that</span> <span class="hljs-string">element.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: p = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">6</span>
+Explanation: nums = [<span class="hljs-number">01</span>, <span class="hljs-number">10</span>, <span class="hljs-number">11</span>].
+Any swap would either make the product <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> stay the same.
+Thus, the <span class="hljs-built_in">array</span> product of <span class="hljs-number">1</span> * <span class="hljs-number">2</span> * <span class="hljs-number">3</span> = <span class="hljs-number">6</span> <span class="hljs-keyword">is</span> already minimized.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: p = <span class="hljs-number">3</span>
+Output: <span class="hljs-number">1512</span>
+Explanation: nums = [<span class="hljs-number">001</span>, <span class="hljs-number">010</span>, <span class="hljs-number">011</span>, <span class="hljs-number">100</span>, <span class="hljs-number">101</span>, <span class="hljs-number">110</span>, <span class="hljs-number">111</span>]
+- In the first operation we can swap the leftmost bit of the second <span class="hljs-keyword">and</span> fifth elements.
+    - The resulting <span class="hljs-built_in">array</span> <span class="hljs-keyword">is</span> [<span class="hljs-number">001</span>, <span class="hljs-number">110</span>, <span class="hljs-number">011</span>, <span class="hljs-number">100</span>, <span class="hljs-number">001</span>, <span class="hljs-number">110</span>, <span class="hljs-number">111</span>].
+- In the second operation we can swap the middle bit of the third <span class="hljs-keyword">and</span> fourth elements.
+    - The resulting <span class="hljs-built_in">array</span> <span class="hljs-keyword">is</span> [<span class="hljs-number">001</span>, <span class="hljs-number">110</span>, <span class="hljs-number">001</span>, <span class="hljs-number">110</span>, <span class="hljs-number">001</span>, <span class="hljs-number">110</span>, <span class="hljs-number">111</span>].
+The <span class="hljs-built_in">array</span> product <span class="hljs-keyword">is</span> <span class="hljs-number">1</span> * <span class="hljs-number">6</span> * <span class="hljs-number">1</span> * <span class="hljs-number">6</span> * <span class="hljs-number">1</span> * <span class="hljs-number">6</span> * <span class="hljs-number">7</span> = <span class="hljs-number">1512</span>, which <span class="hljs-keyword">is</span> the minimum possible product.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= p &lt;= 60</code></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minNonZeroProduct</span><span class="hljs-params">(<span class="hljs-keyword">int</span> p)</span> </span>{
+        <span class="hljs-keyword">int</span> m = (<span class="hljs-keyword">int</span>) (<span class="hljs-number">1e9</span> + <span class="hljs-number">7</span>);
+        <span class="hljs-keyword">long</span> n = ((<span class="hljs-number">1L</span> &lt;&lt; p) - <span class="hljs-number">2</span>) % m;
+        <span class="hljs-keyword">long</span> ans = n + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">long</span> cnt = (<span class="hljs-number">1L</span> &lt;&lt; (p - <span class="hljs-number">1</span>)) - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (cnt &gt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">if</span> ((cnt &amp; <span class="hljs-number">1</span>) == <span class="hljs-number">1</span>) {
+                ans = ans * n % m;
+            }
+            cnt &gt;&gt;= <span class="hljs-number">1</span>;
+            n = n * n % m;
+        }
+        <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>) ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

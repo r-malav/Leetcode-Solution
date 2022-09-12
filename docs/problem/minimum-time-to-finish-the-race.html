@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Time to Finish the Race - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2188. Minimum Time to Finish the Race</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-skips-to-arrive-at-meeting-on-time.html">Minimum Skips to Arrive at Meeting On Time</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>0-indexed</strong> 2D integer array <code>tires</code> where <code>tires[i] = [fi, ri]</code> indicates that the <code>ith</code> tire can finish its <code>xth</code> successive lap in <code>fi * ri(x-1)</code> seconds.</p>
+<ul>
+<li>For example, if <code>fi = 3</code> and <code>ri = 2</code>, then the tire would finish its <code>1st</code> lap in <code>3</code> seconds, its <code>2nd</code> lap in <code>3 * 2 = 6</code> seconds, its <code>3rd</code> lap in <code>3 * 22 = 12</code> seconds, etc.</li>
+</ul>
+<p>You are also given an integer <code>changeTime</code> and an integer <code>numLaps</code>.</p>
+<p>The race consists of <code>numLaps</code> laps and you may start the race with <strong>any</strong> tire. You have an <strong>unlimited</strong> supply of each tire and after every lap, you may <strong>change</strong> to any given tire (including the current tire type) if you wait <code>changeTime</code> seconds.</p>
+<p>Return** the <strong>minimum</strong> time to finish the race.**</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: tires = [[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]], changeTime = <span class="hljs-number">5</span>, numLaps = <span class="hljs-number">4</span>
+Output: <span class="hljs-number">21</span>
+Explanation: 
+Lap <span class="hljs-number">1</span>: Start with tire <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> finish the lap <span class="hljs-keyword">in</span> <span class="hljs-number">2</span> seconds.
+Lap <span class="hljs-number">2</span>: Continue with tire <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> finish the lap <span class="hljs-keyword">in</span> <span class="hljs-number">2</span> * <span class="hljs-number">3</span> = <span class="hljs-number">6</span> seconds.
+Lap <span class="hljs-number">3</span>: Change tires to a new tire <span class="hljs-number">0</span> <span class="hljs-keyword">for</span> <span class="hljs-number">5</span> seconds <span class="hljs-keyword">and</span> then finish the lap <span class="hljs-keyword">in</span> another <span class="hljs-number">2</span> seconds.
+Lap <span class="hljs-number">4</span>: Continue with tire <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> finish the lap <span class="hljs-keyword">in</span> <span class="hljs-number">2</span> * <span class="hljs-number">3</span> = <span class="hljs-number">6</span> seconds.
+Total time = <span class="hljs-number">2</span> + <span class="hljs-number">6</span> + <span class="hljs-number">5</span> + <span class="hljs-number">2</span> + <span class="hljs-number">6</span> = <span class="hljs-number">21</span> seconds.
+The minimum time to complete the race <span class="hljs-keyword">is</span> <span class="hljs-number">21</span> seconds.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: tires = [[<span class="hljs-number">1</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]], changeTime = <span class="hljs-number">6</span>, numLaps = <span class="hljs-number">5</span>
+Output: <span class="hljs-number">25</span>
+Explanation: 
+Lap <span class="hljs-number">1</span>: Start with tire <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> finish the lap <span class="hljs-keyword">in</span> <span class="hljs-number">2</span> seconds.
+Lap <span class="hljs-number">2</span>: Continue with tire <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> finish the lap <span class="hljs-keyword">in</span> <span class="hljs-number">2</span> * <span class="hljs-number">2</span> = <span class="hljs-number">4</span> seconds.
+Lap <span class="hljs-number">3</span>: Change tires to a new tire <span class="hljs-number">1</span> <span class="hljs-keyword">for</span> <span class="hljs-number">6</span> seconds <span class="hljs-keyword">and</span> then finish the lap <span class="hljs-keyword">in</span> another <span class="hljs-number">2</span> seconds.
+Lap <span class="hljs-number">4</span>: Continue with tire <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> finish the lap <span class="hljs-keyword">in</span> <span class="hljs-number">2</span> * <span class="hljs-number">2</span> = <span class="hljs-number">4</span> seconds.
+Lap <span class="hljs-number">5</span>: Change tires to tire <span class="hljs-number">0</span> <span class="hljs-keyword">for</span> <span class="hljs-number">6</span> seconds then finish the lap <span class="hljs-keyword">in</span> another <span class="hljs-number">1</span> second.
+Total time = <span class="hljs-number">2</span> + <span class="hljs-number">4</span> + <span class="hljs-number">6</span> + <span class="hljs-number">2</span> + <span class="hljs-number">4</span> + <span class="hljs-number">6</span> + <span class="hljs-number">1</span> = <span class="hljs-number">25</span> seconds.
+The minimum time to complete the race <span class="hljs-keyword">is</span> <span class="hljs-number">25</span> seconds. 
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= tires.length &lt;= 105</code></p></li>
+<li><p><code>tires[i].length == 2</code></p></li>
+<li><p><code>1 &lt;= fi, changeTime &lt;= 105</code></p></li>
+<li><p><code>2 &lt;= ri &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= numLaps &lt;= 1000</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minimumFinishTime</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] tires, <span class="hljs-keyword">int</span> changeTime, <span class="hljs-keyword">int</span> numLaps)</span> </span>{
+        <span class="hljs-keyword">int</span> minf = Integer.MAX_VALUE;
+        <span class="hljs-comment">// find the minimum of f, to deal with special case and stronger constraints later.</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] tire : tires) {
+            minf = Math.min(minf, tire[<span class="hljs-number">0</span>]);
+        }
+        <span class="hljs-comment">// if min-f &gt;= changeTime, we can return early</span>
+        <span class="hljs-keyword">if</span> (minf &gt;= changeTime) {
+            <span class="hljs-keyword">return</span> minf * numLaps + changeTime * (numLaps - <span class="hljs-number">1</span>);
+        }
+        <span class="hljs-comment">// shortest[i] record shortest time that one single tire is worth to go the i-th laps</span>
+        <span class="hljs-comment">// worth to go means the i-th lap time is shorter than changeTime + f</span>
+        <span class="hljs-keyword">int</span>[] shortest = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[numLaps + <span class="hljs-number">1</span>];
+        Arrays.fill(shortest, Integer.MAX_VALUE);
+        <span class="hljs-keyword">int</span> len = <span class="hljs-number">0</span>;
+        <span class="hljs-comment">// traverse all tires, and update the shortest[i]</span>
+        <span class="hljs-comment">// this shortest time is available from [1, len] in the array</span>
+        <span class="hljs-comment">// len is updated in the traverse</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] tire : tires) {
+            <span class="hljs-keyword">int</span> f = tire[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">int</span> r = tire[<span class="hljs-number">1</span>];
+            <span class="hljs-comment">// index start from 1 to be consistent with numLaps</span>
+            <span class="hljs-keyword">int</span> index = <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">int</span> t = f;
+            <span class="hljs-keyword">int</span> sum = t;
+            <span class="hljs-comment">// use changeTime + minf here, which is a strong constraints than changeTime + f</span>
+            <span class="hljs-keyword">while</span> (t &lt;= changeTime + minf &amp;&amp; index &lt;= numLaps) {
+                shortest[index] = Math.min(shortest[index], sum);
+                t = t * r;
+                sum += t;
+                index++;
+            }
+            len = Math.max(len, index - <span class="hljs-number">1</span>);
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">2</span>; i &lt;= numLaps; i++) {
+            <span class="hljs-comment">// for j &gt; Math.min(i/2, len), it's simply recombination of the values of shortest</span>
+            <span class="hljs-comment">// [1:len]</span>
+            <span class="hljs-comment">// it's ok to go furthur for the loop, just repeat the Math.min computation</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>; j &lt;= Math.min(i / <span class="hljs-number">2</span>, len); j++) {
+                shortest[i] = Math.min(shortest[i], shortest[j] + shortest[i - j] + changeTime);
+            }
+        }
+        <span class="hljs-keyword">return</span> shortest[numLaps];
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

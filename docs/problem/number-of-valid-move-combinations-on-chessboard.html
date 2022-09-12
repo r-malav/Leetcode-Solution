@@ -1,0 +1,152 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Number of Valid Move Combinations On Chessboard - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2056. Number of Valid Move Combinations On Chessboard</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/backtracking">Backtracking</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/simulation">Simulation</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is an <code>8 x 8</code> chessboard containing <code>n</code> pieces (rooks, queens, or bishops). You are given a string array <code>pieces</code> of length <code>n</code>, where <code>pieces[i]</code> describes the type (rook, queen, or bishop) of the <code>ith</code> piece. In addition, you are given a 2D integer array <code>positions</code> also of length <code>n</code>, where <code>positions[i] = [ri, ci]</code> indicates that the <code>ith</code> piece is currently at the <strong>1-based</strong> coordinate <code>(ri, ci)</code> on the chessboard.</p>
+<p>When making a <strong>move</strong> for a piece, you choose a <strong>destination</strong> square that the piece will travel toward and stop on.</p>
+<ul>
+<li><p>A rook can only travel <strong>horizontally or vertically</strong> from <code>(r, c)</code> to the direction of <code>(r+1, c)</code>, <code>(r-1, c)</code>, <code>(r, c+1)</code>, or <code>(r, c-1)</code>.</p></li>
+<li><p>A queen can only travel <strong>horizontally, vertically, or diagonally</strong> from <code>(r, c)</code> to the direction of <code>(r+1, c)</code>, <code>(r-1, c)</code>, <code>(r, c+1)</code>, <code>(r, c-1)</code>, <code>(r+1, c+1)</code>, <code>(r+1, c-1)</code>, <code>(r-1, c+1)</code>, <code>(r-1, c-1)</code>.</p></li>
+<li><p>A bishop can only travel <strong>diagonally</strong> from <code>(r, c)</code> to the direction of <code>(r+1, c+1)</code>, <code>(r+1, c-1)</code>, <code>(r-1, c+1)</code>, <code>(r-1, c-1)</code>.</p></li>
+</ul>
+<p>You must make a <strong>move</strong> for every piece on the board simultaneously. A <strong>move combination</strong> consists of all the <strong>moves</strong> performed on all the given pieces. Every second, each piece will instantaneously travel <strong>one square</strong> towards their destination if they are not already at it. All pieces start traveling at the <code>0th</code> second. A move combination is <strong>invalid</strong> if, at a given time, <strong>two or more</strong> pieces occupy the same square.</p>
+<p>Return **the number of *<em>valid</em>* move combinations**​​​​​.</p>
+<p><strong>Notes:</strong></p>
+<ul>
+<li><p><strong>No two pieces</strong> will start in the** same** square.</p></li>
+<li><p>You may choose the square a piece is already on as its <strong>destination</strong>.</p></li>
+<li><p>If two pieces are <strong>directly adjacent</strong> to each other, it is valid for them to <strong>move past each other</strong> and swap positions in one second.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/09/23/a1.png" alt="" /></p>
+<pre><code class="hljs">Input: pieces = [<span class="hljs-string">"rook"</span>], positions = <span class="hljs-string">[[1,1]]</span>
+Output: <span class="hljs-number">15</span>
+Explanation: The image above shows the possible squares the piece can move to.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/09/23/a2.png" alt="" /></p>
+<pre><code class="hljs">Input: pieces = [<span class="hljs-string">"queen"</span>], positions = <span class="hljs-string">[[1,1]]</span>
+Output: <span class="hljs-number">22</span>
+Explanation: The image above shows the possible squares the piece can move to.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/09/23/a3.png" alt="" /></p>
+<pre><code class="hljs">Input: pieces = [<span class="hljs-string">"bishop"</span>], positions = <span class="hljs-string">[[4,3]]</span>
+Output: <span class="hljs-number">12</span>
+Explanation: The image above shows the possible squares the piece can move to.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == pieces.length </code></p></li>
+<li><p><code>n == positions.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 4</code></p></li>
+<li><p><code>pieces</code> only contains the strings <code>"rook"</code>, <code>"queen"</code>, and <code>"bishop"</code>.</p></li>
+<li><p>There will be at most one queen on the chessboard.</p></li>
+<li><p><code>1 &lt;= xi, yi &lt;= 8</code></p></li>
+<li><p>Each <code>positions[i]</code> is distinct.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-comment">// 0: rook, queen, bishop</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[][][] dirs = {
+        {{-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>}, {<span class="hljs-number">0</span>, <span class="hljs-number">1</span>}},
+        {{-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>}, {<span class="hljs-number">0</span>, <span class="hljs-number">1</span>}, {<span class="hljs-number">1</span>, <span class="hljs-number">1</span>}, {-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>}, {-<span class="hljs-number">1</span>, <span class="hljs-number">1</span>}, {<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>}},
+        {{<span class="hljs-number">1</span>, <span class="hljs-number">1</span>}, {-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>}, {-<span class="hljs-number">1</span>, <span class="hljs-number">1</span>}, {<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>}}
+    };
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">countCombinations</span><span class="hljs-params">(String[] pieces, <span class="hljs-keyword">int</span>[][] positions)</span> </span>{
+        ArrayList&lt;<span class="hljs-keyword">int</span>[]&gt;[] endPosition = <span class="hljs-keyword">new</span> ArrayList[pieces.length];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; pieces.length; i++) {
+            endPosition[i] = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; pieces.length; i++) {
+            positions[i][<span class="hljs-number">0</span>]--;
+            positions[i][<span class="hljs-number">1</span>]--;
+            endPosition[i].add(positions[i]);
+            <span class="hljs-keyword">int</span> dirIndex = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">switch</span> (pieces[i]) {
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"rook"</span>:
+                    dirIndex = <span class="hljs-number">0</span>;
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"queen"</span>:
+                    dirIndex = <span class="hljs-number">1</span>;
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"bishop"</span>:
+                    dirIndex = <span class="hljs-number">2</span>;
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">default</span>:
+                    <span class="hljs-keyword">break</span>;
+            }
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] d : dirs[dirIndex]) {
+                <span class="hljs-keyword">int</span> r = positions[i][<span class="hljs-number">0</span>];
+                <span class="hljs-keyword">int</span> c = positions[i][<span class="hljs-number">1</span>];
+                <span class="hljs-keyword">while</span> (<span class="hljs-keyword">true</span>) {
+                    r += d[<span class="hljs-number">0</span>];
+                    c += d[<span class="hljs-number">1</span>];
+                    <span class="hljs-keyword">if</span> (r &lt; <span class="hljs-number">0</span> || r &gt;= <span class="hljs-number">8</span> || c &lt; <span class="hljs-number">0</span> || c &gt;= <span class="hljs-number">8</span>) {
+                        <span class="hljs-keyword">break</span>;
+                    }
+                    endPosition[i].add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {r, c});
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> dfs(positions, endPosition, <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[pieces.length], <span class="hljs-number">0</span>);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] positions, ArrayList[] stop, <span class="hljs-keyword">int</span>[] stopIndex, <span class="hljs-keyword">int</span> cur)</span> </span>{
+        <span class="hljs-keyword">if</span> (cur == stopIndex.length) {
+            <span class="hljs-keyword">int</span>[][] p = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[positions.length][<span class="hljs-number">2</span>];
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; p.length; i++) {
+                p[i] = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {positions[i][<span class="hljs-number">0</span>], positions[i][<span class="hljs-number">1</span>]};
+            }
+            <span class="hljs-keyword">return</span> check(p, stop, stopIndex);
+        }
+        <span class="hljs-keyword">int</span> res = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; stop[cur].size(); i++) {
+            stopIndex[cur] = i;
+            res += dfs(positions, stop, stopIndex, cur + <span class="hljs-number">1</span>);
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">check</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] positions, ArrayList&lt;<span class="hljs-keyword">int</span>[]&gt;[] stop, <span class="hljs-keyword">int</span>[] stopIndex)</span> </span>{
+        <span class="hljs-keyword">boolean</span> keepGoing = <span class="hljs-keyword">true</span>;
+        <span class="hljs-keyword">while</span> (keepGoing) {
+            keepGoing = <span class="hljs-keyword">false</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; positions.length; i++) {
+                <span class="hljs-keyword">int</span> diff = stop[i].get(stopIndex[i])[<span class="hljs-number">0</span>] - positions[i][<span class="hljs-number">0</span>];
+                <span class="hljs-keyword">if</span> (diff &gt; <span class="hljs-number">0</span>) {
+                    keepGoing = <span class="hljs-keyword">true</span>;
+                    positions[i][<span class="hljs-number">0</span>]++;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (diff &lt; <span class="hljs-number">0</span>) {
+                    keepGoing = <span class="hljs-keyword">true</span>;
+                    positions[i][<span class="hljs-number">0</span>]--;
+                }
+                diff = stop[i].get(stopIndex[i])[<span class="hljs-number">1</span>] - positions[i][<span class="hljs-number">1</span>];
+                <span class="hljs-keyword">if</span> (diff &gt; <span class="hljs-number">0</span>) {
+                    keepGoing = <span class="hljs-keyword">true</span>;
+                    positions[i][<span class="hljs-number">1</span>]++;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (diff &lt; <span class="hljs-number">0</span>) {
+                    keepGoing = <span class="hljs-keyword">true</span>;
+                    positions[i][<span class="hljs-number">1</span>]--;
+                }
+            }
+            Set&lt;Integer&gt; seen = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] position : positions) {
+                <span class="hljs-keyword">int</span> key = position[<span class="hljs-number">0</span>] * <span class="hljs-number">100</span> + position[<span class="hljs-number">1</span>];
+                <span class="hljs-keyword">if</span> (seen.contains(key)) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+                }
+                seen.add(key);
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

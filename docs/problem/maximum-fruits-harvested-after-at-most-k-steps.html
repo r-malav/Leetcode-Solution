@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Fruits Harvested After at Most K Steps - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2106. Maximum Fruits Harvested After at Most K Steps</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sliding-window">Sliding Window</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/prefix-sum">Prefix Sum</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-performance-of-a-team.html">Maximum Performance of a Team</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Fruits are available at some positions on an infinite x-axis. You are given a 2D integer array <code>fruits</code> where <code>fruits[i] = [positioni, amounti]</code> depicts <code>amounti</code> fruits at the position <code>positioni</code>. <code>fruits</code> is already <strong>sorted</strong> by <code>positioni</code> in <strong>ascending order</strong>, and each <code>positioni</code> is <strong>unique</strong>.</p>
+<p>You are also given an integer <code>startPos</code> and an integer <code>k</code>. Initially, you are at the position <code>startPos</code>. From any position, you can either walk to the <strong>left or right</strong>. It takes <strong>one step</strong> to move <strong>one unit</strong> on the x-axis, and you can walk <strong>at most</strong> <code>k</code> steps in total. For every position you reach, you harvest all the fruits at that position, and the fruits will disappear from that position.</p>
+<p>Return **the *<em>maximum total number</em>* of fruits you can harvest**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/11/21/1.png" alt="" /></p>
+<pre><code class="hljs">Input: fruits = [[<span class="hljs-number">2</span>,<span class="hljs-number">8</span>],[<span class="hljs-number">6</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">8</span>,<span class="hljs-number">6</span>]], startPos = <span class="hljs-number">5</span>, k = <span class="hljs-number">4</span>
+Output: <span class="hljs-number">9</span>
+Explanation: 
+The optimal way <span class="hljs-keyword">is</span> to:
+- Move right to position <span class="hljs-number">6</span> <span class="hljs-keyword">and</span> harvest <span class="hljs-number">3</span> fruits
+- Move right to position <span class="hljs-number">8</span> <span class="hljs-keyword">and</span> harvest <span class="hljs-number">6</span> fruits
+You moved <span class="hljs-number">3</span> steps <span class="hljs-keyword">and</span> harvested <span class="hljs-number">3</span> + <span class="hljs-number">6</span> = <span class="hljs-number">9</span> fruits <span class="hljs-keyword">in</span> total.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/11/21/2.png" alt="" /></p>
+<pre><code class="hljs">Input: fruits = [[<span class="hljs-number">0</span>,<span class="hljs-number">9</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">7</span>],[<span class="hljs-number">6</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">7</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">10</span>,<span class="hljs-number">9</span>]], startPos = <span class="hljs-number">5</span>, k = <span class="hljs-number">4</span>
+Output: <span class="hljs-number">14</span>
+Explanation: 
+You can move at most k = <span class="hljs-number">4</span> steps, so you cannot reach position <span class="hljs-number">0</span> nor <span class="hljs-number">10.</span>
+The optimal way <span class="hljs-keyword">is</span> to:
+- Harvest the <span class="hljs-number">7</span> fruits at the starting position <span class="hljs-number">5</span>
+- Move left to position <span class="hljs-number">4</span> <span class="hljs-keyword">and</span> harvest <span class="hljs-number">1</span> fruit
+- Move right to position <span class="hljs-number">6</span> <span class="hljs-keyword">and</span> harvest <span class="hljs-number">2</span> fruits
+- Move right to position <span class="hljs-number">7</span> <span class="hljs-keyword">and</span> harvest <span class="hljs-number">4</span> fruits
+You moved <span class="hljs-number">1</span> + <span class="hljs-number">3</span> = <span class="hljs-number">4</span> steps <span class="hljs-keyword">and</span> harvested <span class="hljs-number">7</span> + <span class="hljs-number">1</span> + <span class="hljs-number">2</span> + <span class="hljs-number">4</span> = <span class="hljs-number">14</span> fruits <span class="hljs-keyword">in</span> total.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/11/21/3.png" alt="" /></p>
+<pre><code class="hljs">Input: fruits = [[<span class="hljs-number">0</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">6</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">8</span>,<span class="hljs-number">5</span>]], startPos = <span class="hljs-number">3</span>, k = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">0</span>
+Explanation:
+You can move at most k = <span class="hljs-number">2</span> steps <span class="hljs-keyword">and</span> cannot reach any position with fruits.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= fruits.length &lt;= 105</code></p></li>
+<li><p><code>fruits[i].length == 2</code></p></li>
+<li><p><code>0 &lt;= startPos, positioni &lt;= 2 * 105</code></p></li>
+<li><p><code>positioni-1 &lt; positioni</code> for any <code>i &gt; 0</code>&nbsp;(<strong>0-indexed</strong>)</p></li>
+<li><p><code>1 &lt;= amounti &lt;= 104</code></p></li>
+<li><p><code>0 &lt;= k &lt;= 2 * 105</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxTotalFruits</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] fruits, <span class="hljs-keyword">int</span> startPos, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">int</span> res = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> sum = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> left = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> right = <span class="hljs-number">0</span>; right &lt; fruits.length; right++) {
+            sum += fruits[right][<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">while</span> (left &lt;= right &amp;&amp; !isValidRange(fruits[left][<span class="hljs-number">0</span>], fruits[right][<span class="hljs-number">0</span>], startPos, k)) {
+                sum -= fruits[left++][<span class="hljs-number">1</span>];
+            }
+            res = Math.max(sum, res);
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isValidRange</span><span class="hljs-params">(<span class="hljs-keyword">int</span> leftPos, <span class="hljs-keyword">int</span> rightPos, <span class="hljs-keyword">int</span> startPos, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">final</span> <span class="hljs-keyword">boolean</span> result;
+        <span class="hljs-keyword">if</span> (rightPos &lt;= startPos) {
+            result = startPos - leftPos &lt;= k;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (leftPos &gt;= startPos) {
+            result = rightPos - startPos &lt;= k;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">int</span> left = startPos - leftPos;
+            <span class="hljs-keyword">int</span> right = rightPos - startPos;
+            result = left &lt;= right ? left * <span class="hljs-number">2</span> + right &lt;= k : right * <span class="hljs-number">2</span> + left &lt;= k;
+        }
+        <span class="hljs-keyword">return</span> result;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

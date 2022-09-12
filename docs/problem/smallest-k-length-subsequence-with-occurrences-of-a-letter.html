@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Smallest K-Length Subsequence With Occurrences of a Letter - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2030. Smallest K-Length Subsequence With Occurrences of a Letter</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/stack">Stack</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/monotonic-stack">Monotonic Stack</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/remove-duplicate-letters.html">Remove Duplicate Letters</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/subarray-with-elements-greater-than-varying-threshold.html">Subarray With Elements Greater Than Varying Threshold</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a string <code>s</code>, an integer <code>k</code>, a letter <code>letter</code>, and an integer <code>repetition</code>.</p>
+<p>Return **the *<em>lexicographically smallest</em>* subsequence of** <code>s</code>** of length** <code>k</code> <strong>that has the letter</strong> <code>letter</code> **appear *<em>at least</em>*** <code>repetition</code> *<em>times</em>*. The test cases are generated so that the <code>letter</code> appears in <code>s</code> *<em>at least</em>* <code>repetition</code> times.</p>
+<p>A <strong>subsequence</strong> is a string that can be derived from another string by deleting some or no characters without changing the order of the remaining characters.</p>
+<p>A string <code>a</code> is <strong>lexicographically smaller</strong> than a string <code>b</code> if in the first position where <code>a</code> and <code>b</code> differ, string <code>a</code> has a letter that appears earlier in the alphabet than the corresponding letter in <code>b</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"leet"</span>, k = <span class="hljs-number">3</span>, letter = <span class="hljs-string">"e"</span>, repetition = <span class="hljs-number">1</span>
+Output: <span class="hljs-string">"eet"</span>
+Explanation: There are <span class="hljs-literal">four</span> subsequences <span class="hljs-keyword">of</span> <span class="hljs-built_in">length</span> <span class="hljs-number">3</span> that have <span class="hljs-keyword">the</span> letter <span class="hljs-string">'e'</span> appear <span class="hljs-keyword">at</span> least <span class="hljs-number">1</span> <span class="hljs-built_in">time</span>:
+- <span class="hljs-string">"lee"</span> (<span class="hljs-built_in">from</span> <span class="hljs-string">"leet"</span>)
+- <span class="hljs-string">"let"</span> (<span class="hljs-built_in">from</span> <span class="hljs-string">"leet"</span>)
+- <span class="hljs-string">"let"</span> (<span class="hljs-built_in">from</span> <span class="hljs-string">"leet"</span>)
+- <span class="hljs-string">"eet"</span> (<span class="hljs-built_in">from</span> <span class="hljs-string">"leet"</span>)
+The lexicographically smallest subsequence <span class="hljs-keyword">among</span> them is <span class="hljs-string">"eet"</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/09/13/smallest-k-length-subsequence.png" alt="" /></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"leetcode"</span>, k = <span class="hljs-number">4</span>, letter = <span class="hljs-string">"e"</span>, repetition = <span class="hljs-number">2</span>
+Output: <span class="hljs-string">"ecde"</span>
+Explanation: <span class="hljs-string">"ecde"</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">the</span> lexicographically smallest subsequence <span class="hljs-keyword">of</span> <span class="hljs-built_in">length</span> <span class="hljs-number">4</span> <span class="hljs-keyword">that</span> has <span class="hljs-keyword">the</span> letter <span class="hljs-string">"e"</span> appear <span class="hljs-keyword">at</span> least <span class="hljs-number">2</span> <span class="hljs-keyword">times</span>.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"bb"</span>, k = <span class="hljs-number">2</span>, letter = <span class="hljs-string">"b"</span>, repetition = <span class="hljs-number">2</span>
+Output: <span class="hljs-string">"bb"</span>
+Explanation: <span class="hljs-string">"bb"</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">the</span> only subsequence <span class="hljs-keyword">of</span> <span class="hljs-built_in">length</span> <span class="hljs-number">2</span> <span class="hljs-keyword">that</span> has <span class="hljs-keyword">the</span> letter <span class="hljs-string">"b"</span> appear <span class="hljs-keyword">at</span> least <span class="hljs-number">2</span> <span class="hljs-keyword">times</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= repetition &lt;= k &lt;= s.length &lt;= 5 * 104</code></p></li>
+<li><p><code>s</code> consists of lowercase English letters.</p></li>
+<li><p><code>letter</code> is a lowercase English letter, and appears in <code>s</code> at least <code>repetition</code> times.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">smallestSubsequence</span><span class="hljs-params">(String s, <span class="hljs-keyword">int</span> k, <span class="hljs-keyword">char</span> letter, <span class="hljs-keyword">int</span> repetition)</span> </span>{
+        <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> c : s.toCharArray()) {
+            count += c == letter ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>;
+        }
+        StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; s.length(); count -= s.charAt(i++) == letter ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">while</span> (sb.length() + s.length() &gt; i + k
+                    &amp;&amp; sb.length() &gt; <span class="hljs-number">0</span>
+                    &amp;&amp; s.charAt(i) &lt; sb.charAt(sb.length() - <span class="hljs-number">1</span>)
+                    &amp;&amp; (sb.charAt(sb.length() - <span class="hljs-number">1</span>) != letter || count != repetition)) {
+                repetition += sb.charAt(sb.length() - <span class="hljs-number">1</span>) == letter ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>;
+                sb.setLength(sb.length() - <span class="hljs-number">1</span>);
+            }
+            <span class="hljs-keyword">if</span> (k - sb.length() &gt; Math.max(<span class="hljs-number">0</span>, s.charAt(i) == letter ? <span class="hljs-number">0</span> : repetition)) {
+                sb.append(s.charAt(i));
+                repetition -= s.charAt(i) == letter ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> sb.toString();
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

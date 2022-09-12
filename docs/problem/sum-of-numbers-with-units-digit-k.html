@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Sum of Numbers With Units Digit K - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2310. Sum of Numbers With Units Digit K</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/enumeration">Enumeration</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/digit-count-in-range.html">Digit Count in Range</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/count-integers-with-even-digit-sum.html">Count Integers With Even Digit Sum</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given two integers <code>num</code> and <code>k</code>, consider a set of positive integers with the following properties:</p>
+<ul>
+<li><p>The units digit of each integer is <code>k</code>.</p></li>
+<li><p>The sum of the integers is <code>num</code>.</p></li>
+</ul>
+<p>Return **the *<em>minimum</em>* possible size of such a set, or <strong><code>-1</code></strong> if no such set exists.**</p>
+<p>Note:</p>
+<ul>
+<li><p>The set can contain multiple instances of the same integer, and the sum of an empty set is considered <code>0</code>.</p></li>
+<li><p>The <strong>units digit</strong> of a number is the rightmost digit of the number.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: num = <span class="hljs-number">58</span>, k = <span class="hljs-number">9</span>
+Output: <span class="hljs-number">2</span>
+Explanation:
+One valid <span class="hljs-keyword">set</span> <span class="hljs-keyword">is</span> [<span class="hljs-number">9</span>,<span class="hljs-number">49</span>], as the sum <span class="hljs-keyword">is</span> <span class="hljs-number">58</span> <span class="hljs-keyword">and</span> each <span class="hljs-built_in">int</span>eger has a units digit of <span class="hljs-number">9.</span>
+Another valid <span class="hljs-keyword">set</span> <span class="hljs-keyword">is</span> [<span class="hljs-number">19</span>,<span class="hljs-number">39</span>].
+It can be shown that <span class="hljs-number">2</span> <span class="hljs-keyword">is</span> the minimum possible size of a valid <span class="hljs-keyword">set</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">num</span> <span class="hljs-string">=</span> <span class="hljs-number">37</span><span class="hljs-string">,</span> <span class="hljs-string">k</span> <span class="hljs-string">=</span> <span class="hljs-number">2</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">-1</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">It</span> <span class="hljs-string">is</span> <span class="hljs-string">not</span> <span class="hljs-string">possible</span> <span class="hljs-string">to</span> <span class="hljs-string">obtain</span> <span class="hljs-string">a</span> <span class="hljs-string">sum</span> <span class="hljs-string">of</span> <span class="hljs-number">37</span> <span class="hljs-string">using</span> <span class="hljs-string">only</span> <span class="hljs-string">integers</span> <span class="hljs-string">that</span> <span class="hljs-string">have</span> <span class="hljs-string">a</span> <span class="hljs-string">units</span> <span class="hljs-string">digit</span> <span class="hljs-string">of</span> <span class="hljs-number">2</span><span class="hljs-string">.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">num</span> <span class="hljs-string">=</span> <span class="hljs-number">0</span><span class="hljs-string">,</span> <span class="hljs-string">k</span> <span class="hljs-string">=</span> <span class="hljs-number">7</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">0</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">The</span> <span class="hljs-string">sum</span> <span class="hljs-string">of</span> <span class="hljs-string">an</span> <span class="hljs-string">empty</span> <span class="hljs-string">set</span> <span class="hljs-string">is</span> <span class="hljs-string">considered</span> <span class="hljs-number">0</span><span class="hljs-string">.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>0 &lt;= num &lt;= 3000</code></p></li>
+<li><p><code>0 &lt;= k &lt;= 9</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minimumNumbers</span><span class="hljs-params">(<span class="hljs-keyword">int</span> nums, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-comment">// Base Case Check</span>
+        <span class="hljs-keyword">if</span> (nums == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">int</span> x = nums % <span class="hljs-number">10</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">10</span>; i++) {
+            <span class="hljs-comment">// check if the unit digits are equal for any case and if n&gt;k*i</span>
+            <span class="hljs-keyword">if</span> ((k * i) % <span class="hljs-number">10</span> == x &amp;&amp; nums &gt;= k * i) {
+                <span class="hljs-keyword">return</span> i;
+            }
+        }
+        <span class="hljs-comment">// in case nothing matches</span>
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

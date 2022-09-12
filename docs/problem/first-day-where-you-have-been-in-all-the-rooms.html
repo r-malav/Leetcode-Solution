@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>First Day Where You Have Been in All the Rooms - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1997. First Day Where You Have Been in All the Rooms</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There are <code>n</code> rooms you need to visit, labeled from <code>0</code> to <code>n - 1</code>. Each day is labeled, starting from <code>0</code>. You will go in and visit one room a day.</p>
+<p>Initially on day <code>0</code>, you visit room <code>0</code>. The <strong>order</strong> you visit the rooms for the coming days is determined by the following <strong>rules</strong> and a given <strong>0-indexed</strong> array <code>nextVisit</code> of length <code>n</code>:</p>
+<ul>
+<li><p>Assuming that on a day, you visit room <code>i</code>,</p></li>
+<li><p>if you have been in room <code>i</code> an <strong>odd</strong> number of times (<strong>including</strong> the current visit), on the <strong>next</strong> day you will visit a room with a <strong>lower or equal room number</strong> specified by <code>nextVisit[i]</code> where <code>0 &lt;= nextVisit[i] &lt;= i</code>;</p></li>
+<li><p>if you have been in room <code>i</code> an <strong>even</strong> number of times (<strong>including</strong> the current visit), on the <strong>next</strong> day you will visit room <code>(i + 1) mod n</code>.</p></li>
+</ul>
+<p>Return **the label of the *<em>first</em>* day where you have been in <strong>all</strong> the rooms**. It can be shown that such a day exists. Since the answer may be very large, return it *<em>modulo</em>* <code>109 + 7</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nextVisit = [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]
+Output: <span class="hljs-number">2</span>
+Explanation:
+- On day <span class="hljs-number">0</span>, you visit room <span class="hljs-number">0.</span> The total times you have been <span class="hljs-keyword">in</span> room <span class="hljs-number">0</span> <span class="hljs-keyword">is</span> <span class="hljs-number">1</span>, which <span class="hljs-keyword">is</span> odd.
+&amp;nbsp; On the next day you will visit room nextVisit[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>
+- On day <span class="hljs-number">1</span>, you visit room <span class="hljs-number">0</span>, The total times you have been <span class="hljs-keyword">in</span> room <span class="hljs-number">0</span> <span class="hljs-keyword">is</span> <span class="hljs-number">2</span>, which <span class="hljs-keyword">is</span> even.
+&amp;nbsp; On the next day you will visit room (<span class="hljs-number">0</span> + <span class="hljs-number">1</span>) mod <span class="hljs-number">2</span> = <span class="hljs-number">1</span>
+- On day <span class="hljs-number">2</span>, you visit room <span class="hljs-number">1.</span> This <span class="hljs-keyword">is</span> the first day where you have been <span class="hljs-keyword">in</span> all the rooms.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nextVisit = [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>]
+Output: <span class="hljs-number">6</span>
+Explanation:
+Your room visiting order <span class="hljs-keyword">for</span> each day <span class="hljs-keyword">is</span>: [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,...].
+Day <span class="hljs-number">6</span> <span class="hljs-keyword">is</span> the first day where you have been <span class="hljs-keyword">in</span> all the rooms.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: nextVisit = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>]
+Output: <span class="hljs-number">6</span>
+Explanation:
+Your room visiting order <span class="hljs-keyword">for</span> each day <span class="hljs-keyword">is</span>: [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,...].
+Day <span class="hljs-number">6</span> <span class="hljs-keyword">is</span> the first day where you have been <span class="hljs-keyword">in</span> all the rooms.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == nextVisit.length</code></p></li>
+<li><p><code>2 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>0 &lt;= nextVisit[i] &lt;= i</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">firstDayBeenInAllRooms</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nextVisit)</span> </span>{
+        <span class="hljs-keyword">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[nextVisit.length];
+        <span class="hljs-keyword">int</span> m = <span class="hljs-number">1000000007</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; dp.length; i++) {
+            <span class="hljs-keyword">int</span> steps = <span class="hljs-number">2</span> * dp[i - <span class="hljs-number">1</span>] - dp[nextVisit[i - <span class="hljs-number">1</span>]] + <span class="hljs-number">2</span>;
+            dp[i] = steps &lt; <span class="hljs-number">0</span> ? (steps + m) % m : steps % m;
+        }
+        <span class="hljs-keyword">return</span> dp[dp.length - <span class="hljs-number">1</span>];
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

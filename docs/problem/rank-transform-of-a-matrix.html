@@ -1,0 +1,119 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Rank Transform of a Matrix - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1632. Rank Transform of a Matrix</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/union-find">Union Find</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/graph">Graph</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/topological-sort">Topological Sort</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/rank-transform-of-an-array.html">Rank Transform of an Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/gcd-sort-of-an-array.html">GCD Sort of an Array</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an <code>m x n</code> <code>matrix</code>, return **a new matrix *<em><code>answer</code></em>* where <strong><code>answer[row][col]</code></strong> is the <strong><em></strong></em>rank** of **<code>matrix[row][col]</code>.</p>
+<p>The <strong>rank</strong> is an <strong>integer</strong> that represents how large an element is compared to other elements. It is calculated using the following rules:</p>
+<ul>
+<li><p>The rank is an integer starting from <code>1</code>.
+If two elements <code>p</code> and <code>q</code> are in the <strong>same row or column</strong>, then:</p></li>
+<li><p>If <code>p &lt; q</code> then <code>rank(p) &lt; rank(q)</code></p></li>
+<li><p>If <code>p == q</code> then <code>rank(p) == rank(q)</code></p></li>
+<li><p>If <code>p &gt; q</code> then <code>rank(p) &gt; rank(q)</code></p></li>
+
+<li><p>The <strong>rank</strong> should be as <strong>small</strong> as possible.</p></li>
+</ul>
+<p>The test cases are generated so that <code>answer</code> is unique under the given rules.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/10/18/rank1.jpg" alt="" /></p>
+<pre><code class="hljs">Input: matrix = [[1,2],[3,4]]
+Output: [[1,2],[2,3]]
+Explanation:
+The rank of matrix[<span class="hljs-string">0</span>][<span class="hljs-symbol">0</span>] is 1 because it is the smallest integer in its row and column.
+The rank of matrix[<span class="hljs-string">0</span>][<span class="hljs-symbol">1</span>] is 2 because matrix[<span class="hljs-string">0</span>][<span class="hljs-symbol">1</span>] &gt; matrix[<span class="hljs-string">0</span>][<span class="hljs-symbol">0</span>] and matrix[<span class="hljs-string">0</span>][<span class="hljs-symbol">0</span>] is rank 1.
+The rank of matrix[<span class="hljs-string">1</span>][<span class="hljs-symbol">0</span>] is 2 because matrix[<span class="hljs-string">1</span>][<span class="hljs-symbol">0</span>] &gt; matrix[<span class="hljs-string">0</span>][<span class="hljs-symbol">0</span>] and matrix[<span class="hljs-string">0</span>][<span class="hljs-symbol">0</span>] is rank 1.
+The rank of matrix[<span class="hljs-string">1</span>][<span class="hljs-symbol">1</span>] is 3 because matrix[<span class="hljs-string">1</span>][<span class="hljs-symbol">1</span>] &gt; matrix[<span class="hljs-string">0</span>][<span class="hljs-symbol">1</span>], matrix[<span class="hljs-string">1</span>][<span class="hljs-symbol">1</span>] &gt; matrix[<span class="hljs-string">1</span>][<span class="hljs-symbol">0</span>], and both matrix[<span class="hljs-string">0</span>][<span class="hljs-symbol">1</span>] and matrix[<span class="hljs-string">1</span>][<span class="hljs-symbol">0</span>] are rank 2.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/10/18/rank2.jpg" alt="" /></p>
+<pre><code class="hljs">Input: matrix = <span class="hljs-string">[[7,7],[7,7]]</span>
+Output: <span class="hljs-string">[[1,1],[1,1]]</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/10/18/rank3.jpg" alt="" /></p>
+<pre><code class="hljs">Input: matrix = [[<span class="hljs-number">20</span>,<span class="hljs-number">-21</span>,<span class="hljs-number">14</span>],[<span class="hljs-number">-19</span>,<span class="hljs-number">4</span>,<span class="hljs-number">19</span>],[<span class="hljs-number">22</span>,<span class="hljs-number">-47</span>,<span class="hljs-number">24</span>],[<span class="hljs-number">-19</span>,<span class="hljs-number">4</span>,<span class="hljs-number">19</span>]]
+Output: [[<span class="hljs-number">4</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">6</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == matrix.length</code></p></li>
+<li><p><code>n == matrix[i].length</code></p></li>
+<li><p><code>1 &lt;= m, n &lt;= 500</code></p></li>
+<li><p><code>-109 &lt;= matrix[row][col] &lt;= 109</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[][] matrixRankTransform(<span class="hljs-keyword">int</span>[][] matrix) {
+        <span class="hljs-keyword">int</span> rowCount = matrix.length;
+        <span class="hljs-keyword">int</span> colCount = matrix[<span class="hljs-number">0</span>].length;
+        <span class="hljs-keyword">long</span>[] nums = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[rowCount * colCount];
+        <span class="hljs-keyword">int</span> numsIdx = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span>[] rows = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[rowCount];
+        <span class="hljs-keyword">int</span>[] cols = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[colCount];
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> r = rowCount - <span class="hljs-number">1</span>; r &gt;= <span class="hljs-number">0</span>; r--) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> c = colCount - <span class="hljs-number">1</span>; c &gt;= <span class="hljs-number">0</span>; c--) {
+                nums[numsIdx++] = ((<span class="hljs-keyword">long</span>) matrix[r][c] &lt;&lt; <span class="hljs-number">32</span>) | ((<span class="hljs-keyword">long</span>) r &lt;&lt; <span class="hljs-number">16</span>) | c;
+            }
+        }
+        Arrays.sort(nums);
+        <span class="hljs-keyword">int</span> nIdx = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (nIdx &lt; numsIdx) {
+            <span class="hljs-keyword">long</span> num = nums[nIdx] &amp; <span class="hljs-number">0xFFFFFFFF00000000L</span>;
+            <span class="hljs-keyword">int</span> endIdx = nIdx + <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">while</span> (endIdx &lt; numsIdx &amp;&amp; ((nums[endIdx] &amp; <span class="hljs-number">0xFFFFFFFF00000000L</span>) == num)) {
+                endIdx++;
+            }
+            doGroup(matrix, nums, nIdx, endIdx, rows, cols);
+            nIdx = endIdx;
+        }
+        <span class="hljs-keyword">return</span> matrix;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doGroup</span><span class="hljs-params">(
+            <span class="hljs-keyword">int</span>[][] matrix, <span class="hljs-keyword">long</span>[] nums, <span class="hljs-keyword">int</span> startIdx, <span class="hljs-keyword">int</span> endIdx, <span class="hljs-keyword">int</span>[] rows, <span class="hljs-keyword">int</span>[] cols)</span> </span>{
+        <span class="hljs-keyword">if</span> (startIdx + <span class="hljs-number">1</span> == endIdx) {
+            <span class="hljs-keyword">int</span> r = ((<span class="hljs-keyword">int</span>) nums[startIdx] &gt;&gt; <span class="hljs-number">16</span>) &amp; <span class="hljs-number">0xFFFF</span>;
+            <span class="hljs-keyword">int</span> c = (<span class="hljs-keyword">int</span>) nums[startIdx] &amp; <span class="hljs-number">0xFFFF</span>;
+            matrix[r][c] = rows[r] = cols[c] = Math.max(rows[r], cols[c]) + <span class="hljs-number">1</span>;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">int</span> rowCount = matrix.length;
+            <span class="hljs-keyword">int</span>[] ufind = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[rowCount + matrix[<span class="hljs-number">0</span>].length];
+            Arrays.fill(ufind, -<span class="hljs-number">1</span>);
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> nIdx = startIdx; nIdx &lt; endIdx; nIdx++) {
+                <span class="hljs-keyword">int</span> r = ((<span class="hljs-keyword">int</span>) nums[nIdx] &gt;&gt; <span class="hljs-number">16</span>) &amp; <span class="hljs-number">0xFFFF</span>;
+                <span class="hljs-keyword">int</span> c = (<span class="hljs-keyword">int</span>) nums[nIdx] &amp; <span class="hljs-number">0xFFFF</span>;
+                <span class="hljs-keyword">int</span> pr = getIdx(ufind, r);
+                <span class="hljs-keyword">int</span> pc = getIdx(ufind, rowCount + c);
+                <span class="hljs-keyword">if</span> (pr != pc) {
+                    ufind[pr] =
+                            Math.min(
+                                    Math.min(ufind[pr], ufind[pc]),
+                                    -Math.max(rows[r], cols[c]) - <span class="hljs-number">1</span>);
+                    ufind[pc] = pr;
+                }
+            }
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> nIdx = startIdx; nIdx &lt; endIdx; nIdx++) {
+                <span class="hljs-keyword">int</span> r = ((<span class="hljs-keyword">int</span>) nums[nIdx] &gt;&gt; <span class="hljs-number">16</span>) &amp; <span class="hljs-number">0xFFFF</span>;
+                <span class="hljs-keyword">int</span> c = (<span class="hljs-keyword">int</span>) nums[nIdx] &amp; <span class="hljs-number">0xFFFF</span>;
+                matrix[r][c] = rows[r] = cols[c] = -ufind[getIdx(ufind, r)];
+            }
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getIdx</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] ufind, <span class="hljs-keyword">int</span> idx)</span> </span>{
+        <span class="hljs-keyword">if</span> (ufind[idx] &lt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> idx;
+        } <span class="hljs-keyword">else</span> {
+            ufind[idx] = getIdx(ufind, ufind[idx]);
+            <span class="hljs-keyword">return</span> ufind[idx];
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

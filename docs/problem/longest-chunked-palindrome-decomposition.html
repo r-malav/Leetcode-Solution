@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Longest Chunked Palindrome Decomposition - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1251. Longest Chunked Palindrome Decomposition</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/two-pointers">Two Pointers</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/rolling-hash">Rolling Hash</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-function">Hash Function</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a string <code>text</code>. You should split it to k substrings <code>(subtext1, subtext2, ..., subtextk)</code> such that:</p>
+<ul>
+<li><p><code>subtexti</code> is a <strong>non-empty</strong> string.</p></li>
+<li><p>The concatenation of all the substrings is equal to <code>text</code> (i.e., <code>subtext1 + subtext2 + ... + subtextk == text</code>).</p></li>
+<li><p><code>subtexti == subtextk - i + 1</code> for all valid values of <code>i</code> (i.e., <code>1 &lt;= i &lt;= k</code>).</p></li>
+</ul>
+<p>Return the largest possible value of <code>k</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: <span class="hljs-keyword">text</span> = <span class="hljs-string">"ghiabcdefhelloadamhelloabcdefghi"</span>
+Output: <span class="hljs-number">7</span>
+Explanation: We can <span class="hljs-built_in">split</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">string</span> <span class="hljs-keyword">on</span> <span class="hljs-string">"(ghi)(abcdef)(hello)(adam)(hello)(abcdef)(ghi)"</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: <span class="hljs-keyword">text</span> = <span class="hljs-string">"merchant"</span>
+Output: <span class="hljs-number">1</span>
+Explanation: We can <span class="hljs-built_in">split</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">string</span> <span class="hljs-keyword">on</span> <span class="hljs-string">"(merchant)"</span>.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: <span class="hljs-keyword">text</span> = <span class="hljs-string">"antaprezatepzapreanta"</span>
+Output: <span class="hljs-number">11</span>
+Explanation: We can <span class="hljs-built_in">split</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">string</span> <span class="hljs-keyword">on</span> <span class="hljs-string">"(a)(nt)(a)(pre)(za)(tep)(za)(pre)(a)(nt)(a)"</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= text.length &lt;= 1000</code></p></li>
+<li><p><code>text</code> consists only of lowercase English characters.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">longestDecomposition</span><span class="hljs-params">(String text)</span> </span>{
+        <span class="hljs-keyword">int</span> n = text.length();
+        <span class="hljs-keyword">int</span> l = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> r = n - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> len = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+        String lft;
+        String rit;
+        <span class="hljs-keyword">boolean</span> perfectSubstring = <span class="hljs-keyword">false</span>;
+        <span class="hljs-keyword">while</span> (l + len &lt;= r - len + <span class="hljs-number">1</span>) {
+            lft = text.substring(l, l + len);
+            rit = text.substring(r - len + <span class="hljs-number">1</span>, r + <span class="hljs-number">1</span>);
+            <span class="hljs-keyword">if</span> (lft.equals(rit)) {
+                ans += <span class="hljs-number">2</span>;
+                <span class="hljs-keyword">if</span> (l + len == r - len + <span class="hljs-number">1</span>) {
+                    perfectSubstring = <span class="hljs-keyword">true</span>;
+                    <span class="hljs-keyword">break</span>;
+                }
+                l = l + len;
+                r = r - len;
+                len = <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> {
+                len++;
+            }
+        }
+        <span class="hljs-keyword">if</span> (!perfectSubstring) {
+            ans++;
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

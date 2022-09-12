@@ -1,0 +1,84 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Recover a Tree From Preorder Traversal - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1028. Recover a Tree From Preorder Traversal</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/tree">Tree</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-tree">Binary Tree</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>We run a&nbsp;preorder&nbsp;depth-first search (DFS) on the <code>root</code> of a binary tree.</p>
+<p>At each node in this traversal, we output <code>D</code> dashes (where <code>D</code> is the depth of this node), then we output the value of this node.&nbsp; If the depth of a node is <code>D</code>, the depth of its immediate child is <code>D + 1</code>.&nbsp; The depth of the <code>root</code> node is <code>0</code>.</p>
+<p>If a node has only one child, that child is guaranteed to be <strong>the left child</strong>.</p>
+<p>Given the output <code>traversal</code> of this traversal, recover the tree and return <strong>its</strong> <code>root</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/04/08/recover-a-tree-from-preorder-traversal.png" alt="" /></p>
+<pre><code class="hljs">Input: traversal = <span class="hljs-string">"1-2--3--4-5--6--7"</span>
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/04/11/screen-shot-2019-04-10-at-114101-pm.png" alt="" /></p>
+<pre><code class="hljs">Input: traversal = <span class="hljs-string">"1-2--3---4-5--6---7"</span>
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">6</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">4</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">7</span>]
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/04/11/screen-shot-2019-04-10-at-114955-pm.png" alt="" /></p>
+<pre><code class="hljs">Input: traversal = <span class="hljs-string">"1-401--349---90--88"</span>
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">401</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">349</span>,<span class="hljs-number">88</span>,<span class="hljs-number">90</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p>The number of nodes in the original tree is in the range <code>[1, 1000]</code>.</p></li>
+<li><p><code>1 &lt;= Node.val &lt;= 109</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> ptr = <span class="hljs-number">0</span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> TreeNode <span class="hljs-title">recoverFromPreorder</span><span class="hljs-params">(String traversal)</span> </span>{
+        <span class="hljs-keyword">return</span> find(traversal, <span class="hljs-number">0</span>);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> TreeNode <span class="hljs-title">find</span><span class="hljs-params">(String traversal, <span class="hljs-keyword">int</span> level)</span> </span>{
+        <span class="hljs-keyword">if</span> (ptr == traversal.length()) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+        }
+        <span class="hljs-keyword">int</span> i = ptr;
+        <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (traversal.charAt(i) == <span class="hljs-string">'-'</span>) {
+            count++;
+            i++;
+        }
+        <span class="hljs-keyword">if</span> (count == level) {
+            <span class="hljs-keyword">int</span> start = i;
+            <span class="hljs-keyword">while</span> (i &lt; traversal.length() &amp;&amp; traversal.charAt(i) != <span class="hljs-string">'-'</span>) {
+                i++;
+            }
+            <span class="hljs-keyword">int</span> val = Integer.parseInt(traversal.substring(start, i));
+            ptr = i;
+            TreeNode root = <span class="hljs-keyword">new</span> TreeNode(val);
+            root.left = find(traversal, level + <span class="hljs-number">1</span>);
+            root.right = find(traversal, level + <span class="hljs-number">1</span>);
+            <span class="hljs-keyword">return</span> root;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

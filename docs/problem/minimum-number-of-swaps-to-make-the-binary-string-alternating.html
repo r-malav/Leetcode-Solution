@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Number of Swaps to Make the Binary String Alternating - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1864. Minimum Number of Swaps to Make the Binary String Alternating</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a binary string <code>s</code>, return **the *<em>minimum</em>* number of character swaps to make it <strong>alternating</strong>, or <strong><code>-1</code></strong> if it is impossible.**</p>
+<p>The string is called <strong>alternating</strong> if no two adjacent characters are equal. For example, the strings <code>"010"</code> and <code>"1010"</code> are alternating, while the string <code>"0100"</code> is not.</p>
+<p>Any two characters may be swapped, even if they are&nbsp;<strong>not adjacent</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> s = <span class="hljs-string">"111000"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">1</span>
+<span class="hljs-symbol">Explanation:</span> <span class="hljs-keyword">Swap</span> positions <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-number">4</span>: <span class="hljs-string">"111000"</span> -&gt; <span class="hljs-string">"101010"</span>
+The string is now alternating.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">s</span> <span class="hljs-string">=</span> <span class="hljs-string">"010"</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">0</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">The</span> <span class="hljs-string">string</span> <span class="hljs-string">is</span> <span class="hljs-string">already</span> <span class="hljs-string">alternating,</span> <span class="hljs-literal">no</span> <span class="hljs-string">swaps</span> <span class="hljs-string">are</span> <span class="hljs-string">needed.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> s = <span class="hljs-string">"1110"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">-1</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 1000</code></p></li>
+<li><p><code>s[i]</code> is either <code>'0'</code> or <code>'1'</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minSwaps</span><span class="hljs-params">(String s)</span> </span>{
+        <span class="hljs-keyword">int</span>[][] count = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">2</span>][<span class="hljs-number">2</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+            <span class="hljs-keyword">char</span> c = s.charAt(i);
+            <span class="hljs-keyword">if</span> (i % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) {
+                count[<span class="hljs-number">0</span>][c - <span class="hljs-string">'0'</span>]++;
+            } <span class="hljs-keyword">else</span> {
+                count[<span class="hljs-number">1</span>][c - <span class="hljs-string">'0'</span>]++;
+            }
+        }
+        <span class="hljs-keyword">if</span> ((count[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] == <span class="hljs-number">0</span> &amp;&amp; count[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] == <span class="hljs-number">0</span>) || (count[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>] == <span class="hljs-number">0</span> &amp;&amp; count[<span class="hljs-number">1</span>][<span class="hljs-number">0</span>] == <span class="hljs-number">0</span>)) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">if</span> (count[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] != count[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] &amp;&amp; count[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>] != count[<span class="hljs-number">1</span>][<span class="hljs-number">0</span>]) {
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">int</span> ans1 = count[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] == count[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] ? count[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] : Integer.MAX_VALUE;
+        <span class="hljs-keyword">int</span> ans2 = count[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>] == count[<span class="hljs-number">1</span>][<span class="hljs-number">0</span>] ? count[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>] : Integer.MAX_VALUE;
+        <span class="hljs-keyword">return</span> Math.min(ans1, ans2);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

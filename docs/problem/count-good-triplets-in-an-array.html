@@ -1,0 +1,86 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Count Good Triplets in an Array - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2179. Count Good Triplets in an Array</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/divide-and-conquer">Divide and Conquer</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-indexed-tree">Binary Indexed Tree</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/segment-tree">Segment Tree</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/merge-sort">Merge Sort</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/ordered-set">Ordered Set</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/count-of-smaller-numbers-after-self.html">Count of Smaller Numbers After Self</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/increasing-triplet-subsequence.html">Increasing Triplet Subsequence</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/create-sorted-array-through-instructions.html">Create Sorted Array through Instructions</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given two <strong>0-indexed</strong> arrays <code>nums1</code> and <code>nums2</code> of length <code>n</code>, both of which are <strong>permutations</strong> of <code>[0, 1, ..., n - 1]</code>.</p>
+<p>A <strong>good triplet</strong> is a set of <code>3</code> <strong>distinct</strong> values which are present in <strong>increasing order</strong> by position both in <code>nums1</code> and <code>nums2</code>. In other words, if we consider <code>pos1v</code> as the index of the value <code>v</code> in <code>nums1</code> and <code>pos2v</code> as the index of the value <code>v</code> in <code>nums2</code>, then a good triplet will be a set <code>(x, y, z)</code> where <code>0 &lt;= x, y, z &lt;= n - 1</code>, such that <code>pos1x &lt; pos1y &lt; pos1z</code> and <code>pos2x &lt; pos2y &lt; pos2z</code>.</p>
+<p>Return **the *<em>total number</em>* of good triplets**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums1 = [<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>], nums2 = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+Output: <span class="hljs-number">1</span>
+Explanation: 
+There are <span class="hljs-number">4</span> triplets (x,y,z) such that pos1x &lt; pos1y &lt; pos1z. They are (<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>), (<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">3</span>), (<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>), <span class="hljs-keyword">and</span> (<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>). 
+Out of those triplets, only the triplet (<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>) satisfies pos2x &lt; pos2y &lt; pos2z. Hence, there <span class="hljs-keyword">is</span> only <span class="hljs-number">1</span> good triplet.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums1 = [<span class="hljs-number">4</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>], nums2 = [<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+Output: <span class="hljs-number">4</span>
+Explanation: The <span class="hljs-number">4</span> good triplets are (<span class="hljs-number">4</span>,<span class="hljs-number">0</span>,<span class="hljs-number">3</span>), (<span class="hljs-number">4</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>), (<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>), <span class="hljs-keyword">and</span> (<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>).
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == nums1.length == nums2.length</code></p></li>
+<li><p><code>3 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>0 &lt;= nums1[i], nums2[i] &lt;= n - 1</code></p></li>
+<li><p><code>nums1</code> and <code>nums2</code> are permutations of <code>[0, 1, ..., n - 1]</code>.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">long</span> <span class="hljs-title">goodTriplets</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums1, <span class="hljs-keyword">int</span>[] nums2)</span> </span>{
+        <span class="hljs-keyword">int</span> n = nums1.length;
+        <span class="hljs-keyword">int</span>[] idx = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        <span class="hljs-keyword">int</span>[] arr = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            idx[nums2[i]] = i;
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            arr[i] = idx[nums1[i]];
+        }
+        Tree tree = <span class="hljs-keyword">new</span> Tree(n);
+        <span class="hljs-keyword">long</span> res = <span class="hljs-number">0L</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">int</span> smaller = tree.query(arr[i]);
+            <span class="hljs-keyword">int</span> bigger = n - (arr[i] + <span class="hljs-number">1</span>) - (i - smaller);
+            res += (<span class="hljs-keyword">long</span>) smaller * bigger;
+            tree.update(arr[i] + <span class="hljs-number">1</span>, <span class="hljs-number">1</span>);
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Tree</span> </span>{
+        <span class="hljs-keyword">int</span>[] array;
+        <span class="hljs-keyword">int</span> n;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Tree</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+            <span class="hljs-keyword">this</span>.n = n;
+            array = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n + <span class="hljs-number">1</span>];
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">lowbit</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span> </span>{
+            <span class="hljs-keyword">return</span> x &amp; (-x);
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> delta)</span> </span>{
+            <span class="hljs-keyword">while</span> (i &lt;= n) {
+                array[i] += delta;
+                i += lowbit(i);
+            }
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">query</span><span class="hljs-params">(<span class="hljs-keyword">int</span> k)</span> </span>{
+            <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">while</span> (k &gt; <span class="hljs-number">0</span>) {
+                ans += array[k];
+                k -= lowbit(k);
+            }
+            <span class="hljs-keyword">return</span> ans;
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

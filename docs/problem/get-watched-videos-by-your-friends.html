@@ -1,0 +1,110 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Get Watched Videos by Your Friends - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1311. Get Watched Videos by Your Friends</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There are <code>n</code> people, each person has a unique <strong>id</strong> between <code>0</code> and <code>n-1</code>. Given the arrays <code>watchedVideos</code> and <code>friends</code>, where <code>watchedVideos[i]</code> and <code>friends[i]</code> contain the list of watched videos and the list of friends respectively for the person with <code>id = i</code>.</p>
+<p>Level <strong>1</strong> of videos are all watched videos by your&nbsp;friends, level <strong>2</strong> of videos are all watched videos by the friends of your&nbsp;friends and so on. In general, the level <code>k</code> of videos are all&nbsp;watched videos by people&nbsp;with the shortest path <strong>exactly</strong> equal&nbsp;to&nbsp;<code>k</code> with you. Given your&nbsp;<code>id</code> and the <code>level</code> of videos, return the list of videos ordered by their frequencies (increasing). For videos with the same frequency order them alphabetically from least to greatest.&nbsp;</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/01/02/leetcode_friends_1.png" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: watchedVideos = [[<span class="hljs-string">"A"</span>,<span class="hljs-string">"B"</span>],[<span class="hljs-string">"C"</span>],[<span class="hljs-string">"B"</span>,<span class="hljs-string">"C"</span>],[<span class="hljs-string">"D"</span>]], friends = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]], id = <span class="hljs-number">0</span>, level = <span class="hljs-number">1</span>
+<span class="hljs-symbol">Output</span>: [<span class="hljs-string">"B"</span>,<span class="hljs-string">"C"</span>] 
+<span class="hljs-symbol">Explanation</span>: 
+<span class="hljs-symbol">You</span> have id = <span class="hljs-number">0</span> (green color in the figure) and your friends are (yellow color in the figure):
+<span class="hljs-symbol">Person</span> with id = <span class="hljs-number">1</span> -&gt; watchedVideos = [<span class="hljs-string">"C"</span>]&amp;nbsp;
+<span class="hljs-symbol">Person</span> with id = <span class="hljs-number">2</span> -&gt; watchedVideos = [<span class="hljs-string">"B"</span>,<span class="hljs-string">"C"</span>]&amp;nbsp;
+<span class="hljs-symbol">The</span> frequencies of watchedVideos by your friends are:&amp;nbsp;
+<span class="hljs-symbol">B</span> -&gt; <span class="hljs-number">1</span>&amp;nbsp;
+<span class="hljs-symbol">C</span> -&gt; <span class="hljs-number">2</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/01/02/leetcode_friends_2.png" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: watchedVideos = [[<span class="hljs-string">"A"</span>,<span class="hljs-string">"B"</span>],[<span class="hljs-string">"C"</span>],[<span class="hljs-string">"B"</span>,<span class="hljs-string">"C"</span>],[<span class="hljs-string">"D"</span>]], friends = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]], id = <span class="hljs-number">0</span>, level = <span class="hljs-number">2</span>
+<span class="hljs-symbol">Output</span>: [<span class="hljs-string">"D"</span>]
+<span class="hljs-symbol">Explanation</span>: 
+<span class="hljs-symbol">You</span> have id = <span class="hljs-number">0</span> (green color in the figure) and the only friend of your friends is the person with id = <span class="hljs-number">3</span> (yellow color in the figure).
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == watchedVideos.length ==&amp;nbsp;friends.length</code></p></li>
+<li><p><code>2 &lt;= n&amp;nbsp;&lt;= 100</code></p></li>
+<li><p><code>1 &lt;=&amp;nbsp;watchedVideos[i].length &lt;= 100</code></p></li>
+<li><p><code>1 &lt;=&amp;nbsp;watchedVideos[i][j].length &lt;= 8</code></p></li>
+<li><p><code>0 &lt;= friends[i].length &lt; n</code></p></li>
+<li><p><code>0 &lt;= friends[i][j]&amp;nbsp;&lt; n</code></p></li>
+<li><p><code>0 &lt;= id &lt; n</code></p></li>
+<li><p><code>1 &lt;= level &lt; n</code></p></li>
+<li><p>if&nbsp;<code>friends[i]</code> contains <code>j</code>, then <code>friends[j]</code> contains <code>i</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">VideoCount</span> </span>{
+        String v;
+        <span class="hljs-keyword">int</span> count;
+
+        VideoCount(String v, <span class="hljs-keyword">int</span> count) {
+            <span class="hljs-keyword">this</span>.v = v;
+            <span class="hljs-keyword">this</span>.count = count;
+        }
+
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">toString</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.v + <span class="hljs-string">" "</span> + <span class="hljs-keyword">this</span>.count;
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title">watchedVideosByFriends</span><span class="hljs-params">(
+            List&lt;List&lt;String&gt;&gt; watchedVideos, <span class="hljs-keyword">int</span>[][] friends, <span class="hljs-keyword">int</span> id, <span class="hljs-keyword">int</span> level)</span> </span>{
+        <span class="hljs-keyword">boolean</span>[] visited = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[watchedVideos.size()];
+        Queue&lt;Integer&gt; queue = <span class="hljs-keyword">new</span> LinkedList&lt;&gt;();
+        queue.add(id);
+        visited[id] = <span class="hljs-keyword">true</span>;
+        <span class="hljs-keyword">int</span> currLevel = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+            <span class="hljs-keyword">int</span> size = queue.size();
+            <span class="hljs-keyword">while</span> (size-- &gt; <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">int</span> node = queue.poll();
+                <span class="hljs-keyword">int</span>[] nei = friends[node];
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i : nei) {
+                    <span class="hljs-keyword">if</span> (!visited[i]) {
+                        queue.add(i);
+                        visited[i] = <span class="hljs-keyword">true</span>;
+                    }
+                }
+            }
+            currLevel++;
+            <span class="hljs-keyword">if</span> (currLevel == level) {
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+        Map&lt;String, VideoCount&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+            Integer f = queue.poll();
+            List&lt;String&gt; watchedVideo = watchedVideos.get(f);
+            <span class="hljs-keyword">for</span> (String video : watchedVideo) {
+                map.putIfAbsent(video, <span class="hljs-keyword">new</span> VideoCount(video, <span class="hljs-number">0</span>));
+                map.get(video).count++;
+            }
+        }
+        PriorityQueue&lt;VideoCount&gt; pq =
+                <span class="hljs-keyword">new</span> PriorityQueue&lt;&gt;(
+                        (v1, v2) -&gt;
+                                (v1.count == v2.count)
+                                        ? v1.v.compareTo(v2.v)
+                                        : v1.count - v2.count);
+        <span class="hljs-keyword">for</span> (Map.Entry&lt;String, VideoCount&gt; key : map.entrySet()) {
+            pq.add(key.getValue());
+        }
+        List&lt;String&gt; res = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">while</span> (!pq.isEmpty()) {
+            res.add(pq.poll().v);
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

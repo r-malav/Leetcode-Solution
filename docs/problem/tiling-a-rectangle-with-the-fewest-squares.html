@@ -1,0 +1,109 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Tiling a Rectangle with the Fewest Squares - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1240. Tiling a Rectangle with the Fewest Squares</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/backtracking">Backtracking</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/selling-pieces-of-wood.html">Selling Pieces of Wood</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a rectangle of size <code>n</code> x <code>m</code>, return <strong>the minimum number of integer-sided squares that tile the rectangle</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/10/17/sample_11_1592.png" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">2</span><span class="hljs-string">,</span> <span class="hljs-string">m</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">3</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-number">3</span> <span class="hljs-string">squares</span> <span class="hljs-string">are</span> <span class="hljs-string">necessary</span> <span class="hljs-string">to</span> <span class="hljs-string">cover</span> <span class="hljs-string">the</span> <span class="hljs-string">rectangle.</span>
+<span class="hljs-number">2</span> <span class="hljs-string">(squares</span> <span class="hljs-string">of</span> <span class="hljs-string">1x1)</span>
+<span class="hljs-number">1</span> <span class="hljs-string">(square</span> <span class="hljs-string">of</span> <span class="hljs-string">2x2)</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/10/17/sample_22_1592.png" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span><span class="hljs-string">,</span> <span class="hljs-string">m</span> <span class="hljs-string">=</span> <span class="hljs-number">8</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">5</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/10/17/sample_33_1592.png" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">11</span><span class="hljs-string">,</span> <span class="hljs-string">m</span> <span class="hljs-string">=</span> <span class="hljs-number">13</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">6</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= n, m &lt;= 13</code></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> n;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> m;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span>[][] covered;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> res;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">tilingRectangle</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> m)</span> </span>{
+        <span class="hljs-keyword">this</span>.n = n;
+        <span class="hljs-keyword">this</span>.m = m;
+        <span class="hljs-keyword">this</span>.covered = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[n][m];
+        <span class="hljs-keyword">this</span>.res = m * n;
+        backtrack(<span class="hljs-number">0</span>);
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">backtrack</span><span class="hljs-params">(<span class="hljs-keyword">int</span> count)</span> </span>{
+        <span class="hljs-keyword">if</span> (count &gt;= res) {
+            <span class="hljs-keyword">return</span>;
+        }
+        <span class="hljs-keyword">boolean</span> find = <span class="hljs-keyword">false</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> r = <span class="hljs-number">0</span>; r &lt; n; r++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> c = <span class="hljs-number">0</span>; c &lt; m; c++) {
+                <span class="hljs-keyword">if</span> (!covered[r][c]) {
+                    find = <span class="hljs-keyword">true</span>;
+                    <span class="hljs-keyword">int</span> len = findMaxWidth(r, c);
+                    <span class="hljs-keyword">while</span> (len &gt; <span class="hljs-number">0</span>) {
+                        cover(r, c, len, <span class="hljs-keyword">true</span>);
+                        backtrack(count + <span class="hljs-number">1</span>);
+                        cover(r, c, len, <span class="hljs-keyword">false</span>);
+                        len--;
+                    }
+                    <span class="hljs-keyword">break</span>;
+                }
+            }
+            <span class="hljs-keyword">if</span> (find) {
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+        <span class="hljs-keyword">if</span> (!find) {
+            res = count;
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">cover</span><span class="hljs-params">(<span class="hljs-keyword">int</span> r, <span class="hljs-keyword">int</span> c, <span class="hljs-keyword">int</span> len, <span class="hljs-keyword">boolean</span> flag)</span> </span>{
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = r; i &lt; r + len; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = c; j &lt; c + len; j++) {
+                covered[i][j] = flag;
+            }
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">findMaxWidth</span><span class="hljs-params">(<span class="hljs-keyword">int</span> r, <span class="hljs-keyword">int</span> c)</span> </span>{
+        <span class="hljs-keyword">int</span> len = Math.min(n - r, m - c);
+        <span class="hljs-keyword">while</span> (<span class="hljs-keyword">true</span>) {
+            <span class="hljs-keyword">boolean</span> find = <span class="hljs-keyword">false</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = r; i &lt; r + len; i++) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = c; j &lt; c + len; j++) {
+                    <span class="hljs-keyword">if</span> (covered[i][j]) {
+                        find = <span class="hljs-keyword">true</span>;
+                        len = Math.min(i - r, j - c);
+                        <span class="hljs-keyword">break</span>;
+                    }
+                }
+                <span class="hljs-keyword">if</span> (find) {
+                    <span class="hljs-keyword">break</span>;
+                }
+            }
+            <span class="hljs-keyword">if</span> (!find) {
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> len;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Number of Taps to Open to Water a Garden - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1326. Minimum Number of Taps to Open to Water a Garden</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is a one-dimensional garden on the x-axis. The garden starts at the point <code>0</code> and ends at the point <code>n</code>. (i.e The length of the garden is <code>n</code>).</p>
+<p>There are <code>n + 1</code> taps located at points <code>[0, 1, ..., n]</code> in the garden.</p>
+<p>Given an integer <code>n</code> and an integer array <code>ranges</code> of length <code>n + 1</code> where <code>ranges[i]</code> (0-indexed) means the <code>i-th</code> tap can water the area <code>[i - ranges[i], i + ranges[i]]</code> if it was open.</p>
+<p>Return <strong>the minimum number of taps</strong> that should be open to water the whole garden, If the garden cannot be watered return <strong>-1</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/01/16/1685_example_1.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">5</span>, ranges = [<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]
+Output: <span class="hljs-number">1</span>
+Explanation: The tap at point <span class="hljs-number">0</span> can cover the <span class="hljs-built_in">int</span>erval [<span class="hljs-number">-3</span>,<span class="hljs-number">3</span>]
+The tap at point <span class="hljs-number">1</span> can cover the <span class="hljs-built_in">int</span>erval [<span class="hljs-number">-3</span>,<span class="hljs-number">5</span>]
+The tap at point <span class="hljs-number">2</span> can cover the <span class="hljs-built_in">int</span>erval [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>]
+The tap at point <span class="hljs-number">3</span> can cover the <span class="hljs-built_in">int</span>erval [<span class="hljs-number">2</span>,<span class="hljs-number">4</span>]
+The tap at point <span class="hljs-number">4</span> can cover the <span class="hljs-built_in">int</span>erval [<span class="hljs-number">4</span>,<span class="hljs-number">4</span>]
+The tap at point <span class="hljs-number">5</span> can cover the <span class="hljs-built_in">int</span>erval [<span class="hljs-number">5</span>,<span class="hljs-number">5</span>]
+Opening Only the second tap will water the whole garden [<span class="hljs-number">0</span>,<span class="hljs-number">5</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">3</span>, ranges = [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]
+Output: <span class="hljs-number">-1</span>
+Explanation: Even <span class="hljs-keyword">if</span> you activate all the four taps you cannot water the whole garden.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= n &lt;= 104</code></p></li>
+<li><p><code>ranges.length == n + 1</code></p></li>
+<li><p><code>0 &lt;= ranges[i] &lt;= 100</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minTaps</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[] ranges)</span> </span>{
+        <span class="hljs-keyword">if</span> (n == <span class="hljs-number">0</span> || ranges.length == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> n == <span class="hljs-number">0</span> ? <span class="hljs-number">0</span> : -<span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n + <span class="hljs-number">1</span>];
+
+        <span class="hljs-keyword">int</span> nxtLargest = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> current = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> amount = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; ranges.length; i++) {
+            <span class="hljs-keyword">if</span> (ranges[i] &gt; <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">int</span> ind = Math.max(<span class="hljs-number">0</span>, i - ranges[i]);
+                dp[ind] = Math.max(dp[ind], i + ranges[i]);
+            }
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt;= n; i++) {
+            nxtLargest = Math.max(nxtLargest, dp[i]);
+            <span class="hljs-keyword">if</span> (i == current &amp;&amp; i &lt; n) {
+                current = nxtLargest;
+                amount++;
+            }
+            <span class="hljs-keyword">if</span> (current &lt; i) {
+                <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> amount;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

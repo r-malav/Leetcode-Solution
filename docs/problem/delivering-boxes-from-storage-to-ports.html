@@ -1,0 +1,88 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Delivering Boxes from Storage to Ports - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1687. Delivering Boxes from Storage to Ports</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/segment-tree">Segment Tree</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/queue">Queue</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/heap-priority-queue">Heap (Priority Queue)</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/monotonic-queue">Monotonic Queue</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You have the task of delivering some boxes from storage to their ports using only one ship. However, this ship has a <strong>limit</strong> on the <strong>number of boxes</strong> and the <strong>total weight</strong> that it can carry.</p>
+<p>You are given an array <code>boxes</code>, where <code>boxes[i] = [ports​​i​, weighti]</code>, and three integers <code>portsCount</code>, <code>maxBoxes</code>, and <code>maxWeight</code>.</p>
+<ul>
+<li><p><code>ports​​i</code> is the port where you need to deliver the <code>ith</code> box and <code>weightsi</code> is the weight of the <code>ith</code> box.</p></li>
+<li><p><code>portsCount</code> is the number of ports.</p></li>
+<li><p><code>maxBoxes</code> and <code>maxWeight</code> are the respective box and weight limits of the ship.</p></li>
+</ul>
+<p>The boxes need to be delivered <strong>in the order they are given</strong>. The ship will follow these steps:</p>
+<ul>
+<li><p>The ship will take some number of boxes from the <code>boxes</code> queue, not violating the <code>maxBoxes</code> and <code>maxWeight</code> constraints.</p></li>
+<li><p>For each loaded box <strong>in order</strong>, the ship will make a <strong>trip</strong> to the port the box needs to be delivered to and deliver it. If the ship is already at the correct port, no <strong>trip</strong> is needed, and the box can immediately be delivered.</p></li>
+<li><p>The ship then makes a return <strong>trip</strong> to storage to take more boxes from the queue.</p></li>
+</ul>
+<p>The ship must end at storage after all the boxes have been delivered.</p>
+<p>Return **the *<em>minimum</em>* number of <strong>trips</strong> the ship needs to make to deliver all boxes to their respective ports.**</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: boxes = [[1,1],[2,1],[1,1]], portsCount = 2, maxBoxes = 3, maxWeight = 3
+Output: 4
+Explanation: The optimal strategy is as follows: 
+- The ship takes all the boxes <span class="hljs-keyword">in</span> the queue, goes <span class="hljs-keyword">to</span><span class="hljs-built_in"> port </span>1, then<span class="hljs-built_in"> port </span>2, then<span class="hljs-built_in"> port </span>1 again, then returns <span class="hljs-keyword">to</span> storage. 4 trips.
+So the total number of trips is 4.<span class="hljs-built_in">
+Note </span>that the first <span class="hljs-keyword">and</span> third boxes cannot be delivered together because the boxes need <span class="hljs-keyword">to</span> be delivered <span class="hljs-keyword">in</span> order (i.e. the second box needs <span class="hljs-keyword">to</span> be delivered at<span class="hljs-built_in"> port </span>2 before the third box).
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: boxes = [[1,2],[3,3],[3,1],[3,1],[2,4]], portsCount = 3, maxBoxes = 3, maxWeight = 6
+Output: 6
+Explanation: The optimal strategy is as follows: 
+- The ship takes the first box, goes <span class="hljs-keyword">to</span><span class="hljs-built_in"> port </span>1, then returns <span class="hljs-keyword">to</span> storage. 2 trips.
+- The ship takes the second, third <span class="hljs-keyword">and</span> fourth boxes, goes <span class="hljs-keyword">to</span><span class="hljs-built_in"> port </span>3, then returns <span class="hljs-keyword">to</span> storage. 2 trips.
+- The ship takes the fifth box, goes <span class="hljs-keyword">to</span><span class="hljs-built_in"> port </span>3, then returns <span class="hljs-keyword">to</span> storage. 2 trips.
+So the total number of trips is 2 + 2 + 2 = 6.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: boxes = [[1,4],[1,2],[2,1],[2,1],[3,2],[3,4]], portsCount = 3, maxBoxes = 6, maxWeight = 7
+Output: 6
+Explanation: The optimal strategy is as follows:
+- The ship takes the first <span class="hljs-keyword">and</span> second boxes, goes <span class="hljs-keyword">to</span><span class="hljs-built_in"> port </span>1, then returns <span class="hljs-keyword">to</span> storage. 2 trips.
+- The ship takes the third <span class="hljs-keyword">and</span> fourth boxes, goes <span class="hljs-keyword">to</span><span class="hljs-built_in"> port </span>2, then returns <span class="hljs-keyword">to</span> storage. 2 trips.
+- The ship takes the fifth <span class="hljs-keyword">and</span> sixth boxes, goes <span class="hljs-keyword">to</span><span class="hljs-built_in"> port </span>3, then returns <span class="hljs-keyword">to</span> storage. 2 trips.
+So the total number of trips is 2 + 2 + 2 = 6.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= boxes.length &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= portsCount, maxBoxes, maxWeight &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= ports​​i &lt;= portsCount</code></p></li>
+<li><p><code>1 &lt;= weightsi &lt;= maxWeight</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">boxDelivering</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] boxes, <span class="hljs-keyword">int</span> portsCount, <span class="hljs-keyword">int</span> maxBoxes, <span class="hljs-keyword">int</span> maxWeight)</span> </span>{
+        <span class="hljs-keyword">int</span> t = <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">int</span> weight = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> n = boxes.length;
+        <span class="hljs-keyword">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n + <span class="hljs-number">1</span>];
+        dp[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> left = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> right = <span class="hljs-number">0</span>; right &lt; boxes.length; right++) {
+            weight += boxes[right][<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (right &gt; <span class="hljs-number">0</span> &amp;&amp; boxes[right][<span class="hljs-number">0</span>] != boxes[right - <span class="hljs-number">1</span>][<span class="hljs-number">0</span>]) {
+                t++;
+            }
+            <span class="hljs-comment">// checking if weight, boxes are less than or equal to max contraint</span>
+            <span class="hljs-keyword">while</span> (weight &gt; maxWeight
+                    || right - left &gt;= maxBoxes
+                    || (left &lt; right &amp;&amp; dp[left] == dp[left + <span class="hljs-number">1</span>])) {
+                weight -= boxes[left][<span class="hljs-number">1</span>];
+                <span class="hljs-keyword">if</span> (boxes[left][<span class="hljs-number">0</span>] != boxes[left + <span class="hljs-number">1</span>][<span class="hljs-number">0</span>]) {
+                    t--;
+                }
+                left++;
+            }
+            dp[right + <span class="hljs-number">1</span>] = dp[left] + t;
+        }
+        <span class="hljs-keyword">return</span> dp[n];
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

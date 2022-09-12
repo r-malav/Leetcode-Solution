@@ -1,0 +1,104 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Partition Array Into Two Arrays to Minimize Sum Difference - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2035. Partition Array Into Two Arrays to Minimize Sum Difference</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/two-pointers">Two Pointers</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bit-manipulation">Bit Manipulation</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/ordered-set">Ordered Set</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bitmask">Bitmask</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/partition-equal-subset-sum.html">Partition Equal Subset Sum</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/split-array-with-same-average.html">Split Array With Same Average</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/tallest-billboard.html">Tallest Billboard</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/last-stone-weight-ii.html">Last Stone Weight II</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/fair-distribution-of-cookies.html">Fair Distribution of Cookies</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/closest-subsequence-sum.html">Closest Subsequence Sum</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/number-of-ways-to-split-array.html">Number of Ways to Split Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-sum-of-squared-difference.html">Minimum Sum of Squared Difference</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an integer array <code>nums</code> of <code>2 * n</code> integers. You need to partition <code>nums</code> into <strong>two</strong> arrays of length <code>n</code> to <strong>minimize the absolute difference</strong> of the <strong>sums</strong> of the arrays. To partition <code>nums</code>, put each element of <code>nums</code> into <strong>one</strong> of the two arrays.</p>
+<p>Return **the *<em>minimum</em>* possible absolute difference**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/10/02/ex1.png" alt="" /></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">3</span>,<span class="hljs-number">9</span>,<span class="hljs-number">7</span>,<span class="hljs-number">3</span>]
+Output: <span class="hljs-number">2</span>
+Explanation: One optimal partition <span class="hljs-keyword">is</span>: [<span class="hljs-number">3</span>,<span class="hljs-number">9</span>] <span class="hljs-keyword">and</span> [<span class="hljs-number">7</span>,<span class="hljs-number">3</span>].
+The absolute difference between the sums of the <span class="hljs-built_in">array</span>s <span class="hljs-keyword">is</span> abs((<span class="hljs-number">3</span> + <span class="hljs-number">9</span>) - (<span class="hljs-number">7</span> + <span class="hljs-number">3</span>)) = <span class="hljs-number">2.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">-36</span>,<span class="hljs-number">36</span>]
+Output: <span class="hljs-number">72</span>
+Explanation: One optimal partition <span class="hljs-keyword">is</span>: [<span class="hljs-number">-36</span>] <span class="hljs-keyword">and</span> [<span class="hljs-number">36</span>].
+The absolute difference between the sums of the <span class="hljs-built_in">array</span>s <span class="hljs-keyword">is</span> abs((<span class="hljs-number">-36</span>) - (<span class="hljs-number">36</span>)) = <span class="hljs-number">72.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/10/02/ex3.png" alt="" /></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">2</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">4</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">-9</span>]
+Output: <span class="hljs-number">0</span>
+Explanation: One optimal partition <span class="hljs-keyword">is</span>: [<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">-9</span>] <span class="hljs-keyword">and</span> [<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-2</span>].
+The absolute difference between the sums of the <span class="hljs-built_in">array</span>s <span class="hljs-keyword">is</span> abs((<span class="hljs-number">2</span> + <span class="hljs-number">4</span> + <span class="hljs-number">-9</span>) - (<span class="hljs-number">-1</span> + <span class="hljs-number">0</span> + <span class="hljs-number">-2</span>)) = <span class="hljs-number">0.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= n &lt;= 15</code></p></li>
+<li><p><code>nums.length == 2 * n</code></p></li>
+<li><p><code>-107 &lt;= nums[i] &lt;= 107</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minimumDifference</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>{
+        <span class="hljs-keyword">if</span> (nums == <span class="hljs-keyword">null</span> || nums.length == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">int</span> n = nums.length / <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">int</span> sum = <span class="hljs-number">0</span>;
+        List&lt;List&lt;Integer&gt;&gt; arr1 = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        List&lt;List&lt;Integer&gt;&gt; arr2 = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt;= n; i++) {
+            arr1.add(<span class="hljs-keyword">new</span> ArrayList&lt;&gt;());
+            arr2.add(<span class="hljs-keyword">new</span> ArrayList&lt;&gt;());
+            <span class="hljs-keyword">if</span> (i &lt; n) {
+                sum += nums[i];
+                sum += nums[i + n];
+            }
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> state = <span class="hljs-number">0</span>; state &lt; (<span class="hljs-number">1</span> &lt;&lt; n); state++) {
+            <span class="hljs-keyword">int</span> sum1 = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">int</span> sum2 = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+                <span class="hljs-keyword">if</span> ((state &amp; (<span class="hljs-number">1</span> &lt;&lt; i)) == <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">continue</span>;
+                }
+                <span class="hljs-keyword">int</span> a1 = nums[i];
+                <span class="hljs-keyword">int</span> a2 = nums[i + n];
+                sum1 += a1;
+                sum2 += a2;
+            }
+            <span class="hljs-keyword">int</span> numOfEleInSet = Integer.bitCount(state);
+            arr1.get(numOfEleInSet).add(sum1);
+            arr2.get(numOfEleInSet).add(sum2);
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt;= n; i++) {
+            Collections.sort(arr2.get(i));
+        }
+        <span class="hljs-keyword">int</span> min = Integer.MAX_VALUE;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt;= n; i++) {
+            List&lt;Integer&gt; sums1 = arr1.get(i);
+            List&lt;Integer&gt; sums2 = arr2.get(n - i);
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> s1 : sums1) {
+                <span class="hljs-keyword">int</span> idx = Collections.binarySearch(sums2, sum / <span class="hljs-number">2</span> - s1);
+                <span class="hljs-keyword">if</span> (idx &lt; <span class="hljs-number">0</span>) {
+                    idx = -(idx + <span class="hljs-number">1</span>);
+                }
+                <span class="hljs-keyword">if</span> (idx &lt; sums1.size()) {
+                    min =
+                            Math.min(
+                                    min,
+                                    Math.abs((sum - s1 - sums2.get(idx)) - (sums2.get(idx) + s1)));
+                }
+                <span class="hljs-keyword">if</span> (idx - <span class="hljs-number">1</span> &gt;= <span class="hljs-number">0</span>) {
+                    min =
+                            Math.min(
+                                    min,
+                                    Math.abs(
+                                            (sum - s1 - sums2.get(idx - <span class="hljs-number">1</span>))
+                                                    - (sums2.get(idx - <span class="hljs-number">1</span>) + s1)));
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> min;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

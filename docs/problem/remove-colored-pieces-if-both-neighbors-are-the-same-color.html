@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Remove Colored Pieces if Both Neighbors are the Same Color - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2038. Remove Colored Pieces if Both Neighbors are the Same Color</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/game-theory">Game Theory</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There are <code>n</code> pieces arranged in a line, and each piece is colored either by <code>'A'</code> or by <code>'B'</code>. You are given a string <code>colors</code> of length <code>n</code> where <code>colors[i]</code> is the color of the <code>ith</code> piece.</p>
+<p>Alice and Bob are playing a game where they take <strong>alternating turns</strong> removing pieces from the line. In this game, Alice moves** first**.</p>
+<ul>
+<li><p>Alice is only allowed to remove a piece colored <code>'A'</code> if <strong>both its neighbors</strong> are also colored <code>'A'</code>. She is <strong>not allowed</strong> to remove pieces that are colored <code>'B'</code>.</p></li>
+<li><p>Bob is only allowed to remove a piece colored <code>'B'</code> if <strong>both its neighbors</strong> are also colored <code>'B'</code>. He is <strong>not allowed</strong> to remove pieces that are colored <code>'A'</code>.</p></li>
+<li><p>Alice and Bob <strong>cannot</strong> remove pieces from the edge of the line.</p></li>
+<li><p>If a player cannot make a move on their turn, that player <strong>loses</strong> and the other player <strong>wins</strong>.</p></li>
+</ul>
+<p>Assuming Alice and Bob play optimally, return <code>true</code>** if Alice wins, or return <strong><code>false</code></strong> if Bob wins**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: colors = <span class="hljs-string">"AAABABB"</span>
+Output: <span class="hljs-literal">true</span>
+Explanation:
+AAABABB -&gt; AABABB
+Alice moves <span class="hljs-keyword">first</span>.
+She removes <span class="hljs-keyword">the</span> <span class="hljs-keyword">second</span> <span class="hljs-string">'A'</span> <span class="hljs-built_in">from</span> <span class="hljs-keyword">the</span> left since that is <span class="hljs-keyword">the</span> only <span class="hljs-string">'A'</span> whose neighbors are both <span class="hljs-string">'A'</span>.
+
+Now <span class="hljs-keyword">it</span><span class="hljs-string">'s Bob'</span>s turn.
+Bob cannot make <span class="hljs-keyword">a</span> move <span class="hljs-keyword">on</span> <span class="hljs-title">his</span> <span class="hljs-title">turn</span> <span class="hljs-title">since</span> <span class="hljs-title">there</span> <span class="hljs-title">are</span> <span class="hljs-title">no</span> <span class="hljs-string">'B'</span><span class="hljs-title">s</span> <span class="hljs-title">whose</span> <span class="hljs-title">neighbors</span> <span class="hljs-title">are</span> <span class="hljs-title">both</span> <span class="hljs-string">'B'</span>.
+Thus, Alice wins, so <span class="hljs-literal">return</span> <span class="hljs-literal">true</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> colors = <span class="hljs-string">"AA"</span>
+Outpu<span class="hljs-variable">t:</span> false
+Explanation:
+Alice <span class="hljs-built_in">has</span> her turn <span class="hljs-keyword">first</span>.
+There are <span class="hljs-keyword">only</span> two <span class="hljs-string">'A'</span>s <span class="hljs-built_in">and</span> both are <span class="hljs-keyword">on</span> the edge of the <span class="hljs-built_in">line</span>, <span class="hljs-keyword">so</span> she cannot <span class="hljs-keyword">move</span> <span class="hljs-keyword">on</span> her turn.
+Thus, Bob wins, <span class="hljs-keyword">so</span> <span class="hljs-keyword">return</span> false.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: colors = <span class="hljs-string">"ABBBBBBBAAA"</span>
+Output: <span class="hljs-literal">false</span>
+Explanation:
+ABBBBBBBAAA -&gt; ABBBBBBBAA
+Alice moves first.
+Her only <span class="hljs-keyword">option</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">to</span> remove the second <span class="hljs-keyword">to</span> last <span class="hljs-comment">'A' from the right.</span>
+
+ABBBBBBBAA -&gt; ABBBBBBAA
+<span class="hljs-keyword">Next</span> <span class="hljs-keyword">is</span> Bob<span class="hljs-comment">'s turn.</span>
+He has many options <span class="hljs-keyword">for</span> which <span class="hljs-comment">'B' piece to remove. He can pick any.</span>
+
+<span class="hljs-keyword">On</span> Alice<span class="hljs-comment">'s second turn, she has no more pieces that she can remove.</span>
+Thus, Bob wins, so <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;=&amp;nbsp;colors.length &lt;= 105</code></p></li>
+<li><p><code>colors</code>&nbsp;consists of only the letters&nbsp;<code>'A'</code>&nbsp;and&nbsp;<code>'B'</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">winnerOfGame</span><span class="hljs-params">(String colors)</span> </span>{
+        <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; colors.length() - <span class="hljs-number">1</span>; i++) {
+            <span class="hljs-keyword">if</span> (colors.charAt(i) == colors.charAt(i - <span class="hljs-number">1</span>)
+                    &amp;&amp; colors.charAt(i) == colors.charAt(i + <span class="hljs-number">1</span>)) {
+                <span class="hljs-keyword">if</span> (colors.charAt(i) == <span class="hljs-string">'A'</span>) {
+                    ans++;
+                } <span class="hljs-keyword">else</span> {
+                    ans--;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> ans &gt; <span class="hljs-number">0</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

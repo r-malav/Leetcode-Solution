@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Number of Steps to Reduce a Number in Binary Representation to One - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1404. Number of Steps to Reduce a Number in Binary Representation to One</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bit-manipulation">Bit Manipulation</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-moves-to-reach-target-score.html">Minimum Moves to Reach Target Score</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given the binary representation of an integer as a string <code>s</code>, return **the number of steps to reduce it to *<em><code>1</code></em>* under the following rules**:</p>
+<pre><code>If the current number is even, you have to divide it by <code>2</code>.
+
+
+If the current number is odd, you have to add <code>1</code> to it.
+</code></pre>
+<p>It is guaranteed that you can always reach one for all test cases.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"1101"</span>
+Output: <span class="hljs-number">6</span>
+Explanation: <span class="hljs-string">"1101"</span> corressponds to number <span class="hljs-number">13</span> <span class="hljs-keyword">in</span> their decimal representation.
+Step <span class="hljs-number">1</span>) <span class="hljs-number">13</span> <span class="hljs-keyword">is</span> odd, add <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> obtain <span class="hljs-number">14.</span>&amp;nbsp;
+Step <span class="hljs-number">2</span>) <span class="hljs-number">14</span> <span class="hljs-keyword">is</span> even, divide by <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> obtain <span class="hljs-number">7.</span>
+Step <span class="hljs-number">3</span>) <span class="hljs-number">7</span> <span class="hljs-keyword">is</span> odd, add <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> obtain <span class="hljs-number">8.</span>
+Step <span class="hljs-number">4</span>) <span class="hljs-number">8</span> <span class="hljs-keyword">is</span> even, divide by <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> obtain <span class="hljs-number">4.</span>&amp;nbsp; 
+Step <span class="hljs-number">5</span>) <span class="hljs-number">4</span> <span class="hljs-keyword">is</span> even, divide by <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> obtain <span class="hljs-number">2.</span>&amp;nbsp;
+Step <span class="hljs-number">6</span>) <span class="hljs-number">2</span> <span class="hljs-keyword">is</span> even, divide by <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> obtain <span class="hljs-number">1.</span>&amp;nbsp; 
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">s</span> <span class="hljs-string">=</span> <span class="hljs-string">"10"</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">1</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">"10"</span> <span class="hljs-string">corressponds</span> <span class="hljs-string">to</span> <span class="hljs-string">number</span> <span class="hljs-number">2</span> <span class="hljs-string">in</span> <span class="hljs-string">their</span> <span class="hljs-string">decimal</span> <span class="hljs-string">representation.</span>
+<span class="hljs-string">Step</span> <span class="hljs-number">1</span><span class="hljs-string">)</span> <span class="hljs-number">2</span> <span class="hljs-string">is</span> <span class="hljs-string">even,</span> <span class="hljs-string">divide</span> <span class="hljs-string">by</span> <span class="hljs-number">2</span> <span class="hljs-string">and</span> <span class="hljs-string">obtain</span> <span class="hljs-number">1</span><span class="hljs-string">.&amp;nbsp;</span> 
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> s = <span class="hljs-string">"1"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">0</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length&amp;nbsp;&lt;= 500</code></p></li>
+<li><p><code>s</code> consists of characters '0' or '1'</p></li>
+<li><p><code>s[0] == '1'</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">numSteps</span><span class="hljs-params">(String s)</span> </span>{
+        <span class="hljs-keyword">int</span> steps = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> carry = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = s.length() - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">1</span>; i--) {
+            <span class="hljs-keyword">if</span> (carry == <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">if</span> (s.charAt(i) == <span class="hljs-string">'1'</span>) {
+                    steps += <span class="hljs-number">2</span>;
+                    carry = <span class="hljs-number">1</span>;
+                } <span class="hljs-keyword">else</span> {
+                    steps++;
+                }
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">if</span> (s.charAt(i) == <span class="hljs-string">'0'</span>) {
+                    steps += <span class="hljs-number">2</span>;
+                } <span class="hljs-keyword">else</span> {
+                    steps++;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> steps + carry;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

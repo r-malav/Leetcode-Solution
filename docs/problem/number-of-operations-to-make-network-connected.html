@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Number of Operations to Make Network Connected - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1319. Number of Operations to Make Network Connected</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/union-find">Union Find</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/graph">Graph</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There are <code>n</code> computers numbered from <code>0</code> to <code>n - 1</code> connected by ethernet cables <code>connections</code> forming a network where <code>connections[i] = [ai, bi]</code> represents a connection between computers <code>ai</code> and <code>bi</code>. Any computer can reach any other computer directly or indirectly through the network.</p>
+<p>You are given an initial computer network <code>connections</code>. You can extract certain cables between two directly connected computers, and place them between any pair of disconnected computers to make them directly connected.</p>
+<p>Return <strong>the minimum number of times you need to do this in order to make all the computers connected</strong>. If it is not possible, return <code>-1</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/01/02/sample_1_1677.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">4</span>, connections = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]]
+Output: <span class="hljs-number">1</span>
+Explanation: Remove cable between computer <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> place between computers <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-number">3.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/01/02/sample_2_1677.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">6</span>, connections = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>]]
+Output: <span class="hljs-number">2</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">6</span>, connections = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]]
+Output: <span class="hljs-number">-1</span>
+Explanation: There are <span class="hljs-keyword">not</span> enough cables.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= connections.length &lt;= min(n * (n - 1) / 2, 105)</code></p></li>
+<li><p><code>connections[i].length == 2</code></p></li>
+<li><p><code>0 &lt;= ai, bi &lt; n</code></p></li>
+<li><p><code>ai != bi</code></p></li>
+<li><p>There are no repeated connections.</p></li>
+<li><p>No two computers are connected by more than one cable.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> IMPOSSIBLE_TO_CONNECT = -<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> disconnectedComputers;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] parent;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] rank;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">makeConnected</span><span class="hljs-params">(<span class="hljs-keyword">int</span> totalNumberOfComputers, <span class="hljs-keyword">int</span>[][] connections)</span> </span>{
+        <span class="hljs-keyword">if</span> (connections.length &lt; totalNumberOfComputers - <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> IMPOSSIBLE_TO_CONNECT;
+        }
+
+        disconnectedComputers = totalNumberOfComputers;
+        rank = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[totalNumberOfComputers];
+        parent = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[totalNumberOfComputers];
+        Arrays.setAll(parent, intFromZero -&gt; intFromZero++);
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span>[] connection : connections) {
+            unionFind(connection[<span class="hljs-number">0</span>], connection[<span class="hljs-number">1</span>]);
+        }
+
+        <span class="hljs-keyword">return</span> disconnectedComputers - <span class="hljs-number">1</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">unionFind</span><span class="hljs-params">(<span class="hljs-keyword">int</span> first, <span class="hljs-keyword">int</span> second)</span> </span>{
+        <span class="hljs-keyword">int</span> parentFirst = findParent(first);
+        <span class="hljs-keyword">int</span> parentSecond = findParent(second);
+
+        <span class="hljs-keyword">if</span> (parentFirst != parentSecond) {
+            joinByRank(parentFirst, parentSecond);
+            disconnectedComputers--;
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">findParent</span><span class="hljs-params">(<span class="hljs-keyword">int</span> index)</span> </span>{
+        <span class="hljs-keyword">if</span> (parent[index] != index) {
+            parent[index] = findParent(parent[index]);
+        }
+        <span class="hljs-keyword">return</span> parent[index];
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">joinByRank</span><span class="hljs-params">(<span class="hljs-keyword">int</span> first, <span class="hljs-keyword">int</span> second)</span> </span>{
+        <span class="hljs-keyword">if</span> (rank[first] &lt; rank[second]) {
+            parent[first] = second;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (rank[second] &lt; rank[first]) {
+            parent[second] = first;
+        } <span class="hljs-keyword">else</span> {
+            parent[first] = second;
+            rank[second]++;
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

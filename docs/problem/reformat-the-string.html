@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Reformat The String - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1417. Reformat The String</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an alphanumeric string <code>s</code>. (<strong>Alphanumeric string</strong> is a string consisting of lowercase English letters and digits).</p>
+<p>You have to find a permutation of the string where no letter is followed by another letter and no digit is followed by another digit. That is, no two adjacent characters have the same type.</p>
+<p>Return <strong>the reformatted string</strong> or return <strong>an empty string</strong> if it is impossible to reformat the string.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"a0b1c2"</span>
+Output: <span class="hljs-string">"0a1b2c"</span>
+Explanation: <span class="hljs-literal">No</span> two adjacent characters have the same<span class="hljs-built_in"> type </span><span class="hljs-keyword">in</span> <span class="hljs-string">"0a1b2c"</span>. <span class="hljs-string">"a0b1c2"</span>, <span class="hljs-string">"0a1b2c"</span>, <span class="hljs-string">"0c2a1b"</span> are also valid permutations.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> s = <span class="hljs-string">"leetcode"</span>
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-string">""</span>
+Explanation: <span class="hljs-string">"leetcode"</span> <span class="hljs-built_in">has</span> <span class="hljs-keyword">only</span> characters <span class="hljs-keyword">so</span> we cannot separate them by digits.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> s = <span class="hljs-string">"1229857369"</span>
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-string">""</span>
+Explanation: <span class="hljs-string">"1229857369"</span> <span class="hljs-built_in">has</span> <span class="hljs-keyword">only</span> digits <span class="hljs-keyword">so</span> we cannot separate them by characters.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 500</code></p></li>
+<li><p><code>s</code> consists of only lowercase English letters and/or digits.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">reformat</span><span class="hljs-params">(String s)</span> </span>{
+        List&lt;Character&gt; chars = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        List&lt;Character&gt; digits = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> c : s.toCharArray()) {
+            <span class="hljs-keyword">if</span> (c &gt;= <span class="hljs-string">'0'</span> &amp;&amp; c &lt;= <span class="hljs-string">'9'</span>) {
+                digits.add(c);
+            } <span class="hljs-keyword">else</span> {
+                chars.add(c);
+            }
+        }
+        <span class="hljs-keyword">if</span> (Math.abs(digits.size() - chars.size()) &gt; <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-string">""</span>;
+        }
+        <span class="hljs-keyword">boolean</span> isDigit = digits.size() &gt; chars.size();
+        StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+            <span class="hljs-keyword">if</span> (isDigit) {
+                sb.append(digits.remove(<span class="hljs-number">0</span>));
+            } <span class="hljs-keyword">else</span> {
+                sb.append(chars.remove(<span class="hljs-number">0</span>));
+            }
+            isDigit = !isDigit;
+        }
+        <span class="hljs-keyword">return</span> sb.toString();
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

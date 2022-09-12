@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Online Election - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>911. Online Election</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/design">Design</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/rank-teams-by-votes.html">Rank Teams by Votes</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given two integer arrays <code>persons</code> and <code>times</code>. In an election, the <code>ith</code> vote was cast for <code>persons[i]</code> at time <code>times[i]</code>.</p>
+<p>For each query at a time <code>t</code>, find the person that was leading the election at time <code>t</code>. Votes cast at time <code>t</code> will count towards our query. In the case of a tie, the most recent vote (among tied candidates) wins.</p>
+<p>Implement the <code>TopVotedCandidate</code> class:</p>
+<ul>
+<li><p><code>TopVotedCandidate(int[] persons, int[] times)</code> Initializes the object with the <code>persons</code> and <code>times</code> arrays.</p></li>
+<li><p><code>int q(int t)</code> Returns the number of the person that was leading the election at time <code>t</code> according to the mentioned rules.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input
+[<span class="hljs-string">"TopVotedCandidate"</span>, <span class="hljs-string">"q"</span>, <span class="hljs-string">"q"</span>, <span class="hljs-string">"q"</span>, <span class="hljs-string">"q"</span>, <span class="hljs-string">"q"</span>, <span class="hljs-string">"q"</span>]
+[[[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">5</span>, <span class="hljs-number">10</span>, <span class="hljs-number">15</span>, <span class="hljs-number">20</span>, <span class="hljs-number">25</span>, <span class="hljs-number">30</span>]], [<span class="hljs-number">3</span>], [<span class="hljs-number">12</span>], [<span class="hljs-number">25</span>], [<span class="hljs-number">15</span>], [<span class="hljs-number">24</span>], [<span class="hljs-number">8</span>]]
+Output
+[<span class="hljs-literal">null</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>]
+
+Explanation
+TopVotedCandidate topVotedCandidate = new TopVotedCandidate([<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">5</span>, <span class="hljs-number">10</span>, <span class="hljs-number">15</span>, <span class="hljs-number">20</span>, <span class="hljs-number">25</span>, <span class="hljs-number">30</span>]);
+topVotedCandidate.q(<span class="hljs-number">3</span>); <span class="hljs-comment">// return 0, At time 3, the votes are [0], and 0 is leading.</span>
+topVotedCandidate.q(<span class="hljs-number">12</span>); <span class="hljs-comment">// return 1, At time 12, the votes are [0,1,1], and 1 is leading.</span>
+topVotedCandidate.q(<span class="hljs-number">25</span>); <span class="hljs-comment">// return 1, At time 25, the votes are [0,1,1,0,0,1], and 1 is leading (as ties go to the most recent vote.)</span>
+topVotedCandidate.q(<span class="hljs-number">15</span>); <span class="hljs-comment">// return 0</span>
+topVotedCandidate.q(<span class="hljs-number">24</span>); <span class="hljs-comment">// return 0</span>
+topVotedCandidate.q(<span class="hljs-number">8</span>); <span class="hljs-comment">// return 1</span>
+
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= persons.length &lt;= 5000</code></p></li>
+<li><p><code>times.length == persons.length</code></p></li>
+<li><p><code>0 &lt;= persons[i] &lt; persons.length</code></p></li>
+<li><p><code>0 &lt;= times[i] &lt;= 109</code></p></li>
+<li><p><code>times</code> is sorted in a strictly increasing order.</p></li>
+<li><p><code>times[0] &lt;= t &lt;= 109</code></p></li>
+<li><p>At most <code>104</code> calls will be made to <code>q</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TopVotedCandidate</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span>[] times;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span>[] winnersAtTimeT;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">TopVotedCandidate</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] persons, <span class="hljs-keyword">int</span>[] times)</span> </span>{
+        <span class="hljs-keyword">this</span>.times = times;
+        <span class="hljs-keyword">this</span>.winnersAtTimeT = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[times.length];
+        <span class="hljs-keyword">int</span>[] counterArray = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[persons.length];
+        <span class="hljs-keyword">int</span> maxVote = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> maxVotedPerson = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; persons.length; i++) {
+            <span class="hljs-keyword">int</span> person = persons[i];
+            <span class="hljs-keyword">int</span> voteCount = counterArray[person];
+            <span class="hljs-keyword">if</span> (voteCount + <span class="hljs-number">1</span> &gt;= maxVote) {
+                maxVote = voteCount + <span class="hljs-number">1</span>;
+                maxVotedPerson = person;
+            }
+            winnersAtTimeT[i] = maxVotedPerson;
+            counterArray[persons[i]] = voteCount + <span class="hljs-number">1</span>;
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">q</span><span class="hljs-params">(<span class="hljs-keyword">int</span> t)</span> </span>{
+        <span class="hljs-keyword">int</span> lo = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> hi = times.length - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">if</span> (t &gt;= times[hi]) {
+            lo = hi;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">while</span> (lo &lt; hi - <span class="hljs-number">1</span>) {
+                <span class="hljs-keyword">int</span> mid = lo + (hi - lo) / <span class="hljs-number">2</span>;
+                <span class="hljs-keyword">if</span> (times[mid] == t) {
+                    lo = mid;
+                    <span class="hljs-keyword">break</span>;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (times[mid] &gt; t) {
+                    hi = mid;
+                } <span class="hljs-keyword">else</span> {
+                    lo = mid;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> winnersAtTimeT[lo];
+    }
+}
+
+<span class="hljs-comment">/**
+ * Your TopVotedCandidate object will be instantiated and called as such:
+ * TopVotedCandidate obj = new TopVotedCandidate(persons, times);
+ * int param_1 = obj.q(t);
+ */</span>
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

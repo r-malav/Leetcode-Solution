@@ -1,0 +1,138 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Parsing A Boolean Expression - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1106. Parsing A Boolean Expression</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/stack">Stack</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/recursion">Recursion</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Return the result of evaluating a given boolean <code>expression</code>, represented as a string.</p>
+<p>An expression can either be:</p>
+<ul>
+<li><p><code>"t"</code>, evaluating to <code>True</code>;</p></li>
+<li><p><code>"f"</code>, evaluating to <code>False</code>;</p></li>
+<li><p><code>"!(expr)"</code>, evaluating to the logical NOT of the inner expression <code>expr</code>;</p></li>
+<li><p><code>"&amp;(expr1,expr2,...)"</code>, evaluating to the logical AND of 2 or more inner expressions <code>expr1, expr2, ...</code>;</p></li>
+<li><p><code>"|(expr1,expr2,...)"</code>, evaluating to the logical OR of 2 or more inner expressions <code>expr1, expr2, ...</code></p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-string">Input:</span> expression = <span class="hljs-string">"!(f)"</span>
+<span class="hljs-string">Output:</span> <span class="hljs-literal">true</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-string">Input:</span> expression = <span class="hljs-string">"|(f,t)"</span>
+<span class="hljs-string">Output:</span> <span class="hljs-literal">true</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-string">Input:</span> expression = <span class="hljs-string">"&amp;(t,f)"</span>
+<span class="hljs-string">Output:</span> <span class="hljs-literal">false</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= expression.length &lt;= 2 * 104</code></p></li>
+<li><p><code>expression[i]</code> consists of characters in <code>{'(', ')', '&amp;', '|', '!', 't', 'f', ','}</code>.</p></li>
+<li><p><code>expression</code> is a valid expression representing a boolean, as given in the description.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-keyword">import</span> java.util.logging.Level;
+<span class="hljs-keyword">import</span> java.util.logging.Logger;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> String source;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> index;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">parseBoolExpr</span><span class="hljs-params">(String expression)</span> </span>{
+        <span class="hljs-keyword">this</span>.source = expression;
+        <span class="hljs-keyword">this</span>.index = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">return</span> expr();
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">expr</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">boolean</span> res;
+        <span class="hljs-keyword">if</span> (match(<span class="hljs-string">'!'</span>)) {
+            res = not();
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (match(<span class="hljs-string">'&amp;'</span>)) {
+            res = and();
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (match(<span class="hljs-string">'|'</span>)) {
+            res = or();
+        } <span class="hljs-keyword">else</span> {
+            res = bool();
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">not</span><span class="hljs-params">()</span> </span>{
+        consume(<span class="hljs-string">'!'</span>, <span class="hljs-string">"Expect '!'"</span>);
+        <span class="hljs-keyword">return</span> !group().get(<span class="hljs-number">0</span>);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">or</span><span class="hljs-params">()</span> </span>{
+        consume(<span class="hljs-string">'|'</span>, <span class="hljs-string">"Expect '|'"</span>);
+        <span class="hljs-keyword">boolean</span> res = <span class="hljs-keyword">false</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">boolean</span> e : group()) {
+            res |= e;
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">and</span><span class="hljs-params">()</span> </span>{
+        consume(<span class="hljs-string">'&amp;'</span>, <span class="hljs-string">"Expect '&amp;'"</span>);
+        <span class="hljs-keyword">boolean</span> res = <span class="hljs-keyword">true</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">boolean</span> e : group()) {
+            res &amp;= e;
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> List&lt;Boolean&gt; <span class="hljs-title">group</span><span class="hljs-params">()</span> </span>{
+        consume(<span class="hljs-string">'('</span>, <span class="hljs-string">"Expect '('"</span>);
+        List&lt;Boolean&gt; res = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">while</span> (!match(<span class="hljs-string">')'</span>)) {
+            res.add(expr());
+            <span class="hljs-keyword">if</span> (match(<span class="hljs-string">','</span>)) {
+                advance();
+            }
+        }
+        consume(<span class="hljs-string">')'</span>, <span class="hljs-string">"Expect ')'"</span>);
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">bool</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">boolean</span> isTrue = match(<span class="hljs-string">'t'</span>);
+        advance();
+        <span class="hljs-keyword">return</span> isTrue;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isAtEnd</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> index &gt;= source.length();
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">advance</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">if</span> (isAtEnd()) {
+            <span class="hljs-keyword">return</span>;
+        }
+        index++;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">char</span> <span class="hljs-title">peek</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> source.charAt(index);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">match</span><span class="hljs-params">(<span class="hljs-keyword">char</span> ch)</span> </span>{
+        <span class="hljs-keyword">if</span> (isAtEnd()) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+        }
+        <span class="hljs-keyword">return</span> peek() == ch;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">consume</span><span class="hljs-params">(<span class="hljs-keyword">char</span> ch, String message)</span> </span>{
+        <span class="hljs-keyword">if</span> (!match(ch)) {
+            Logger.getLogger(Solution<span class="hljs-class">.<span class="hljs-keyword">class</span>.<span class="hljs-title">getName</span>()).<span class="hljs-title">log</span>(<span class="hljs-title">Level</span>.<span class="hljs-title">SEVERE</span>, () -&gt; <span class="hljs-title">message</span>)</span>;
+            <span class="hljs-keyword">return</span>;
+        }
+        advance();
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

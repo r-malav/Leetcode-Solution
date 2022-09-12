@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Find Minimum Time to Finish All Jobs - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1723. Find Minimum Time to Finish All Jobs</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/backtracking">Backtracking</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bit-manipulation">Bit Manipulation</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bitmask">Bitmask</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-number-of-work-sessions-to-finish-the-tasks.html">Minimum Number of Work Sessions to Finish the Tasks</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/find-minimum-time-to-finish-all-jobs-ii.html">Find Minimum Time to Finish All Jobs II</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an integer array <code>jobs</code>, where <code>jobs[i]</code> is the amount of time it takes to complete the <code>ith</code> job.</p>
+<p>There are <code>k</code> workers that you can assign jobs to. Each job should be assigned to <strong>exactly</strong> one worker. The <strong>working time</strong> of a worker is the sum of the time it takes to complete all jobs assigned to them. Your goal is to devise an optimal assignment such that the <strong>maximum working time</strong> of any worker is <strong>minimized</strong>.</p>
+<p>**Return the *<em>minimum</em>* possible <strong>maximum working time</strong> of any assignment. **</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: jobs = [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], k = <span class="hljs-number">3</span>
+Output: <span class="hljs-number">3</span>
+Explanation: By assigning each person one job, the maximum time <span class="hljs-keyword">is</span> <span class="hljs-number">3.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: jobs = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>], k = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">11</span>
+Explanation: Assign the jobs the following way:
+Worker <span class="hljs-number">1</span>: <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">8</span> (working time = <span class="hljs-number">1</span> + <span class="hljs-number">2</span> + <span class="hljs-number">8</span> = <span class="hljs-number">11</span>)
+Worker <span class="hljs-number">2</span>: <span class="hljs-number">4</span>, <span class="hljs-number">7</span> (working time = <span class="hljs-number">4</span> + <span class="hljs-number">7</span> = <span class="hljs-number">11</span>)
+The maximum working time <span class="hljs-keyword">is</span> <span class="hljs-number">11.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= k &lt;= jobs.length &lt;= 12</code></p></li>
+<li><p><code>1 &lt;= jobs[i] &lt;= 107</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> min = Integer.MAX_VALUE;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minimumTimeRequired</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] jobs, <span class="hljs-keyword">int</span> k)</span> </span>{
+        backtraking(jobs, jobs.length - <span class="hljs-number">1</span>, <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[k]);
+        <span class="hljs-keyword">return</span> min;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">backtraking</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] jobs, <span class="hljs-keyword">int</span> j, <span class="hljs-keyword">int</span>[] sum)</span> </span>{
+        <span class="hljs-keyword">int</span> max = getMax(sum);
+        <span class="hljs-keyword">if</span> (max &gt;= min) {
+            <span class="hljs-keyword">return</span>;
+        }
+        <span class="hljs-keyword">if</span> (j &lt; <span class="hljs-number">0</span>) {
+            min = max;
+            <span class="hljs-keyword">return</span>;
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; sum.length; i++) {
+            <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; sum[i] == sum[i - <span class="hljs-number">1</span>]) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            sum[i] += jobs[j];
+            backtraking(jobs, j - <span class="hljs-number">1</span>, sum);
+            sum[i] -= jobs[j];
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getMax</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] sum)</span> </span>{
+        <span class="hljs-keyword">int</span> max = Integer.MIN_VALUE;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j : sum) {
+            max = Math.max(max, j);
+        }
+        <span class="hljs-keyword">return</span> max;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

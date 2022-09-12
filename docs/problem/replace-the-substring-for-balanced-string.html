@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Replace the Substring for Balanced String - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1234. Replace the Substring for Balanced String</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sliding-window">Sliding Window</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a string s of length <code>n</code> containing only four kinds of characters: <code>'Q'</code>, <code>'W'</code>, <code>'E'</code>, and <code>'R'</code>.</p>
+<p>A string is said to be <strong>balanced</strong>** **if each of its characters appears <code>n / 4</code> times where <code>n</code> is the length of the string.</p>
+<p>Return **the minimum length of the substring that can be replaced with *<em>any</em>* other string of the same length to make <strong><code>s</code></strong> <strong>balanced</strong>**. If s is already *<em>balanced</em>*, return <code>0</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> s = <span class="hljs-string">"QWER"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">0</span>
+<span class="hljs-symbol">Explanation:</span> s is already balanced.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> s = <span class="hljs-string">"QQWE"</span>
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-number">1</span>
+Explanation: We need <span class="hljs-keyword">to</span> replace <span class="hljs-keyword">a</span> <span class="hljs-string">'Q'</span> <span class="hljs-keyword">to</span> <span class="hljs-string">'R'</span>, <span class="hljs-keyword">so</span> that <span class="hljs-string">"RQWE"</span> (<span class="hljs-built_in">or</span> <span class="hljs-string">"QRWE"</span>) <span class="hljs-keyword">is</span> balanced.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"QQQW"</span>
+Output: <span class="hljs-number">2</span>
+Explanation: We can <span class="hljs-built_in">replace</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">first</span> <span class="hljs-string">"QQ"</span> <span class="hljs-built_in">to</span> <span class="hljs-string">"ER"</span>. 
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == s.length</code></p></li>
+<li><p><code>4 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>n</code> is a multiple of <code>4</code>.</p></li>
+<li><p><code>s</code> contains only <code>'Q'</code>, <code>'W'</code>, <code>'E'</code>, and <code>'R'</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">balancedString</span><span class="hljs-params">(String s)</span> </span>{
+        <span class="hljs-keyword">int</span> n = s.length();
+        <span class="hljs-keyword">int</span> ans = n;
+        <span class="hljs-keyword">int</span> excess = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span>[] cnt = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">128</span>];
+        cnt[<span class="hljs-string">'Q'</span>] = cnt[<span class="hljs-string">'W'</span>] = cnt[<span class="hljs-string">'E'</span>] = cnt[<span class="hljs-string">'R'</span>] = -n / <span class="hljs-number">4</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> ch : s.toCharArray()) {
+            <span class="hljs-keyword">if</span> (++cnt[ch] == <span class="hljs-number">1</span>) {
+                excess++;
+            }
+        }
+        <span class="hljs-keyword">if</span> (excess == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (i &lt; n) {
+            <span class="hljs-keyword">if</span> (--cnt[s.charAt(i)] == <span class="hljs-number">0</span>) {
+                excess--;
+            }
+            <span class="hljs-keyword">while</span> (excess == <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">if</span> (++cnt[s.charAt(j)] == <span class="hljs-number">1</span>) {
+                    excess++;
+                }
+                ans = Math.min(i - j + <span class="hljs-number">1</span>, ans);
+                j++;
+            }
+            i++;
+        }
+
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

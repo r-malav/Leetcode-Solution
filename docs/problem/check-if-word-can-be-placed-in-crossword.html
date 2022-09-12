@@ -1,0 +1,132 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Check if Word Can Be Placed In Crossword - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2018. Check if Word Can Be Placed In Crossword</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/enumeration">Enumeration</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an <code>m x n</code> matrix <code>board</code>, representing the** current **state of a crossword puzzle. The crossword contains lowercase English letters (from solved words), <code>' '</code> to represent any **empty **cells, and <code>'#'</code> to represent any *<em>blocked</em>* cells.</p>
+<p>A word can be placed** horizontally** (left to right <strong>or</strong> right to left) or <strong>vertically</strong> (top to bottom <strong>or</strong> bottom to top) in the board if:</p>
+<ul>
+<li><p>It does not occupy a cell containing the character <code>'#'</code>.</p></li>
+<li><p>The cell each letter is placed in must either be <code>' '</code> (empty) or <strong>match</strong> the letter already on the <code>board</code>.</p></li>
+<li><p>There must not be any empty cells <code>' '</code> or other lowercase letters <strong>directly left or right</strong>** **of the word if the word was placed *<em>horizontally</em>*.</p></li>
+<li><p>There must not be any empty cells <code>' '</code> or other lowercase letters <strong>directly above or below</strong> the word if the word was placed <strong>vertically</strong>.</p></li>
+</ul>
+<p>Given a string <code>word</code>, return <code>true</code>** if <strong><code>word</code></strong> can be placed in <strong><code>board</code></strong>, or <strong><code>false</code></strong> <strong>otherwise</strong>**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/10/04/crossword-ex1-1.png" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-string">Input:</span> board = [[<span class="hljs-string">"#"</span>, <span class="hljs-string">" "</span>, <span class="hljs-string">"#"</span>], [<span class="hljs-string">" "</span>, <span class="hljs-string">" "</span>, <span class="hljs-string">"#"</span>], [<span class="hljs-string">"#"</span>, <span class="hljs-string">"c"</span>, <span class="hljs-string">" "</span>]], word = <span class="hljs-string">"abc"</span>
+<span class="hljs-string">Output:</span> <span class="hljs-literal">true</span>
+<span class="hljs-string">Explanation:</span> The word <span class="hljs-string">"abc"</span> can be placed <span class="hljs-keyword">as</span> shown above (top to bottom).
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/10/04/crossword-ex2-1.png" alt="" /></p>
+<pre><code class="hljs">Input: board = [[<span class="hljs-string">" "</span>, <span class="hljs-string">"#"</span>, <span class="hljs-string">"a"</span>], [<span class="hljs-string">" "</span>, <span class="hljs-string">"#"</span>, <span class="hljs-string">"c"</span>], [<span class="hljs-string">" "</span>, <span class="hljs-string">"#"</span>, <span class="hljs-string">"a"</span>]], <span class="hljs-built_in">word</span> = <span class="hljs-string">"ac"</span>
+Output: <span class="hljs-literal">false</span>
+Explanation: It is impossible <span class="hljs-built_in">to</span> place <span class="hljs-keyword">the</span> <span class="hljs-built_in">word</span> because there will always be <span class="hljs-keyword">a</span> <span class="hljs-literal">space</span>/letter above <span class="hljs-keyword">or</span> below <span class="hljs-keyword">it</span>.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/10/04/crossword-ex3-1.png" alt="" /></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> board = [[<span class="hljs-string">"#"</span>, <span class="hljs-string">" "</span>, <span class="hljs-string">"#"</span>], [<span class="hljs-string">" "</span>, <span class="hljs-string">" "</span>, <span class="hljs-string">"#"</span>], [<span class="hljs-string">"#"</span>, <span class="hljs-string">" "</span>, <span class="hljs-string">"c"</span>]], word = <span class="hljs-string">"ca"</span>
+Outpu<span class="hljs-variable">t:</span> true
+Explanation: The word <span class="hljs-string">"ca"</span> can <span class="hljs-keyword">be</span> placed <span class="hljs-keyword">as</span> shown above (<span class="hljs-keyword">right</span> <span class="hljs-keyword">to</span> <span class="hljs-keyword">left</span>). 
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == board.length</code></p></li>
+<li><p><code>n == board[i].length</code></p></li>
+<li><p><code>1 &lt;= m * n &lt;= 2 * 105</code></p></li>
+<li><p><code>board[i][j]</code> will be <code>' '</code>, <code>'#'</code>, or a lowercase English letter.</p></li>
+<li><p><code>1 &lt;= word.length &lt;= max(m, n)</code></p></li>
+<li><p><code>word</code> will contain only lowercase English letters.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">placeWordInCrossword</span><span class="hljs-params">(<span class="hljs-keyword">char</span>[][] board, String word)</span> </span>{
+        <span class="hljs-keyword">int</span> m = board.length;
+        <span class="hljs-keyword">int</span> n = board[<span class="hljs-number">0</span>].length;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++) {
+                <span class="hljs-keyword">if</span> ((board[i][j] == <span class="hljs-string">' '</span> || board[i][j] == word.charAt(<span class="hljs-number">0</span>))
+                        &amp;&amp; (canPlaceTopDown(word, board, i, j)
+                                || canPlaceLeftRight(word, board, i, j)
+                                || canPlaceBottomUp(word, board, i, j)
+                                || canPlaceRightLeft(word, board, i, j))) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">canPlaceRightLeft</span><span class="hljs-params">(String word, <span class="hljs-keyword">char</span>[][] board, <span class="hljs-keyword">int</span> row, <span class="hljs-keyword">int</span> col)</span> </span>{
+        <span class="hljs-keyword">if</span> (col + <span class="hljs-number">1</span> &lt; board[<span class="hljs-number">0</span>].length
+                &amp;&amp; (Character.isLowerCase(board[row][col + <span class="hljs-number">1</span>]) || board[row][col + <span class="hljs-number">1</span>] == <span class="hljs-string">' '</span>)) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+        }
+        <span class="hljs-keyword">int</span> k = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> j = col;
+        <span class="hljs-keyword">for</span> (; j &gt;= <span class="hljs-number">0</span> &amp;&amp; k &lt; word.length(); j--) {
+            <span class="hljs-keyword">if</span> (board[row][j] != word.charAt(k) &amp;&amp; board[row][j] != <span class="hljs-string">' '</span>) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            } <span class="hljs-keyword">else</span> {
+                k++;
+            }
+        }
+        <span class="hljs-keyword">return</span> k == word.length() &amp;&amp; (j &lt; <span class="hljs-number">0</span> || board[row][j] == <span class="hljs-string">'#'</span>);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">canPlaceBottomUp</span><span class="hljs-params">(String word, <span class="hljs-keyword">char</span>[][] board, <span class="hljs-keyword">int</span> row, <span class="hljs-keyword">int</span> col)</span> </span>{
+        <span class="hljs-keyword">if</span> (row + <span class="hljs-number">1</span> &lt; board.length
+                &amp;&amp; (Character.isLowerCase(board[row + <span class="hljs-number">1</span>][col]) || board[row + <span class="hljs-number">1</span>][col] == <span class="hljs-string">' '</span>)) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+        }
+        <span class="hljs-keyword">int</span> k = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> i = row;
+        <span class="hljs-keyword">for</span> (; i &gt;= <span class="hljs-number">0</span> &amp;&amp; k &lt; word.length(); i--) {
+            <span class="hljs-keyword">if</span> (board[i][col] != word.charAt(k) &amp;&amp; board[i][col] != <span class="hljs-string">' '</span>) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            } <span class="hljs-keyword">else</span> {
+                k++;
+            }
+        }
+        <span class="hljs-keyword">return</span> k == word.length() &amp;&amp; (i &lt; <span class="hljs-number">0</span> || board[i][col] == <span class="hljs-string">'#'</span>);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">canPlaceLeftRight</span><span class="hljs-params">(String word, <span class="hljs-keyword">char</span>[][] board, <span class="hljs-keyword">int</span> row, <span class="hljs-keyword">int</span> col)</span> </span>{
+        <span class="hljs-keyword">if</span> (col &gt; <span class="hljs-number">0</span> &amp;&amp; (Character.isLowerCase(board[row][col - <span class="hljs-number">1</span>]) || board[row][col - <span class="hljs-number">1</span>] == <span class="hljs-string">' '</span>)) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+        }
+        <span class="hljs-keyword">int</span> k = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> j = col;
+        <span class="hljs-keyword">for</span> (; j &lt; board[<span class="hljs-number">0</span>].length &amp;&amp; k &lt; word.length(); j++) {
+            <span class="hljs-keyword">if</span> (board[row][j] != word.charAt(k) &amp;&amp; board[row][j] != <span class="hljs-string">' '</span>) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            } <span class="hljs-keyword">else</span> {
+                k++;
+            }
+        }
+        <span class="hljs-keyword">return</span> k == word.length() &amp;&amp; (j == board[<span class="hljs-number">0</span>].length || board[row][j] == <span class="hljs-string">'#'</span>);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">canPlaceTopDown</span><span class="hljs-params">(String word, <span class="hljs-keyword">char</span>[][] board, <span class="hljs-keyword">int</span> row, <span class="hljs-keyword">int</span> col)</span> </span>{
+        <span class="hljs-keyword">if</span> (row &gt; <span class="hljs-number">0</span> &amp;&amp; (Character.isLowerCase(board[row - <span class="hljs-number">1</span>][col]) || board[row - <span class="hljs-number">1</span>][col] == <span class="hljs-string">' '</span>)) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+        }
+        <span class="hljs-keyword">int</span> k = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> i = row;
+        <span class="hljs-keyword">for</span> (; i &lt; board.length &amp;&amp; k &lt; word.length(); i++) {
+            <span class="hljs-keyword">if</span> (board[i][col] != word.charAt(k) &amp;&amp; board[i][col] != <span class="hljs-string">' '</span>) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            } <span class="hljs-keyword">else</span> {
+                k++;
+            }
+        }
+        <span class="hljs-keyword">return</span> k == word.length() &amp;&amp; (i == board.length || board[i][col] == <span class="hljs-string">'#'</span>);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

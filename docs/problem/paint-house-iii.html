@@ -1,0 +1,102 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Paint House III - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1473. Paint House III</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/number-of-distinct-roll-sequences.html">Number of Distinct Roll Sequences</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is a row of <code>m</code> houses in a small city, each house must be painted with one of the <code>n</code> colors (labeled from <code>1</code> to <code>n</code>), some houses that have been painted last summer should not be painted again.</p>
+<p>A neighborhood is a maximal group of continuous houses that are painted with the same color.</p>
+<ul>
+<li>For example: <code>houses = [1,2,2,3,3,2,1,1]</code> contains <code>5</code> neighborhoods <code>[{1}, {2,2}, {3,3}, {2}, {1,1}]</code>.</li>
+</ul>
+<p>Given an array <code>houses</code>, an <code>m x n</code> matrix <code>cost</code> and an integer <code>target</code> where:</p>
+<ul>
+<li><p><code>houses[i]</code>: is the color of the house <code>i</code>, and <code>0</code> if the house is not painted yet.</p></li>
+<li><p><code>cost[i][j]</code>: is the cost of paint the house <code>i</code> with the color <code>j + 1</code>.</p></li>
+</ul>
+<p>Return <strong>the minimum cost of painting all the remaining houses in such a way that there are exactly</strong> <code>target</code> <strong>neighborhoods</strong>. If it is not possible, return <code>-1</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: houses = [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>], cost = [[<span class="hljs-number">1</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">10</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">10</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">1</span>]], m = <span class="hljs-number">5</span>, n = <span class="hljs-number">2</span>, target = <span class="hljs-number">3</span>
+Output: <span class="hljs-number">9</span>
+Explanation: Paint houses of <span class="hljs-keyword">this</span> way [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]
+This <span class="hljs-built_in">array</span> contains target = <span class="hljs-number">3</span> neighborhoods, [{<span class="hljs-number">1</span>}, {<span class="hljs-number">2</span>,<span class="hljs-number">2</span>}, {<span class="hljs-number">1</span>,<span class="hljs-number">1</span>}].
+Cost of paint all houses (<span class="hljs-number">1</span> + <span class="hljs-number">1</span> + <span class="hljs-number">1</span> + <span class="hljs-number">1</span> + <span class="hljs-number">5</span>) = <span class="hljs-number">9.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: houses = [<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>], cost = [[<span class="hljs-number">1</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">10</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">10</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">1</span>]], m = <span class="hljs-number">5</span>, n = <span class="hljs-number">2</span>, target = <span class="hljs-number">3</span>
+Output: <span class="hljs-number">11</span>
+Explanation: Some houses are already painted, Paint the houses of <span class="hljs-keyword">this</span> way [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]
+This <span class="hljs-built_in">array</span> contains target = <span class="hljs-number">3</span> neighborhoods, [{<span class="hljs-number">2</span>,<span class="hljs-number">2</span>}, {<span class="hljs-number">1</span>}, {<span class="hljs-number">2</span>,<span class="hljs-number">2</span>}]. 
+Cost of paint the first <span class="hljs-keyword">and</span> last house (<span class="hljs-number">10</span> + <span class="hljs-number">1</span>) = <span class="hljs-number">11.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: houses = [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], cost = [[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]], m = <span class="hljs-number">4</span>, n = <span class="hljs-number">3</span>, target = <span class="hljs-number">3</span>
+Output: <span class="hljs-number">-1</span>
+Explanation: Houses are already painted with a total of <span class="hljs-number">4</span> neighborhoods [{<span class="hljs-number">3</span>},{<span class="hljs-number">1</span>},{<span class="hljs-number">2</span>},{<span class="hljs-number">3</span>}] different of target = <span class="hljs-number">3.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == houses.length == cost.length</code></p></li>
+<li><p><code>n == cost[i].length</code></p></li>
+<li><p><code>1 &lt;= m &lt;= 100</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 20</code></p></li>
+<li><p><code>1 &lt;= target &lt;= m</code></p></li>
+<li><p><code>0 &lt;= houses[i] &lt;= n</code></p></li>
+<li><p><code>1 &lt;= cost[i][j] &lt;= 104</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">int</span>[][][] memo;
+    <span class="hljs-keyword">int</span> INT_MAX = <span class="hljs-number">100000001</span>;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minCost</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] houses, <span class="hljs-keyword">int</span>[][] cost, <span class="hljs-keyword">int</span> m, <span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> target)</span> </span>{
+        memo = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[m][target+<span class="hljs-number">1</span>][n+<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;m;i++){
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j=<span class="hljs-number">0</span>;j&lt;target+<span class="hljs-number">1</span>;j++){
+                <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> k=<span class="hljs-number">0</span>;k&lt;n+<span class="hljs-number">1</span>;k++){
+                    memo[i][j][k] = -<span class="hljs-number">1</span>;
+                }
+            }
+        }
+        <span class="hljs-keyword">int</span> res = minCostUtil(houses,cost,m,n,target,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>);
+        <span class="hljs-keyword">return</span> (res==INT_MAX)?-<span class="hljs-number">1</span>:res;
+    }
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">minCostUtil</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] h, <span class="hljs-keyword">int</span>[][] c, <span class="hljs-keyword">int</span> m, <span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> t,<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> previous)</span></span>{
+
+        <span class="hljs-comment">// GOAL BEGIN</span>
+        <span class="hljs-keyword">if</span>(i==m){
+            <span class="hljs-keyword">if</span>(t==<span class="hljs-number">0</span>){
+                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+            }
+            <span class="hljs-keyword">return</span> INT_MAX;
+        }
+        <span class="hljs-keyword">if</span>(t&lt;<span class="hljs-number">0</span>){
+            <span class="hljs-keyword">return</span> INT_MAX;
+        }
+        <span class="hljs-comment">// GOAL END</span>
+
+        <span class="hljs-keyword">if</span>(memo[i][t][previous]!=-<span class="hljs-number">1</span>){
+            <span class="hljs-keyword">return</span> memo[i][t][previous];
+        }
+        <span class="hljs-keyword">int</span> ans = INT_MAX;
+
+        <span class="hljs-comment">//CONSTRAINT BEGIN</span>
+        <span class="hljs-keyword">if</span>(h[i]==<span class="hljs-number">0</span>){
+            <span class="hljs-comment">//CHOICE BEGIN</span>
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j=<span class="hljs-number">1</span>;j&lt;=n;j++){
+                ans = Math.min(ans,c[i][j-<span class="hljs-number">1</span>]+minCostUtil(h,c,m,n,t-((j!=previous)?<span class="hljs-number">1</span>:<span class="hljs-number">0</span>),i+<span class="hljs-number">1</span>,j));
+            }
+            <span class="hljs-comment">//CHOICE END</span>
+        } <span class="hljs-keyword">else</span>{
+            ans = minCostUtil(h,c,m,n,t-((h[i]!=previous)?<span class="hljs-number">1</span>:<span class="hljs-number">0</span>),i+<span class="hljs-number">1</span>,h[i]);
+        }
+        <span class="hljs-comment">//CONSTRAINT END</span>
+
+        memo[i][t][previous] = ans;
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

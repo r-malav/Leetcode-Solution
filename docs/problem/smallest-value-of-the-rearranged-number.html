@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Smallest Value of the Rearranged Number - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2165. Smallest Value of the Rearranged Number</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/largest-number.html">Largest Number</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an integer <code>num.</code> <strong>Rearrange</strong> the digits of <code>num</code> such that its value is <strong>minimized</strong> and it does not contain <strong>any</strong> leading zeros.</p>
+<p>Return <strong>the rearranged number with minimal value</strong>.</p>
+<p>Note that the sign of the number does not change after rearranging the digits.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">num</span> <span class="hljs-string">=</span> <span class="hljs-number">310</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">103</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">The</span> <span class="hljs-string">possible</span> <span class="hljs-string">arrangements</span> <span class="hljs-string">for</span> <span class="hljs-string">the</span> <span class="hljs-string">digits</span> <span class="hljs-string">of</span> <span class="hljs-number">310</span> <span class="hljs-string">are</span> <span class="hljs-number">013</span><span class="hljs-string">,</span> <span class="hljs-number">031</span><span class="hljs-string">,</span> <span class="hljs-number">103</span><span class="hljs-string">,</span> <span class="hljs-number">130</span><span class="hljs-string">,</span> <span class="hljs-number">301</span><span class="hljs-string">,</span> <span class="hljs-number">310</span><span class="hljs-string">.</span> 
+<span class="hljs-string">The</span> <span class="hljs-string">arrangement</span> <span class="hljs-string">with</span> <span class="hljs-string">the</span> <span class="hljs-string">smallest</span> <span class="hljs-string">value</span> <span class="hljs-string">that</span> <span class="hljs-string">does</span> <span class="hljs-string">not</span> <span class="hljs-string">contain</span> <span class="hljs-string">any</span> <span class="hljs-string">leading</span> <span class="hljs-string">zeros</span> <span class="hljs-string">is</span> <span class="hljs-number">103</span><span class="hljs-string">.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">num</span> <span class="hljs-string">=</span> <span class="hljs-number">-7605</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">-7650</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">Some</span> <span class="hljs-string">possible</span> <span class="hljs-string">arrangements</span> <span class="hljs-string">for</span> <span class="hljs-string">the</span> <span class="hljs-string">digits</span> <span class="hljs-string">of</span> <span class="hljs-number">-7605</span> <span class="hljs-string">are</span> <span class="hljs-number">-7650</span><span class="hljs-string">,</span> <span class="hljs-number">-6705</span><span class="hljs-string">,</span> <span class="hljs-number">-5076</span><span class="hljs-string">,</span> <span class="hljs-number">-0567</span><span class="hljs-string">.</span>
+<span class="hljs-string">The</span> <span class="hljs-string">arrangement</span> <span class="hljs-string">with</span> <span class="hljs-string">the</span> <span class="hljs-string">smallest</span> <span class="hljs-string">value</span> <span class="hljs-string">that</span> <span class="hljs-string">does</span> <span class="hljs-string">not</span> <span class="hljs-string">contain</span> <span class="hljs-string">any</span> <span class="hljs-string">leading</span> <span class="hljs-string">zeros</span> <span class="hljs-string">is</span> <span class="hljs-number">-7650</span><span class="hljs-string">.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>-1015 &lt;= num &lt;= 1015</code></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">long</span> <span class="hljs-title">smallestNumber</span><span class="hljs-params">(<span class="hljs-keyword">long</span> num)</span> </span>{
+        <span class="hljs-keyword">int</span>[] count = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">10</span>];
+        <span class="hljs-keyword">long</span> tempNum;
+        <span class="hljs-keyword">if</span> (num &gt; <span class="hljs-number">0</span>) {
+            tempNum = num;
+        } <span class="hljs-keyword">else</span> {
+            tempNum = num * -<span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">int</span> min = <span class="hljs-number">10</span>;
+        <span class="hljs-keyword">while</span> (tempNum &gt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">int</span> rem = (<span class="hljs-keyword">int</span>) (tempNum % <span class="hljs-number">10</span>);
+            <span class="hljs-keyword">if</span> (rem != <span class="hljs-number">0</span>) {
+                min = Math.min(min, rem);
+            }
+            count[rem]++;
+            tempNum = tempNum / <span class="hljs-number">10</span>;
+        }
+        <span class="hljs-keyword">long</span> output = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">if</span> (num &gt; <span class="hljs-number">0</span>) {
+            output = output * <span class="hljs-number">10</span> + min;
+            count[min]--;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; count[i]; j++) {
+                    output = output * <span class="hljs-number">10</span> + i;
+                }
+            }
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">9</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; count[i]; j++) {
+                    output = output * <span class="hljs-number">10</span> + i;
+                }
+            }
+            output = output * -<span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">return</span> output;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

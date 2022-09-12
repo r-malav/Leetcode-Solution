@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Area of a Piece of Cake After Horizontal and Vertical Cuts - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1465. Maximum Area of a Piece of Cake After Horizontal and Vertical Cuts</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a rectangular cake of size <code>h x w</code> and two arrays of integers <code>horizontalCuts</code> and <code>verticalCuts</code> where:</p>
+<ul>
+<li><p><code>horizontalCuts[i]</code> is the distance from the top of the rectangular cake to the <code>ith</code> horizontal cut and similarly, and</p></li>
+<li><p><code>verticalCuts[j]</code> is the distance from the left of the rectangular cake to the <code>jth</code> vertical cut.</p></li>
+</ul>
+<p>Return <strong>the maximum area of a piece of cake after you cut at each horizontal and vertical position provided in the arrays</strong> <code>horizontalCuts</code> <strong>and</strong> <code>verticalCuts</code>. Since the answer can be a large number, return this <strong>modulo</strong> <code>109 + 7</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/05/14/leetcode_max_area_2.png" alt="" /></p>
+<pre><code class="hljs">Input: h = <span class="hljs-number">5</span>, w = <span class="hljs-number">4</span>, horizontalCuts = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>], verticalCuts = [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>]
+Output: <span class="hljs-number">4</span> 
+Explanation: The figure above represents the given rectangular cake. Red lines are the horizontal <span class="hljs-keyword">and</span> vertical cuts. After you cut the cake, the green piece of cake has the maximum area.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/05/14/leetcode_max_area_3.png" alt="" /></p>
+<pre><code class="hljs">Input: h = <span class="hljs-number">5</span>, w = <span class="hljs-number">4</span>, horizontalCuts = [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>], verticalCuts = [<span class="hljs-number">1</span>]
+Output: <span class="hljs-number">6</span>
+Explanation: The figure above represents the given rectangular cake. Red lines are the horizontal <span class="hljs-keyword">and</span> vertical cuts. After you cut the cake, the green <span class="hljs-keyword">and</span> yellow pieces of cake have the maximum area.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: h = <span class="hljs-number">5</span>, w = <span class="hljs-number">4</span>, horizontalCuts = [<span class="hljs-number">3</span>], verticalCuts = [<span class="hljs-number">3</span>]
+Output: <span class="hljs-number">9</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>2 &lt;= h, w &lt;= 109</code></p></li>
+<li><p><code>1 &lt;= horizontalCuts.length &lt;= min(h - 1, 105)</code></p></li>
+<li><p><code>1 &lt;= verticalCuts.length &lt;= min(w - 1, 105)</code></p></li>
+<li><p><code>1 &lt;= horizontalCuts[i] &lt; h</code></p></li>
+<li><p><code>1 &lt;= verticalCuts[i] &lt; w</code></p></li>
+<li><p>All the elements in <code>horizontalCuts</code> are distinct.</p></li>
+<li><p>All the elements in <code>verticalCuts</code> are distinct.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxArea</span><span class="hljs-params">(<span class="hljs-keyword">int</span> h, <span class="hljs-keyword">int</span> w, <span class="hljs-keyword">int</span>[] horizontalCuts, <span class="hljs-keyword">int</span>[] verticalCuts)</span> </span>{
+        Arrays.sort(horizontalCuts);
+        Arrays.sort(verticalCuts);
+        <span class="hljs-keyword">long</span> maxVertical = Math.max(<span class="hljs-number">0L</span>, verticalCuts[<span class="hljs-number">0</span>]);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; verticalCuts.length; i++) {
+            <span class="hljs-keyword">int</span> diff = (verticalCuts[i] - verticalCuts[i - <span class="hljs-number">1</span>]);
+            maxVertical = Math.max(maxVertical, diff);
+        }
+        maxVertical = Math.max(maxVertical, (<span class="hljs-keyword">long</span>) w - verticalCuts[verticalCuts.length - <span class="hljs-number">1</span>]);
+        <span class="hljs-keyword">long</span> maxHorizontal = Math.max(<span class="hljs-number">0L</span>, horizontalCuts[<span class="hljs-number">0</span>]);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; horizontalCuts.length; i++) {
+            <span class="hljs-keyword">int</span> diff = (horizontalCuts[i] - horizontalCuts[i - <span class="hljs-number">1</span>]);
+            maxHorizontal = Math.max(maxHorizontal, diff);
+        }
+        maxHorizontal =
+                Math.max(maxHorizontal, (<span class="hljs-keyword">long</span>) h - horizontalCuts[horizontalCuts.length - <span class="hljs-number">1</span>]);
+        <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>) (maxVertical % <span class="hljs-number">1000000007</span> * maxHorizontal % <span class="hljs-number">1000000007</span>) % <span class="hljs-number">1000000007</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

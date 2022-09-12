@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Print Zero Even Odd - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1116. Print Zero Even Odd</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/concurrency">Concurrency</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/print-foobar-alternately.html">Print FooBar Alternately</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/fizz-buzz-multithreaded.html">Fizz Buzz Multithreaded</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You have a function <code>printNumber</code> that can be called with an integer parameter and prints it to the console.</p>
+<ul>
+<li>For example, calling <code>printNumber(7)</code> prints <code>7</code> to the console.</li>
+</ul>
+<p>You are given an instance of the class <code>ZeroEvenOdd</code> that has three functions: <code>zero</code>, <code>even</code>, and <code>odd</code>. The same instance of <code>ZeroEvenOdd</code> will be passed to three different threads:</p>
+<ul>
+<li><p><strong>Thread A:</strong> calls <code>zero()</code> that should only output <code>0</code>'s.</p></li>
+<li><p><strong>Thread B:</strong> calls <code>even()</code> that should only output even numbers.</p></li>
+<li><p><strong>Thread C:</strong> calls <code>odd()</code> that should only output odd numbers.</p></li>
+</ul>
+<p>Modify the given class to output the series <code>"010203040506..."</code> where the length of the series must be <code>2n</code>.</p>
+<p>Implement the <code>ZeroEvenOdd</code> class:</p>
+<ul>
+<li><p><code>ZeroEvenOdd(int n)</code> Initializes the object with the number <code>n</code> that represents the numbers that should be printed.</p></li>
+<li><p><code>void zero(printNumber)</code> Calls <code>printNumber</code> to output one zero.</p></li>
+<li><p><code>void even(printNumber)</code> Calls <code>printNumber</code> to output one even number.</p></li>
+<li><p><code>void odd(printNumber)</code> Calls <code>printNumber</code> to output one odd number.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">2</span>
+Output: <span class="hljs-string">"0102"</span>
+Explanation: There are <span class="hljs-literal">three</span> threads being fired asynchronously.
+One <span class="hljs-keyword">of</span> them calls <span class="hljs-literal">zero</span>(), <span class="hljs-keyword">the</span> other calls even(), <span class="hljs-keyword">and</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">last</span> <span class="hljs-literal">one</span> calls odd().
+<span class="hljs-string">"0102"</span> is <span class="hljs-keyword">the</span> correct output.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> n = <span class="hljs-number">5</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">"0102030405"</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= n &lt;= 1000</code></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ZeroEvenOdd</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> n;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Semaphore zeroSemaphore = <span class="hljs-keyword">new</span> Semaphore(<span class="hljs-number">1</span>);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Semaphore oddSemaphore = <span class="hljs-keyword">new</span> Semaphore(<span class="hljs-number">1</span>);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Semaphore evenSemaphore = <span class="hljs-keyword">new</span> Semaphore(<span class="hljs-number">1</span>);
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ZeroEvenOdd</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-keyword">this</span>.n = n;
+        <span class="hljs-keyword">try</span> {
+            oddSemaphore.acquire();
+            evenSemaphore.acquire();
+        } <span class="hljs-keyword">catch</span> (InterruptedException ignored) {
+            <span class="hljs-comment">// ignored</span>
+        }
+    }
+
+    <span class="hljs-comment">// printNumber.accept(x) outputs "x", where x is an integer.</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">zero</span><span class="hljs-params">(IntConsumer printNumber)</span> <span class="hljs-keyword">throws</span> InterruptedException </span>{
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+            zeroSemaphore.acquire();
+            printNumber.accept(<span class="hljs-number">0</span>);
+            <span class="hljs-keyword">if</span> (i % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) {
+                oddSemaphore.release();
+            } <span class="hljs-keyword">else</span> {
+                evenSemaphore.release();
+            }
+        }
+        oddSemaphore.release();
+        evenSemaphore.release();
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">odd</span><span class="hljs-params">(IntConsumer printNumber)</span> <span class="hljs-keyword">throws</span> InterruptedException </span>{
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i += <span class="hljs-number">2</span>) {
+            evenSemaphore.acquire();
+            <span class="hljs-keyword">if</span> (i &gt; n) {
+                zeroSemaphore.release();
+                evenSemaphore.release();
+                <span class="hljs-keyword">break</span>;
+            }
+            printNumber.accept(i);
+            zeroSemaphore.release();
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">even</span><span class="hljs-params">(IntConsumer printNumber)</span> <span class="hljs-keyword">throws</span> InterruptedException </span>{
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">2</span>; i &lt;= n; i += <span class="hljs-number">2</span>) {
+            oddSemaphore.acquire();
+            <span class="hljs-keyword">if</span> (i &gt; n) {
+                zeroSemaphore.release();
+                oddSemaphore.release();
+                <span class="hljs-keyword">break</span>;
+            }
+            printNumber.accept(i);
+            zeroSemaphore.release();
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

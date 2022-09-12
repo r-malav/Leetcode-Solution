@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Count Unhappy Friends - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1583. Count Unhappy Friends</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/simulation">Simulation</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a list of&nbsp;<code>preferences</code>&nbsp;for&nbsp;<code>n</code>&nbsp;friends, where <code>n</code> is always <strong>even</strong>.</p>
+<p>For each person <code>i</code>,&nbsp;<code>preferences[i]</code>&nbsp;contains&nbsp;a list of friends&nbsp;<strong>sorted</strong> in the <strong>order of preference</strong>. In other words, a friend earlier in the list is more preferred than a friend later in the list.&nbsp;Friends in&nbsp;each list are&nbsp;denoted by integers from <code>0</code> to <code>n-1</code>.</p>
+<p>All the friends are divided into pairs.&nbsp;The pairings are&nbsp;given in a list&nbsp;<code>pairs</code>,&nbsp;where <code>pairs[i] = [xi, yi]</code> denotes <code>xi</code>&nbsp;is paired with <code>yi</code> and <code>yi</code> is paired with <code>xi</code>.</p>
+<p>However, this pairing may cause some of the friends to be unhappy.&nbsp;A friend <code>x</code>&nbsp;is unhappy if <code>x</code>&nbsp;is paired with <code>y</code>&nbsp;and there exists a friend <code>u</code>&nbsp;who&nbsp;is paired with <code>v</code>&nbsp;but:</p>
+<ul>
+<li><p><code>x</code>&nbsp;prefers <code>u</code>&nbsp;over <code>y</code>,&nbsp;and</p></li>
+<li><p><code>u</code>&nbsp;prefers <code>x</code>&nbsp;over <code>v</code>.</p></li>
+</ul>
+<p>Return <strong>the number of unhappy friends</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">4</span>, preferences = [[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>]], pairs = [[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>]]
+Output: <span class="hljs-number">2</span>
+Explanation:
+Friend <span class="hljs-number">1</span> <span class="hljs-keyword">is</span> unhappy because:
+- <span class="hljs-number">1</span> <span class="hljs-keyword">is</span> paired with <span class="hljs-number">0</span> but prefers <span class="hljs-number">3</span> over <span class="hljs-number">0</span>, <span class="hljs-keyword">and</span>
+- <span class="hljs-number">3</span> prefers <span class="hljs-number">1</span> over <span class="hljs-number">2.</span>
+Friend <span class="hljs-number">3</span> <span class="hljs-keyword">is</span> unhappy because:
+- <span class="hljs-number">3</span> <span class="hljs-keyword">is</span> paired with <span class="hljs-number">2</span> but prefers <span class="hljs-number">1</span> over <span class="hljs-number">2</span>, <span class="hljs-keyword">and</span>
+- <span class="hljs-number">1</span> prefers <span class="hljs-number">3</span> over <span class="hljs-number">0.</span>
+Friends <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-number">2</span> are happy.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">2</span>, preferences = <span class="hljs-string">[[1], [0]]</span>, <span class="hljs-built_in">pairs</span> = <span class="hljs-string">[[1, 0]]</span>
+Output: <span class="hljs-number">0</span>
+Explanation: Both friends <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-number">1</span> are happy.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">4</span>, preferences = [[<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>]], pairs = [[<span class="hljs-number">1</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">2</span>]]
+Output: <span class="hljs-number">4</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>2 &lt;= n &lt;= 500</code></p></li>
+<li><p><code>n</code>&nbsp;is even.</p></li>
+<li><p><code>preferences.length&amp;nbsp;== n</code></p></li>
+<li><p><code>preferences[i].length&amp;nbsp;== n - 1</code></p></li>
+<li><p><code>0 &lt;= preferences[i][j] &lt;= n - 1</code></p></li>
+<li><p><code>preferences[i]</code>&nbsp;does not contain <code>i</code>.</p></li>
+<li><p>All values in&nbsp;<code>preferences[i]</code>&nbsp;are unique.</p></li>
+<li><p><code>pairs.length&amp;nbsp;== n/2</code></p></li>
+<li><p><code>pairs[i].length&amp;nbsp;== 2</code></p></li>
+<li><p><code>xi != yi</code></p></li>
+<li><p><code>0 &lt;= xi, yi&amp;nbsp;&lt;= n - 1</code></p></li>
+<li><p>Each person is contained in <strong>exactly one</strong> pair.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">unhappyFriends</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[][] preferences, <span class="hljs-keyword">int</span>[][] pairs)</span> </span>{
+        <span class="hljs-keyword">int</span> unhappyFriends = <span class="hljs-number">0</span>;
+        Map&lt;Integer, Integer&gt; assignedPair = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] pair : pairs) {
+            assignedPair.put(pair[<span class="hljs-number">0</span>], pair[<span class="hljs-number">1</span>]);
+            assignedPair.put(pair[<span class="hljs-number">1</span>], pair[<span class="hljs-number">0</span>]);
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] pair : pairs) {
+            <span class="hljs-keyword">if</span> (isUnHappy(pair[<span class="hljs-number">1</span>], pair[<span class="hljs-number">0</span>], preferences, assignedPair)) {
+                unhappyFriends++;
+            }
+            <span class="hljs-keyword">if</span> (isUnHappy(pair[<span class="hljs-number">0</span>], pair[<span class="hljs-number">1</span>], preferences, assignedPair)) {
+                unhappyFriends++;
+            }
+        }
+        <span class="hljs-keyword">return</span> unhappyFriends;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isUnHappy</span><span class="hljs-params">(
+            <span class="hljs-keyword">int</span> self,
+            <span class="hljs-keyword">int</span> assignedFriend,
+            <span class="hljs-keyword">int</span>[][] preferences,
+            Map&lt;Integer, Integer&gt; assignedPairs)</span> </span>{
+        <span class="hljs-keyword">int</span>[] preference = preferences[self];
+        <span class="hljs-keyword">int</span> assignedFriendPreferenceIndex = findIndex(preference, assignedFriend);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt;= assignedFriendPreferenceIndex; i++) {
+            <span class="hljs-keyword">int</span> preferredFriend = preference[i];
+            <span class="hljs-keyword">int</span> preferredFriendAssignedFriend = assignedPairs.get(preferredFriend);
+            <span class="hljs-keyword">if</span> (preferredFriendAssignedFriend == self) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            }
+            <span class="hljs-keyword">int</span> candidateAssignedFriendIndex =
+                    findIndex(preferences[preferredFriend], preferredFriendAssignedFriend);
+            <span class="hljs-keyword">if</span> (isPreferred(self, preferences[preferredFriend], candidateAssignedFriendIndex)) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isPreferred</span><span class="hljs-params">(<span class="hljs-keyword">int</span> self, <span class="hljs-keyword">int</span>[] preference, <span class="hljs-keyword">int</span> boundary)</span> </span>{
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt;= boundary; i++) {
+            <span class="hljs-keyword">if</span> (self == preference[i]) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">findIndex</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] preference, <span class="hljs-keyword">int</span> assignedFriend)</span> </span>{
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; preference.length; i++) {
+            <span class="hljs-keyword">if</span> (preference[i] == assignedFriend) {
+                <span class="hljs-keyword">return</span> i;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

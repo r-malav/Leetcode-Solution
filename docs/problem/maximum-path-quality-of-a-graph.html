@@ -1,0 +1,126 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Path Quality of a Graph - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2065. Maximum Path Quality of a Graph</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/backtracking">Backtracking</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/graph">Graph</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/cherry-pickup.html">Cherry Pickup</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-cost-to-reach-destination-in-time.html">Minimum Cost to Reach Destination in Time</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is an <strong>undirected</strong> graph with <code>n</code> nodes numbered from <code>0</code> to <code>n - 1</code> (<strong>inclusive</strong>). You are given a <strong>0-indexed</strong> integer array <code>values</code> where <code>values[i]</code> is the **value **of the <code>ith</code> node. You are also given a <strong>0-indexed</strong> 2D integer array <code>edges</code>, where each <code>edges[j] = [uj, vj, timej]</code> indicates that there is an undirected edge between the nodes <code>uj</code> and <code>vj</code>, and it takes <code>timej</code> seconds to travel between the two nodes. Finally, you are given an integer <code>maxTime</code>.</p>
+<p>A <strong>valid</strong> <strong>path</strong> in the graph is any path that starts at node <code>0</code>, ends at node <code>0</code>, and takes <strong>at most</strong> <code>maxTime</code> seconds to complete. You may visit the same node multiple times. The <strong>quality</strong> of a valid path is the <strong>sum</strong> of the values of the <strong>unique nodes</strong> visited in the path (each node's value is added <strong>at most once</strong> to the sum).</p>
+<p>Return **the *<em>maximum</em>* quality of a valid path**.</p>
+<p><strong>Note:</strong> There are <strong>at most four</strong> edges connected to each node.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/10/19/ex1drawio.png" alt="" /></p>
+<pre><code class="hljs">Input: values = [<span class="hljs-number">0</span>,<span class="hljs-number">32</span>,<span class="hljs-number">10</span>,<span class="hljs-number">43</span>], edges = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">15</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">3</span>,<span class="hljs-number">10</span>]], maxTime = <span class="hljs-number">49</span>
+Output: <span class="hljs-number">75</span>
+Explanation:
+One possible path <span class="hljs-keyword">is</span> <span class="hljs-number">0</span> -&gt; <span class="hljs-number">1</span> -&gt; <span class="hljs-number">0</span> -&gt; <span class="hljs-number">3</span> -&gt; <span class="hljs-number">0.</span> The total time taken <span class="hljs-keyword">is</span> <span class="hljs-number">10</span> + <span class="hljs-number">10</span> + <span class="hljs-number">10</span> + <span class="hljs-number">10</span> = <span class="hljs-number">40</span> &lt;= <span class="hljs-number">49.</span>
+The nodes visited are <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-keyword">and</span> <span class="hljs-number">3</span>, giving a maximal path quality of <span class="hljs-number">0</span> + <span class="hljs-number">32</span> + <span class="hljs-number">43</span> = <span class="hljs-number">75.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/10/19/ex2drawio.png" alt="" /></p>
+<pre><code class="hljs">Input: values = [<span class="hljs-number">5</span>,<span class="hljs-number">10</span>,<span class="hljs-number">15</span>,<span class="hljs-number">20</span>], edges = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">3</span>,<span class="hljs-number">10</span>]], maxTime = <span class="hljs-number">30</span>
+Output: <span class="hljs-number">25</span>
+Explanation:
+One possible path <span class="hljs-keyword">is</span> <span class="hljs-number">0</span> -&gt; <span class="hljs-number">3</span> -&gt; <span class="hljs-number">0.</span> The total time taken <span class="hljs-keyword">is</span> <span class="hljs-number">10</span> + <span class="hljs-number">10</span> = <span class="hljs-number">20</span> &lt;= <span class="hljs-number">30.</span>
+The nodes visited are <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-number">3</span>, giving a maximal path quality of <span class="hljs-number">5</span> + <span class="hljs-number">20</span> = <span class="hljs-number">25.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/10/19/ex31drawio.png" alt="" /></p>
+<pre><code class="hljs">Input: values = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>], edges = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">11</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">12</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">13</span>]], maxTime = <span class="hljs-number">50</span>
+Output: <span class="hljs-number">7</span>
+Explanation:
+One possible path <span class="hljs-keyword">is</span> <span class="hljs-number">0</span> -&gt; <span class="hljs-number">1</span> -&gt; <span class="hljs-number">3</span> -&gt; <span class="hljs-number">1</span> -&gt; <span class="hljs-number">0.</span> The total time taken <span class="hljs-keyword">is</span> <span class="hljs-number">10</span> + <span class="hljs-number">13</span> + <span class="hljs-number">13</span> + <span class="hljs-number">10</span> = <span class="hljs-number">46</span> &lt;= <span class="hljs-number">50.</span>
+The nodes visited are <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-keyword">and</span> <span class="hljs-number">3</span>, giving a maximal path quality of <span class="hljs-number">1</span> + <span class="hljs-number">2</span> + <span class="hljs-number">4</span> = <span class="hljs-number">7.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == values.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 1000</code></p></li>
+<li><p><code>0 &lt;= values[i] &lt;= 108</code></p></li>
+<li><p><code>0 &lt;= edges.length &lt;= 2000</code></p></li>
+<li><p><code>edges[j].length == 3 </code></p></li>
+<li><p><code>0 &lt;= uj &lt; vj &lt;= n - 1</code></p></li>
+<li><p><code>10 &lt;= timej, maxTime &lt;= 100</code></p></li>
+<li><p>All the pairs <code>[uj, vj]</code> are <strong>unique</strong>.</p></li>
+<li><p>There are <strong>at most four</strong> edges connected to each node.</p></li>
+<li><p>The graph may not be connected.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> maxQuality;
+
+    <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Node</span> </span>{
+        <span class="hljs-keyword">int</span> i;
+        <span class="hljs-keyword">int</span> time;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Node</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> time)</span> </span>{
+            <span class="hljs-keyword">this</span>.i = i;
+            <span class="hljs-keyword">this</span>.time = time;
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maximalPathQuality</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] values, <span class="hljs-keyword">int</span>[][] edges, <span class="hljs-keyword">int</span> maxTime)</span> </span>{
+        List&lt;List&lt;Node&gt;&gt; graph = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; values.length; i++) {
+            graph.add(<span class="hljs-keyword">new</span> ArrayList&lt;&gt;());
+        }
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] edge : edges) {
+            <span class="hljs-keyword">int</span> u = edge[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">int</span> v = edge[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">int</span> time = edge[<span class="hljs-number">2</span>];
+            Node node1 = <span class="hljs-keyword">new</span> Node(u, time);
+            Node node2 = <span class="hljs-keyword">new</span> Node(v, time);
+            graph.get(u).add(node2);
+            graph.get(v).add(node1);
+        }
+        maxQuality = <span class="hljs-number">0</span>;
+        dfs(graph, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, maxTime, values[<span class="hljs-number">0</span>], values);
+
+        <span class="hljs-keyword">return</span> maxQuality;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(
+            List&lt;List&lt;Node&gt;&gt; graph,
+            <span class="hljs-keyword">int</span> start,
+            <span class="hljs-keyword">int</span> curTime,
+            <span class="hljs-keyword">int</span> maxTime,
+            <span class="hljs-keyword">int</span> curValue,
+            <span class="hljs-keyword">int</span>[] values)</span> </span>{
+        <span class="hljs-keyword">if</span> (curTime &gt; maxTime) {
+            <span class="hljs-keyword">return</span>;
+        }
+        <span class="hljs-keyword">if</span> (curTime == maxTime &amp;&amp; start != <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span>;
+        }
+
+        <span class="hljs-keyword">if</span> (start == <span class="hljs-number">0</span>) {
+            maxQuality = Math.max(maxQuality, curValue);
+        }
+        <span class="hljs-keyword">int</span> tmp = values[start];
+        <span class="hljs-keyword">if</span> (tmp != <span class="hljs-number">0</span>) {
+            values[start] = <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">for</span> (Node node : graph.get(start)) {
+            <span class="hljs-keyword">int</span> v = node.i;
+            <span class="hljs-keyword">int</span> time = node.time;
+            <span class="hljs-keyword">int</span> value = values[v];
+            <span class="hljs-keyword">if</span> (value != <span class="hljs-number">0</span>) {
+                values[v] = <span class="hljs-number">0</span>;
+            }
+            dfs(graph, v, curTime + time, maxTime, curValue + value, values);
+            <span class="hljs-keyword">if</span> (value != <span class="hljs-number">0</span>) {
+                values[v] = value;
+            }
+        }
+        <span class="hljs-keyword">if</span> (tmp != <span class="hljs-number">0</span>) {
+            values[start] = tmp;
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

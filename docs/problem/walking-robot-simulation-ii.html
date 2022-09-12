@@ -1,0 +1,109 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Walking Robot Simulation II - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2069. Walking Robot Simulation II</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/design">Design</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/simulation">Simulation</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/walking-robot-simulation.html">Walking Robot Simulation</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A <code>width x height</code> grid is on an XY-plane with the <strong>bottom-left</strong> cell at <code>(0, 0)</code> and the <strong>top-right</strong> cell at <code>(width - 1, height - 1)</code>. The grid is aligned with the four cardinal directions (<code>"North"</code>, <code>"East"</code>, <code>"South"</code>, and <code>"West"</code>). A robot is <strong>initially</strong> at cell <code>(0, 0)</code> facing direction <code>"East"</code>.</p>
+<p>The robot can be instructed to move for a specific number of <strong>steps</strong>. For each step, it does the following.</p>
+<ul>
+<li><p>Attempts to move <strong>forward one</strong> cell in the direction it is facing.</p></li>
+<li><p>If the cell the robot is <strong>moving to</strong> is <strong>out of bounds</strong>, the robot instead <strong>turns</strong> 90 degrees <strong>counterclockwise</strong> and retries the step.</p></li>
+</ul>
+<p>After the robot finishes moving the number of steps required, it stops and awaits the next instruction.</p>
+<p>Implement the <code>Robot</code> class:</p>
+<ul>
+<li><p><code>Robot(int width, int height)</code> Initializes the <code>width x height</code> grid with the robot at <code>(0, 0)</code> facing <code>"East"</code>.</p></li>
+<li><p><code>void step(int num)</code> Instructs the robot to move forward <code>num</code> steps.</p></li>
+<li><p><code>int[] getPos()</code> Returns the current cell the robot is at, as an array of length 2, <code>[x, y]</code>.</p></li>
+<li><p><code>String getDir()</code> Returns the current direction of the robot, <code>"North"</code>, <code>"East"</code>, <code>"South"</code>, or <code>"West"</code>.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/10/09/example-1.png" alt="" /></p>
+<pre><code class="hljs">Input
+[<span class="hljs-string">"Robot"</span>, <span class="hljs-string">"step"</span>, <span class="hljs-string">"step"</span>, <span class="hljs-string">"getPos"</span>, <span class="hljs-string">"getDir"</span>, <span class="hljs-string">"step"</span>, <span class="hljs-string">"step"</span>, <span class="hljs-string">"step"</span>, <span class="hljs-string">"getPos"</span>, <span class="hljs-string">"getDir"</span>]
+[[<span class="hljs-number">6</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">2</span>], [<span class="hljs-number">2</span>], [], [], [<span class="hljs-number">2</span>], [<span class="hljs-number">1</span>], [<span class="hljs-number">4</span>], [], []]
+Output
+[<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, [<span class="hljs-number">4</span>, <span class="hljs-number">0</span>], <span class="hljs-string">"East"</span>, <span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>], <span class="hljs-string">"West"</span>]
+
+Explanation
+Robot robot = new Robot(<span class="hljs-number">6</span>, <span class="hljs-number">3</span>); <span class="hljs-comment">// Initialize the grid and the robot at (0, 0) facing East.</span>
+robot.step(<span class="hljs-number">2</span>);  <span class="hljs-comment">// It moves two steps East to (2, 0), and faces East.</span>
+robot.step(<span class="hljs-number">2</span>);  <span class="hljs-comment">// It moves two steps East to (4, 0), and faces East.</span>
+robot.getPos(); <span class="hljs-comment">// return [4, 0]</span>
+robot.getDir(); <span class="hljs-comment">// return "East"</span>
+robot.step(<span class="hljs-number">2</span>);  <span class="hljs-comment">// It moves one step East to (5, 0), and faces East.</span>
+                <span class="hljs-comment">// Moving the next step East would be out of bounds, so it turns and faces North.</span>
+                <span class="hljs-comment">// Then, it moves one step North to (5, 1), and faces North.</span>
+robot.step(<span class="hljs-number">1</span>);  <span class="hljs-comment">// It moves one step North to (5, 2), and faces North (not West).</span>
+robot.step(<span class="hljs-number">4</span>);  <span class="hljs-comment">// Moving the next step North would be out of bounds, so it turns and faces West.</span>
+                <span class="hljs-comment">// Then, it moves four steps West to (1, 2), and faces West.</span>
+robot.getPos(); <span class="hljs-comment">// return [1, 2]</span>
+robot.getDir(); <span class="hljs-comment">// return "West"</span>
+
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>2 &lt;= width, height &lt;= 100</code></p></li>
+<li><p><code>1 &lt;= num &lt;= 105</code></p></li>
+<li><p>At most <code>104</code> calls <strong>in total</strong> will be made to <code>step</code>, <code>getPos</code>, and <code>getDir</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Robot</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> p;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> w;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> h;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Robot</span><span class="hljs-params">(<span class="hljs-keyword">int</span> width, <span class="hljs-keyword">int</span> height)</span> </span>{
+        w = width - <span class="hljs-number">1</span>;
+        h = height - <span class="hljs-number">1</span>;
+        p = <span class="hljs-number">0</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">step</span><span class="hljs-params">(<span class="hljs-keyword">int</span> num)</span> </span>{
+        p += num;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] getPos() {
+        <span class="hljs-keyword">int</span> remain = p % (<span class="hljs-number">2</span> * (w + h));
+        <span class="hljs-keyword">if</span> (remain &lt;= w) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {remain, <span class="hljs-number">0</span>};
+        }
+        remain -= w;
+        <span class="hljs-keyword">if</span> (remain &lt;= h) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {w, remain};
+        }
+        remain -= h;
+        <span class="hljs-keyword">if</span> (remain &lt;= w) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {w - remain, h};
+        }
+        remain -= w;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {<span class="hljs-number">0</span>, h - remain};
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getDir</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">int</span>[] pos = getPos();
+        <span class="hljs-keyword">if</span> (p == <span class="hljs-number">0</span> || pos[<span class="hljs-number">1</span>] == <span class="hljs-number">0</span> &amp;&amp; pos[<span class="hljs-number">0</span>] &gt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-string">"East"</span>;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (pos[<span class="hljs-number">0</span>] == w &amp;&amp; pos[<span class="hljs-number">1</span>] &gt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-string">"North"</span>;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (pos[<span class="hljs-number">1</span>] == h &amp;&amp; pos[<span class="hljs-number">0</span>] &lt; w) {
+            <span class="hljs-keyword">return</span> <span class="hljs-string">"West"</span>;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-string">"South"</span>;
+        }
+    }
+}
+
+<span class="hljs-comment">/**
+ * Your Robot object will be instantiated and called as such:
+ * Robot obj = new Robot(width, height);
+ * obj.step(num);
+ * int[] param_2 = obj.getPos();
+ * String param_3 = obj.getDir();
+ */</span>
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

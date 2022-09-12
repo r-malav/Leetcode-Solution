@@ -1,0 +1,73 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Construct the Lexicographically Largest Valid Sequence - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1718. Construct the Lexicographically Largest Valid Sequence</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/backtracking">Backtracking</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an integer <code>n</code>, find a sequence that satisfies all of the following:</p>
+<ul>
+<li><p>The integer <code>1</code> occurs once in the sequence.</p></li>
+<li><p>Each integer between <code>2</code> and <code>n</code> occurs twice in the sequence.</p></li>
+<li><p>For every integer <code>i</code> between <code>2</code> and <code>n</code>, the <strong>distance</strong> between the two occurrences of <code>i</code> is exactly <code>i</code>.</p></li>
+</ul>
+<p>The <strong>distance</strong> between two numbers on the sequence, <code>a[i]</code> and <code>a[j]</code>, is the absolute difference of their indices, <code>|j - i|</code>.</p>
+<p>Return **the *<em>lexicographically largest</em>* sequence****. It is guaranteed that under the given constraints, there is always a solution. **</p>
+<p>A sequence <code>a</code> is lexicographically larger than a sequence <code>b</code> (of the same length) if in the first position where <code>a</code> and <code>b</code> differ, sequence <code>a</code> has a number greater than the corresponding number in <code>b</code>. For example, <code>[0,1,9,0]</code> is lexicographically larger than <code>[0,1,5,6]</code> because the first position they differ is at the third number, and <code>9</code> is greater than <code>5</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">3</span>
+Output: [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>]
+Explanation: [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>] <span class="hljs-keyword">is</span> also a valid sequence, but [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>] <span class="hljs-keyword">is</span> the lexicographically largest valid sequence.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">5</span>
+Output: [<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">2</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= n &lt;= 20</code></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] constructDistancedSequence(<span class="hljs-keyword">int</span> n) {
+        <span class="hljs-keyword">int</span>[] result = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n * <span class="hljs-number">2</span> - <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">boolean</span>[] visited = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[n + <span class="hljs-number">1</span>];
+        backtracking(<span class="hljs-number">0</span>, result, visited, n);
+        <span class="hljs-keyword">return</span> result;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">backtracking</span><span class="hljs-params">(<span class="hljs-keyword">int</span> index, <span class="hljs-keyword">int</span>[] result, <span class="hljs-keyword">boolean</span>[] visited, <span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-keyword">if</span> (index == result.length) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+        }
+        <span class="hljs-keyword">if</span> (result[index] != <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> backtracking(index + <span class="hljs-number">1</span>, result, visited, n);
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = n; i &gt; <span class="hljs-number">0</span>; i--) {
+                <span class="hljs-keyword">if</span> (visited[i]) {
+                    <span class="hljs-keyword">continue</span>;
+                }
+                visited[i] = <span class="hljs-keyword">true</span>;
+                result[index] = i;
+                <span class="hljs-keyword">if</span> (i == <span class="hljs-number">1</span>) {
+                    <span class="hljs-keyword">if</span> (backtracking(index + <span class="hljs-number">1</span>, result, visited, n)) {
+                        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+                    }
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (index + i &lt; result.length &amp;&amp; result[index + i] == <span class="hljs-number">0</span>) {
+                    result[i + index] = i;
+                    <span class="hljs-keyword">if</span> (backtracking(index + <span class="hljs-number">1</span>, result, visited, n)) {
+                        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+                    }
+                    result[index + i] = <span class="hljs-number">0</span>;
+                }
+                result[index] = <span class="hljs-number">0</span>;
+                visited[i] = <span class="hljs-keyword">false</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

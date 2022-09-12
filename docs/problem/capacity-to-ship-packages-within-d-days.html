@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Capacity To Ship Packages Within D Days - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1011. Capacity To Ship Packages Within D Days</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/split-array-largest-sum.html">Split Array Largest Sum</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/divide-chocolate.html">Divide Chocolate</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/cutting-ribbons.html">Cutting Ribbons</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimized-maximum-of-products-distributed-to-any-store.html">Minimized Maximum of Products Distributed to Any Store</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-bags-with-full-capacity-of-rocks.html">Maximum Bags With Full Capacity of Rocks</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A conveyor belt has packages that must be shipped from one port to another within <code>days</code> days.</p>
+<p>The <code>ith</code> package on the conveyor belt has a weight of <code>weights[i]</code>. Each day, we load the ship with packages on the conveyor belt (in the order given by <code>weights</code>). We may not load more weight than the maximum weight capacity of the ship.</p>
+<p>Return the least weight capacity of the ship that will result in all the packages on the conveyor belt being shipped within <code>days</code> days.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: weights = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span>,<span class="hljs-number">10</span>], days = <span class="hljs-number">5</span>
+Output: <span class="hljs-number">15</span>
+Explanation: A ship capacity of <span class="hljs-number">15</span> <span class="hljs-keyword">is</span> the minimum to ship all the packages <span class="hljs-keyword">in</span> <span class="hljs-number">5</span> days like <span class="hljs-keyword">this</span>:
+<span class="hljs-number">1</span>st day: <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>
+<span class="hljs-number">2</span>nd day: <span class="hljs-number">6</span>, <span class="hljs-number">7</span>
+<span class="hljs-number">3</span>rd day: <span class="hljs-number">8</span>
+<span class="hljs-number">4</span>th day: <span class="hljs-number">9</span>
+<span class="hljs-number">5</span>th day: <span class="hljs-number">10</span>
+
+Note that the cargo must be shipped <span class="hljs-keyword">in</span> the order given, so using a ship of capacity <span class="hljs-number">14</span> <span class="hljs-keyword">and</span> splitting the packages <span class="hljs-built_in">int</span>o parts like (<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>), (<span class="hljs-number">8</span>), (<span class="hljs-number">9</span>), (<span class="hljs-number">10</span>) <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> allowed.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: weights = [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>], days = <span class="hljs-number">3</span>
+Output: <span class="hljs-number">6</span>
+Explanation: A ship capacity of <span class="hljs-number">6</span> <span class="hljs-keyword">is</span> the minimum to ship all the packages <span class="hljs-keyword">in</span> <span class="hljs-number">3</span> days like <span class="hljs-keyword">this</span>:
+<span class="hljs-number">1</span>st day: <span class="hljs-number">3</span>, <span class="hljs-number">2</span>
+<span class="hljs-number">2</span>nd day: <span class="hljs-number">2</span>, <span class="hljs-number">4</span>
+<span class="hljs-number">3</span>rd day: <span class="hljs-number">1</span>, <span class="hljs-number">4</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: weights = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>], days = <span class="hljs-number">4</span>
+Output: <span class="hljs-number">3</span>
+Explanation:
+<span class="hljs-number">1</span>st day: <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>nd day: <span class="hljs-number">2</span>
+<span class="hljs-number">3</span>rd day: <span class="hljs-number">3</span>
+<span class="hljs-number">4</span>th day: <span class="hljs-number">1</span>, <span class="hljs-number">1</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= days &lt;= weights.length &lt;= 5 * 104</code></p></li>
+<li><p><code>1 &lt;= weights[i] &lt;= 500</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">shipWithinDays</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] weights, <span class="hljs-keyword">int</span> days)</span> </span>{
+        <span class="hljs-keyword">int</span> max = weights[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">int</span> sum = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> val : weights) {
+            sum += val;
+            max = Math.max(max, val);
+        }
+        <span class="hljs-keyword">int</span> lo = max;
+        <span class="hljs-keyword">int</span> hi = sum;
+        <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (lo &lt;= hi) {
+            <span class="hljs-keyword">int</span> mid = lo + (hi - lo) / <span class="hljs-number">2</span>;
+            <span class="hljs-keyword">if</span> (isPossible(weights, mid, days)) {
+                ans = mid;
+                hi = mid - <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> {
+                lo = mid + <span class="hljs-number">1</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isPossible</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] arr, <span class="hljs-keyword">int</span> mid, <span class="hljs-keyword">int</span> days)</span> </span>{
+        <span class="hljs-keyword">int</span> capacity = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> sum = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j : arr) {
+            sum += j;
+            <span class="hljs-keyword">if</span> (sum &gt; mid) {
+                capacity++;
+                sum = j;
+            }
+        }
+        <span class="hljs-keyword">return</span> capacity &lt;= days;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

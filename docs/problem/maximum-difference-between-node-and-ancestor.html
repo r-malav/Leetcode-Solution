@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Difference Between Node and Ancestor - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1026. Maximum Difference Between Node and Ancestor</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/tree">Tree</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-tree">Binary Tree</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given the <code>root</code> of a binary tree, find the maximum value <code>v</code> for which there exist <strong>different</strong> nodes <code>a</code> and <code>b</code> where <code>v = |a.val - b.val|</code> and <code>a</code> is an ancestor of <code>b</code>.</p>
+<p>A node <code>a</code> is an ancestor of <code>b</code> if either: any child of <code>a</code> is equal to <code>b</code>&nbsp;or any child of <code>a</code> is an ancestor of <code>b</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/11/09/tmp-tree.jpg" alt="" /></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">8</span>,<span class="hljs-number">3</span>,<span class="hljs-number">10</span>,<span class="hljs-number">1</span>,<span class="hljs-number">6</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">14</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">4</span>,<span class="hljs-number">7</span>,<span class="hljs-number">13</span>]
+Output: <span class="hljs-number">7</span>
+Explanation: We have various ancestor-node differences, some of which are given below :
+|<span class="hljs-number">8</span> - <span class="hljs-number">3</span>| = <span class="hljs-number">5</span>
+|<span class="hljs-number">3</span> - <span class="hljs-number">7</span>| = <span class="hljs-number">4</span>
+|<span class="hljs-number">8</span> - <span class="hljs-number">1</span>| = <span class="hljs-number">7</span>
+|<span class="hljs-number">10</span> - <span class="hljs-number">13</span>| = <span class="hljs-number">3</span>
+Among all possible differences, the maximum value of <span class="hljs-number">7</span> <span class="hljs-keyword">is</span> obtained by |<span class="hljs-number">8</span> - <span class="hljs-number">1</span>| = <span class="hljs-number">7.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/11/09/tmp-tree-1.jpg" alt="" /></p>
+<pre><code class="hljs">Input: root = [<span class="hljs-number">1</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">2</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">0</span>,<span class="hljs-number">3</span>]
+Output: <span class="hljs-number">3</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p>The number of nodes in the tree is in the range <code>[2, 5000]</code>.</p></li>
+<li><p><code>0 &lt;= Node.val &lt;= 105</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> max = <span class="hljs-number">0</span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxAncestorDiff</span><span class="hljs-params">(TreeNode root)</span> </span>{
+        traverse(root, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>);
+        <span class="hljs-keyword">return</span> max;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">traverse</span><span class="hljs-params">(TreeNode root, <span class="hljs-keyword">int</span> maxAncestor, <span class="hljs-keyword">int</span> minAncestor)</span> </span>{
+        <span class="hljs-keyword">if</span> (root == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span>;
+        }
+        <span class="hljs-keyword">if</span> (maxAncestor == -<span class="hljs-number">1</span>) {
+            traverse(root.left, root.val, root.val);
+            traverse(root.right, root.val, root.val);
+        }
+        <span class="hljs-keyword">if</span> (maxAncestor != -<span class="hljs-number">1</span>) {
+            max = Math.max(max, Math.abs(maxAncestor - root.val));
+            max = Math.max(max, Math.abs(minAncestor - root.val));
+
+            traverse(root.left, Math.max(root.val, maxAncestor), Math.min(root.val, minAncestor));
+            traverse(root.right, Math.max(root.val, maxAncestor), Math.min(root.val, minAncestor));
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

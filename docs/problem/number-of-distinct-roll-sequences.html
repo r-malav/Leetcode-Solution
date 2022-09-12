@@ -1,0 +1,73 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Number of Distinct Roll Sequences - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2318. Number of Distinct Roll Sequences</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/memoization">Memoization</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/dice-roll-simulation.html">Dice Roll Simulation</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/paint-house-iii.html">Paint House III</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an integer <code>n</code>. You roll a fair 6-sided dice <code>n</code> times. Determine the total number of <strong>distinct</strong> sequences of rolls possible such that the following conditions are satisfied:</p>
+<ul>
+<li><p>The <strong>greatest common divisor</strong> of any <strong>adjacent</strong> values in the sequence is equal to <code>1</code>.</p></li>
+<li><p>There is <strong>at least</strong> a gap of <code>2</code> rolls between <strong>equal</strong> valued rolls. More formally, if the value of the <code>ith</code> roll is <strong>equal</strong> to the value of the <code>jth</code> roll, then <code>abs(i - j) &gt; 2</code>.</p></li>
+</ul>
+<p>Return <strong>the</strong> total number** of distinct sequences possible**. Since the answer may be very large, return it *<em>modulo</em>* <code>109 + 7</code>.</p>
+<p>Two sequences are considered distinct if at least one element is different.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">4</span>
+Output: <span class="hljs-number">184</span>
+Explanation: Some of the possible sequences are (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>), (<span class="hljs-number">6</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>), etc.
+Some invalid sequences are (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">6</span>).
+(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>) <span class="hljs-keyword">is</span> invalid since the first <span class="hljs-keyword">and</span> third roll have an equal value <span class="hljs-keyword">and</span> abs(<span class="hljs-number">1</span> - <span class="hljs-number">3</span>) = <span class="hljs-number">2</span> (i <span class="hljs-keyword">and</span> j are <span class="hljs-number">1</span>-indexed).
+(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">6</span>) <span class="hljs-keyword">is</span> invalid since the greatest common divisor of <span class="hljs-number">3</span> <span class="hljs-keyword">and</span> <span class="hljs-number">6</span> = <span class="hljs-number">3.</span>
+There are a total of <span class="hljs-number">184</span> distinct sequences possible, so we <span class="hljs-keyword">return</span> <span class="hljs-number">184.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">22</span>
+Explanation: Some of the possible sequences are (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>), (<span class="hljs-number">2</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">3</span>, <span class="hljs-number">2</span>).
+Some invalid sequences are (<span class="hljs-number">3</span>, <span class="hljs-number">6</span>), (<span class="hljs-number">2</span>, <span class="hljs-number">4</span>) since the greatest common divisor <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> equal to <span class="hljs-number">1.</span>
+There are a total of <span class="hljs-number">22</span> distinct sequences possible, so we <span class="hljs-keyword">return</span> <span class="hljs-number">22.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= n &lt;= 104</code></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[][][] memo = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">10001</span>][<span class="hljs-number">7</span>][<span class="hljs-number">7</span>];
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> mod = <span class="hljs-number">1000000007</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[][] m = {
+        {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>},
+        {<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>},
+        {<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>},
+        {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>},
+        {<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>},
+        {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>},
+        {<span class="hljs-number">1</span>, <span class="hljs-number">5</span>}
+    };
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">distinctSequences</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-keyword">return</span> dp(n, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">dp</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> prev, <span class="hljs-keyword">int</span> pprev)</span> </span>{
+        <span class="hljs-keyword">if</span> (n == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">if</span> (memo[n][prev][pprev] != <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> memo[n][prev][pprev];
+        }
+        <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> x : m[prev]) {
+            <span class="hljs-keyword">if</span> (x != pprev) {
+                ans = (ans + dp(n - <span class="hljs-number">1</span>, x, prev)) % mod;
+            }
+        }
+        memo[n][prev][pprev] = ans;
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Kth Smallest Product of Two Sorted Arrays - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2040. Kth Smallest Product of Two Sorted Arrays</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/find-k-pairs-with-smallest-sums.html">Find K Pairs with Smallest Sums</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/k-diff-pairs-in-an-array.html">K-diff Pairs in an Array</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given two <strong>sorted 0-indexed</strong> integer arrays <code>nums1</code> and <code>nums2</code> as well as an integer <code>k</code>, return **the *<em><code>kth</code></em>* (<strong>1-based</strong>) smallest product of <strong><code>nums1[i] * nums2[j]</code></strong> where <strong><code>0 &lt;= i &lt; nums1.length</code></strong> and **<code>0 &lt;= j &lt; nums2.length</code>.
+&nbsp;
+*<em>Example 1:</em>*</p>
+<pre><code class="hljs">Input: nums1 = [<span class="hljs-number">2</span>,<span class="hljs-number">5</span>], nums2 = [<span class="hljs-number">3</span>,<span class="hljs-number">4</span>], k = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">8</span>
+Explanation: The <span class="hljs-number">2</span> smallest products are:
+- nums1[<span class="hljs-number">0</span>] * nums2[<span class="hljs-number">0</span>] = <span class="hljs-number">2</span> * <span class="hljs-number">3</span> = <span class="hljs-number">6</span>
+- nums1[<span class="hljs-number">0</span>] * nums2[<span class="hljs-number">1</span>] = <span class="hljs-number">2</span> * <span class="hljs-number">4</span> = <span class="hljs-number">8</span>
+The <span class="hljs-number">2</span>nd smallest product <span class="hljs-keyword">is</span> <span class="hljs-number">8.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums1 = [<span class="hljs-number">-4</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">3</span>], nums2 = [<span class="hljs-number">2</span>,<span class="hljs-number">4</span>], k = <span class="hljs-number">6</span>
+Output: <span class="hljs-number">0</span>
+Explanation: The <span class="hljs-number">6</span> smallest products are:
+- nums1[<span class="hljs-number">0</span>] * nums2[<span class="hljs-number">1</span>] = (<span class="hljs-number">-4</span>) * <span class="hljs-number">4</span> = <span class="hljs-number">-16</span>
+- nums1[<span class="hljs-number">0</span>] * nums2[<span class="hljs-number">0</span>] = (<span class="hljs-number">-4</span>) * <span class="hljs-number">2</span> = <span class="hljs-number">-8</span>
+- nums1[<span class="hljs-number">1</span>] * nums2[<span class="hljs-number">1</span>] = (<span class="hljs-number">-2</span>) * <span class="hljs-number">4</span> = <span class="hljs-number">-8</span>
+- nums1[<span class="hljs-number">1</span>] * nums2[<span class="hljs-number">0</span>] = (<span class="hljs-number">-2</span>) * <span class="hljs-number">2</span> = <span class="hljs-number">-4</span>
+- nums1[<span class="hljs-number">2</span>] * nums2[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span> * <span class="hljs-number">2</span> = <span class="hljs-number">0</span>
+- nums1[<span class="hljs-number">2</span>] * nums2[<span class="hljs-number">1</span>] = <span class="hljs-number">0</span> * <span class="hljs-number">4</span> = <span class="hljs-number">0</span>
+The <span class="hljs-number">6</span>th smallest product <span class="hljs-keyword">is</span> <span class="hljs-number">0.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: nums1 = [<span class="hljs-number">-2</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>], nums2 = [<span class="hljs-number">-3</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>], k = <span class="hljs-number">3</span>
+Output: <span class="hljs-number">-6</span>
+Explanation: The <span class="hljs-number">3</span> smallest products are:
+- nums1[<span class="hljs-number">0</span>] * nums2[<span class="hljs-number">4</span>] = (<span class="hljs-number">-2</span>) * <span class="hljs-number">5</span> = <span class="hljs-number">-10</span>
+- nums1[<span class="hljs-number">0</span>] * nums2[<span class="hljs-number">3</span>] = (<span class="hljs-number">-2</span>) * <span class="hljs-number">4</span> = <span class="hljs-number">-8</span>
+- nums1[<span class="hljs-number">4</span>] * nums2[<span class="hljs-number">0</span>] = <span class="hljs-number">2</span> * (<span class="hljs-number">-3</span>) = <span class="hljs-number">-6</span>
+The <span class="hljs-number">3</span>rd smallest product <span class="hljs-keyword">is</span> <span class="hljs-number">-6.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= nums1.length, nums2.length &lt;= 5 * 104</code></p></li>
+<li><p><code>-105 &lt;= nums1[i], nums2[j] &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= k &lt;= nums1.length * nums2.length</code></p></li>
+<li><p><code>nums1</code> and <code>nums2</code> are sorted.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">long</span> inf = (<span class="hljs-keyword">long</span>) <span class="hljs-number">1e10</span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">long</span> <span class="hljs-title">kthSmallestProduct</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums1, <span class="hljs-keyword">int</span>[] nums2, <span class="hljs-keyword">long</span> k)</span> </span>{
+        <span class="hljs-keyword">int</span> n = nums2.length;
+        <span class="hljs-keyword">long</span> lo = -inf - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">long</span> hi = inf + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (lo &lt; hi) {
+            <span class="hljs-keyword">long</span> mid = lo + ((hi - lo) &gt;&gt; <span class="hljs-number">1</span>);
+            <span class="hljs-keyword">long</span> cnt = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i : nums1) {
+                <span class="hljs-keyword">int</span> l = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">int</span> r = n - <span class="hljs-number">1</span>;
+                <span class="hljs-keyword">int</span> p = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">if</span> (<span class="hljs-number">0</span> &lt;= i) {
+                    <span class="hljs-keyword">while</span> (l &lt;= r) {
+                        <span class="hljs-keyword">int</span> c = l + ((r - l) &gt;&gt; <span class="hljs-number">1</span>);
+                        <span class="hljs-keyword">long</span> mul = i * (<span class="hljs-keyword">long</span>) nums2[c];
+                        <span class="hljs-keyword">if</span> (mul &lt;= mid) {
+                            p = c + <span class="hljs-number">1</span>;
+                            l = c + <span class="hljs-number">1</span>;
+                        } <span class="hljs-keyword">else</span> {
+                            r = c - <span class="hljs-number">1</span>;
+                        }
+                    }
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">while</span> (l &lt;= r) {
+                        <span class="hljs-keyword">int</span> c = l + ((r - l) &gt;&gt; <span class="hljs-number">1</span>);
+                        <span class="hljs-keyword">long</span> mul = i * (<span class="hljs-keyword">long</span>) nums2[c];
+                        <span class="hljs-keyword">if</span> (mul &lt;= mid) {
+                            p = n - c;
+                            r = c - <span class="hljs-number">1</span>;
+                        } <span class="hljs-keyword">else</span> {
+                            l = c + <span class="hljs-number">1</span>;
+                        }
+                    }
+                }
+                cnt += p;
+            }
+            <span class="hljs-keyword">if</span> (cnt &gt;= k) {
+                hi = mid;
+            } <span class="hljs-keyword">else</span> {
+                lo = mid + <span class="hljs-number">1L</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> lo;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

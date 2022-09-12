@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Number of Ways to Divide a Long Corridor - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2147. Number of Ways to Divide a Long Corridor</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/decode-ways-ii.html">Decode Ways II</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-cost-to-cut-a-stick.html">Minimum Cost to Cut a Stick</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/ways-to-split-array-into-three-subarrays.html">Ways to Split Array Into Three Subarrays</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Along a long library corridor, there is a line of seats and decorative plants. You are given a <strong>0-indexed</strong> string <code>corridor</code> of length <code>n</code> consisting of letters <code>'S'</code> and <code>'P'</code> where each <code>'S'</code> represents a seat and each <code>'P'</code> represents a plant.</p>
+<p>One room divider has <strong>already</strong> been installed to the left of index <code>0</code>, and <strong>another</strong> to the right of index <code>n - 1</code>. Additional room dividers can be installed. For each position between indices <code>i - 1</code> and <code>i</code> (<code>1 &lt;= i &lt;= n - 1</code>), at most one divider can be installed.</p>
+<p>Divide the corridor into non-overlapping sections, where each section has <strong>exactly two seats</strong> with any number of plants. There may be multiple ways to perform the division. Two ways are <strong>different</strong> if there is a position with a room divider installed in the first way but not in the second way.</p>
+<p>Return <strong>the number of ways to divide the corridor</strong>. Since the answer may be very large, return it <strong>modulo</strong> <code>109 + 7</code>. If there is no way, return <code>0</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/12/04/1.png" alt="" /></p>
+<pre><code class="hljs">Input: corridor = <span class="hljs-string">"SSPPSPS"</span>
+Output: <span class="hljs-number">3</span>
+Explanation: There are <span class="hljs-number">3</span> different ways <span class="hljs-built_in">to</span> <span class="hljs-built_in">divide</span> <span class="hljs-keyword">the</span> corridor.
+The <span class="hljs-keyword">black</span> bars <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> above image indicate <span class="hljs-keyword">the</span> <span class="hljs-literal">two</span> room dividers already installed.
+Note that <span class="hljs-keyword">in</span> <span class="hljs-keyword">each</span> <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> ways, <span class="hljs-keyword">each</span> section has exactly <span class="hljs-literal">two</span> seats.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/12/04/2.png" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-keyword">Input</span>: corridor = "PPSPSP"
+Output: <span class="hljs-number">1</span>
+Explanation: There <span class="hljs-keyword">is</span> <span class="hljs-keyword">only</span> <span class="hljs-number">1</span> way <span class="hljs-keyword">to</span> divide the corridor, <span class="hljs-keyword">by</span> <span class="hljs-keyword">not</span> installing <span class="hljs-keyword">any</span> additional dividers.
+Installing <span class="hljs-keyword">any</span> would <span class="hljs-keyword">create</span> <span class="hljs-keyword">some</span> section that does <span class="hljs-keyword">not</span> have exactly two seats.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/12/12/3.png" alt="" /></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> corridor = <span class="hljs-string">"S"</span>
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-number">0</span>
+Explanation: There <span class="hljs-keyword">is</span> <span class="hljs-keyword">no</span> way <span class="hljs-keyword">to</span> divide the corridor because there will always <span class="hljs-keyword">be</span> <span class="hljs-keyword">a</span> section that does not have exactly two seats.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == corridor.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>corridor[i]</code> is either <code>'S'</code> or <code>'P'</code>.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">numberOfWays</span><span class="hljs-params">(String corridor)</span> </span>{
+        <span class="hljs-keyword">int</span> seat = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> mod = (<span class="hljs-keyword">int</span>) <span class="hljs-number">1e9</span> + <span class="hljs-number">7</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; corridor.length(); i++) {
+            <span class="hljs-keyword">if</span> (corridor.charAt(i) == <span class="hljs-string">'S'</span>) {
+                seat++;
+            }
+        }
+        <span class="hljs-keyword">if</span> (seat == <span class="hljs-number">0</span> || seat % <span class="hljs-number">2</span> != <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        seat /= <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">long</span> curr = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">long</span> ans = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (corridor.charAt(i) != <span class="hljs-string">'S'</span>) {
+            i++;
+        }
+        i++;
+        <span class="hljs-keyword">while</span> (seat &gt; <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">while</span> (corridor.charAt(i) != <span class="hljs-string">'S'</span>) {
+                i++;
+            }
+            i++;
+            <span class="hljs-keyword">while</span> (corridor.charAt(i) != <span class="hljs-string">'S'</span>) {
+                i++;
+                curr++;
+            }
+            curr++;
+            ans = (ans * curr) % mod;
+            curr = <span class="hljs-number">0</span>;
+            seat--;
+            i++;
+        }
+        <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>) ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

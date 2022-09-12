@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Find Words That Can Be Formed by Characters - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1160. Find Words That Can Be Formed by Characters</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/rearrange-characters-to-make-target-string.html">Rearrange Characters to Make Target String</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an array of strings <code>words</code> and a string <code>chars</code>.</p>
+<p>A string is <strong>good</strong> if it can be formed by characters from chars (each character can only be used once).</p>
+<p>Return <strong>the sum of lengths of all good strings in words</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> words = [<span class="hljs-string">"cat"</span>,<span class="hljs-string">"bt"</span>,<span class="hljs-string">"hat"</span>,<span class="hljs-string">"tree"</span>], chars = <span class="hljs-string">"atach"</span>
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-number">6</span>
+Explanation: The strings that can <span class="hljs-keyword">be</span> formed are <span class="hljs-string">"cat"</span> <span class="hljs-built_in">and</span> <span class="hljs-string">"hat"</span> <span class="hljs-keyword">so</span> the answer <span class="hljs-keyword">is</span> <span class="hljs-number">3</span> + <span class="hljs-number">3</span> = <span class="hljs-number">6</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> words = [<span class="hljs-string">"hello"</span>,<span class="hljs-string">"world"</span>,<span class="hljs-string">"leetcode"</span>], chars = <span class="hljs-string">"welldonehoneyr"</span>
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-number">10</span>
+Explanation: The strings that can <span class="hljs-keyword">be</span> formed are <span class="hljs-string">"hello"</span> <span class="hljs-built_in">and</span> <span class="hljs-string">"world"</span> <span class="hljs-keyword">so</span> the answer <span class="hljs-keyword">is</span> <span class="hljs-number">5</span> + <span class="hljs-number">5</span> = <span class="hljs-number">10</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= words.length &lt;= 1000</code></p></li>
+<li><p><code>1 &lt;= words[i].length, chars.length &lt;= 100</code></p></li>
+<li><p><code>words[i]</code> and <code>chars</code> consist of lowercase English letters.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">countCharacters</span><span class="hljs-params">(String[] words, String chars)</span> </span>{
+        <span class="hljs-keyword">int</span> length = <span class="hljs-number">0</span>;
+        Map&lt;Character, Integer&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> c : chars.toCharArray()) {
+            <span class="hljs-keyword">int</span> count = map.getOrDefault(c, <span class="hljs-number">0</span>);
+            map.put(c, count + <span class="hljs-number">1</span>);
+        }
+        <span class="hljs-keyword">for</span> (String word : words) {
+            <span class="hljs-keyword">if</span> (canForm(word, map)) {
+                length += word.length();
+            }
+        }
+        <span class="hljs-keyword">return</span> length;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">canForm</span><span class="hljs-params">(String word, <span class="hljs-keyword">final</span> Map&lt;Character, Integer&gt; map)</span> </span>{
+        Map&lt;Character, Integer&gt; tmp = <span class="hljs-keyword">new</span> HashMap&lt;&gt;(map);
+        <span class="hljs-keyword">for</span> (Character c : word.toCharArray()) {
+            <span class="hljs-keyword">if</span> (tmp.containsKey(c) &amp;&amp; tmp.get(c) &gt; <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">int</span> count = tmp.get(c);
+                tmp.put(c, count - <span class="hljs-number">1</span>);
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

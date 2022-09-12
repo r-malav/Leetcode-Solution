@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Length of Subarray With Positive Product - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1567. Maximum Length of Subarray With Positive Product</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an array of integers <code>nums</code>, find the maximum length of a subarray where the product of all its elements is positive.</p>
+<p>A subarray of an array is a consecutive sequence of zero or more values taken out of that array.</p>
+<p>Return <strong>the maximum length of a subarray with positive product</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [1,-2,-3,4]
+Output: 4
+Explanation: The<span class="hljs-built_in"> array </span>nums already has a positive product of 24.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">-3</span>,<span class="hljs-number">-4</span>]
+Output: <span class="hljs-number">3</span>
+Explanation: The longest subarray with positive product <span class="hljs-keyword">is</span> [<span class="hljs-number">1</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">-3</span>] which has a product of <span class="hljs-number">6.</span>
+Notice that we cannot include <span class="hljs-number">0</span> <span class="hljs-keyword">in</span> the subarray since that<span class="hljs-string">'ll make the product 0 which is not positive.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">-1</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">-3</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]
+Output: <span class="hljs-number">2</span>
+Explanation: The longest subarray with positive product <span class="hljs-keyword">is</span> [<span class="hljs-number">-1</span>,<span class="hljs-number">-2</span>] <span class="hljs-keyword">or</span> [<span class="hljs-number">-2</span>,<span class="hljs-number">-3</span>].
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= nums.length &lt;= 105</code></p></li>
+<li><p><code>-109 &lt;= nums[i] &lt;= 109</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getMaxLen</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>{
+        <span class="hljs-keyword">int</span> posLen = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> negLen = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> res = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> num : nums) {
+            <span class="hljs-keyword">if</span> (num == <span class="hljs-number">0</span>) {
+                posLen = <span class="hljs-number">0</span>;
+                negLen = <span class="hljs-number">0</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (num &gt; <span class="hljs-number">0</span>) {
+                posLen++;
+                negLen = negLen == <span class="hljs-number">0</span> ? <span class="hljs-number">0</span> : negLen + <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">int</span> temp = posLen;
+                posLen = negLen == <span class="hljs-number">0</span> ? <span class="hljs-number">0</span> : negLen + <span class="hljs-number">1</span>;
+                negLen = temp + <span class="hljs-number">1</span>;
+            }
+            res = Math.max(res, posLen);
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

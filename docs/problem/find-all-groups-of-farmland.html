@@ -1,0 +1,84 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Find All Groups of Farmland - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1992. Find All Groups of Farmland</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/number-of-islands.html">Number of Islands</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/count-sub-islands.html">Count Sub Islands</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>0-indexed</strong> <code>m x n</code> binary matrix <code>land</code> where a <code>0</code> represents a hectare of forested land and a <code>1</code> represents a hectare of farmland.</p>
+<p>To keep the land organized, there are designated rectangular areas of hectares that consist <strong>entirely</strong> of farmland. These rectangular areas are called <strong>groups</strong>. No two groups are adjacent, meaning farmland in one group is <strong>not</strong> four-directionally adjacent to another farmland in a different group.</p>
+<p><code>land</code> can be represented by a coordinate system where the top left corner of <code>land</code> is <code>(0, 0)</code> and the bottom right corner of <code>land</code> is <code>(m-1, n-1)</code>. Find the coordinates of the top left and bottom right corner of each <strong>group</strong> of farmland. A <strong>group</strong> of farmland with a top left corner at <code>(r1, c1)</code> and a bottom right corner at <code>(r2, c2)</code> is represented by the 4-length array <code>[r1, c1, r2, c2].</code></p>
+<p>Return **a 2D array containing the 4-length arrays described above for each *<em>group</em>* of farmland in <strong><code>land</code></strong>. If there are no groups of farmland, return an empty array. You may return the answer in <strong>any order</strong>**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/07/27/screenshot-2021-07-27-at-12-23-15-copy-of-diagram-drawio-diagrams-net.png" alt="" /></p>
+<pre><code class="hljs">Input: land = [[1,0,0],[0,1,1],[0,1,1]]
+Output: [[0,0,0,0],[1,1,2,2]]
+Explanation:
+The first group has a top left corner at land[<span class="hljs-string">0</span>][<span class="hljs-symbol">0</span>] and a bottom right corner at land[<span class="hljs-string">0</span>][<span class="hljs-symbol">0</span>].
+The second group has a top left corner at land[<span class="hljs-string">1</span>][<span class="hljs-symbol">1</span>] and a bottom right corner at land[<span class="hljs-string">2</span>][<span class="hljs-symbol">2</span>].
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/07/27/screenshot-2021-07-27-at-12-30-26-copy-of-diagram-drawio-diagrams-net.png" alt="" /></p>
+<pre><code class="hljs">Input: land = [[1,1],[1,1]]
+Output: [[0,0,1,1]]
+Explanation:
+The first group has a top left corner at land[<span class="hljs-string">0</span>][<span class="hljs-symbol">0</span>] and a bottom right corner at land[<span class="hljs-string">1</span>][<span class="hljs-symbol">1</span>].
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/07/27/screenshot-2021-07-27-at-12-32-24-copy-of-diagram-drawio-diagrams-net.png" alt="" /></p>
+<pre><code class="hljs">Input: land = <span class="hljs-string">[[0]]</span>
+Output: []
+Explanation:
+There are no groups of farmland.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == land.length</code></p></li>
+<li><p><code>n == land[i].length</code></p></li>
+<li><p><code>1 &lt;= m, n &lt;= 300</code></p></li>
+<li><p><code>land</code> consists of only <code>0</code>'s and <code>1</code>'s.</p></li>
+<li><p>Groups of farmland are <strong>rectangular</strong> in shape.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> List&lt;<span class="hljs-keyword">int</span>[]&gt; res = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[][] findFarmland(<span class="hljs-keyword">int</span>[][] land) {
+        <span class="hljs-keyword">if</span> (land == <span class="hljs-keyword">null</span> || land.length == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[][] {};
+        }
+        <span class="hljs-keyword">int</span> m = land.length;
+        <span class="hljs-keyword">int</span> n = land[<span class="hljs-number">0</span>].length;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++) {
+                <span class="hljs-keyword">if</span> (land[i][j] == <span class="hljs-number">1</span>) {
+                    <span class="hljs-keyword">int</span>[] dirs = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">4</span>];
+                    dirs[<span class="hljs-number">0</span>] = i;
+                    dirs[<span class="hljs-number">1</span>] = j;
+                    dirs[<span class="hljs-number">2</span>] = i;
+                    dirs[<span class="hljs-number">3</span>] = j;
+                    dfs(land, i, j, dirs);
+                    res.add(dirs);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> res.toArray(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">0</span>][]);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] land, <span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j, <span class="hljs-keyword">int</span>[] dirs)</span> </span>{
+        <span class="hljs-keyword">if</span> (i &lt; <span class="hljs-number">0</span> || i &gt;= land.length || j &lt; <span class="hljs-number">0</span> || j &gt;= land[<span class="hljs-number">0</span>].length || land[i][j] != <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span>;
+        }
+        land[i][j] = -<span class="hljs-number">1</span>;
+        dfs(land, i + <span class="hljs-number">1</span>, j, dirs);
+        dfs(land, i, j + <span class="hljs-number">1</span>, dirs);
+        dirs[<span class="hljs-number">0</span>] = Math.min(dirs[<span class="hljs-number">0</span>], i);
+        dirs[<span class="hljs-number">1</span>] = Math.min(dirs[<span class="hljs-number">1</span>], j);
+        dirs[<span class="hljs-number">2</span>] = Math.max(dirs[<span class="hljs-number">2</span>], i);
+        dirs[<span class="hljs-number">3</span>] = Math.max(dirs[<span class="hljs-number">3</span>], j);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

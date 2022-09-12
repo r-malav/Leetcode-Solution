@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Degree of a Connected Trio in a Graph - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1761. Minimum Degree of a Connected Trio in a Graph</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/graph">Graph</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an undirected graph. You are given an integer <code>n</code> which is the number of nodes in the graph and an array <code>edges</code>, where each <code>edges[i] = [ui, vi]</code> indicates that there is an undirected edge between <code>ui</code> and <code>vi</code>.</p>
+<p>A <strong>connected trio</strong> is a set of <strong>three</strong> nodes where there is an edge between <strong>every</strong> pair of them.</p>
+<p>The <strong>degree of a connected trio</strong> is the number of edges where one endpoint is in the trio, and the other is not.</p>
+<p>Return **the *<em>minimum</em>* degree of a connected trio in the graph, or** <code>-1</code> <strong>if the graph has no connected trios.</strong></p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/01/26/trios1.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">6</span>, edges = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">6</span>]]
+Output: <span class="hljs-number">3</span>
+Explanation: There <span class="hljs-keyword">is</span> exactly one trio, which <span class="hljs-keyword">is</span> [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]. The edges that form its degree are bolded <span class="hljs-keyword">in</span> the figure above.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/01/26/trios2.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">7</span>, edges = [[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">6</span>],[<span class="hljs-number">6</span>,<span class="hljs-number">7</span>],[<span class="hljs-number">7</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">6</span>]]
+Output: <span class="hljs-number">0</span>
+Explanation: There are exactly three trios:
+<span class="hljs-number">1</span>) [<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>] with degree <span class="hljs-number">0.</span>
+<span class="hljs-number">2</span>) [<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>] with degree <span class="hljs-number">2.</span>
+<span class="hljs-number">3</span>) [<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>] with degree <span class="hljs-number">2.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>2 &lt;= n &lt;= 400</code></p></li>
+<li><p><code>edges[i].length == 2</code></p></li>
+<li><p><code>1 &lt;= edges.length &lt;= n * (n-1) / 2</code></p></li>
+<li><p><code>1 &lt;= ui, vi &lt;= n</code></p></li>
+<li><p><code>ui != vi</code></p></li>
+<li><p>There are no repeated edges.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minTrioDegree</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[][] edges)</span> </span>{
+        <span class="hljs-keyword">int</span>[] degrees = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n + <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">int</span>[][] adjMatrix = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n + <span class="hljs-number">1</span>][n + <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] edge : edges) {
+            adjMatrix[edge[<span class="hljs-number">0</span>]][edge[<span class="hljs-number">1</span>]] = <span class="hljs-number">1</span>;
+            adjMatrix[edge[<span class="hljs-number">1</span>]][edge[<span class="hljs-number">0</span>]] = <span class="hljs-number">1</span>;
+            degrees[edge[<span class="hljs-number">0</span>]]++;
+            degrees[edge[<span class="hljs-number">1</span>]]++;
+        }
+        <span class="hljs-keyword">int</span> minTrios = Integer.MAX_VALUE;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = i + <span class="hljs-number">1</span>; j &lt;= n; j++) {
+                <span class="hljs-keyword">if</span> (adjMatrix[i][j] == <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">continue</span>;
+                }
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k = j + <span class="hljs-number">1</span>; k &lt;= n; k++) {
+                    <span class="hljs-keyword">if</span> (adjMatrix[j][k] == <span class="hljs-number">0</span> || adjMatrix[i][k] == <span class="hljs-number">0</span>) {
+                        <span class="hljs-keyword">continue</span>;
+                    }
+                    <span class="hljs-keyword">int</span> trioDegree = degrees[i] + degrees[j] + degrees[k] - <span class="hljs-number">6</span>;
+                    minTrios = Math.min(minTrios, trioDegree);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> minTrios == Integer.MAX_VALUE ? -<span class="hljs-number">1</span> : minTrios;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

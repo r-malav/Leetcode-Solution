@@ -1,0 +1,143 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Find the Shortest Superstring - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>943. Find the Shortest Superstring</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bit-manipulation">Bit Manipulation</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bitmask">Bitmask</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an array of strings <code>words</code>, return <strong>the smallest string that contains each string in</strong> <code>words</code> <strong>as a substring</strong>. If there are multiple valid strings of the smallest length, return <strong>any of them</strong>.</p>
+<p>You may assume that no string in <code>words</code> is a substring of another string in <code>words</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> words = [<span class="hljs-string">"alex"</span>,<span class="hljs-string">"loves"</span>,<span class="hljs-string">"leetcode"</span>]
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">"alexlovesleetcode"</span>
+<span class="hljs-symbol">Explanation:</span> All permutations of <span class="hljs-string">"alex"</span>,<span class="hljs-string">"loves"</span>,<span class="hljs-string">"leetcode"</span> would also be accepted.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> words = [<span class="hljs-string">"catg"</span>,<span class="hljs-string">"ctaagt"</span>,<span class="hljs-string">"gcta"</span>,<span class="hljs-string">"ttca"</span>,<span class="hljs-string">"atgcatc"</span>]
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">"gctaagttcatgcatc"</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= words.length &lt;= 12</code></p></li>
+<li><p><code>1 &lt;= words[i].length &lt;= 20</code></p></li>
+<li><p><code>words[i]</code> consists of lowercase English letters.</p></li>
+<li><p>All the strings of <code>words</code> are <strong>unique</strong>.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> n = -<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> k = -<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> max = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] maxOrder;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] remap = <span class="hljs-keyword">null</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[][] lcsps = <span class="hljs-keyword">null</span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">shortestSuperstring</span><span class="hljs-params">(String[] words)</span> </span>{
+        <span class="hljs-keyword">this</span>.n = words.length;
+        <span class="hljs-keyword">this</span>.lcsps = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n][n];
+        <span class="hljs-keyword">int</span>[] maxcp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        <span class="hljs-keyword">int</span>[] maxcs = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++) {
+                <span class="hljs-keyword">if</span> (i != j) {
+                    lcsps[i][j] = lcsp(words[i], words[j]);
+                    maxcp[j] = Math.max(maxcp[j], lcsps[i][j]);
+                    maxcs[i] = Math.max(maxcs[i], lcsps[i][j]);
+                }
+            }
+        }
+
+        <span class="hljs-keyword">this</span>.max = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">this</span>.maxOrder = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        <span class="hljs-keyword">this</span>.remap = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        <span class="hljs-keyword">this</span>.k = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> i = n - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (i &gt; -<span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">if</span> (maxcp[i] == <span class="hljs-number">0</span> &amp;&amp; maxcs[i] == <span class="hljs-number">0</span>) {
+                maxOrder[n - <span class="hljs-number">1</span> - k++] = i;
+            } <span class="hljs-keyword">else</span> {
+                remap[j++] = i;
+            }
+            i--;
+        }
+        <span class="hljs-keyword">if</span> (k &lt; n) {
+            dpts();
+        }
+
+        StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();
+        sb.append(words[maxOrder[<span class="hljs-number">0</span>]]);
+        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">1</span>; i &lt; n; i++) {
+            sb.append(words[maxOrder[i]].substring(lcsps[maxOrder[i - <span class="hljs-number">1</span>]][maxOrder[i]]));
+        }
+        <span class="hljs-keyword">return</span> sb.toString();
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">dpts</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">int</span> ndp = n - k;
+        <span class="hljs-keyword">int</span>[][] memo = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[ndp][<span class="hljs-number">1</span> &lt;&lt; ndp];
+        <span class="hljs-keyword">int</span>[][] next = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[ndp][<span class="hljs-number">1</span> &lt;&lt; ndp];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; ndp; i++) {
+            Arrays.fill(memo[i], -<span class="hljs-number">1</span>);
+        }
+        max = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> first = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> mask = (<span class="hljs-number">1</span> &lt;&lt; ndp) - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; ndp; i++) {
+            <span class="hljs-keyword">int</span> score = dpts(i, mask ^ (<span class="hljs-number">1</span> &lt;&lt; i), memo, next);
+            <span class="hljs-keyword">if</span> (score &gt; max) {
+                max = score;
+                first = i;
+            }
+        }
+        maxOrder[<span class="hljs-number">0</span>] = remap[first];
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> j = first;
+        <span class="hljs-keyword">int</span> m = mask ^ (<span class="hljs-number">1</span> &lt;&lt; first);
+        <span class="hljs-keyword">while</span> (i &lt; ndp) {
+            j = next[j][m];
+            maxOrder[i] = remap[j];
+            m ^= (<span class="hljs-number">1</span> &lt;&lt; j);
+            i++;
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">dpts</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> mask, <span class="hljs-keyword">int</span>[][] memo, <span class="hljs-keyword">int</span>[][] next)</span> </span>{
+        <span class="hljs-keyword">if</span> (mask == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">int</span> maxMemo = memo[i][mask];
+        <span class="hljs-keyword">int</span> maxj = -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">if</span> (maxMemo != -<span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> maxMemo;
+        }
+        <span class="hljs-keyword">int</span> m = mask;
+        <span class="hljs-keyword">while</span> (m != <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">int</span> j = Integer.numberOfTrailingZeros(m);
+            <span class="hljs-keyword">int</span> score = lcsps[remap[i]][remap[j]] + dpts(j, mask ^ (<span class="hljs-number">1</span> &lt;&lt; j), memo, next);
+            <span class="hljs-keyword">if</span> (score &gt; maxMemo) {
+                maxMemo = score;
+                maxj = j;
+            }
+            m ^= <span class="hljs-number">1</span> &lt;&lt; j;
+        }
+        next[i][mask] = maxj;
+        memo[i][mask] = maxMemo;
+        <span class="hljs-keyword">return</span> memo[i][mask];
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">lcsp</span><span class="hljs-params">(String s1, String s2)</span> </span>{
+        <span class="hljs-keyword">int</span> n1 = s1.length();
+        <span class="hljs-keyword">int</span> n2 = s2.length();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = Math.max(<span class="hljs-number">1</span>, n1 - n2 + <span class="hljs-number">1</span>); i &lt; n1; i++) {
+            <span class="hljs-keyword">if</span> (s1.endsWith(s2.substring(<span class="hljs-number">0</span>, n1 - i))) {
+                <span class="hljs-keyword">return</span> n1 - i;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Last Day Where You Can Still Cross - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1970. Last Day Where You Can Still Cross</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/union-find">Union Find</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/bricks-falling-when-hit.html">Bricks Falling When Hit</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/escape-the-spreading-fire.html">Escape the Spreading Fire</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is a <strong>1-based</strong> binary matrix where <code>0</code> represents land and <code>1</code> represents water. You are given integers <code>row</code> and <code>col</code> representing the number of rows and columns in the matrix, respectively.</p>
+<p>Initially on day <code>0</code>, the <strong>entire</strong> matrix is <strong>land</strong>. However, each day a new cell becomes flooded with <strong>water</strong>. You are given a <strong>1-based</strong> 2D array <code>cells</code>, where <code>cells[i] = [ri, ci]</code> represents that on the <code>ith</code> day, the cell on the <code>rith</code> row and <code>cith</code> column (<strong>1-based</strong> coordinates) will be covered with <strong>water</strong> (i.e., changed to <code>1</code>).</p>
+<p>You want to find the <strong>last</strong> day that it is possible to walk from the <strong>top</strong> to the <strong>bottom</strong> by only walking on land cells. You can start from <strong>any</strong> cell in the top row and end at <strong>any</strong> cell in the bottom row. You can only travel in the** four** cardinal directions (left, right, up, and down).</p>
+<p>Return **the *<em>last</em>* day where it is possible to walk from the <strong>top</strong> to the <strong>bottom</strong> by only walking on land cells**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/07/27/1.png" alt="" /></p>
+<pre><code class="hljs">Input: row = <span class="hljs-number">2</span>, col = <span class="hljs-number">2</span>, cells = [[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]]
+Output: <span class="hljs-number">2</span>
+Explanation: The above image depicts how the matrix changes each day starting <span class="hljs-keyword">from</span> day <span class="hljs-number">0.</span>
+The last day where it <span class="hljs-keyword">is</span> possible to cross <span class="hljs-keyword">from</span> top to bottom <span class="hljs-keyword">is</span> on day <span class="hljs-number">2.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/07/27/2.png" alt="" /></p>
+<pre><code class="hljs">Input: row = <span class="hljs-number">2</span>, col = <span class="hljs-number">2</span>, cells = [[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]]
+Output: <span class="hljs-number">1</span>
+Explanation: The above image depicts how the matrix changes each day starting <span class="hljs-keyword">from</span> day <span class="hljs-number">0.</span>
+The last day where it <span class="hljs-keyword">is</span> possible to cross <span class="hljs-keyword">from</span> top to bottom <span class="hljs-keyword">is</span> on day <span class="hljs-number">1.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/07/27/3.png" alt="" /></p>
+<pre><code class="hljs">Input: row = <span class="hljs-number">3</span>, col = <span class="hljs-number">3</span>, cells = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]]
+Output: <span class="hljs-number">3</span>
+Explanation: The above image depicts how the matrix changes each day starting <span class="hljs-keyword">from</span> day <span class="hljs-number">0.</span>
+The last day where it <span class="hljs-keyword">is</span> possible to cross <span class="hljs-keyword">from</span> top to bottom <span class="hljs-keyword">is</span> on day <span class="hljs-number">3.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>2 &lt;= row, col &lt;= 2 * 104</code></p></li>
+<li><p><code>4 &lt;= row * col &lt;= 2 * 104</code></p></li>
+<li><p><code>cells.length == row * col</code></p></li>
+<li><p><code>1 &lt;= ri &lt;= row</code></p></li>
+<li><p><code>1 &lt;= ci &lt;= col</code></p></li>
+<li><p>All the values of <code>cells</code> are <strong>unique</strong>.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">latestDayToCross</span><span class="hljs-params">(<span class="hljs-keyword">int</span> row, <span class="hljs-keyword">int</span> col, <span class="hljs-keyword">int</span>[][] cells)</span> </span>{
+        Ends[][] ends = <span class="hljs-keyword">new</span> Ends[row][col];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; cells.length; i++) {
+            <span class="hljs-keyword">int</span> r = cells[i][<span class="hljs-number">0</span>] - <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">int</span> c = cells[i][<span class="hljs-number">1</span>] - <span class="hljs-number">1</span>;
+            Ends curr = <span class="hljs-keyword">null</span>;
+            <span class="hljs-keyword">if</span> (c &gt; <span class="hljs-number">0</span> &amp;&amp; ends[r][c - <span class="hljs-number">1</span>] != <span class="hljs-keyword">null</span>) {
+                curr = calEnds(ends[r][c - <span class="hljs-number">1</span>], curr, c);
+            }
+            <span class="hljs-keyword">if</span> (r &gt; <span class="hljs-number">0</span> &amp;&amp; ends[r - <span class="hljs-number">1</span>][c] != <span class="hljs-keyword">null</span>) {
+                curr = calEnds(ends[r - <span class="hljs-number">1</span>][c], curr, c);
+            }
+            <span class="hljs-keyword">if</span> (c &lt; col - <span class="hljs-number">1</span> &amp;&amp; ends[r][c + <span class="hljs-number">1</span>] != <span class="hljs-keyword">null</span>) {
+                curr = calEnds(ends[r][c + <span class="hljs-number">1</span>], curr, c);
+            }
+            <span class="hljs-keyword">if</span> (r &lt; row - <span class="hljs-number">1</span> &amp;&amp; ends[r + <span class="hljs-number">1</span>][c] != <span class="hljs-keyword">null</span>) {
+                curr = calEnds(ends[r + <span class="hljs-number">1</span>][c], curr, c);
+            }
+            <span class="hljs-keyword">if</span> (c &gt; <span class="hljs-number">0</span> &amp;&amp; r &gt; <span class="hljs-number">0</span> &amp;&amp; ends[r - <span class="hljs-number">1</span>][c - <span class="hljs-number">1</span>] != <span class="hljs-keyword">null</span>) {
+                curr = calEnds(ends[r - <span class="hljs-number">1</span>][c - <span class="hljs-number">1</span>], curr, c);
+            }
+            <span class="hljs-keyword">if</span> (c &gt; <span class="hljs-number">0</span> &amp;&amp; r &lt; row - <span class="hljs-number">1</span> &amp;&amp; ends[r + <span class="hljs-number">1</span>][c - <span class="hljs-number">1</span>] != <span class="hljs-keyword">null</span>) {
+                curr = calEnds(ends[r + <span class="hljs-number">1</span>][c - <span class="hljs-number">1</span>], curr, c);
+            }
+            <span class="hljs-keyword">if</span> (c &lt; col - <span class="hljs-number">1</span> &amp;&amp; r &gt; <span class="hljs-number">0</span> &amp;&amp; ends[r - <span class="hljs-number">1</span>][c + <span class="hljs-number">1</span>] != <span class="hljs-keyword">null</span>) {
+                curr = calEnds(ends[r - <span class="hljs-number">1</span>][c + <span class="hljs-number">1</span>], curr, c);
+            }
+            <span class="hljs-keyword">if</span> (c &lt; col - <span class="hljs-number">1</span> &amp;&amp; r &lt; row - <span class="hljs-number">1</span> &amp;&amp; ends[r + <span class="hljs-number">1</span>][c + <span class="hljs-number">1</span>] != <span class="hljs-keyword">null</span>) {
+                curr = calEnds(ends[r + <span class="hljs-number">1</span>][c + <span class="hljs-number">1</span>], curr, c);
+            }
+            <span class="hljs-keyword">if</span> (curr == <span class="hljs-keyword">null</span>) {
+                curr = <span class="hljs-keyword">new</span> Ends(i, c, c);
+            }
+            <span class="hljs-keyword">if</span> (curr.l == <span class="hljs-number">0</span> &amp;&amp; curr.r == col - <span class="hljs-number">1</span>) {
+                <span class="hljs-keyword">return</span> i;
+            }
+            ends[r][c] = curr;
+        }
+        <span class="hljs-keyword">return</span> cells.length;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> Ends <span class="hljs-title">calEnds</span><span class="hljs-params">(Ends p, Ends curr, <span class="hljs-keyword">int</span> c)</span> </span>{
+        <span class="hljs-keyword">while</span> (p.parent != <span class="hljs-keyword">null</span>) {
+            p = p.parent;
+        }
+        p.l = curr == <span class="hljs-keyword">null</span> ? Math.min(p.l, c) : Math.min(p.l, curr.l);
+        p.r = curr == <span class="hljs-keyword">null</span> ? Math.max(p.r, c) : Math.max(p.r, curr.r);
+        <span class="hljs-keyword">if</span> (curr == <span class="hljs-keyword">null</span>) {
+            curr = p;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (curr.i != p.i) {
+            curr.parent = p;
+            curr = curr.parent;
+        }
+        <span class="hljs-keyword">return</span> curr;
+    }
+
+    <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Ends</span> </span>{
+        <span class="hljs-keyword">int</span> i;
+        <span class="hljs-keyword">int</span> l;
+        <span class="hljs-keyword">int</span> r;
+        Ends parent;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Ends</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> l, <span class="hljs-keyword">int</span> r)</span> </span>{
+            <span class="hljs-keyword">this</span>.i = i;
+            <span class="hljs-keyword">this</span>.l = l;
+            <span class="hljs-keyword">this</span>.r = r;
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

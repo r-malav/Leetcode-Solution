@@ -1,0 +1,84 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Number of Flips to Make the Binary String Alternating - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1888. Minimum Number of Flips to Make the Binary String Alternating</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sliding-window">Sliding Window</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-operations-to-make-the-array-alternating.html">Minimum Operations to Make the Array Alternating</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a binary string <code>s</code>. You are allowed to perform two types of operations on the string in any sequence:</p>
+<ul>
+<li><p><strong>Type-1: Remove</strong> the character at the start of the string <code>s</code> and <strong>append</strong> it to the end of the string.</p></li>
+<li><p><strong>Type-2: Pick</strong> any character in <code>s</code> and <strong>flip</strong> its value, i.e., if its value is <code>'0'</code> it becomes <code>'1'</code> and vice-versa.</p></li>
+</ul>
+<p>Return **the *<em>minimum</em>* number of <strong>type-2</strong> operations you need to perform** **such that **<code>s</code> **becomes **alternating<strong>.</strong></p>
+<p>The string is called <strong>alternating</strong> if no two adjacent characters are equal.</p>
+<ul>
+<li>For example, the strings <code>"010"</code> and <code>"1010"</code> are alternating, while the string <code>"0100"</code> is not.</li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"111000"</span>
+Output: <span class="hljs-number">2</span>
+Explanation: Use <span class="hljs-keyword">the</span> <span class="hljs-keyword">first</span> operation two <span class="hljs-keyword">times</span> <span class="hljs-keyword">to</span> make s = <span class="hljs-string">"100011"</span>.
+Then, use <span class="hljs-keyword">the</span> <span class="hljs-keyword">second</span> operation <span class="hljs-keyword">on</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">third</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">sixth</span> elements <span class="hljs-keyword">to</span> make s = <span class="hljs-string">"101010"</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> s = <span class="hljs-string">"010"</span>
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-number">0</span>
+Explanation: The <span class="hljs-built_in">string</span> <span class="hljs-keyword">is</span> already alternating.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"1110"</span>
+Output: <span class="hljs-number">1</span>
+Explanation: Use <span class="hljs-keyword">the</span> <span class="hljs-keyword">second</span> operation <span class="hljs-keyword">on</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">second</span> element <span class="hljs-keyword">to</span> make s = <span class="hljs-string">"1010"</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 105</code></p></li>
+<li><p><code>s[i]</code> is either <code>'0'</code> or <code>'1'</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minFlips</span><span class="hljs-params">(String s)</span> </span>{
+        <span class="hljs-keyword">int</span> n = s.length();
+        String localStr = s + s;
+        <span class="hljs-keyword">char</span>[] t = localStr.toCharArray();
+        <span class="hljs-keyword">char</span>[] a = <span class="hljs-keyword">new</span> <span class="hljs-keyword">char</span>[n + n];
+        <span class="hljs-keyword">char</span>[] b = <span class="hljs-keyword">new</span> <span class="hljs-keyword">char</span>[n + n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n + n; i++) {
+            <span class="hljs-keyword">if</span> (i % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) {
+                a[i] = <span class="hljs-string">'1'</span>;
+                b[i] = <span class="hljs-string">'0'</span>;
+            } <span class="hljs-keyword">else</span> {
+                a[i] = <span class="hljs-string">'0'</span>;
+                b[i] = <span class="hljs-string">'1'</span>;
+            }
+        }
+        <span class="hljs-keyword">int</span> f = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> sec = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> ans = Integer.MAX_VALUE;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n + n; i++) {
+            <span class="hljs-keyword">if</span> (a[i] != t[i]) {
+                f++;
+            }
+            <span class="hljs-keyword">if</span> (b[i] != t[i]) {
+                sec++;
+            }
+            <span class="hljs-keyword">if</span> (i &gt;= n) {
+                <span class="hljs-keyword">if</span> (a[i - n] != t[i - n]) {
+                    f--;
+                }
+                <span class="hljs-keyword">if</span> (b[i - n] != t[i - n]) {
+                    sec--;
+                }
+            }
+            <span class="hljs-keyword">if</span> (i &gt;= n - <span class="hljs-number">1</span>) {
+                ans = Math.min(ans, Math.min(f, sec));
+            }
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Absolute Difference Queries - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1906. Minimum Absolute Difference Queries</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>The <strong>minimum absolute difference</strong> of an array <code>a</code> is defined as the <strong>minimum value</strong> of <code>|a[i] - a[j]|</code>, where <code>0 &lt;= i &lt; j &lt; a.length</code> and <code>a[i] != a[j]</code>. If all elements of <code>a</code> are the <strong>same</strong>, the minimum absolute difference is <code>-1</code>.</p>
+<ul>
+<li>For example, the minimum absolute difference of the array <code>[5,2,3,7,2]</code> is <code>|2 - 3| = 1</code>. Note that it is not <code>0</code> because <code>a[i]</code> and <code>a[j]</code> must be different.</li>
+</ul>
+<p>You are given an integer array <code>nums</code> and the array <code>queries</code> where <code>queries[i] = [li, ri]</code>. For each query <code>i</code>, compute the <strong>minimum absolute difference</strong> of the <strong>subarray</strong> <code>nums[li...ri]</code> containing the elements of <code>nums</code> between the <strong>0-based</strong> indices <code>li</code> and <code>ri</code> (<strong>inclusive</strong>).</p>
+<p>Return **an *<em>array</em>* **<code>ans</code> *<em>where</em>* <code>ans[i]</code> <strong>is the answer to the</strong> <code>ith</code> <strong>query</strong>.</p>
+<p>A <strong>subarray</strong> is a contiguous sequence of elements in an array.</p>
+<p>The value of <code>|x|</code> is defined as:</p>
+<ul>
+<li><p><code>x</code> if <code>x &gt;= 0</code>.</p></li>
+<li><p><code>-x</code> if <code>x &lt; 0</code>.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">8</span>], queries = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">3</span>]]
+Output: [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>]
+Explanation: The queries are processed as follows:
+- queries[<span class="hljs-number">0</span>] = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]: The subarray <span class="hljs-keyword">is</span> [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>] <span class="hljs-keyword">and</span> the minimum absolute difference <span class="hljs-keyword">is</span> |<span class="hljs-number">1</span><span class="hljs-number">-3</span>| = <span class="hljs-number">2.</span>
+- queries[<span class="hljs-number">1</span>] = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]: The subarray <span class="hljs-keyword">is</span> [<span class="hljs-number">3</span>,<span class="hljs-number">4</span>] <span class="hljs-keyword">and</span> the minimum absolute difference <span class="hljs-keyword">is</span> |<span class="hljs-number">3</span><span class="hljs-number">-4</span>| = <span class="hljs-number">1.</span>
+- queries[<span class="hljs-number">2</span>] = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]: The subarray <span class="hljs-keyword">is</span> [<span class="hljs-number">4</span>,<span class="hljs-number">8</span>] <span class="hljs-keyword">and</span> the minimum absolute difference <span class="hljs-keyword">is</span> |<span class="hljs-number">4</span><span class="hljs-number">-8</span>| = <span class="hljs-number">4.</span>
+- queries[<span class="hljs-number">3</span>] = [<span class="hljs-number">0</span>,<span class="hljs-number">3</span>]: The subarray <span class="hljs-keyword">is</span> [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">8</span>] <span class="hljs-keyword">and</span> the minimum absolute difference <span class="hljs-keyword">is</span> |<span class="hljs-number">3</span><span class="hljs-number">-4</span>| = <span class="hljs-number">1.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">10</span>], queries = [[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">5</span>]]
+Output: [<span class="hljs-number">-1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>]
+Explanation: The queries are processed as follows:
+- queries[<span class="hljs-number">0</span>] = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]: The subarray <span class="hljs-keyword">is</span> [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>] <span class="hljs-keyword">and</span> the minimum absolute difference <span class="hljs-keyword">is</span> <span class="hljs-number">-1</span> because all the
+  elements are the same.
+- queries[<span class="hljs-number">1</span>] = [<span class="hljs-number">0</span>,<span class="hljs-number">2</span>]: The subarray <span class="hljs-keyword">is</span> [<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">2</span>] <span class="hljs-keyword">and</span> the minimum absolute difference <span class="hljs-keyword">is</span> |<span class="hljs-number">4</span><span class="hljs-number">-5</span>| = <span class="hljs-number">1.</span>
+- queries[<span class="hljs-number">2</span>] = [<span class="hljs-number">0</span>,<span class="hljs-number">5</span>]: The subarray <span class="hljs-keyword">is</span> [<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">10</span>] <span class="hljs-keyword">and</span> the minimum absolute difference <span class="hljs-keyword">is</span> |<span class="hljs-number">4</span><span class="hljs-number">-5</span>| = <span class="hljs-number">1.</span>
+- queries[<span class="hljs-number">3</span>] = [<span class="hljs-number">3</span>,<span class="hljs-number">5</span>]: The subarray <span class="hljs-keyword">is</span> [<span class="hljs-number">2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">10</span>] <span class="hljs-keyword">and</span> the minimum absolute difference <span class="hljs-keyword">is</span> |<span class="hljs-number">7</span><span class="hljs-number">-10</span>| = <span class="hljs-number">3.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>2 &lt;= nums.length &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= nums[i] &lt;= 100</code></p></li>
+<li><p><code>1 &lt;= queries.length &lt;= 2&amp;nbsp;* 104</code></p></li>
+<li><p><code>0 &lt;= li &lt; ri &lt; nums.length</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SegmentTree</span> </span>{
+        <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Node</span> </span>{
+            BitSet bits;
+            <span class="hljs-keyword">int</span> minDiff;
+        }
+
+        <span class="hljs-keyword">int</span> len;
+        <span class="hljs-keyword">int</span>[] nums;
+        Node[] tree;
+        <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> INF = <span class="hljs-number">200</span>;
+
+        SegmentTree(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> len) {
+            <span class="hljs-keyword">this</span>.nums = Arrays.copyOf(nums, len);
+            <span class="hljs-keyword">this</span>.len = len;
+            tree = <span class="hljs-keyword">new</span> Node[<span class="hljs-number">4</span> * len];
+            buildTree(<span class="hljs-number">0</span>, len - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>);
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">buildTree</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j, <span class="hljs-keyword">int</span> ti)</span> </span>{
+            <span class="hljs-keyword">if</span> (i &lt;= j) {
+                <span class="hljs-keyword">if</span> (i == j) {
+                    Node node = <span class="hljs-keyword">new</span> Node();
+                    node.bits = <span class="hljs-keyword">new</span> BitSet(<span class="hljs-number">101</span>);
+                    node.bits.set(nums[i]);
+                    node.minDiff = INF;
+                    tree[ti] = node;
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">int</span> mid = i + (j - i) / <span class="hljs-number">2</span>;
+                    buildTree(i, mid, <span class="hljs-number">2</span> * ti + <span class="hljs-number">1</span>);
+                    buildTree(mid + <span class="hljs-number">1</span>, j, <span class="hljs-number">2</span> * ti + <span class="hljs-number">2</span>);
+                    tree[ti] = combineNodes(tree[<span class="hljs-number">2</span> * ti + <span class="hljs-number">1</span>], tree[<span class="hljs-number">2</span> * ti + <span class="hljs-number">2</span>]);
+                }
+            }
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">private</span> Node <span class="hljs-title">combineNodes</span><span class="hljs-params">(Node n1, Node n2)</span> </span>{
+            Node node = <span class="hljs-keyword">new</span> Node();
+            <span class="hljs-keyword">if</span> (n1.minDiff == <span class="hljs-number">1</span> || n2.minDiff == <span class="hljs-number">1</span>) {
+                node.minDiff = <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> {
+                node.bits = <span class="hljs-keyword">new</span> BitSet(<span class="hljs-number">101</span>);
+                node.bits.or(n1.bits);
+                node.bits.or(n2.bits);
+                node.minDiff = findMinDiff(node.bits);
+            }
+            <span class="hljs-keyword">return</span> node;
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">findMinDiff</span><span class="hljs-params">(BitSet bits)</span> </span>{
+            <span class="hljs-comment">// minimum value of number is 1.</span>
+            <span class="hljs-keyword">int</span> first = bits.nextSetBit(<span class="hljs-number">1</span>);
+            <span class="hljs-keyword">int</span> minDiff = INF;
+            <span class="hljs-keyword">while</span> (first != -<span class="hljs-number">1</span>) {
+                <span class="hljs-keyword">int</span> next = bits.nextSetBit(first + <span class="hljs-number">1</span>);
+                <span class="hljs-keyword">if</span> (next != -<span class="hljs-number">1</span>) {
+                    minDiff = Math.min(minDiff, next - first);
+                    <span class="hljs-keyword">if</span> (minDiff == <span class="hljs-number">1</span>) {
+                        <span class="hljs-keyword">break</span>;
+                    }
+                }
+                first = next;
+            }
+            <span class="hljs-keyword">return</span> minDiff;
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">findMinAbsDiff</span><span class="hljs-params">(<span class="hljs-keyword">int</span> start, <span class="hljs-keyword">int</span> end, <span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j, <span class="hljs-keyword">int</span> ti)</span> </span>{
+            Node node = findMinAbsDiff2(start, end, i, j, ti);
+            <span class="hljs-keyword">return</span> node.minDiff == INF ? -<span class="hljs-number">1</span> : node.minDiff;
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">private</span> Node <span class="hljs-title">findMinAbsDiff2</span><span class="hljs-params">(<span class="hljs-keyword">int</span> start, <span class="hljs-keyword">int</span> end, <span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j, <span class="hljs-keyword">int</span> ti)</span> </span>{
+            <span class="hljs-keyword">if</span> (i == start &amp;&amp; j == end) {
+                <span class="hljs-keyword">return</span> tree[ti];
+            }
+            <span class="hljs-keyword">int</span> mid = i + (j - i) / <span class="hljs-number">2</span>;
+            <span class="hljs-keyword">if</span> (end &lt;= mid) {
+                <span class="hljs-keyword">return</span> findMinAbsDiff2(start, end, i, mid, <span class="hljs-number">2</span> * ti + <span class="hljs-number">1</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (start &gt;= mid + <span class="hljs-number">1</span>) {
+                <span class="hljs-keyword">return</span> findMinAbsDiff2(start, end, mid + <span class="hljs-number">1</span>, j, <span class="hljs-number">2</span> * ti + <span class="hljs-number">2</span>);
+            } <span class="hljs-keyword">else</span> {
+                Node left = findMinAbsDiff2(start, mid, i, mid, <span class="hljs-number">2</span> * ti + <span class="hljs-number">1</span>);
+                Node right = findMinAbsDiff2(mid + <span class="hljs-number">1</span>, end, mid + <span class="hljs-number">1</span>, j, <span class="hljs-number">2</span> * ti + <span class="hljs-number">2</span>);
+                <span class="hljs-keyword">return</span> combineNodes(left, right);
+            }
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] minDifference(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span>[][] queries) {
+        <span class="hljs-keyword">int</span> len = nums.length;
+        <span class="hljs-keyword">int</span> qlen = queries.length;
+        SegmentTree st = <span class="hljs-keyword">new</span> SegmentTree(nums, len);
+        <span class="hljs-keyword">int</span>[] answer = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[qlen];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; qlen; ++i) {
+            answer[i] = st.findMinAbsDiff(queries[i][<span class="hljs-number">0</span>], queries[i][<span class="hljs-number">1</span>], <span class="hljs-number">0</span>, len - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>);
+        }
+        <span class="hljs-keyword">return</span> answer;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

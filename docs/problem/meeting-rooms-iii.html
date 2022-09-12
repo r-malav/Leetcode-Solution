@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Meeting Rooms III - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2402. Meeting Rooms III</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/heap-priority-queue">Heap (Priority Queue)</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/meeting-rooms.html">Meeting Rooms</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/meeting-rooms-ii.html">Meeting Rooms II</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-number-of-events-that-can-be-attended.html">Maximum Number of Events That Can Be Attended</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/find-servers-that-handled-most-number-of-requests.html">Find Servers That Handled Most Number of Requests</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-number-of-events-that-can-be-attended-ii.html">Maximum Number of Events That Can Be Attended II</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an integer <code>n</code>. There are <code>n</code> rooms numbered from <code>0</code> to <code>n - 1</code>.</p>
+<p>You are given a 2D integer array <code>meetings</code> where <code>meetings[i] = [starti, endi]</code> means that a meeting will be held during the <strong>half-closed</strong> time interval <code>[starti, endi)</code>. All the values of <code>starti</code> are <strong>unique</strong>.</p>
+<p>Meetings are allocated to rooms in the following manner:</p>
+<ul>
+<li><p>Each meeting will take place in the unused room with the <strong>lowest</strong> number.</p></li>
+<li><p>If there are no available rooms, the meeting will be delayed until a room becomes free. The delayed meeting should have the <strong>same</strong> duration as the original meeting.</p></li>
+<li><p>When a room becomes unused, meetings that have an earlier original <strong>start</strong> time should be given the room.</p></li>
+</ul>
+<p>Return** the <strong>number</strong> of the room that held the most meetings. <strong>If there are multiple rooms, return</strong> the room with the <strong>lowest</strong> number.**</p>
+<p>A <strong>half-closed interval</strong> <code>[a, b)</code> is the interval between <code>a</code> and <code>b</code> <strong>including</strong> <code>a</code> and <strong>not including</strong> <code>b</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">2</span>, meetings = [[<span class="hljs-number">0</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">7</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]]
+Output: <span class="hljs-number">0</span>
+Explanation:
+- At time <span class="hljs-number">0</span>, both rooms are <span class="hljs-keyword">not</span> being used. The first meeting starts <span class="hljs-keyword">in</span> room <span class="hljs-number">0.</span>
+- At time <span class="hljs-number">1</span>, only room <span class="hljs-number">1</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> being used. The second meeting starts <span class="hljs-keyword">in</span> room <span class="hljs-number">1.</span>
+- At time <span class="hljs-number">2</span>, both rooms are being used. The third meeting <span class="hljs-keyword">is</span> delayed.
+- At time <span class="hljs-number">3</span>, both rooms are being used. The fourth meeting <span class="hljs-keyword">is</span> delayed.
+- At time <span class="hljs-number">5</span>, the meeting <span class="hljs-keyword">in</span> room <span class="hljs-number">1</span> finishes. The third meeting starts <span class="hljs-keyword">in</span> room <span class="hljs-number">1</span> <span class="hljs-keyword">for</span> the time period [<span class="hljs-number">5</span>,<span class="hljs-number">10</span>).
+- At time <span class="hljs-number">10</span>, the meetings <span class="hljs-keyword">in</span> both rooms finish. The fourth meeting starts <span class="hljs-keyword">in</span> room <span class="hljs-number">0</span> <span class="hljs-keyword">for</span> the time period [<span class="hljs-number">10</span>,<span class="hljs-number">11</span>).
+Both rooms <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-number">1</span> held <span class="hljs-number">2</span> meetings, so we <span class="hljs-keyword">return</span> <span class="hljs-number">0.</span> 
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">3</span>, meetings = [[<span class="hljs-number">1</span>,<span class="hljs-number">20</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">9</span>],[<span class="hljs-number">6</span>,<span class="hljs-number">8</span>]]
+Output: <span class="hljs-number">1</span>
+Explanation:
+- At time <span class="hljs-number">1</span>, all three rooms are <span class="hljs-keyword">not</span> being used. The first meeting starts <span class="hljs-keyword">in</span> room <span class="hljs-number">0.</span>
+- At time <span class="hljs-number">2</span>, rooms <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-number">2</span> are <span class="hljs-keyword">not</span> being used. The second meeting starts <span class="hljs-keyword">in</span> room <span class="hljs-number">1.</span>
+- At time <span class="hljs-number">3</span>, only room <span class="hljs-number">2</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> being used. The third meeting starts <span class="hljs-keyword">in</span> room <span class="hljs-number">2.</span>
+- At time <span class="hljs-number">4</span>, all three rooms are being used. The fourth meeting <span class="hljs-keyword">is</span> delayed.
+- At time <span class="hljs-number">5</span>, the meeting <span class="hljs-keyword">in</span> room <span class="hljs-number">2</span> finishes. The fourth meeting starts <span class="hljs-keyword">in</span> room <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> the time period [<span class="hljs-number">5</span>,<span class="hljs-number">10</span>).
+- At time <span class="hljs-number">6</span>, all three rooms are being used. The fifth meeting <span class="hljs-keyword">is</span> delayed.
+- At time <span class="hljs-number">10</span>, the meetings <span class="hljs-keyword">in</span> rooms <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-number">2</span> finish. The fifth meeting starts <span class="hljs-keyword">in</span> room <span class="hljs-number">1</span> <span class="hljs-keyword">for</span> the time period [<span class="hljs-number">10</span>,<span class="hljs-number">12</span>).
+Room <span class="hljs-number">0</span> held <span class="hljs-number">1</span> meeting <span class="hljs-keyword">while</span> rooms <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-number">2</span> each held <span class="hljs-number">2</span> meetings, so we <span class="hljs-keyword">return</span> <span class="hljs-number">1.</span> 
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= n &lt;= 100</code></p></li>
+<li><p><code>1 &lt;= meetings.length &lt;= 105</code></p></li>
+<li><p><code>meetings[i].length == 2</code></p></li>
+<li><p><code>0 &lt;= starti &lt; endi &lt;= 5 * 105</code></p></li>
+<li><p>All the values of <code>starti</code> are <strong>unique</strong>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">mostBooked</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[][] meetings)</span> </span>{
+    <span class="hljs-keyword">int</span> ans[] = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];                                                     <span class="hljs-comment">//for numbers of usages </span>
+    PriorityQueue&lt;<span class="hljs-keyword">int</span>[]&gt; ends = <span class="hljs-keyword">new</span> PriorityQueue&lt;&gt;
+      (n, (<span class="hljs-keyword">int</span>[] o1, <span class="hljs-keyword">int</span>[] o2) -&gt; o2[<span class="hljs-number">0</span>]!=o1[<span class="hljs-number">0</span>] ? o1[<span class="hljs-number">0</span>]-o2[<span class="hljs-number">0</span>] : o1[<span class="hljs-number">1</span>]-o2[<span class="hljs-number">1</span>]);    <span class="hljs-comment">//end , room   </span>
+    TreeSet&lt;Integer&gt; rooms = <span class="hljs-keyword">new</span> TreeSet&lt;&gt;();                                   <span class="hljs-comment">//for empty rooms</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i != n; i++) rooms.add(i);                                   <span class="hljs-comment">//check all rooms as empty </span>
+    Arrays.sort(meetings, (<span class="hljs-keyword">int</span>[] o1, <span class="hljs-keyword">int</span>[] o2) -&gt; o1[<span class="hljs-number">0</span>] - o2[<span class="hljs-number">0</span>]);               <span class="hljs-comment">//sorting for minimal starts</span>
+
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span>[] m: meetings){
+      <span class="hljs-keyword">while</span>(!ends.isEmpty() &amp;&amp; ends.peek()[<span class="hljs-number">0</span>] &lt;= m[<span class="hljs-number">0</span>]) rooms.add(ends.poll()[<span class="hljs-number">1</span>]);       <span class="hljs-comment">//empty all rooms for current time</span>
+
+      <span class="hljs-keyword">if</span>(!rooms.isEmpty()){                                          <span class="hljs-comment">//if we have empty rooms</span>
+        <span class="hljs-keyword">int</span> room = rooms.pollFirst();                                <span class="hljs-comment">//fetch room with minimal number</span>
+        ans[room]++;                                                 <span class="hljs-comment">//check it as used</span>
+        ends.add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[]{m[<span class="hljs-number">1</span>], room});                             <span class="hljs-comment">//and put it into queue</span>
+      }<span class="hljs-keyword">else</span>{                                                     <span class="hljs-comment">//if we not have any empty room </span>
+        <span class="hljs-keyword">int</span>[] e = ends.poll();                                   <span class="hljs-comment">//fetch from queue first room that will be empty </span>
+        ans[e[<span class="hljs-number">1</span>]]++;                                             <span class="hljs-comment">//and again use it (check it as used)</span>
+        ends.add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[]{e[<span class="hljs-number">0</span>] + m[<span class="hljs-number">1</span>] - m[<span class="hljs-number">0</span>], e[<span class="hljs-number">1</span>]});           <span class="hljs-comment">//and reuse it with correct time</span>
+      } 
+    }
+
+    <span class="hljs-keyword">int</span> maxi = <span class="hljs-number">0</span>, id = -<span class="hljs-number">1</span>;                          <span class="hljs-comment">//fetch minimal index from array with numbers of usages</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i != n; i++)
+      <span class="hljs-keyword">if</span>(ans[i] &gt; maxi) {maxi = ans[i]; id = i;}
+
+    <span class="hljs-keyword">return</span> id;
+  }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Amount of Time to Fill Cups - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2335. Minimum Amount of Time to Fill Cups</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/heap-priority-queue">Heap (Priority Queue)</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/construct-target-array-with-multiple-sums.html">Construct Target Array With Multiple Sums</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-score-from-removing-stones.html">Maximum Score From Removing Stones</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-running-time-of-n-computers.html">Maximum Running Time of N Computers</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You have a water dispenser that can dispense cold, warm, and hot water. Every second, you can either fill up <code>2</code> cups with <strong>different</strong> types of water, or <code>1</code> cup of any type of water.</p>
+<p>You are given a <strong>0-indexed</strong> integer array <code>amount</code> of length <code>3</code> where <code>amount[0]</code>, <code>amount[1]</code>, and <code>amount[2]</code> denote the number of cold, warm, and hot water cups you need to fill respectively. Return **the *<em>minimum</em>* number of seconds needed to fill up all the cups**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: amount = [1,4,2]
+Output: 4
+Explanation: One way to<span class="hljs-built_in"> fill </span>up the cups is:
+Second 1: Fill up a cold cup<span class="hljs-built_in"> and </span>a warm cup.
+Second 2: Fill up a warm cup<span class="hljs-built_in"> and </span>a hot cup.
+Second 3: Fill up a warm cup<span class="hljs-built_in"> and </span>a hot cup.
+Second 4: Fill up a warm cup.
+It can be proven that 4 is the minimum number of seconds needed.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: amount = [5,4,4]
+Output: 7
+Explanation: One way to<span class="hljs-built_in"> fill </span>up the cups is:
+Second 1: Fill up a cold cup,<span class="hljs-built_in"> and </span>a hot cup.
+Second 2: Fill up a cold cup,<span class="hljs-built_in"> and </span>a warm cup.
+Second 3: Fill up a cold cup,<span class="hljs-built_in"> and </span>a warm cup.
+Second 4: Fill up a warm cup,<span class="hljs-built_in"> and </span>a hot cup.
+Second 5: Fill up a cold cup,<span class="hljs-built_in"> and </span>a hot cup.
+Second 6: Fill up a cold cup,<span class="hljs-built_in"> and </span>a warm cup.
+Second 7: Fill up a hot cup.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: amount = [5,0,0]
+Output: 5
+Explanation: Every second, we<span class="hljs-built_in"> fill </span>up a cold cup.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>amount.length == 3</code></p></li>
+<li><p><code>0 &lt;= amount[i] &lt;= 100</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">fillCups</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] amount)</span> </span>{
+        Arrays.sort(amount);
+        <span class="hljs-keyword">int</span> sum = amount[<span class="hljs-number">0</span>] + amount[<span class="hljs-number">1</span>] + amount[<span class="hljs-number">2</span>];
+        <span class="hljs-keyword">return</span> (amount[<span class="hljs-number">0</span>] + amount[<span class="hljs-number">1</span>] &lt; amount[<span class="hljs-number">2</span>]) ? amount[<span class="hljs-number">2</span>] : (sum + <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

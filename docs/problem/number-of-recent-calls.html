@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Number of Recent Calls - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>933. Number of Recent Calls</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/design">Design</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/queue">Queue</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/data-stream">Data Stream</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You have a <code>RecentCounter</code> class which counts the number of recent requests within a certain time frame.</p>
+<p>Implement the <code>RecentCounter</code> class:</p>
+<ul>
+<li><p><code>RecentCounter()</code> Initializes the counter with zero recent requests.</p></li>
+<li><p><code>int ping(int t)</code> Adds a new request at time <code>t</code>, where <code>t</code> represents some time in milliseconds, and returns the number of requests that has happened in the past <code>3000</code> milliseconds (including the new request). Specifically, return the number of requests that have happened in the inclusive range <code>[t - 3000, t]</code>.</p></li>
+</ul>
+<p>It is <strong>guaranteed</strong> that every call to <code>ping</code> uses a strictly larger value of <code>t</code> than the previous call.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>
+[<span class="hljs-string">"RecentCounter"</span>, <span class="hljs-string">"ping"</span>, <span class="hljs-string">"ping"</span>, <span class="hljs-string">"ping"</span>, <span class="hljs-string">"ping"</span>]
+[[], [<span class="hljs-number">1</span>], [<span class="hljs-number">100</span>], [<span class="hljs-number">3001</span>], [<span class="hljs-number">3002</span>]]
+<span class="hljs-symbol">Output</span>
+[null, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>]
+
+<span class="hljs-symbol">Explanation</span>
+<span class="hljs-symbol">RecentCounter</span> recentCounter = new <span class="hljs-symbol">RecentCounter</span>();
+recentCounter.ping(<span class="hljs-number">1</span>);     // requests = [<span class="hljs-number">1</span>], range is [<span class="hljs-number">-2999</span>,<span class="hljs-number">1</span>], return <span class="hljs-number">1</span>
+recentCounter.ping(<span class="hljs-number">100</span>);   // requests = [<span class="hljs-number">1</span>, <span class="hljs-number">100</span>], range is [<span class="hljs-number">-2900</span>,<span class="hljs-number">100</span>], return <span class="hljs-number">2</span>
+recentCounter.ping(<span class="hljs-number">3001</span>);  // requests = [<span class="hljs-number">1</span>, <span class="hljs-number">100</span>, <span class="hljs-number">3001</span>], range is [<span class="hljs-number">1</span>,<span class="hljs-number">3001</span>], return <span class="hljs-number">3</span>
+recentCounter.ping(<span class="hljs-number">3002</span>);  // requests = [<span class="hljs-number">1</span>, <span class="hljs-number">100</span>, <span class="hljs-number">3001</span>, <span class="hljs-number">3002</span>], range is [<span class="hljs-number">2</span>,<span class="hljs-number">3002</span>], return <span class="hljs-number">3</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= t &lt;= 109</code></p></li>
+<li><p>Each test case will call <code>ping</code> with <strong>strictly increasing</strong> values of <code>t</code>.</p></li>
+<li><p>At most <code>104</code> calls will be made to <code>ping</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RecentCounter</span> </span>{
+    <span class="hljs-keyword">private</span> Queue&lt;Integer&gt; q;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">RecentCounter</span><span class="hljs-params">()</span> </span>{
+        q = <span class="hljs-keyword">new</span> LinkedList&lt;&gt;();
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">ping</span><span class="hljs-params">(<span class="hljs-keyword">int</span> t)</span> </span>{
+        q.offer(t);
+        <span class="hljs-keyword">int</span> min = t - <span class="hljs-number">3000</span>;
+        <span class="hljs-keyword">while</span> (min &gt; q.peek()) {
+            q.poll();
+        }
+        <span class="hljs-keyword">return</span> q.size();
+    }
+}
+
+<span class="hljs-comment">/**
+ * Your RecentCounter object will be instantiated and called as such:
+ * RecentCounter obj = new RecentCounter();
+ * int param_1 = obj.ping(t);
+ */</span>
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

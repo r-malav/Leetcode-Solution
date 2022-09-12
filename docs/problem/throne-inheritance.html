@@ -1,0 +1,120 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Throne Inheritance - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1600. Throne Inheritance</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/tree">Tree</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/design">Design</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/operations-on-tree.html">Operations on Tree</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A kingdom consists of a king, his children, his grandchildren, and so on. Every once in a while, someone in the family dies or a child is born.</p>
+<p>The kingdom has a well-defined order of inheritance that consists of the king as the first member. Let's define the recursive function <code>Successor(x, curOrder)</code>, which given a person <code>x</code> and the inheritance order so far, returns who should be the next person after <code>x</code> in the order of inheritance.</p>
+<pre><code class="hljs">Successor(x, curOrder):
+    <span class="hljs-keyword">if</span> x has no children <span class="hljs-keyword">or</span> <span class="hljs-keyword">all</span> <span class="hljs-keyword">of</span> x<span class="hljs-symbol">'s</span> children are <span class="hljs-keyword">in</span> curOrder:
+        <span class="hljs-keyword">if</span> x <span class="hljs-keyword">is</span> the king <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> Successor(x<span class="hljs-symbol">'s</span> parent, curOrder)
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> x<span class="hljs-symbol">'s</span> oldest child who<span class="hljs-symbol">'s</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> curOrder
+</code></pre>
+<p>For example, assume we have a kingdom that consists of the king, his children Alice and Bob (Alice is older than Bob), and finally Alice's son Jack.</p>
+<ul>
+<li><p>In the beginning, <code>curOrder</code> will be <code>["king"]</code>.</p></li>
+<li><p>Calling <code>Successor(king, curOrder)</code> will return Alice, so we append to <code>curOrder</code> to get <code>["king", "Alice"]</code>.</p></li>
+<li><p>Calling <code>Successor(Alice, curOrder)</code> will return Jack, so we append to <code>curOrder</code> to get <code>["king", "Alice", "Jack"]</code>.</p></li>
+<li><p>Calling <code>Successor(Jack, curOrder)</code> will return Bob, so we append to <code>curOrder</code> to get <code>["king", "Alice", "Jack", "Bob"]</code>.</p></li>
+<li><p>Calling <code>Successor(Bob, curOrder)</code> will return <code>null</code>. Thus the order of inheritance will be <code>["king", "Alice", "Jack", "Bob"]</code>.</p></li>
+</ul>
+<p>Using the above function, we can always obtain a unique order of inheritance.</p>
+<p>Implement the <code>ThroneInheritance</code> class:</p>
+<ul>
+<li><p><code>ThroneInheritance(string kingName)</code> Initializes an object of the <code>ThroneInheritance</code> class. The name of the king is given as part of the constructor.</p></li>
+<li><p><code>void birth(string parentName, string childName)</code> Indicates that <code>parentName</code> gave birth to <code>childName</code>.</p></li>
+<li><p><code>void death(string name)</code> Indicates the death of <code>name</code>. The death of the person doesn't affect the <code>Successor</code> function nor the current inheritance order. You can treat it as just marking the person as dead.</p></li>
+<li><p><code>string[] getInheritanceOrder()</code> Returns a list representing the current order of inheritance <strong>excluding</strong> dead people.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-keyword">Input</span>
+["ThroneInheritance", "birth", "birth", "birth", "birth", "birth", "birth", "getInheritanceOrder", "death", "getInheritanceOrder"]
+[["king"], ["king", "andy"], ["king", "bob"], ["king", "catherine"], ["andy", "matthew"], ["bob", "alex"], ["bob", "asha"], [<span class="hljs-keyword">null</span>], ["bob"], [<span class="hljs-keyword">null</span>]]
+Output
+[<span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>, ["king", "andy", "matthew", "bob", "alex", "asha", "catherine"], <span class="hljs-keyword">null</span>, ["king", "andy", "matthew", "alex", "asha", "catherine"]]
+
+Explanation
+ThroneInheritance t= <span class="hljs-built_in">new</span> ThroneInheritance("king"); // <span class="hljs-keyword">order</span>: king
+t.birth("king", "andy"); // <span class="hljs-keyword">order</span>: king &gt; andy
+t.birth("king", "bob"); // <span class="hljs-keyword">order</span>: king &gt; andy &gt; bob
+t.birth("king", "catherine"); // <span class="hljs-keyword">order</span>: king &gt; andy &gt; bob &gt; catherine
+t.birth("andy", "matthew"); // <span class="hljs-keyword">order</span>: king &gt; andy &gt; matthew &gt; bob &gt; catherine
+t.birth("bob", "alex"); // <span class="hljs-keyword">order</span>: king &gt; andy &gt; matthew &gt; bob &gt; alex &gt; catherine
+t.birth("bob", "asha"); // <span class="hljs-keyword">order</span>: king &gt; andy &gt; matthew &gt; bob &gt; alex &gt; asha &gt; catherine
+t.getInheritanceOrder(); // <span class="hljs-keyword">return</span> ["king", "andy", "matthew", "bob", "alex", "asha", "catherine"]
+t.death("bob"); // <span class="hljs-keyword">order</span>: king &gt; andy &gt; matthew &gt; bob &gt; alex &gt; asha &gt; catherine
+t.getInheritanceOrder(); // <span class="hljs-keyword">return</span> ["king", "andy", "matthew", "alex", "asha", "catherine"]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= kingName.length, parentName.length, childName.length, name.length &lt;= 15</code></p></li>
+<li><p><code>kingName</code>, <code>parentName</code>, <code>childName</code>, and <code>name</code> consist of lowercase English letters only.</p></li>
+<li><p>All arguments <code>childName</code> and <code>kingName</code> are <strong>distinct</strong>.</p></li>
+<li><p>All <code>name</code> arguments of <code>death</code> will be passed to either the constructor or as <code>childName</code> to <code>birth</code> first.</p></li>
+<li><p>For each call to&nbsp;<code>birth(parentName, childName)</code>, it is guaranteed that&nbsp;<code>parentName</code> is alive.</p></li>
+<li><p>At most <code>105</code> calls will be made to <code>birth</code> and <code>death</code>.</p></li>
+<li><p>At most <code>10</code> calls will be made to <code>getInheritanceOrder</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThroneInheritance</span> </span>{
+    <span class="hljs-keyword">private</span> String king;
+    <span class="hljs-keyword">private</span> HashMap&lt;String, LinkedHashSet&lt;String&gt;&gt; graph;
+    <span class="hljs-keyword">private</span> HashSet&lt;String&gt; isDead;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ThroneInheritance</span><span class="hljs-params">(String kingName)</span> </span>{
+        king = kingName;
+        graph = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        isDead = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+        graph.put(kingName, <span class="hljs-keyword">new</span> LinkedHashSet&lt;&gt;());
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">birth</span><span class="hljs-params">(String parentName, String childName)</span> </span>{
+        graph.putIfAbsent(parentName, <span class="hljs-keyword">new</span> LinkedHashSet&lt;&gt;());
+        graph.get(parentName).add(childName);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">death</span><span class="hljs-params">(String name)</span> </span>{
+        isDead.add(name);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title">getInheritanceOrder</span><span class="hljs-params">()</span> </span>{
+        List&lt;String&gt; inheritance = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        HashSet&lt;String&gt; visited = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+        dfs(graph, king, inheritance, visited);
+        <span class="hljs-keyword">return</span> inheritance;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(
+            Map&lt;String, LinkedHashSet&lt;String&gt;&gt; graph,
+            String src,
+            List&lt;String&gt; l,
+            Set&lt;String&gt; visited)</span> </span>{
+        visited.add(src);
+        <span class="hljs-keyword">if</span> (!isDead.contains(src)) {
+            l.add(src);
+        }
+        <span class="hljs-keyword">if</span> (!graph.containsKey(src)) {
+            <span class="hljs-keyword">return</span>;
+        }
+        <span class="hljs-keyword">for</span> (String s : graph.get(src)) {
+            <span class="hljs-keyword">if</span> (!visited.contains(s)) {
+                dfs(graph, s, l, visited);
+            }
+        }
+    }
+}
+
+<span class="hljs-comment">/**
+ * Your ThroneInheritance object will be instantiated and called as such:
+ * ThroneInheritance obj = new ThroneInheritance(kingName);
+ * obj.birth(parentName,childName);
+ * obj.death(name);
+ * List&lt;String&gt; param_3 = obj.getInheritanceOrder();
+ */</span>
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

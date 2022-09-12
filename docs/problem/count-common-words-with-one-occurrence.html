@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Count Common Words With One Occurrence - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2085. Count Common Words With One Occurrence</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/counting">Counting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/intersection-of-two-arrays.html">Intersection of Two Arrays</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/uncommon-words-from-two-sentences.html">Uncommon Words from Two Sentences</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/kth-distinct-string-in-an-array.html">Kth Distinct String in an Array</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given two string arrays <code>words1</code> and <code>words2</code>, return **the number of strings that appear *<em>exactly once</em>* in <strong>each</strong>&nbsp;of the two arrays.**</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: words1 = [<span class="hljs-string">"leetcode"</span>,<span class="hljs-string">"is"</span>,<span class="hljs-string">"amazing"</span>,<span class="hljs-string">"as"</span>,<span class="hljs-string">"is"</span>], words2 = [<span class="hljs-string">"amazing"</span>,<span class="hljs-string">"leetcode"</span>,<span class="hljs-string">"is"</span>]
+Output: <span class="hljs-number">2</span>
+Explanation:
+- <span class="hljs-string">"leetcode"</span> appears exactly once <span class="hljs-keyword">in</span> <span class="hljs-keyword">each</span> <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> <span class="hljs-literal">two</span> arrays. We count this <span class="hljs-keyword">string</span>.
+- <span class="hljs-string">"amazing"</span> appears exactly once <span class="hljs-keyword">in</span> <span class="hljs-keyword">each</span> <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> <span class="hljs-literal">two</span> arrays. We count this <span class="hljs-keyword">string</span>.
+- <span class="hljs-string">"is"</span> appears <span class="hljs-keyword">in</span> <span class="hljs-keyword">each</span> <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> <span class="hljs-literal">two</span> arrays, but there are <span class="hljs-number">2</span> occurrences <span class="hljs-keyword">of</span> <span class="hljs-keyword">it</span> <span class="hljs-keyword">in</span> words1. We <span class="hljs-built_in">do</span> <span class="hljs-keyword">not</span> count this <span class="hljs-keyword">string</span>.
+- <span class="hljs-string">"as"</span> appears once <span class="hljs-keyword">in</span> words1, but does <span class="hljs-keyword">not</span> appear <span class="hljs-keyword">in</span> words2. We <span class="hljs-built_in">do</span> <span class="hljs-keyword">not</span> count this <span class="hljs-keyword">string</span>.
+Thus, there are <span class="hljs-number">2</span> strings that appear exactly once <span class="hljs-keyword">in</span> <span class="hljs-keyword">each</span> <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> <span class="hljs-literal">two</span> arrays.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> words1 = [<span class="hljs-string">"b"</span>,<span class="hljs-string">"bb"</span>,<span class="hljs-string">"bbb"</span>], words2 = [<span class="hljs-string">"a"</span>,<span class="hljs-string">"aa"</span>,<span class="hljs-string">"aaa"</span>]
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">0</span>
+<span class="hljs-symbol">Explanation:</span> There are no strings that appear <span class="hljs-keyword">in</span> each of the two arrays.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> words1 = [<span class="hljs-string">"a"</span>,<span class="hljs-string">"ab"</span>], words2 = [<span class="hljs-string">"a"</span>,<span class="hljs-string">"a"</span>,<span class="hljs-string">"a"</span>,<span class="hljs-string">"ab"</span>]
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-number">1</span>
+Explanation: The <span class="hljs-keyword">only</span> <span class="hljs-built_in">string</span> that appears exactly once in each of the two arrays <span class="hljs-keyword">is</span> <span class="hljs-string">"ab"</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= words1.length, words2.length &lt;= 1000</code></p></li>
+<li><p><code>1 &lt;= words1[i].length, words2[j].length &lt;= 30</code></p></li>
+<li><p><code>words1[i]</code> and <code>words2[j]</code> consists only of lowercase English letters.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">countWords</span><span class="hljs-params">(String[] words1, String[] words2)</span> </span>{
+        <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+        HashMap&lt;String, Integer&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        HashMap&lt;String, Integer&gt; map1 = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-comment">// Putting the "words1" array in the map</span>
+        <span class="hljs-keyword">for</span> (String s : words1) {
+            <span class="hljs-keyword">if</span> (!map.containsKey(s)) {
+                map.put(s, <span class="hljs-number">1</span>);
+            } <span class="hljs-keyword">else</span> {
+                map.put(s, map.get(s) + <span class="hljs-number">1</span>);
+            }
+        }
+        <span class="hljs-comment">// Putting "words2" array in another map</span>
+        <span class="hljs-keyword">for</span> (String s : words2) {
+            <span class="hljs-keyword">if</span> (!map1.containsKey(s)) {
+                map1.put(s, <span class="hljs-number">1</span>);
+            } <span class="hljs-keyword">else</span> {
+                map1.put(s, map1.get(s) + <span class="hljs-number">1</span>);
+            }
+        }
+        <span class="hljs-comment">// traversing through the "words1" array</span>
+        <span class="hljs-keyword">for</span> (String s : words1) {
+            <span class="hljs-comment">// Checking if the key is present and is matching in both maps</span>
+            <span class="hljs-comment">// and if the key has appeared just one time in "map1" map</span>
+            <span class="hljs-keyword">if</span> (Objects.equals(map.get(s), map1.get(s)) &amp;&amp; map1.get(s) == <span class="hljs-number">1</span>) {
+                count++;
+            }
+        }
+        <span class="hljs-keyword">return</span> count;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

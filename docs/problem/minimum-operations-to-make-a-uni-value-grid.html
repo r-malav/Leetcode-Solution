@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Operations to Make a Uni-Value Grid - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2033. Minimum Operations to Make a Uni-Value Grid</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-moves-to-equal-array-elements-ii.html">Minimum Moves to Equal Array Elements II</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a 2D integer <code>grid</code> of size <code>m x n</code> and an integer <code>x</code>. In one operation, you can <strong>add</strong> <code>x</code> to or <strong>subtract</strong> <code>x</code> from any element in the <code>grid</code>.</p>
+<p>A <strong>uni-value grid</strong> is a grid where all the elements of it are equal.</p>
+<p>Return **the *<em>minimum</em>* number of operations to make the grid <strong>uni-value</strong>**. If it is not possible, return <code>-1</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/09/21/gridtxt.png" alt="" /></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">2</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">6</span>,<span class="hljs-number">8</span>]], x = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">4</span>
+Explanation: We can make every element equal to <span class="hljs-number">4</span> by doing the following: 
+- Add x to <span class="hljs-number">2</span> once.
+- Subtract x <span class="hljs-keyword">from</span> <span class="hljs-number">6</span> once.
+- Subtract x <span class="hljs-keyword">from</span> <span class="hljs-number">8</span> twice.
+A total of <span class="hljs-number">4</span> operations were used.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/09/21/gridtxt-1.png" alt="" /></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">1</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]], x = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">5</span>
+Explanation: We can make every element equal to <span class="hljs-number">3.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/09/21/gridtxt-2.png" alt="" /></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]], x = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">-1</span>
+Explanation: It <span class="hljs-keyword">is</span> impossible to make every element equal.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == grid.length</code></p></li>
+<li><p><code>n == grid[i].length</code></p></li>
+<li><p><code>1 &lt;= m, n &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= m * n &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= x, grid[i][j] &lt;= 104</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minOperations</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] grid, <span class="hljs-keyword">int</span> x)</span> </span>{
+        <span class="hljs-keyword">int</span>[] arr = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[grid.length * grid[<span class="hljs-number">0</span>].length];
+        <span class="hljs-keyword">int</span> k = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] ints : grid) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; grid[<span class="hljs-number">0</span>].length; j++) {
+                arr[k] = ints[j];
+                k++;
+            }
+        }
+        Arrays.sort(arr);
+        <span class="hljs-keyword">int</span> target = arr[arr.length / <span class="hljs-number">2</span>];
+        <span class="hljs-keyword">int</span> res = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; arr.length; i++) {
+            <span class="hljs-keyword">if</span> (i &lt; arr.length / <span class="hljs-number">2</span>) {
+                <span class="hljs-keyword">int</span> rem = target - arr[i];
+                <span class="hljs-keyword">if</span> (rem % x != <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+                }
+                res += rem / x;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">int</span> rem = arr[i] - target;
+                <span class="hljs-keyword">if</span> (rem % x != <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+                }
+                res += rem / x;
+            }
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

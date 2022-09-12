@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Making File Names Unique - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1487. Making File Names Unique</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an array of strings <code>names</code> of size <code>n</code>. You will create <code>n</code> folders in your file system <strong>such that</strong>, at the <code>ith</code> minute, you will create a folder with the name <code>names[i]</code>.</p>
+<p>Since two files <strong>cannot</strong> have the same name, if you enter a folder name that was previously used, the system will have a suffix addition to its name in the form of <code>(k)</code>, where, <code>k</code> is the <strong>smallest positive integer</strong> such that the obtained name remains unique.</p>
+<p>Return **an array of strings of length **<code>n</code> where <code>ans[i]</code> is the actual name the system will assign to the <code>ith</code> folder when you create it.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: names = [<span class="hljs-string">"pes"</span>,<span class="hljs-string">"fifa"</span>,<span class="hljs-string">"gta"</span>,<span class="hljs-string">"pes(2019)"</span>]
+Output: [<span class="hljs-string">"pes"</span>,<span class="hljs-string">"fifa"</span>,<span class="hljs-string">"gta"</span>,<span class="hljs-string">"pes(2019)"</span>]
+Explanation: <span class="hljs-keyword">Let</span>'s see how the file system creates folder names:
+<span class="hljs-string">"pes"</span> --&gt; not assigned <span class="hljs-built_in">before</span>, remains <span class="hljs-string">"pes"</span>
+<span class="hljs-string">"fifa"</span> --&gt; not assigned <span class="hljs-built_in">before</span>, remains <span class="hljs-string">"fifa"</span>
+<span class="hljs-string">"gta"</span> --&gt; not assigned <span class="hljs-built_in">before</span>, remains <span class="hljs-string">"gta"</span>
+<span class="hljs-string">"pes(2019)"</span> --&gt; not assigned <span class="hljs-built_in">before</span>, remains <span class="hljs-string">"pes(2019)"</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: names = [<span class="hljs-string">"gta"</span>,<span class="hljs-string">"gta(1)"</span>,<span class="hljs-string">"gta"</span>,<span class="hljs-string">"avalon"</span>]
+Output: [<span class="hljs-string">"gta"</span>,<span class="hljs-string">"gta(1)"</span>,<span class="hljs-string">"gta(2)"</span>,<span class="hljs-string">"avalon"</span>]
+Explanation: <span class="hljs-keyword">Let</span>'s see how the file system creates folder names:
+<span class="hljs-string">"gta"</span> --&gt; not assigned <span class="hljs-built_in">before</span>, remains <span class="hljs-string">"gta"</span>
+<span class="hljs-string">"gta(1)"</span> --&gt; not assigned <span class="hljs-built_in">before</span>, remains <span class="hljs-string">"gta(1)"</span>
+<span class="hljs-string">"gta"</span> --&gt; the name is reserved, system adds (k), since <span class="hljs-string">"gta(1)"</span> is also reserved, systems put k = <span class="hljs-number">2.</span> it becomes <span class="hljs-string">"gta(2)"</span>
+<span class="hljs-string">"avalon"</span> --&gt; not assigned <span class="hljs-built_in">before</span>, remains <span class="hljs-string">"avalon"</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: names = [<span class="hljs-string">"onepiece"</span>,<span class="hljs-string">"onepiece(1)"</span>,<span class="hljs-string">"onepiece(2)"</span>,<span class="hljs-string">"onepiece(3)"</span>,<span class="hljs-string">"onepiece"</span>]
+Output: [<span class="hljs-string">"onepiece"</span>,<span class="hljs-string">"onepiece(1)"</span>,<span class="hljs-string">"onepiece(2)"</span>,<span class="hljs-string">"onepiece(3)"</span>,<span class="hljs-string">"onepiece(4)"</span>]
+Explanation: When <span class="hljs-keyword">the</span> <span class="hljs-keyword">last</span> <span class="hljs-built_in">folder</span> is created, <span class="hljs-keyword">the</span> smallest positive valid k is <span class="hljs-number">4</span>, <span class="hljs-keyword">and</span> <span class="hljs-keyword">it</span> becomes <span class="hljs-string">"onepiece(4)"</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= names.length &lt;= 5 * 104</code></p></li>
+<li><p><code>1 &lt;= names[i].length &lt;= 20</code></p></li>
+<li><p><code>names[i]</code> consists of lowercase English letters, digits, and/or round brackets.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> String[] getFolderNames(String[] names) {
+        HashMap&lt;String, Integer&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; names.length; i++) {
+            <span class="hljs-keyword">int</span> prefix = map.getOrDefault(names[i], <span class="hljs-number">0</span>);
+            <span class="hljs-keyword">if</span> (prefix != <span class="hljs-number">0</span>) {
+                String raw = names[i];
+                <span class="hljs-keyword">while</span> (map.getOrDefault(names[i], <span class="hljs-number">0</span>) != <span class="hljs-number">0</span>) {
+                    names[i] = raw + <span class="hljs-string">"("</span> + prefix + <span class="hljs-string">")"</span>;
+                    prefix++;
+                }
+                map.put(raw, prefix);
+            }
+            map.put(names[i], <span class="hljs-number">1</span>);
+        }
+        <span class="hljs-keyword">return</span> names;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

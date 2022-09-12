@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Number of Visible People in a Queue - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1944. Number of Visible People in a Queue</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/stack">Stack</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/monotonic-stack">Monotonic Stack</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/buildings-with-an-ocean-view.html">Buildings With an Ocean View</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/sum-of-subarray-ranges.html">Sum of Subarray Ranges</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/sum-of-total-strength-of-wizards.html">Sum of Total Strength of Wizards</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/number-of-people-that-can-be-seen-in-a-grid.html">Number of People That Can Be Seen in a Grid</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There are <code>n</code> people standing in a queue, and they numbered from <code>0</code> to <code>n - 1</code> in <strong>left to right</strong> order. You are given an array <code>heights</code> of <strong>distinct</strong> integers where <code>heights[i]</code> represents the height of the <code>ith</code> person.</p>
+<p>A person can <strong>see</strong> another person to their right in the queue if everybody in between is <strong>shorter</strong> than both of them. More formally, the <code>ith</code> person can see the <code>jth</code> person if <code>i &lt; j</code> and <code>min(heights[i], heights[j]) &gt; max(heights[i+1], heights[i+2], ..., heights[j-1])</code>.</p>
+<p>Return **an array *<em><code>answer</code></em>* of length <strong><code>n</code></strong> where <strong><code>answer[i]</code></strong> is the <strong>number of people</strong> the <strong><code>ith</code></strong> person can <strong>see</strong> to their right in the queue**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/05/29/queue-plane.jpg" alt="" /></p>
+<pre><code class="hljs">Input: heights = [<span class="hljs-number">10</span>,<span class="hljs-number">6</span>,<span class="hljs-number">8</span>,<span class="hljs-number">5</span>,<span class="hljs-number">11</span>,<span class="hljs-number">9</span>]
+Output: [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]
+Explanation:
+Person <span class="hljs-number">0</span> can see person <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">and</span> <span class="hljs-number">4.</span>
+Person <span class="hljs-number">1</span> can see person <span class="hljs-number">2.</span>
+Person <span class="hljs-number">2</span> can see person <span class="hljs-number">3</span> <span class="hljs-keyword">and</span> <span class="hljs-number">4.</span>
+Person <span class="hljs-number">3</span> can see person <span class="hljs-number">4.</span>
+Person <span class="hljs-number">4</span> can see person <span class="hljs-number">5.</span>
+Person <span class="hljs-number">5</span> can see no one since nobody <span class="hljs-keyword">is</span> to the right of them.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: heights = [<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">10</span>]
+Output: [<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == heights.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= heights[i] &lt;= 105</code></p></li>
+<li><p>All the values of <code>heights</code> are <strong>unique</strong>.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] canSeePersonsCount(<span class="hljs-keyword">int</span>[] heights) {
+        <span class="hljs-keyword">int</span> size = heights.length;
+        <span class="hljs-keyword">int</span>[] stack = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[size];
+        <span class="hljs-keyword">int</span> idx = <span class="hljs-number">0</span>;
+        stack[<span class="hljs-number">0</span>] = heights[size - <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">int</span>[] visible = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[size];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = size - <span class="hljs-number">2</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">while</span> (idx &gt;= <span class="hljs-number">0</span> &amp;&amp; heights[i] &gt;= stack[idx]) {
+                count++;
+                idx--;
+            }
+            <span class="hljs-keyword">if</span> (idx &gt;= <span class="hljs-number">0</span>) {
+                count++;
+            }
+            stack[++idx] = heights[i];
+            visible[i] = count;
+        }
+        <span class="hljs-keyword">return</span> visible;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

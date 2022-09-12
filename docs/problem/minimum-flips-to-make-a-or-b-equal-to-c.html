@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Flips to Make a OR b Equal to c - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1318. Minimum Flips to Make a OR b Equal to c</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bit-manipulation">Bit Manipulation</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-bit-flips-to-convert-number.html">Minimum Bit Flips to Convert Number</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given 3 positives numbers <code>a</code>, <code>b</code> and <code>c</code>. Return the minimum flips required in some bits of <code>a</code> and <code>b</code> to make (&nbsp;<code>a</code> OR <code>b</code> == <code>c</code>&nbsp;). (bitwise OR operation).
+Flip operation&nbsp;consists of change&nbsp;<strong>any</strong>&nbsp;single bit 1 to 0 or change the bit 0 to 1&nbsp;in their binary representation.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/01/06/sample_3_1676.png" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">a</span> <span class="hljs-string">=</span> <span class="hljs-number">2</span><span class="hljs-string">,</span> <span class="hljs-string">b</span> <span class="hljs-string">=</span> <span class="hljs-number">6</span><span class="hljs-string">,</span> <span class="hljs-string">c</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">3</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">After</span> <span class="hljs-string">flips</span> <span class="hljs-string">a</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span> <span class="hljs-string">,</span> <span class="hljs-string">b</span> <span class="hljs-string">=</span> <span class="hljs-number">4</span> <span class="hljs-string">,</span> <span class="hljs-string">c</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span> <span class="hljs-string">such</span> <span class="hljs-string">that</span> <span class="hljs-string">(a</span> <span class="hljs-string">OR</span> <span class="hljs-string">b</span> <span class="hljs-string">==</span> <span class="hljs-string">c)</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">a</span> <span class="hljs-string">=</span> <span class="hljs-number">4</span><span class="hljs-string">,</span> <span class="hljs-string">b</span> <span class="hljs-string">=</span> <span class="hljs-number">2</span><span class="hljs-string">,</span> <span class="hljs-string">c</span> <span class="hljs-string">=</span> <span class="hljs-number">7</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">1</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">a</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span><span class="hljs-string">,</span> <span class="hljs-string">b</span> <span class="hljs-string">=</span> <span class="hljs-number">2</span><span class="hljs-string">,</span> <span class="hljs-string">c</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">0</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= a &lt;= 10^9</code></p></li>
+<li><p><code>1 &lt;= b&amp;nbsp;&lt;= 10^9</code></p></li>
+<li><p><code>1 &lt;= c&amp;nbsp;&lt;= 10^9</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">csb</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-keyword">int</span> cnt = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (n &gt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">int</span> rsb = n &amp; -n;
+            n -= rsb;
+            cnt++;
+        }
+        <span class="hljs-keyword">return</span> cnt;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minFlips</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a, <span class="hljs-keyword">int</span> b, <span class="hljs-keyword">int</span> c)</span> </span>{
+        <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> or = a | b;
+        ans += csb(or ^ c);
+        <span class="hljs-keyword">int</span> and = a &amp; b;
+        ans += csb(and &amp; ~c);
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

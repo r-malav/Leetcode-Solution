@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Check if One String Swap Can Make Strings Equal - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1790. Check if One String Swap Can Make Strings Equal</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/counting">Counting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/buddy-strings.html">Buddy Strings</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given two strings <code>s1</code> and <code>s2</code> of equal length. A <strong>string swap</strong> is an operation where you choose two indices in a string (not necessarily different) and swap the characters at these indices.</p>
+<p>Return <code>true</code> **if it is possible to make both strings equal by performing **at most one string swap **on *<em>exactly one</em>* of the strings. **Otherwise, return <code>false</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: s1 = <span class="hljs-string">"bank"</span>, s2 = <span class="hljs-string">"kanb"</span>
+Output: <span class="hljs-literal">true</span>
+Explanation: For example, swap <span class="hljs-keyword">the</span> <span class="hljs-keyword">first</span> <span class="hljs-keyword">character</span> <span class="hljs-keyword">with</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">last</span> <span class="hljs-keyword">character</span> <span class="hljs-keyword">of</span> s2 <span class="hljs-built_in">to</span> make <span class="hljs-string">"bank"</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: s1 = <span class="hljs-string">"attack"</span>, s2 = <span class="hljs-string">"defend"</span>
+Output: <span class="hljs-literal">false</span>
+Explanation: It <span class="hljs-keyword">is</span> impossible <span class="hljs-keyword">to</span> make them <span class="hljs-keyword">equal</span> <span class="hljs-keyword">with</span> one <span class="hljs-built_in">string</span> swap.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> s1 = <span class="hljs-string">"kelb"</span>, s2 = <span class="hljs-string">"kelb"</span>
+Outpu<span class="hljs-variable">t:</span> true
+Explanation: The two strings are already equal, <span class="hljs-keyword">so</span> <span class="hljs-keyword">no</span> <span class="hljs-built_in">string</span> swap operation <span class="hljs-keyword">is</span> required.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s1.length, s2.length &lt;= 100</code></p></li>
+<li><p><code>s1.length == s2.length</code></p></li>
+<li><p><code>s1</code> and <code>s2</code> consist of only lowercase English letters.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">areAlmostEqual</span><span class="hljs-params">(String s1, String s2)</span> </span>{
+        <span class="hljs-keyword">int</span> i1 = -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> i2 = -<span class="hljs-number">1</span>;
+        <span class="hljs-comment">// We go though the two strings</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; s1.length(); i++) {
+            <span class="hljs-comment">// check if each char is the same.</span>
+            <span class="hljs-keyword">if</span> (s1.charAt(i) == s2.charAt(i)) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-comment">// When there are more than 2 char different., we return false;</span>
+            <span class="hljs-keyword">if</span> (i2 != -<span class="hljs-number">1</span>) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            }
+            <span class="hljs-comment">// If there is char that is different, we record the index.</span>
+            <span class="hljs-keyword">if</span> (i1 == -<span class="hljs-number">1</span>) {
+                i1 = i;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// If there is char that is different, we record the index.</span>
+                i2 = i;
+            }
+        }
+        <span class="hljs-comment">// When three is no different char, we return true;</span>
+        <span class="hljs-keyword">if</span> (i1 == i2) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+        }
+        <span class="hljs-comment">// When there is 1 char different, we return false;</span>
+        <span class="hljs-keyword">if</span> (i2 == -<span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+        }
+        <span class="hljs-comment">// When there are 2 char different, and swap them can make two string equal, we return true;</span>
+        <span class="hljs-keyword">return</span> s1.charAt(i1) == s2.charAt(i2) &amp;&amp; s1.charAt(i2) == s2.charAt(i1);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

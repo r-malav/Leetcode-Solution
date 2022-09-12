@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Count All Valid Pickup and Delivery Options - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1359. Count All Valid Pickup and Delivery Options</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/combinatorics">Combinatorics</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given <code>n</code> orders, each order consist in pickup and delivery services.&nbsp;</p>
+<p>Count all valid pickup/delivery possible sequences such that delivery(i) is always after of&nbsp;pickup(i).&nbsp;</p>
+<p>Since the answer&nbsp;may be too large,&nbsp;return it modulo&nbsp;10^9 + 7.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">1</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">Unique</span> <span class="hljs-string">order</span> <span class="hljs-string">(P1,</span> <span class="hljs-string">D1),</span> <span class="hljs-string">Delivery</span> <span class="hljs-number">1</span> <span class="hljs-string">always</span> <span class="hljs-string">is</span> <span class="hljs-string">after</span> <span class="hljs-string">of</span> <span class="hljs-string">Pickup</span> <span class="hljs-number">1</span><span class="hljs-string">.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: n = <span class="hljs-number">2</span>
+<span class="hljs-symbol">Output</span>: <span class="hljs-number">6</span>
+<span class="hljs-symbol">Explanation</span>: All possible orders: 
+(<span class="hljs-built_in">P1</span>,<span class="hljs-built_in">P2</span>,<span class="hljs-built_in">D1</span>,<span class="hljs-built_in">D2</span>), (<span class="hljs-built_in">P1</span>,<span class="hljs-built_in">P2</span>,<span class="hljs-built_in">D2</span>,<span class="hljs-built_in">D1</span>), (<span class="hljs-built_in">P1</span>,<span class="hljs-built_in">D1</span>,<span class="hljs-built_in">P2</span>,<span class="hljs-built_in">D2</span>), (<span class="hljs-built_in">P2</span>,<span class="hljs-built_in">P1</span>,<span class="hljs-built_in">D1</span>,<span class="hljs-built_in">D2</span>), (<span class="hljs-built_in">P2</span>,<span class="hljs-built_in">P1</span>,<span class="hljs-built_in">D2</span>,<span class="hljs-built_in">D1</span>) <span class="hljs-keyword">and </span>(<span class="hljs-built_in">P2</span>,<span class="hljs-built_in">D2</span>,<span class="hljs-built_in">P1</span>,<span class="hljs-built_in">D1</span>).
+<span class="hljs-symbol">This</span> is an invalid order (<span class="hljs-built_in">P1</span>,<span class="hljs-built_in">D2</span>,<span class="hljs-built_in">P2</span>,<span class="hljs-built_in">D1</span>) <span class="hljs-keyword">because </span>Pickup <span class="hljs-number">2</span> is after of Delivery <span class="hljs-number">2</span>.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">90</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= n &lt;= 500</code></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">countOrders</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-keyword">long</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[n + <span class="hljs-number">1</span>];
+        dp[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">long</span> mod = (<span class="hljs-keyword">long</span>) <span class="hljs-number">1e9</span> + <span class="hljs-number">7</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">2</span>; i &lt;= n; i++) {
+            <span class="hljs-keyword">long</span> gaps = (i - <span class="hljs-number">1</span>) * <span class="hljs-number">2L</span> + <span class="hljs-number">1</span>;
+            dp[i] = gaps * (gaps + <span class="hljs-number">1</span>) / <span class="hljs-number">2</span> * dp[i - <span class="hljs-number">1</span>] % mod;
+        }
+        <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>) dp[n];
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

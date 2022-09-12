@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Number of Music Playlists - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>920. Number of Music Playlists</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/combinatorics">Combinatorics</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Your music player contains <code>n</code> different songs. You want to listen to <code>goal</code> songs (not necessarily different) during your trip. To avoid boredom, you will create a playlist so that:</p>
+<ul>
+<li><p>Every song is played <strong>at least once</strong>.</p></li>
+<li><p>A song can only be played again only if <code>k</code> other songs have been played.</p></li>
+</ul>
+<p>Given <code>n</code>, <code>goal</code>, and <code>k</code>, return <strong>the number of possible playlists that you can create</strong>. Since the answer can be very large, return it <strong>modulo</strong> <code>109 + 7</code>.
+&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">3</span>, goal = <span class="hljs-number">3</span>, k = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">6</span>
+Explanation: There are <span class="hljs-number">6</span> possible playlists: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>], <span class="hljs-keyword">and</span> [<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>].
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">2</span>, goal = <span class="hljs-number">3</span>, k = <span class="hljs-number">0</span>
+Output: <span class="hljs-number">6</span>
+Explanation: There are <span class="hljs-number">6</span> possible playlists: [<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>], <span class="hljs-keyword">and</span> [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>].
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">2</span>, goal = <span class="hljs-number">3</span>, k = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">2</span>
+Explanation: There are <span class="hljs-number">2</span> possible playlists: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>] <span class="hljs-keyword">and</span> [<span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>].
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>0 &lt;= k &lt; n &lt;= goal &lt;= 100</code></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">numMusicPlaylists</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> l, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">long</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[l][n + <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; l; i++) {
+            Arrays.fill(dp[i], -<span class="hljs-number">1</span>);
+        }
+        <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>) helper(<span class="hljs-number">0</span>, l, <span class="hljs-number">0</span>, n, k, dp);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> <span class="hljs-title">helper</span><span class="hljs-params">(<span class="hljs-keyword">int</span> songNumber, <span class="hljs-keyword">int</span> l, <span class="hljs-keyword">int</span> usedSong, <span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> k, <span class="hljs-keyword">long</span>[][] dp)</span> </span>{
+        <span class="hljs-keyword">if</span> (songNumber == l) {
+            <span class="hljs-keyword">return</span> usedSong == n ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">if</span> (dp[songNumber][usedSong] != -<span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> dp[songNumber][usedSong];
+        }
+        <span class="hljs-keyword">long</span> ans;
+        <span class="hljs-keyword">if</span> (songNumber &lt; k) {
+            ans = (n - usedSong) * helper(songNumber + <span class="hljs-number">1</span>, l, usedSong + <span class="hljs-number">1</span>, n, k, dp);
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (usedSong == n) {
+            ans = (usedSong - k) * helper(songNumber + <span class="hljs-number">1</span>, l, usedSong, n, k, dp);
+        } <span class="hljs-keyword">else</span> {
+            ans =
+                    (n - usedSong) * helper(songNumber + <span class="hljs-number">1</span>, l, usedSong + <span class="hljs-number">1</span>, n, k, dp)
+                            + (usedSong - k) * helper(songNumber + <span class="hljs-number">1</span>, l, usedSong, n, k, dp);
+        }
+        <span class="hljs-keyword">int</span> mod = (<span class="hljs-keyword">int</span>) <span class="hljs-number">1e9</span> + <span class="hljs-number">7</span>;
+        dp[songNumber][usedSong] = ans % mod;
+        <span class="hljs-keyword">return</span> ans % mod;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

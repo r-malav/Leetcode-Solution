@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Find the Winner of the Circular Game - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1823. Find the Winner of the Circular Game</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/recursion">Recursion</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/queue">Queue</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/simulation">Simulation</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There are <code>n</code> friends that are playing a game. The friends are sitting in a circle and are numbered from <code>1</code> to <code>n</code> in <strong>clockwise order</strong>. More formally, moving clockwise from the <code>ith</code> friend brings you to the <code>(i+1)th</code> friend for <code>1 &lt;= i &lt; n</code>, and moving clockwise from the <code>nth</code> friend brings you to the <code>1st</code> friend.</p>
+<p>The rules of the game are as follows:</p>
+<ul>
+<li><p><strong>Start</strong> at the <code>1st</code> friend.</p></li>
+<li><p>Count the next <code>k</code> friends in the clockwise direction <strong>including</strong> the friend you started at. The counting wraps around the circle and may count some friends more than once.</p></li>
+<li><p>The last friend you counted leaves the circle and loses the game.</p></li>
+<li><p>If there is still more than one friend in the circle, go back to step <code>2</code> <strong>starting</strong> from the friend <strong>immediately clockwise</strong> of the friend who just lost and repeat.</p></li>
+<li><p>Else, the last friend in the circle wins the game.</p></li>
+</ul>
+<p>Given the number of friends, <code>n</code>, and an integer <code>k</code>, return <strong>the winner of the game</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/03/25/ic234-q2-ex11.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">5</span>, k = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">3</span>
+Explanation: Here are the steps of the game:
+<span class="hljs-number">1</span>) Start at friend <span class="hljs-number">1.</span>
+<span class="hljs-number">2</span>) Count <span class="hljs-number">2</span> friends clockwise, which are friends <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-number">2.</span>
+<span class="hljs-number">3</span>) Friend <span class="hljs-number">2</span> leaves the circle. Next start <span class="hljs-keyword">is</span> friend <span class="hljs-number">3.</span>
+<span class="hljs-number">4</span>) Count <span class="hljs-number">2</span> friends clockwise, which are friends <span class="hljs-number">3</span> <span class="hljs-keyword">and</span> <span class="hljs-number">4.</span>
+<span class="hljs-number">5</span>) Friend <span class="hljs-number">4</span> leaves the circle. Next start <span class="hljs-keyword">is</span> friend <span class="hljs-number">5.</span>
+<span class="hljs-number">6</span>) Count <span class="hljs-number">2</span> friends clockwise, which are friends <span class="hljs-number">5</span> <span class="hljs-keyword">and</span> <span class="hljs-number">1.</span>
+<span class="hljs-number">7</span>) Friend <span class="hljs-number">1</span> leaves the circle. Next start <span class="hljs-keyword">is</span> friend <span class="hljs-number">3.</span>
+<span class="hljs-number">8</span>) Count <span class="hljs-number">2</span> friends clockwise, which are friends <span class="hljs-number">3</span> <span class="hljs-keyword">and</span> <span class="hljs-number">5.</span>
+<span class="hljs-number">9</span>) Friend <span class="hljs-number">5</span> leaves the circle. Only friend <span class="hljs-number">3</span> <span class="hljs-keyword">is</span> left, so they are the winner.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">6</span><span class="hljs-string">,</span> <span class="hljs-string">k</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">1</span>
+<span class="hljs-attr">Explanation: The friends leave in this order:</span> <span class="hljs-number">5</span><span class="hljs-string">,</span> <span class="hljs-number">4</span><span class="hljs-string">,</span> <span class="hljs-number">6</span><span class="hljs-string">,</span> <span class="hljs-number">2</span><span class="hljs-string">,</span> <span class="hljs-number">3</span><span class="hljs-string">.</span> <span class="hljs-string">The</span> <span class="hljs-string">winner</span> <span class="hljs-string">is</span> <span class="hljs-string">friend</span> <span class="hljs-number">1</span><span class="hljs-string">.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= k &lt;= n &lt;= 500</code></li>
+</ul>
+<p>&nbsp;
+<strong>Follow up:</strong></p>
+<p>Could you solve this problem in linear time with constant space?</p>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">findTheWinner</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> k)</span> </span>{
+        List&lt;Integer&gt; list = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;(n);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            list.add(i + <span class="hljs-number">1</span>);
+        }
+        <span class="hljs-keyword">int</span> startIndex = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (list.size() != <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">int</span> removeIndex = (startIndex + k - <span class="hljs-number">1</span>) % list.size();
+            list.remove(removeIndex);
+            startIndex = removeIndex;
+        }
+        <span class="hljs-keyword">return</span> list.get(<span class="hljs-number">0</span>);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

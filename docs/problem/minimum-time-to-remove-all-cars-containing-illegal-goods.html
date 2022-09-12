@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Time to Remove All Cars Containing Illegal Goods - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2167. Minimum Time to Remove All Cars Containing Illegal Goods</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-number-of-k-consecutive-bit-flips.html">Minimum Number of K Consecutive Bit Flips</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>0-indexed</strong> binary string <code>s</code> which represents a sequence of train cars. <code>s[i] = '0'</code> denotes that the <code>ith</code> car does <strong>not</strong> contain illegal goods and <code>s[i] = '1'</code> denotes that the <code>ith</code> car does contain illegal goods.</p>
+<p>As the train conductor, you would like to get rid of all the cars containing illegal goods. You can do any of the following three operations <strong>any</strong> number of times:</p>
+<ul>
+<li><p>Remove a train car from the <strong>left</strong> end (i.e., remove <code>s[0]</code>) which takes 1 unit of time.</p></li>
+<li><p>Remove a train car from the <strong>right</strong> end (i.e., remove <code>s[s.length - 1]</code>) which takes 1 unit of time.</p></li>
+<li><p>Remove a train car from <strong>anywhere</strong> in the sequence which takes 2 units of time.</p></li>
+</ul>
+<p>Return **the *<em>minimum</em>* time to remove all the cars containing illegal goods**.</p>
+<p>Note that an empty sequence of cars is considered to have no cars containing illegal goods.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"1100101"</span>
+Output: <span class="hljs-number">5</span>
+Explanation: 
+One way <span class="hljs-built_in">to</span> remove all <span class="hljs-keyword">the</span> cars containing illegal goods <span class="hljs-built_in">from</span> <span class="hljs-keyword">the</span> sequence is <span class="hljs-built_in">to</span>
+- remove <span class="hljs-keyword">a</span> car <span class="hljs-built_in">from</span> <span class="hljs-keyword">the</span> left <span class="hljs-function"><span class="hljs-keyword">end</span> <span class="hljs-title">2</span> <span class="hljs-title">times</span>. <span class="hljs-title">Time</span> <span class="hljs-title">taken</span> <span class="hljs-title">is</span> <span class="hljs-title">2</span> * <span class="hljs-title">1</span> = <span class="hljs-title">2</span>.</span>
+- remove <span class="hljs-keyword">a</span> car <span class="hljs-built_in">from</span> <span class="hljs-keyword">the</span> <span class="hljs-literal">right</span> <span class="hljs-keyword">end</span>. Time taken is <span class="hljs-number">1.</span>
+- remove <span class="hljs-keyword">the</span> car containing illegal goods found <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">middle</span>. Time taken is <span class="hljs-number">2.</span>
+This obtains <span class="hljs-keyword">a</span> total <span class="hljs-built_in">time</span> <span class="hljs-keyword">of</span> <span class="hljs-number">2</span> + <span class="hljs-number">1</span> + <span class="hljs-number">2</span> = <span class="hljs-number">5.</span> 
+
+An alternative way is <span class="hljs-built_in">to</span>
+- remove <span class="hljs-keyword">a</span> car <span class="hljs-built_in">from</span> <span class="hljs-keyword">the</span> left <span class="hljs-function"><span class="hljs-keyword">end</span> <span class="hljs-title">2</span> <span class="hljs-title">times</span>. <span class="hljs-title">Time</span> <span class="hljs-title">taken</span> <span class="hljs-title">is</span> <span class="hljs-title">2</span> * <span class="hljs-title">1</span> = <span class="hljs-title">2</span>.</span>
+- remove <span class="hljs-keyword">a</span> car <span class="hljs-built_in">from</span> <span class="hljs-keyword">the</span> <span class="hljs-literal">right</span> <span class="hljs-function"><span class="hljs-keyword">end</span> <span class="hljs-title">3</span> <span class="hljs-title">times</span>. <span class="hljs-title">Time</span> <span class="hljs-title">taken</span> <span class="hljs-title">is</span> <span class="hljs-title">3</span> * <span class="hljs-title">1</span> = <span class="hljs-title">3</span>.</span>
+This also obtains <span class="hljs-keyword">a</span> total <span class="hljs-built_in">time</span> <span class="hljs-keyword">of</span> <span class="hljs-number">2</span> + <span class="hljs-number">3</span> = <span class="hljs-number">5.</span>
+
+<span class="hljs-number">5</span> is <span class="hljs-keyword">the</span> minimum <span class="hljs-built_in">time</span> taken <span class="hljs-built_in">to</span> remove all <span class="hljs-keyword">the</span> cars containing illegal goods. 
+There are no other ways <span class="hljs-built_in">to</span> remove them <span class="hljs-keyword">with</span> less <span class="hljs-built_in">time</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"0010"</span>
+Output: <span class="hljs-number">2</span>
+Explanation:
+One way <span class="hljs-built_in">to</span> remove all <span class="hljs-keyword">the</span> cars containing illegal goods <span class="hljs-built_in">from</span> <span class="hljs-keyword">the</span> sequence is <span class="hljs-built_in">to</span>
+- remove <span class="hljs-keyword">a</span> car <span class="hljs-built_in">from</span> <span class="hljs-keyword">the</span> left <span class="hljs-function"><span class="hljs-keyword">end</span> <span class="hljs-title">3</span> <span class="hljs-title">times</span>. <span class="hljs-title">Time</span> <span class="hljs-title">taken</span> <span class="hljs-title">is</span> <span class="hljs-title">3</span> * <span class="hljs-title">1</span> = <span class="hljs-title">3</span>.</span>
+This obtains <span class="hljs-keyword">a</span> total <span class="hljs-built_in">time</span> <span class="hljs-keyword">of</span> <span class="hljs-number">3.</span>
+
+Another way <span class="hljs-built_in">to</span> remove all <span class="hljs-keyword">the</span> cars containing illegal goods <span class="hljs-built_in">from</span> <span class="hljs-keyword">the</span> sequence is <span class="hljs-built_in">to</span>
+- remove <span class="hljs-keyword">the</span> car containing illegal goods found <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">middle</span>. Time taken is <span class="hljs-number">2.</span>
+This obtains <span class="hljs-keyword">a</span> total <span class="hljs-built_in">time</span> <span class="hljs-keyword">of</span> <span class="hljs-number">2.</span>
+
+Another way <span class="hljs-built_in">to</span> remove all <span class="hljs-keyword">the</span> cars containing illegal goods <span class="hljs-built_in">from</span> <span class="hljs-keyword">the</span> sequence is <span class="hljs-built_in">to</span> 
+- remove <span class="hljs-keyword">a</span> car <span class="hljs-built_in">from</span> <span class="hljs-keyword">the</span> <span class="hljs-literal">right</span> <span class="hljs-function"><span class="hljs-keyword">end</span> <span class="hljs-title">2</span> <span class="hljs-title">times</span>. <span class="hljs-title">Time</span> <span class="hljs-title">taken</span> <span class="hljs-title">is</span> <span class="hljs-title">2</span> * <span class="hljs-title">1</span> = <span class="hljs-title">2</span>. </span>
+This obtains <span class="hljs-keyword">a</span> total <span class="hljs-built_in">time</span> <span class="hljs-keyword">of</span> <span class="hljs-number">2.</span>
+
+<span class="hljs-number">2</span> is <span class="hljs-keyword">the</span> minimum <span class="hljs-built_in">time</span> taken <span class="hljs-built_in">to</span> remove all <span class="hljs-keyword">the</span> cars containing illegal goods. 
+There are no other ways <span class="hljs-built_in">to</span> remove them <span class="hljs-keyword">with</span> less <span class="hljs-built_in">time</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 2 * 105</code></p></li>
+<li><p><code>s[i]</code> is either <code>'0'</code> or <code>'1'</code>.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minimumTime</span><span class="hljs-params">(String s)</span> </span>{
+        <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> n = s.length();
+        <span class="hljs-keyword">int</span>[] sum = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n + <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+            sum[i + <span class="hljs-number">1</span>] = sum[i] + (s.charAt(i) - <span class="hljs-string">'0'</span>);
+        }
+        <span class="hljs-keyword">if</span> (sum[n] == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">int</span> res = s.length();
+        <span class="hljs-keyword">int</span> min = Integer.MAX_VALUE;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> end = <span class="hljs-number">0</span>; end &lt; n; ++end) {
+            min = Math.min(min, end - <span class="hljs-number">2</span> * sum[end] + n - <span class="hljs-number">1</span>);
+            res = Math.min(res, min + <span class="hljs-number">2</span> * sum[end + <span class="hljs-number">1</span>] - end);
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

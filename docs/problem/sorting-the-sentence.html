@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Sorting the Sentence - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1859. Sorting the Sentence</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/check-if-numbers-are-ascending-in-a-sentence.html">Check if Numbers Are Ascending in a Sentence</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A <strong>sentence</strong> is a list of words that are separated by a single space with no leading or trailing spaces. Each word consists of lowercase and uppercase English letters.</p>
+<p>A sentence can be <strong>shuffled</strong> by appending the <strong>1-indexed word position</strong> to each word then rearranging the words in the sentence.</p>
+<ul>
+<li>For example, the sentence <code>"This is a sentence"</code> can be shuffled as <code>"sentence4 a3 is2 This1"</code> or <code>"is2 sentence4 This1 a3"</code>.</li>
+</ul>
+<p>Given a <strong>shuffled sentence</strong> <code>s</code> containing no more than <code>9</code> words, reconstruct and return <strong>the original sentence</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"is2 sentence4 This1 a3"</span>
+Output: <span class="hljs-string">"This is a sentence"</span>
+Explanation: Sort <span class="hljs-keyword">the</span> <span class="hljs-keyword">words</span> <span class="hljs-keyword">in</span> s <span class="hljs-built_in">to</span> their original positions <span class="hljs-string">"This1 is2 a3 sentence4"</span>, <span class="hljs-keyword">then</span> remove <span class="hljs-keyword">the</span> numbers.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"Myself2 Me1 I4 and3"</span>
+Output: <span class="hljs-string">"Me Myself and I"</span>
+Explanation: Sort <span class="hljs-keyword">the</span> <span class="hljs-keyword">words</span> <span class="hljs-keyword">in</span> s <span class="hljs-built_in">to</span> their original positions <span class="hljs-string">"Me1 Myself2 and3 I4"</span>, <span class="hljs-keyword">then</span> remove <span class="hljs-keyword">the</span> numbers.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>2 &lt;= s.length &lt;= 200</code></p></li>
+<li><p><code>s</code> consists of lowercase and uppercase English letters, spaces, and digits from <code>1</code> to <code>9</code>.</p></li>
+<li><p>The number of words in <code>s</code> is between <code>1</code> and <code>9</code>.</p></li>
+<li><p>The words in <code>s</code> are separated by a single space.</p></li>
+<li><p><code>s</code> contains no leading or trailing spaces.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">sortSentence</span><span class="hljs-params">(String s)</span> </span>{
+        String[] words = s.split(<span class="hljs-string">" "</span>);
+        TreeMap&lt;Integer, String&gt; treeMap = <span class="hljs-keyword">new</span> TreeMap&lt;&gt;();
+        <span class="hljs-keyword">for</span> (String word : words) {
+            <span class="hljs-keyword">int</span> key = Integer.parseInt(word.charAt(word.length() - <span class="hljs-number">1</span>) + <span class="hljs-string">""</span>);
+            treeMap.put(key, word.substring(<span class="hljs-number">0</span>, word.length() - <span class="hljs-number">1</span>));
+        }
+        StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();
+        <span class="hljs-keyword">for</span> (Map.Entry&lt;Integer, String&gt; entry : treeMap.entrySet()) {
+            sb.append(entry.getValue());
+            sb.append(<span class="hljs-string">" "</span>);
+        }
+        <span class="hljs-keyword">return</span> sb.substring(<span class="hljs-number">0</span>, sb.length() - <span class="hljs-number">1</span>);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

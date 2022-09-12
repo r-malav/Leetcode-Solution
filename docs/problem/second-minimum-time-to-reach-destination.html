@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Second Minimum Time to Reach Destination - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2045. Second Minimum Time to Reach Destination</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/graph">Graph</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/shortest-path">Shortest Path</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/network-delay-time.html">Network Delay Time</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance.html">Find the City With the Smallest Number of Neighbors at a Threshold Distance</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/number-of-ways-to-arrive-at-destination.html">Number of Ways to Arrive at Destination</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A city is represented as a <strong>bi-directional connected</strong> graph with <code>n</code> vertices where each vertex is labeled from <code>1</code> to <code>n</code> (<strong>inclusive</strong>). The edges in the graph are represented as a 2D integer array <code>edges</code>, where each <code>edges[i] = [ui, vi]</code> denotes a bi-directional edge between vertex <code>ui</code> and vertex <code>vi</code>. Every vertex pair is connected by <strong>at most one</strong> edge, and no vertex has an edge to itself. The time taken to traverse any edge is <code>time</code> minutes.</p>
+<p>Each vertex has a traffic signal which changes its color from <strong>green</strong> to <strong>red</strong> and vice versa every&nbsp;<code>change</code> minutes. All signals change <strong>at the same time</strong>. You can enter a vertex at <strong>any time</strong>, but can leave a vertex <strong>only when the signal is green</strong>. You **cannot wait **at a vertex if the signal is <strong>green</strong>.</p>
+<p>The <strong>second minimum value</strong> is defined as the smallest value** strictly larger **than the minimum value.</p>
+<ul>
+<li>For example the second minimum value of <code>[2, 3, 4]</code> is <code>3</code>, and the second minimum value of <code>[2, 2, 4]</code> is <code>4</code>.</li>
+</ul>
+<p>Given <code>n</code>, <code>edges</code>, <code>time</code>, and <code>change</code>, return **the *<em>second minimum time</em>* it will take to go from vertex <strong><code>1</code></strong> to vertex **<code>n</code>.</p>
+<p><strong>Notes:</strong></p>
+<ul>
+<li><p>You can go through any vertex <strong>any</strong> number of times, <strong>including</strong> <code>1</code> and <code>n</code>.</p></li>
+<li><p>You can assume that when the journey <strong>starts</strong>, all signals have just turned <strong>green</strong>.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/09/29/e2.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">5</span>, edges = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]], time = <span class="hljs-number">3</span>, change = <span class="hljs-number">5</span>
+Output: <span class="hljs-number">13</span>
+Explanation:
+The figure on the left shows the given graph.
+The blue path <span class="hljs-keyword">in</span> the figure on the right <span class="hljs-keyword">is</span> the minimum time path.
+The time taken <span class="hljs-keyword">is</span>:
+- Start at <span class="hljs-number">1</span>, time elapsed=<span class="hljs-number">0</span>
+- <span class="hljs-number">1</span> -&gt; <span class="hljs-number">4</span>: <span class="hljs-number">3</span> minutes, time elapsed=<span class="hljs-number">3</span>
+- <span class="hljs-number">4</span> -&gt; <span class="hljs-number">5</span>: <span class="hljs-number">3</span> minutes, time elapsed=<span class="hljs-number">6</span>
+Hence the minimum time needed <span class="hljs-keyword">is</span> <span class="hljs-number">6</span> minutes.
+
+The red path shows the path to <span class="hljs-keyword">get</span> the second minimum time.
+- Start at <span class="hljs-number">1</span>, time elapsed=<span class="hljs-number">0</span>
+- <span class="hljs-number">1</span> -&gt; <span class="hljs-number">3</span>: <span class="hljs-number">3</span> minutes, time elapsed=<span class="hljs-number">3</span>
+- <span class="hljs-number">3</span> -&gt; <span class="hljs-number">4</span>: <span class="hljs-number">3</span> minutes, time elapsed=<span class="hljs-number">6</span>
+- Wait at <span class="hljs-number">4</span> <span class="hljs-keyword">for</span> <span class="hljs-number">4</span> minutes, time elapsed=<span class="hljs-number">10</span>
+- <span class="hljs-number">4</span> -&gt; <span class="hljs-number">5</span>: <span class="hljs-number">3</span> minutes, time elapsed=<span class="hljs-number">13</span>
+Hence the second minimum time <span class="hljs-keyword">is</span> <span class="hljs-number">13</span> minutes.      
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/09/29/eg2.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">2</span>, edges = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]], time = <span class="hljs-number">3</span>, change = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">11</span>
+Explanation:
+The minimum time path <span class="hljs-keyword">is</span> <span class="hljs-number">1</span> -&gt; <span class="hljs-number">2</span> with time = <span class="hljs-number">3</span> minutes.
+The second minimum time path <span class="hljs-keyword">is</span> <span class="hljs-number">1</span> -&gt; <span class="hljs-number">2</span> -&gt; <span class="hljs-number">1</span> -&gt; <span class="hljs-number">2</span> with time = <span class="hljs-number">11</span> minutes.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>2 &lt;= n &lt;= 104</code></p></li>
+<li><p><code>n - 1 &lt;= edges.length &lt;= min(2 * 104, n * (n - 1) / 2)</code></p></li>
+<li><p><code>edges[i].length == 2</code></p></li>
+<li><p><code>1 &lt;= ui, vi &lt;= n</code></p></li>
+<li><p><code>ui != vi</code></p></li>
+<li><p>There are no duplicate edges.</p></li>
+<li><p>Each vertex can be reached directly or indirectly from every other vertex.</p></li>
+<li><p><code>1 &lt;= time, change &lt;= 103</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">secondMinimum</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[][] edges, <span class="hljs-keyword">int</span> time, <span class="hljs-keyword">int</span> change)</span> </span>{
+        List&lt;Integer&gt;[] adj = <span class="hljs-keyword">new</span> ArrayList[n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; adj.length; i++) {
+            adj[i] = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] edge : edges) {
+            <span class="hljs-keyword">int</span> p = edge[<span class="hljs-number">0</span>] - <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">int</span> q = edge[<span class="hljs-number">1</span>] - <span class="hljs-number">1</span>;
+            adj[p].add(q);
+            adj[q].add(p);
+        }
+        <span class="hljs-keyword">int</span>[] dis1 = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        <span class="hljs-keyword">int</span>[] dis2 = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        Arrays.fill(dis1, Integer.MAX_VALUE);
+        Arrays.fill(dis2, Integer.MAX_VALUE);
+        dis1[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
+        Queue&lt;<span class="hljs-keyword">int</span>[]&gt; queue = <span class="hljs-keyword">new</span> LinkedList&lt;&gt;();
+        queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {<span class="hljs-number">0</span>, <span class="hljs-number">0</span>});
+        <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+            <span class="hljs-keyword">int</span>[] temp = queue.poll();
+            <span class="hljs-keyword">int</span> cur = temp[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">int</span> path = temp[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> node : adj[cur]) {
+                <span class="hljs-keyword">int</span> newPath = path + <span class="hljs-number">1</span>;
+                <span class="hljs-keyword">if</span> (newPath &lt; dis1[node]) {
+                    dis2[node] = dis1[node];
+                    dis1[node] = newPath;
+                    queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {node, newPath});
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ((newPath &gt; dis1[node]) &amp;&amp; (newPath &lt; dis2[node])) {
+                    dis2[node] = newPath;
+                    queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {node, newPath});
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> helper(dis2[n - <span class="hljs-number">1</span>], time, change);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">helper</span><span class="hljs-params">(<span class="hljs-keyword">int</span> pathValue, <span class="hljs-keyword">int</span> time, <span class="hljs-keyword">int</span> change)</span> </span>{
+        <span class="hljs-keyword">int</span> sum = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; pathValue; i++) {
+            sum += time;
+            <span class="hljs-keyword">if</span> (i == pathValue - <span class="hljs-number">1</span>) {
+                <span class="hljs-keyword">break</span>;
+            }
+            <span class="hljs-keyword">if</span> ((sum / change) % <span class="hljs-number">2</span> != <span class="hljs-number">0</span>) {
+                sum = (sum / change + <span class="hljs-number">1</span>) * change;
+            }
+        }
+        <span class="hljs-keyword">return</span> sum;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

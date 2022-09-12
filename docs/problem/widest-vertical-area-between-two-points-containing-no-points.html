@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Widest Vertical Area Between Two Points Containing No Points - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1637. Widest Vertical Area Between Two Points Containing No Points</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given <code>n</code> <code>points</code> on a 2D plane where <code>points[i] = [xi, yi]</code>, Return**&nbsp;the *<em>widest vertical area</em>* between two points such that no points are inside the area.**</p>
+<p>A <strong>vertical area</strong> is an area of fixed-width extending infinitely along the y-axis (i.e., infinite height). The <strong>widest vertical area</strong> is the one with the maximum width.</p>
+<p>Note that points <strong>on the edge</strong> of a vertical area <strong>are not</strong> considered included in the area.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/09/19/points3.png" alt="" />
+​</p>
+<pre><code class="hljs">Input: points = [[8,7],[9,9],[7,4],[9,7]]
+Output: 1
+Explanation: Both the red <span class="hljs-keyword">and</span> the blue<span class="hljs-built_in"> area </span>are optimal.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: points = [[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">9</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">8</span>,<span class="hljs-number">8</span>]]
+Output: <span class="hljs-number">3</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == points.length</code></p></li>
+<li><p><code>2 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>points[i].length == 2</code></p></li>
+<li><p><code>0 &lt;= xi, yi&amp;nbsp;&lt;= 109</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxWidthOfVerticalArea</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] points)</span> </span>{
+        <span class="hljs-keyword">int</span>[] xValues = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[points.length];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; points.length; i++) {
+            xValues[i] = points[i][<span class="hljs-number">0</span>];
+        }
+        Arrays.sort(xValues);
+        <span class="hljs-keyword">int</span> max = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; xValues.length - <span class="hljs-number">1</span>; j++) {
+            <span class="hljs-keyword">if</span> (xValues[j + <span class="hljs-number">1</span>] - xValues[j] &gt; max) {
+                max = xValues[j + <span class="hljs-number">1</span>] - xValues[j];
+            }
+        }
+        <span class="hljs-keyword">return</span> max;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

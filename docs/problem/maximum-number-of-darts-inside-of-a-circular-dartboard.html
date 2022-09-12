@@ -1,0 +1,109 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Number of Darts Inside of a Circular Dartboard - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1453. Maximum Number of Darts Inside of a Circular Dartboard</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/geometry">Geometry</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Alice is throwing <code>n</code> darts on a very large wall. You are given an array <code>darts</code> where <code>darts[i] = [xi, yi]</code> is the position of the <code>ith</code> dart that Alice threw on the wall.</p>
+<p>Bob knows the positions of the <code>n</code> darts on the wall. He wants to place a dartboard of radius <code>r</code> on the wall so that the maximum number of darts that Alice throws lies on the dartboard.</p>
+<p>Given the integer <code>r</code>, return <strong>the maximum number of darts that can lie on the dartboard</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/04/29/sample_1_1806.png" alt="" /></p>
+<pre><code class="hljs">Input: darts = [[<span class="hljs-number">-2</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">-2</span>]], r = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">4</span>
+Explanation: Circle dartboard with center <span class="hljs-keyword">in</span> (<span class="hljs-number">0</span>,<span class="hljs-number">0</span>) <span class="hljs-keyword">and</span> radius = <span class="hljs-number">2</span> contain all points.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/04/29/sample_2_1806.png" alt="" /></p>
+<pre><code class="hljs">Input: darts = [[<span class="hljs-number">-3</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">6</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">9</span>],[<span class="hljs-number">7</span>,<span class="hljs-number">8</span>]], r = <span class="hljs-number">5</span>
+Output: <span class="hljs-number">5</span>
+Explanation: Circle dartboard with center <span class="hljs-keyword">in</span> (<span class="hljs-number">0</span>,<span class="hljs-number">4</span>) <span class="hljs-keyword">and</span> radius = <span class="hljs-number">5</span> contain all points except the point (<span class="hljs-number">7</span>,<span class="hljs-number">8</span>).
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= darts.length &lt;= 100</code></p></li>
+<li><p><code>darts[i].length == 2</code></p></li>
+<li><p><code>-104 &lt;= xi, yi &lt;= 104</code></p></li>
+<li><p><code>1 &lt;= r &lt;= 5000</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Angle</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Comparable</span>&lt;<span class="hljs-title">Angle</span>&gt; </span>{
+        <span class="hljs-keyword">double</span> a;
+        <span class="hljs-keyword">boolean</span> enter;
+
+        Angle(<span class="hljs-keyword">double</span> a, <span class="hljs-keyword">boolean</span> enter) {
+            <span class="hljs-keyword">this</span>.a = a;
+            <span class="hljs-keyword">this</span>.enter = enter;
+        }
+
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">compareTo</span><span class="hljs-params">(Angle o)</span> </span>{
+            <span class="hljs-keyword">if</span> (a &gt; o.a) {
+                <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a &lt; o.a) {
+                <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (enter == o.enter) {
+                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (enter) {
+                <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+            }
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getPointsInside</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">double</span> r, <span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[][] points, <span class="hljs-keyword">double</span>[][] dis)</span> </span>{
+        List&lt;Angle&gt; angles = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;(<span class="hljs-number">2</span> * n);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++) {
+            <span class="hljs-keyword">if</span> (i != j &amp;&amp; dis[i][j] &lt;= <span class="hljs-number">2</span> * r) {
+                <span class="hljs-keyword">double</span> b = Math.acos(dis[i][j] / (<span class="hljs-number">2</span> * r));
+                <span class="hljs-keyword">double</span> a =
+                        Math.atan2(
+                                points[j][<span class="hljs-number">1</span>] - points[i][<span class="hljs-number">1</span>] * <span class="hljs-number">1.0</span>,
+                                points[j][<span class="hljs-number">0</span>] * <span class="hljs-number">1.0</span> - points[i][<span class="hljs-number">0</span>]);
+                <span class="hljs-keyword">double</span> alpha = a - b;
+                <span class="hljs-keyword">double</span> beta = a + b;
+                angles.add(<span class="hljs-keyword">new</span> Angle(alpha, <span class="hljs-keyword">true</span>));
+                angles.add(<span class="hljs-keyword">new</span> Angle(beta, <span class="hljs-keyword">false</span>));
+            }
+        }
+        Collections.sort(angles);
+        <span class="hljs-keyword">int</span> count = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> res = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (Angle a : angles) {
+            <span class="hljs-keyword">if</span> (a.enter) {
+                count++;
+            } <span class="hljs-keyword">else</span> {
+                count--;
+            }
+            <span class="hljs-keyword">if</span> (count &gt; res) {
+                res = count;
+            }
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">numPoints</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] points, <span class="hljs-keyword">int</span> r)</span> </span>{
+        <span class="hljs-keyword">int</span> n = points.length;
+        <span class="hljs-keyword">double</span>[][] dis = <span class="hljs-keyword">new</span> <span class="hljs-keyword">double</span>[n][n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n - <span class="hljs-number">1</span>; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = i + <span class="hljs-number">1</span>; j &lt; n; j++) {
+                dis[i][j] =
+                        dis[j][i] =
+                                Math.sqrt(
+                                        Math.pow(points[i][<span class="hljs-number">0</span>] * <span class="hljs-number">1.0</span> - points[j][<span class="hljs-number">0</span>], <span class="hljs-number">2</span>)
+                                                + Math.pow(points[i][<span class="hljs-number">1</span>] * <span class="hljs-number">1.0</span> - points[j][<span class="hljs-number">1</span>], <span class="hljs-number">2</span>));
+            }
+        }
+        <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            ans = Math.max(ans, getPointsInside(i, r, n, points, dis));
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

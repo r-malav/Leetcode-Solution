@@ -1,0 +1,101 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Design an ATM Machine - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2241. Design an ATM Machine</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/design">Design</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/simple-bank-system.html">Simple Bank System</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-number-of-operations-to-convert-time.html">Minimum Number of Operations to Convert Time</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is an ATM machine that stores banknotes of <code>5</code> denominations: <code>20</code>, <code>50</code>, <code>100</code>, <code>200</code>, and <code>500</code> dollars. Initially the ATM is empty. The user can use the machine to deposit or withdraw any amount of money.</p>
+<p>When withdrawing, the machine prioritizes using banknotes of <strong>larger</strong> values.</p>
+<ul>
+<li><p>For example, if you want to withdraw <code>$300</code> and there are <code>2</code> <code>$50</code> banknotes, <code>1</code> <code>$100</code> banknote, and <code>1</code> <code>$200</code> banknote, then the machine will use the <code>$100</code> and <code>$200</code> banknotes.</p></li>
+<li><p>However, if you try to withdraw <code>$600</code> and there are <code>3</code> <code>$200</code> banknotes and <code>1</code> <code>$500</code> banknote, then the withdraw request will be rejected because the machine will first try to use the <code>$500</code> banknote and then be unable to use banknotes to complete the remaining <code>$100</code>. Note that the machine is <strong>not</strong> allowed to use the <code>$200</code> banknotes instead of the <code>$500</code> banknote.</p></li>
+</ul>
+<p>Implement the ATM class:</p>
+<ul>
+<li><p><code>ATM()</code> Initializes the ATM object.</p></li>
+<li><p><code>void deposit(int[] banknotesCount)</code> Deposits new banknotes in the order <code>$20</code>, <code>$50</code>, <code>$100</code>, <code>$200</code>, and <code>$500</code>.</p></li>
+<li><p><code>int[] withdraw(int amount)</code> Returns an array of length <code>5</code> of the number of banknotes that will be handed to the user in the order <code>$20</code>, <code>$50</code>, <code>$100</code>, <code>$200</code>, and <code>$500</code>, and update the number of banknotes in the ATM after withdrawing. Returns <code>[-1]</code> if it is not possible (do <strong>not</strong> withdraw any banknotes in this case).</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input
+[<span class="hljs-string">"ATM"</span>, <span class="hljs-string">"deposit"</span>, <span class="hljs-string">"withdraw"</span>, <span class="hljs-string">"deposit"</span>, <span class="hljs-string">"withdraw"</span>, <span class="hljs-string">"withdraw"</span>]
+[[], [[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]], [<span class="hljs-number">600</span>], [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]], [<span class="hljs-number">600</span>], [<span class="hljs-number">550</span>]]
+Output
+[<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>], <span class="hljs-literal">null</span>, [<span class="hljs-number">-1</span>], [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]]
+
+Explanation
+ATM atm = new ATM();
+atm.deposit([<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]); <span class="hljs-comment">// Deposits 1 $100 banknote, 2 $200 banknotes,</span>
+                          <span class="hljs-comment">// and 1 $500 banknote.</span>
+atm.withdraw(<span class="hljs-number">600</span>);        <span class="hljs-comment">// Returns [0,0,1,0,1]. The machine uses 1 $100 banknote</span>
+                          <span class="hljs-comment">// and 1 $500 banknote. The banknotes left over in the</span>
+                          <span class="hljs-comment">// machine are [0,0,0,2,0].</span>
+atm.deposit([<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]); <span class="hljs-comment">// Deposits 1 $50, $200, and $500 banknote.</span>
+                          <span class="hljs-comment">// The banknotes in the machine are now [0,1,0,3,1].</span>
+atm.withdraw(<span class="hljs-number">600</span>);        <span class="hljs-comment">// Returns [-1]. The machine will try to use a $500 banknote</span>
+                          <span class="hljs-comment">// and then be unable to complete the remaining $100,</span>
+                          <span class="hljs-comment">// so the withdraw request will be rejected.</span>
+                          <span class="hljs-comment">// Since the request is rejected, the number of banknotes</span>
+                          <span class="hljs-comment">// in the machine is not modified.</span>
+atm.withdraw(<span class="hljs-number">550</span>);        <span class="hljs-comment">// Returns [0,1,0,0,1]. The machine uses 1 $50 banknote</span>
+                          <span class="hljs-comment">// and 1 $500 banknote.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>banknotesCount.length == 5</code></p></li>
+<li><p><code>0 &lt;= banknotesCount[i] &lt;= 109</code></p></li>
+<li><p><code>1 &lt;= amount &lt;= 109</code></p></li>
+<li><p>At most <code>5000</code> calls <strong>in total</strong> will be made to <code>withdraw</code> and <code>deposit</code>.</p></li>
+<li><p>At least <strong>one</strong> call will be made to each function <code>withdraw</code> and <code>deposit</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ATM</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] nominals;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span>[] counts;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ATM</span><span class="hljs-params">()</span> </span>{
+        nominals = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {<span class="hljs-number">20</span>, <span class="hljs-number">50</span>, <span class="hljs-number">100</span>, <span class="hljs-number">200</span>, <span class="hljs-number">500</span>};
+        counts = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[<span class="hljs-number">5</span>];
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">deposit</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] banknotesCount)</span> </span>{
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) {
+            counts[i] += banknotesCount[i];
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] withdraw(<span class="hljs-keyword">int</span> amount) {
+        <span class="hljs-keyword">int</span>[] delivery = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">5</span>];
+        <span class="hljs-keyword">long</span> currentAmount = amount;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">4</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            <span class="hljs-keyword">if</span> (currentAmount &gt; nominals[i] * counts[i]) {
+                delivery[i] = (<span class="hljs-keyword">int</span>) counts[i];
+            } <span class="hljs-keyword">else</span> {
+                delivery[i] = (<span class="hljs-keyword">int</span>) currentAmount / nominals[i];
+            }
+            currentAmount += (<span class="hljs-keyword">long</span>) -nominals[i] * delivery[i];
+            <span class="hljs-keyword">if</span> (currentAmount == <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+        <span class="hljs-keyword">if</span> (currentAmount &gt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {-<span class="hljs-number">1</span>};
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) {
+            counts[i] += -delivery[i];
+        }
+        <span class="hljs-keyword">return</span> delivery;
+    }
+}
+
+<span class="hljs-comment">/**
+ * Your ATM object will be instantiated and called as such:
+ * ATM obj = new ATM();
+ * obj.deposit(banknotesCount);
+ * int[] param_2 = obj.withdraw(amount);
+ */</span>
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

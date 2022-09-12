@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Furthest Building You Can Reach - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1642. Furthest Building You Can Reach</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/heap-priority-queue">Heap (Priority Queue)</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an integer array <code>heights</code> representing the heights of buildings, some <code>bricks</code>, and some <code>ladders</code>.</p>
+<p>You start your journey from building <code>0</code> and move to the next building by possibly using bricks or ladders.</p>
+<p>While moving from building <code>i</code> to building <code>i+1</code> (<strong>0-indexed</strong>),</p>
+<ul>
+<li><p>If the current building's height is <strong>greater than or equal</strong> to the next building's height, you do <strong>not</strong> need a ladder or bricks.</p></li>
+<li><p>If the current building's height is <strong>less than</strong> the next building's height, you can either use <strong>one ladder</strong> or <code>(h[i+1] - h[i])</code> <strong>bricks</strong>.</p></li>
+</ul>
+<p><strong>Return the furthest building index (0-indexed) you can reach if you use the given ladders and bricks optimally.</strong></p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/10/27/q4.gif" alt="" /></p>
+<pre><code class="hljs">Input: heights = [<span class="hljs-number">4</span>,<span class="hljs-number">2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">6</span>,<span class="hljs-number">9</span>,<span class="hljs-number">14</span>,<span class="hljs-number">12</span>], bricks = <span class="hljs-number">5</span>, ladders = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">4</span>
+Explanation: Starting at building <span class="hljs-number">0</span>, you can follow these steps:
+- Go to building <span class="hljs-number">1</span> without using ladders nor bricks since <span class="hljs-number">4</span> &gt;= <span class="hljs-number">2.</span>
+- Go to building <span class="hljs-number">2</span> using <span class="hljs-number">5</span> bricks. You must use either bricks <span class="hljs-keyword">or</span> ladders because <span class="hljs-number">2</span> &lt; <span class="hljs-number">7.</span>
+- Go to building <span class="hljs-number">3</span> without using ladders nor bricks since <span class="hljs-number">7</span> &gt;= <span class="hljs-number">6.</span>
+- Go to building <span class="hljs-number">4</span> using your only ladder. You must use either bricks <span class="hljs-keyword">or</span> ladders because <span class="hljs-number">6</span> &lt; <span class="hljs-number">9.</span>
+It <span class="hljs-keyword">is</span> impossible to go beyond building <span class="hljs-number">4</span> because you <span class="hljs-keyword">do</span> <span class="hljs-keyword">not</span> have any more bricks <span class="hljs-keyword">or</span> ladders.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: heights = [<span class="hljs-number">4</span>,<span class="hljs-number">12</span>,<span class="hljs-number">2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">3</span>,<span class="hljs-number">18</span>,<span class="hljs-number">20</span>,<span class="hljs-number">3</span>,<span class="hljs-number">19</span>], bricks = <span class="hljs-number">10</span>, ladders = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">7</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: heights = [<span class="hljs-number">14</span>,<span class="hljs-number">3</span>,<span class="hljs-number">19</span>,<span class="hljs-number">3</span>], bricks = <span class="hljs-number">17</span>, ladders = <span class="hljs-number">0</span>
+Output: <span class="hljs-number">3</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= heights.length &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= heights[i] &lt;= 106</code></p></li>
+<li><p><code>0 &lt;= bricks &lt;= 109</code></p></li>
+<li><p><code>0 &lt;= ladders &lt;= heights.length</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">furthestBuilding</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] heights, <span class="hljs-keyword">int</span> bricks, <span class="hljs-keyword">int</span> ladders)</span> </span>{
+        PriorityQueue&lt;Integer&gt; minHeap = <span class="hljs-keyword">new</span> PriorityQueue&lt;&gt;();
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+        <span class="hljs-comment">// we'll assume to use ladders for the first l jumps and adjust it afterwards</span>
+        <span class="hljs-keyword">for</span> (; i &lt; heights.length - <span class="hljs-number">1</span> &amp;&amp; minHeap.size() &lt; ladders; i++) {
+            <span class="hljs-keyword">int</span> diff = heights[i + <span class="hljs-number">1</span>] - heights[i];
+            <span class="hljs-keyword">if</span> (diff &gt; <span class="hljs-number">0</span>) {
+                minHeap.offer(diff);
+            }
+        }
+        <span class="hljs-keyword">while</span> (i &lt; heights.length - <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">int</span> diff = heights[i + <span class="hljs-number">1</span>] - heights[i];
+            <span class="hljs-keyword">if</span> (diff &gt; <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">if</span> (!minHeap.isEmpty() &amp;&amp; minHeap.peek() &lt; diff) {
+                    bricks -= minHeap.poll();
+                    minHeap.offer(diff);
+                } <span class="hljs-keyword">else</span> {
+                    bricks -= diff;
+                }
+                <span class="hljs-keyword">if</span> (bricks &lt; <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">return</span> i;
+                }
+            }
+            i++;
+        }
+        <span class="hljs-keyword">return</span> i;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

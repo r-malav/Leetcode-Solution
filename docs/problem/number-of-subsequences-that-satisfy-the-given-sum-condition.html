@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Number of Subsequences That Satisfy the Given Sum Condition - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1498. Number of Subsequences That Satisfy the Given Sum Condition</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/two-pointers">Two Pointers</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an array of integers <code>nums</code> and an integer <code>target</code>.</p>
+<p>Return **the number of *<em>non-empty</em>* subsequences of <strong><code>nums</code></strong> such that the sum of the minimum and maximum element on it is less or equal to **<code>target</code>. Since the answer may be too large, return it *<em>modulo</em>* <code>109 + 7</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">3</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>], target = <span class="hljs-number">9</span>
+Output: <span class="hljs-number">4</span>
+Explanation: There are <span class="hljs-number">4</span> subsequences that satisfy the condition.
+[<span class="hljs-number">3</span>] -&gt; Min value + max value &lt;= target (<span class="hljs-number">3</span> + <span class="hljs-number">3</span> &lt;= <span class="hljs-number">9</span>)
+[<span class="hljs-number">3</span>,<span class="hljs-number">5</span>] -&gt; (<span class="hljs-number">3</span> + <span class="hljs-number">5</span> &lt;= <span class="hljs-number">9</span>)
+[<span class="hljs-number">3</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>] -&gt; (<span class="hljs-number">3</span> + <span class="hljs-number">6</span> &lt;= <span class="hljs-number">9</span>)
+[<span class="hljs-number">3</span>,<span class="hljs-number">6</span>] -&gt; (<span class="hljs-number">3</span> + <span class="hljs-number">6</span> &lt;= <span class="hljs-number">9</span>)
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">8</span>], target = <span class="hljs-number">10</span>
+Output: <span class="hljs-number">6</span>
+Explanation: There are <span class="hljs-number">6</span> subsequences that satisfy the condition. (nums can have repeated numbers).
+[<span class="hljs-number">3</span>] , [<span class="hljs-number">3</span>] , [<span class="hljs-number">3</span>,<span class="hljs-number">3</span>], [<span class="hljs-number">3</span>,<span class="hljs-number">6</span>] , [<span class="hljs-number">3</span>,<span class="hljs-number">6</span>] , [<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>]
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>], target = <span class="hljs-number">12</span>
+Output: <span class="hljs-number">61</span>
+Explanation: There are <span class="hljs-number">63</span> non-empty subsequences, two of them <span class="hljs-keyword">do</span> <span class="hljs-keyword">not</span> satisfy the condition ([<span class="hljs-number">6</span>,<span class="hljs-number">7</span>], [<span class="hljs-number">7</span>]).
+Number of valid subsequences (<span class="hljs-number">63</span> - <span class="hljs-number">2</span> = <span class="hljs-number">61</span>).
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= nums.length &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= nums[i] &lt;= 106</code></p></li>
+<li><p><code>1 &lt;= target &lt;= 106</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">numSubseq</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> target)</span> </span>{
+        <span class="hljs-comment">// sorted array will be used to perform binary search</span>
+        Arrays.sort(nums);
+        <span class="hljs-keyword">int</span> mod = <span class="hljs-number">1000_000_007</span>;
+        <span class="hljs-comment">// powOf2[i] means (2^i) % mod</span>
+        <span class="hljs-keyword">int</span>[] powOf2 = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[nums.length];
+        powOf2[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; nums.length; i++) {
+            powOf2[i] = (powOf2[i - <span class="hljs-number">1</span>] * <span class="hljs-number">2</span>) % mod;
+        }
+        <span class="hljs-keyword">int</span> res = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> left = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> right = nums.length - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (left &lt;= right) {
+            <span class="hljs-keyword">if</span> (nums[left] + nums[right] &gt; target) {
+                <span class="hljs-comment">// nums[right] which is macimum is too big so decrease it</span>
+                right--;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// every number between right and left be either picked or not picked</span>
+                <span class="hljs-comment">// so that is why pow(2, right - left) essentially</span>
+                res = (res + powOf2[right - left]) % mod;
+                <span class="hljs-comment">// increment left to find next set of min and max</span>
+                left++;
+            }
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Count Ways to Build Rooms in an Ant Colony - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1916. Count Ways to Build Rooms in an Ant Colony</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/tree">Tree</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/graph">Graph</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/topological-sort">Topological Sort</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/combinatorics">Combinatorics</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are an ant tasked with adding <code>n</code> new rooms numbered <code>0</code> to <code>n-1</code> to your colony. You are given the expansion plan as a <strong>0-indexed</strong> integer array of length <code>n</code>, <code>prevRoom</code>, where <code>prevRoom[i]</code> indicates that you must build room <code>prevRoom[i]</code> before building room <code>i</code>, and these two rooms must be connected <strong>directly</strong>. Room <code>0</code> is already built, so <code>prevRoom[0] = -1</code>. The expansion&nbsp;plan is given such that once all the rooms are built, every room will be reachable from room <code>0</code>.</p>
+<p>You can only build <strong>one room</strong> at a time, and you can travel freely between rooms you have <strong>already built</strong> only if they are <strong>connected</strong>.&nbsp;You can choose to build <strong>any room</strong> as long as its <strong>previous room</strong>&nbsp;is already built.</p>
+<p>Return **the *<em>number of different orders</em>* you can build all the rooms in**. Since the answer may be large, return it *<em>modulo</em>* <code>109 + 7</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/06/19/d1.JPG" alt="" /></p>
+<pre><code class="hljs">Input: prevRoom = [<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]
+Output: <span class="hljs-number">1</span>
+Explanation:&amp;nbsp;There <span class="hljs-keyword">is</span> only one way to build the additional rooms: <span class="hljs-number">0</span> → <span class="hljs-number">1</span> → <span class="hljs-number">2</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/06/19/d2.JPG" alt="" /></p>
+<pre><code class="hljs">Input: prevRoom = [<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
+Output: <span class="hljs-number">6</span>
+Explanation:
+The <span class="hljs-number">6</span> ways are:
+<span class="hljs-number">0</span> → <span class="hljs-number">1</span> → <span class="hljs-number">3</span> → <span class="hljs-number">2</span> → <span class="hljs-number">4</span>
+<span class="hljs-number">0</span> → <span class="hljs-number">2</span> → <span class="hljs-number">4</span> → <span class="hljs-number">1</span> → <span class="hljs-number">3</span>
+<span class="hljs-number">0</span> → <span class="hljs-number">1</span> → <span class="hljs-number">2</span> → <span class="hljs-number">3</span> → <span class="hljs-number">4</span>
+<span class="hljs-number">0</span> → <span class="hljs-number">1</span> → <span class="hljs-number">2</span> → <span class="hljs-number">4</span> → <span class="hljs-number">3</span>
+<span class="hljs-number">0</span> → <span class="hljs-number">2</span> → <span class="hljs-number">1</span> → <span class="hljs-number">3</span> → <span class="hljs-number">4</span>
+<span class="hljs-number">0</span> → <span class="hljs-number">2</span> → <span class="hljs-number">1</span> → <span class="hljs-number">4</span> → <span class="hljs-number">3</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == prevRoom.length</code></p></li>
+<li><p><code>2 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>prevRoom[0] == -1</code></p></li>
+<li><p><code>0 &lt;= prevRoom[i] &lt; n</code> for all <code>1 &lt;= i &lt; n</code></p></li>
+<li><p>Every room is reachable from room <code>0</code> once all the rooms are built.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">int</span> mod = (<span class="hljs-keyword">int</span>)<span class="hljs-number">1e9</span> + <span class="hljs-number">7</span>;
+    Map&lt;Integer, List&lt;Integer&gt;&gt; edges = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+    <span class="hljs-keyword">int</span>[] fac, inv;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">waysToBuildRooms</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] prevRoom)</span> </span>{
+        <span class="hljs-keyword">int</span> n = prevRoom.length;
+
+        <span class="hljs-keyword">this</span>.fac = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];<span class="hljs-comment">//fac[i]=i!</span>
+        <span class="hljs-keyword">this</span>.inv = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];<span class="hljs-comment">//inv[i]=i!^(-1)</span>
+        fac[<span class="hljs-number">0</span>] = inv[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; n; i++) {
+            fac[i] = (<span class="hljs-keyword">int</span>)((<span class="hljs-keyword">long</span>)fac[i - <span class="hljs-number">1</span>] * i % mod);
+            inv[i] = quickmul(fac[i], mod - <span class="hljs-number">2</span>);<span class="hljs-comment">// (fac[i]^(-1))%mod = (fac[i]^(mod-2))%mod</span>
+        }
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> (edges.containsKey(prevRoom[i]) == <span class="hljs-keyword">false</span>)
+                edges.put(prevRoom[i], <span class="hljs-keyword">new</span> ArrayList&lt;Integer&gt;());
+            edges.get(prevRoom[i]).add(i);
+        }
+
+        <span class="hljs-keyword">return</span> dfs(<span class="hljs-number">0</span>)[<span class="hljs-number">1</span>];      
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] dfs(<span class="hljs-keyword">int</span> node) {
+        <span class="hljs-keyword">if</span> (edges.containsKey(node) == <span class="hljs-keyword">false</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[]{<span class="hljs-number">1</span>, <span class="hljs-number">1</span>};
+        <span class="hljs-keyword">int</span> count = <span class="hljs-number">1</span>, arr = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> v : edges.get(node)) {
+            <span class="hljs-keyword">int</span>[] ret = dfs(v);
+            count += ret[<span class="hljs-number">0</span>];
+            arr = (<span class="hljs-keyword">int</span>)((<span class="hljs-keyword">long</span>)arr * ret[<span class="hljs-number">1</span>] % mod * inv[ret[<span class="hljs-number">0</span>]] % mod);
+        }
+        arr = (<span class="hljs-keyword">int</span>)((<span class="hljs-keyword">long</span>)arr * fac[count - <span class="hljs-number">1</span>] % mod);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[]{count, arr};
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">quickmul</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span> y)</span> </span>{
+        <span class="hljs-keyword">long</span> ret = <span class="hljs-number">1</span>, cur = x;
+        <span class="hljs-keyword">while</span> (y &gt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">if</span> ((y &amp; <span class="hljs-number">1</span>) == <span class="hljs-number">1</span>)
+                ret = ret * cur % mod;
+            cur = cur * cur % mod;
+            y &gt;&gt;= <span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>)ret;
+    }
+}
+
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Range Frequency Queries - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2080. Range Frequency Queries</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/design">Design</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/segment-tree">Segment Tree</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Design a data structure to find the <strong>frequency</strong> of a given value in a given subarray.</p>
+<p>The <strong>frequency</strong> of a value in a subarray is the number of occurrences of that value in the subarray.</p>
+<p>Implement the <code>RangeFreqQuery</code> class:</p>
+<ul>
+<li><p><code>RangeFreqQuery(int[] arr)</code> Constructs an instance of the class with the given <strong>0-indexed</strong> integer array <code>arr</code>.</p></li>
+<li><p><code>int query(int left, int right, int value)</code> Returns the <strong>frequency</strong> of <code>value</code> in the subarray <code>arr[left...right]</code>.</p></li>
+</ul>
+<p>A <strong>subarray</strong> is a contiguous sequence of elements within an array. <code>arr[left...right]</code> denotes the subarray that contains the elements of <code>nums</code> between indices <code>left</code> and <code>right</code> (<strong>inclusive</strong>).</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input
+[<span class="hljs-string">"RangeFreqQuery"</span>, <span class="hljs-string">"query"</span>, <span class="hljs-string">"query"</span>]
+[[[<span class="hljs-number">12</span>, <span class="hljs-number">33</span>, <span class="hljs-number">4</span>, <span class="hljs-number">56</span>, <span class="hljs-number">22</span>, <span class="hljs-number">2</span>, <span class="hljs-number">34</span>, <span class="hljs-number">33</span>, <span class="hljs-number">22</span>, <span class="hljs-number">12</span>, <span class="hljs-number">34</span>, <span class="hljs-number">56</span>]], [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">11</span>, <span class="hljs-number">33</span>]]
+Output
+[<span class="hljs-literal">null</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>]
+
+Explanation
+RangeFreqQuery rangeFreqQuery = new RangeFreqQuery([<span class="hljs-number">12</span>, <span class="hljs-number">33</span>, <span class="hljs-number">4</span>, <span class="hljs-number">56</span>, <span class="hljs-number">22</span>, <span class="hljs-number">2</span>, <span class="hljs-number">34</span>, <span class="hljs-number">33</span>, <span class="hljs-number">22</span>, <span class="hljs-number">12</span>, <span class="hljs-number">34</span>, <span class="hljs-number">56</span>]);
+rangeFreqQuery.query(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>); <span class="hljs-comment">// return 1. The value 4 occurs 1 time in the subarray [33, 4]</span>
+rangeFreqQuery.query(<span class="hljs-number">0</span>, <span class="hljs-number">11</span>, <span class="hljs-number">33</span>); <span class="hljs-comment">// return 2. The value 33 occurs 2 times in the whole array.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= arr.length &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= arr[i], value &lt;= 104</code></p></li>
+<li><p><code>0 &lt;= left &lt;= right &lt; arr.length</code></p></li>
+<li><p>At most <code>105</code> calls will be made to <code>query</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RangeFreqQuery</span> </span>{
+
+    <span class="hljs-keyword">private</span> Map&lt;Integer, List&lt;Integer&gt;&gt; map;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">RangeFreqQuery</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] arr)</span> </span>{
+        map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; arr.length; i++) {
+            <span class="hljs-keyword">if</span> (!map.containsKey(arr[i])) {
+                map.put(arr[i], <span class="hljs-keyword">new</span> ArrayList&lt;&gt;());
+            }
+            map.get(arr[i]).add(i);
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">query</span><span class="hljs-params">(<span class="hljs-keyword">int</span> left, <span class="hljs-keyword">int</span> right, <span class="hljs-keyword">int</span> value)</span> </span>{
+        <span class="hljs-keyword">if</span> (!map.containsKey(value)) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        List&lt;Integer&gt; list = map.get(value);
+        <span class="hljs-keyword">int</span> s = Collections.binarySearch(list, left);
+        <span class="hljs-keyword">int</span> e = Collections.binarySearch(list, right);
+        <span class="hljs-keyword">if</span> (s &lt; <span class="hljs-number">0</span>) {
+            s = (s + <span class="hljs-number">1</span>) * -<span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">if</span> (e &lt; <span class="hljs-number">0</span>) {
+            e = (e + <span class="hljs-number">2</span>) * -<span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">return</span> e - s + <span class="hljs-number">1</span>;
+    }
+}
+
+<span class="hljs-comment">/**
+ * Your RangeFreqQuery object will be instantiated and called as such:
+ * RangeFreqQuery obj = new RangeFreqQuery(arr);
+ * int param_1 = obj.query(left,right,value);
+ */</span>
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

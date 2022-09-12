@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Find Winner on a Tic Tac Toe Game - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1275. Find Winner on a Tic Tac Toe Game</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/simulation">Simulation</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p><strong>Tic-tac-toe</strong> is played by two players <code>A</code> and <code>B</code> on a <code>3 x 3</code> grid. The rules of Tic-Tac-Toe are:</p>
+<ul>
+<li><p>Players take turns placing characters into empty squares <code>' '</code>.</p></li>
+<li><p>The first player <code>A</code> always places <code>'X'</code> characters, while the second player <code>B</code> always places <code>'O'</code> characters.</p></li>
+<li><p><code>'X'</code> and <code>'O'</code> characters are always placed into empty squares, never on filled ones.</p></li>
+<li><p>The game ends when there are <strong>three</strong> of the same (non-empty) character filling any row, column, or diagonal.</p></li>
+<li><p>The game also ends if all squares are non-empty.</p></li>
+<li><p>No more moves can be played if the game is over.</p></li>
+</ul>
+<p>Given a 2D integer array <code>moves</code> where <code>moves[i] = [rowi, coli]</code> indicates that the <code>ith</code> move will be played on <code>grid[rowi][coli]</code>. return <strong>the winner of the game if it exists</strong> (<code>A</code> or <code>B</code>). In case the game ends in a draw return <code>"Draw"</code>. If there are still movements to play return <code>"Pending"</code>.</p>
+<p>You can assume that <code>moves</code> is valid (i.e., it follows the rules of <strong>Tic-Tac-Toe</strong>), the grid is initially empty, and <code>A</code> will play first.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/09/22/xo1-grid.jpg" alt="" /></p>
+<pre><code class="hljs">Input: moves = [[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]]
+Output: <span class="hljs-string">"A"</span>
+Explanation: A wins, they always play first.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/09/22/xo2-grid.jpg" alt="" /></p>
+<pre><code class="hljs">Input: moves = [[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">0</span>]]
+Output: <span class="hljs-string">"B"</span>
+Explanation: B wins.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/09/22/xo3-grid.jpg" alt="" /></p>
+<pre><code class="hljs">Input: moves = [[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]]
+Output: <span class="hljs-string">"Draw"</span>
+Explanation: The game ends <span class="hljs-keyword">in</span> a draw since there are no moves to make.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= moves.length &lt;= 9</code></p></li>
+<li><p><code>moves[i].length == 2</code></p></li>
+<li><p><code>0 &lt;= rowi, coli &lt;= 2</code></p></li>
+<li><p>There are no repeated elements on <code>moves</code>.</p></li>
+<li><p><code>moves</code> follow the rules of tic tac toe.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">tictactoe</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] moves)</span> </span>{
+        String[][] board = <span class="hljs-keyword">new</span> String[<span class="hljs-number">3</span>][<span class="hljs-number">3</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; moves.length; i++) {
+            <span class="hljs-keyword">if</span> (i % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) {
+                board[moves[i][<span class="hljs-number">0</span>]][moves[i][<span class="hljs-number">1</span>]] = <span class="hljs-string">"X"</span>;
+            } <span class="hljs-keyword">else</span> {
+                board[moves[i][<span class="hljs-number">0</span>]][moves[i][<span class="hljs-number">1</span>]] = <span class="hljs-string">"O"</span>;
+            }
+            <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">3</span> &amp;&amp; !wins(board).equals(<span class="hljs-string">""</span>)) {
+                <span class="hljs-keyword">return</span> wins(board);
+            }
+        }
+        <span class="hljs-keyword">return</span> moves.length == <span class="hljs-number">9</span> ? <span class="hljs-string">"Draw"</span> : <span class="hljs-string">"Pending"</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> String <span class="hljs-title">wins</span><span class="hljs-params">(String[][] board)</span> </span>{
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++) {
+            <span class="hljs-keyword">if</span> (board[i][<span class="hljs-number">0</span>] == <span class="hljs-keyword">null</span>) {
+                <span class="hljs-keyword">break</span>;
+            }
+            String str = board[i][<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">if</span> (str.equals(board[i][<span class="hljs-number">1</span>]) &amp;&amp; str.equals(board[i][<span class="hljs-number">2</span>])) {
+                <span class="hljs-keyword">return</span> getWinner(str);
+            }
+        }
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">3</span>; j++) {
+            <span class="hljs-keyword">if</span> (board[<span class="hljs-number">0</span>][j] == <span class="hljs-keyword">null</span>) {
+                <span class="hljs-keyword">break</span>;
+            }
+            String str = board[<span class="hljs-number">0</span>][j];
+            <span class="hljs-keyword">if</span> (str.equals(board[<span class="hljs-number">1</span>][j]) &amp;&amp; str.equals(board[<span class="hljs-number">2</span>][j])) {
+                <span class="hljs-keyword">return</span> getWinner(str);
+            }
+        }
+
+        <span class="hljs-keyword">if</span> (board[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-string">""</span>;
+        }
+        String str = board[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">if</span> (str.equals(board[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]) &amp;&amp; str.equals(board[<span class="hljs-number">2</span>][<span class="hljs-number">2</span>])
+                || (str.equals(board[<span class="hljs-number">0</span>][<span class="hljs-number">2</span>]) &amp;&amp; str.equals(board[<span class="hljs-number">2</span>][<span class="hljs-number">0</span>]))) {
+            <span class="hljs-keyword">return</span> getWinner(str);
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-string">""</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> String <span class="hljs-title">getWinner</span><span class="hljs-params">(String str)</span> </span>{
+        <span class="hljs-keyword">if</span> (str.equals(<span class="hljs-string">"X"</span>)) {
+            <span class="hljs-keyword">return</span> <span class="hljs-string">"A"</span>;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-string">"B"</span>;
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

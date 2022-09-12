@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Students Taking Exam - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1349. Maximum Students Taking Exam</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bit-manipulation">Bit Manipulation</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bitmask">Bitmask</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a <code>m&amp;nbsp;* n</code>&nbsp;matrix <code>seats</code>&nbsp;&nbsp;that represent seats distributions&nbsp;in a classroom.&nbsp;If a seat&nbsp;is&nbsp;broken, it is denoted by <code>'#'</code> character otherwise it is denoted by a <code>'.'</code> character.</p>
+<p>Students can see the answers of those sitting next to the left, right, upper left and upper right, but he cannot see the answers of the student sitting&nbsp;directly in front or behind him. Return the **maximum **number of students that can take the exam together&nbsp;without any cheating being possible..</p>
+<p>Students must be placed in seats in good condition.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/01/29/image.png" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: seats = [[<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>],
+&amp;nbsp;               [<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>],
+&amp;nbsp;               [<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>]]
+<span class="hljs-symbol">Output</span>: <span class="hljs-number">4</span>
+<span class="hljs-symbol">Explanation</span>: <span class="hljs-symbol">Teacher</span> can place <span class="hljs-number">4</span> students in available seats so they don<span class="hljs-string">'t cheat on the exam. </span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> seats = [[<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>],
+<span class="hljs-variable">&amp;nbsp</span>;               [<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>],
+<span class="hljs-variable">&amp;nbsp</span>;               [<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>],
+<span class="hljs-variable">&amp;nbsp</span>;               [<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>],
+<span class="hljs-variable">&amp;nbsp</span>;               [<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>]]
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">3</span>
+<span class="hljs-symbol">Explanation:</span> Place all students in available seats. 
+
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> seats = [[<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>],
+<span class="hljs-variable">&amp;nbsp</span>;               [<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>],
+<span class="hljs-variable">&amp;nbsp</span>;               [<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>],
+<span class="hljs-variable">&amp;nbsp</span>;               [<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>],
+<span class="hljs-variable">&amp;nbsp</span>;               [<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>]]
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">10</span>
+<span class="hljs-symbol">Explanation:</span> Place students in available seats in column <span class="hljs-number">1</span>, <span class="hljs-number">3</span> and <span class="hljs-number">5.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>seats</code>&nbsp;contains only characters&nbsp;<code>'.'&amp;nbsp;and</code><code>'#'.</code></p></li>
+<li><p><code>m ==&amp;nbsp;seats.length</code></p></li>
+<li><p><code>n ==&amp;nbsp;seats[i].length</code></p></li>
+<li><p><code>1 &lt;= m &lt;= 8</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 8</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxStudents</span><span class="hljs-params">(<span class="hljs-keyword">char</span>[][] seats)</span> </span>{
+        <span class="hljs-keyword">int</span> m = seats.length;
+        <span class="hljs-keyword">int</span> n = seats[<span class="hljs-number">0</span>].length;
+        <span class="hljs-keyword">int</span>[] validRows = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[m];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++) {
+                validRows[i] = (validRows[i] &lt;&lt; <span class="hljs-number">1</span>) + (seats[i][j] == <span class="hljs-string">'.'</span> ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>);
+            }
+        }
+        <span class="hljs-keyword">int</span> stateSize = <span class="hljs-number">1</span> &lt;&lt; n;
+        <span class="hljs-keyword">int</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[m][stateSize];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+            Arrays.fill(dp[i], -<span class="hljs-number">1</span>);
+        }
+        <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; stateSize; j++) {
+                <span class="hljs-keyword">if</span> (((j &amp; validRows[i]) == j) &amp;&amp; ((j &amp; (j &lt;&lt; <span class="hljs-number">1</span>)) == <span class="hljs-number">0</span>)) {
+                    <span class="hljs-keyword">if</span> (i == <span class="hljs-number">0</span>) {
+                        dp[i][j] = Integer.bitCount(j);
+                    } <span class="hljs-keyword">else</span> {
+                        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k = <span class="hljs-number">0</span>; k &lt; stateSize; k++) {
+                            <span class="hljs-keyword">if</span> (((k &lt;&lt; <span class="hljs-number">1</span>) &amp; j) == <span class="hljs-number">0</span> &amp;&amp; ((j &lt;&lt; <span class="hljs-number">1</span>) &amp; k) == <span class="hljs-number">0</span> &amp;&amp; dp[i - <span class="hljs-number">1</span>][k] != -<span class="hljs-number">1</span>) {
+                                dp[i][j] = Math.max(dp[i][j], dp[i - <span class="hljs-number">1</span>][k] + Integer.bitCount(j));
+                            }
+                        }
+                    }
+                    ans = Math.max(ans, dp[i][j]);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

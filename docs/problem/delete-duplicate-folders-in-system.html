@@ -1,0 +1,148 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Delete Duplicate Folders in System - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1948. Delete Duplicate Folders in System</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/trie">Trie</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-function">Hash Function</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/find-duplicate-file-in-system.html">Find Duplicate File in System</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/find-duplicate-subtrees.html">Find Duplicate Subtrees</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Due to a bug, there are many duplicate folders in a file system. You are given a 2D array <code>paths</code>, where <code>paths[i]</code> is an array representing an absolute path to the <code>ith</code> folder in the file system.</p>
+<ul>
+<li>For example, <code>["one", "two", "three"]</code> represents the path <code>"/one/two/three"</code>.</li>
+</ul>
+<p>Two folders (not necessarily on the same level) are <strong>identical</strong> if they contain the <strong>same non-empty</strong> set of identical subfolders and underlying subfolder structure. The folders <strong>do not</strong> need to be at the root level to be identical. If two or more folders are <strong>identical</strong>, then <strong>mark</strong> the folders as well as all their subfolders.</p>
+<pre><code>For example, folders <code>"/a"</code> and <code>"/b"</code> in the file structure below are identical. They (as well as their subfolders) should **all** be marked:
+</code></pre>
+<ul>
+<li><p><code>/a</code></p></li>
+<li><p><code>/a/x</code></p></li>
+<li><p><code>/a/x/y</code></p></li>
+<li><p><code>/a/z</code></p></li>
+<li><p><code>/b</code></p></li>
+<li><p><code>/b/x</code></p></li>
+<li><p><code>/b/x/y</code></p></li>
+<li><p><code>/b/z</code></p></li>
+
+<li><p>However, if the file structure also included the path <code>"/b/w"</code>, then the folders <code>"/a"</code> and <code>"/b"</code> would not be identical. Note that <code>"/a/x"</code> and <code>"/b/x"</code> would still be considered identical even with the added folder.</p></li>
+</ul>
+<p>Once all the identical folders and their subfolders have been marked, the file system will <strong>delete</strong> all of them. The file system only runs the deletion once, so any folders that become identical after the initial deletion are not deleted.</p>
+<p>Return **the 2D array **<code>ans</code> **containing the paths of the *<em>remaining</em>* folders after deleting all the marked folders. The paths may be returned in <strong>any</strong> order**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/07/19/lc-dupfolder1.jpg" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: paths = [[<span class="hljs-string">"a"</span>],[<span class="hljs-string">"c"</span>],[<span class="hljs-string">"d"</span>],[<span class="hljs-string">"a"</span>,<span class="hljs-string">"b"</span>],[<span class="hljs-string">"c"</span>,<span class="hljs-string">"b"</span>],[<span class="hljs-string">"d"</span>,<span class="hljs-string">"a"</span>]]
+<span class="hljs-symbol">Output</span>: [[<span class="hljs-string">"d"</span>],[<span class="hljs-string">"d"</span>,<span class="hljs-string">"a"</span>]]
+<span class="hljs-symbol">Explanation</span>: <span class="hljs-symbol">The</span> file structure is as shown.
+<span class="hljs-symbol">Folders</span> <span class="hljs-string">"/a"</span> and <span class="hljs-string">"/c"</span> (and their subfolders) are marked for deletion because they both contain an empty
+folder named <span class="hljs-string">"b"</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/07/19/lc-dupfolder2.jpg" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: paths = [[<span class="hljs-string">"a"</span>],[<span class="hljs-string">"c"</span>],[<span class="hljs-string">"a"</span>,<span class="hljs-string">"b"</span>],[<span class="hljs-string">"c"</span>,<span class="hljs-string">"b"</span>],[<span class="hljs-string">"a"</span>,<span class="hljs-string">"b"</span>,<span class="hljs-string">"x"</span>],[<span class="hljs-string">"a"</span>,<span class="hljs-string">"b"</span>,<span class="hljs-string">"x"</span>,<span class="hljs-string">"y"</span>],[<span class="hljs-string">"w"</span>],[<span class="hljs-string">"w"</span>,<span class="hljs-string">"y"</span>]]
+<span class="hljs-symbol">Output</span>: [[<span class="hljs-string">"c"</span>],[<span class="hljs-string">"c"</span>,<span class="hljs-string">"b"</span>],[<span class="hljs-string">"a"</span>],[<span class="hljs-string">"a"</span>,<span class="hljs-string">"b"</span>]]
+<span class="hljs-symbol">Explanation</span>: <span class="hljs-symbol">The</span> file structure is as shown. 
+<span class="hljs-symbol">Folders</span> <span class="hljs-string">"/a/b/x"</span> and <span class="hljs-string">"/w"</span> (and their subfolders) are marked for deletion because they both contain an empty folder named <span class="hljs-string">"y"</span>.
+<span class="hljs-symbol">Note</span> that folders <span class="hljs-string">"/a"</span> and <span class="hljs-string">"/c"</span> are identical after the deletion, but they are not deleted because they were not marked beforehand.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/07/19/lc-dupfolder3.jpg" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: paths = [[<span class="hljs-string">"a"</span>,<span class="hljs-string">"b"</span>],[<span class="hljs-string">"c"</span>,<span class="hljs-string">"d"</span>],[<span class="hljs-string">"c"</span>],[<span class="hljs-string">"a"</span>]]
+<span class="hljs-symbol">Output</span>: [[<span class="hljs-string">"c"</span>],[<span class="hljs-string">"c"</span>,<span class="hljs-string">"d"</span>],[<span class="hljs-string">"a"</span>],[<span class="hljs-string">"a"</span>,<span class="hljs-string">"b"</span>]]
+<span class="hljs-symbol">Explanation</span>: <span class="hljs-symbol">All</span> folders are unique in the file system.
+<span class="hljs-symbol">Note</span> that the returned array can be in a different order as the order does not matter.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= paths.length &lt;= 2 * 104</code></p></li>
+<li><p><code>1 &lt;= paths[i].length &lt;= 500</code></p></li>
+<li><p><code>1 &lt;= paths[i][j].length &lt;= 10</code></p></li>
+<li><p><code>1 &lt;= sum(paths[i][j].length) &lt;= 2 * 105</code></p></li>
+<li><p><code>path[i][j]</code> consists of lowercase English letters.</p></li>
+<li><p>No two paths lead to the same folder.</p></li>
+<li><p>For any folder not at the root level, its parent folder will also be in the input.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> Map&lt;String, ArrayList&lt;Folder&gt;&gt; duplicates;
+    <span class="hljs-keyword">private</span> List&lt;List&lt;String&gt;&gt; foldersWithRemovedNames;
+
+    <span class="hljs-keyword">public</span> List&lt;List&lt;String&gt;&gt; deleteDuplicateFolder(List&lt;List&lt;String&gt;&gt; paths) {
+        duplicates = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        Folder rootFolder = <span class="hljs-keyword">new</span> Folder(<span class="hljs-string">""</span>, <span class="hljs-keyword">null</span>);
+        <span class="hljs-keyword">for</span> (List&lt;String&gt; path : paths) {
+            Folder folder = rootFolder;
+            <span class="hljs-keyword">for</span> (String foldername : path) {
+                folder = folder.addSubFolder(foldername);
+            }
+        }
+        rootFolder.calculateHash();
+        <span class="hljs-keyword">for</span> (Map.Entry&lt;String, ArrayList&lt;Folder&gt;&gt; entry : duplicates.entrySet()) {
+            ArrayList&lt;Folder&gt; foldersWithSameHash = entry.getValue();
+            <span class="hljs-keyword">if</span> (foldersWithSameHash != <span class="hljs-keyword">null</span> &amp;&amp; foldersWithSameHash.size() &gt; <span class="hljs-number">1</span>) {
+                <span class="hljs-keyword">for</span> (Folder folder : foldersWithSameHash) {
+                    folder.parent.subFolders.remove(folder.name);
+                }
+            }
+        }
+        foldersWithRemovedNames = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">for</span> (Map.Entry&lt;String, Folder&gt; entry : rootFolder.subFolders.entrySet()) {
+            Folder folder = entry.getValue();
+            List&lt;String&gt; path = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+            folder.addPaths(path);
+        }
+        <span class="hljs-keyword">return</span> foldersWithRemovedNames;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Folder</span> </span>{
+        <span class="hljs-keyword">private</span> String name;
+        <span class="hljs-keyword">private</span> Map&lt;String, Folder&gt; subFolders;
+        <span class="hljs-keyword">private</span> Folder parent;
+        <span class="hljs-keyword">private</span> String folderHash;
+
+        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-title">Folder</span><span class="hljs-params">(String folderName, Folder parentFolder)</span> </span>{
+            name = folderName;
+            subFolders = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+            folderHash = <span class="hljs-string">""</span>;
+            parent = parentFolder;
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">private</span> Folder <span class="hljs-title">addSubFolder</span><span class="hljs-params">(String foldername)</span> </span>{
+            <span class="hljs-keyword">return</span> subFolders.computeIfAbsent(foldername, f -&gt; <span class="hljs-keyword">new</span> Folder(f, <span class="hljs-keyword">this</span>));
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">calculateHash</span><span class="hljs-params">()</span> </span>{
+            List&lt;String&gt; subFolderNames = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;(subFolders.keySet());
+            Collections.sort(subFolderNames);
+            StringBuilder builder = <span class="hljs-keyword">new</span> StringBuilder();
+            <span class="hljs-keyword">for</span> (String foldername : subFolderNames) {
+                Folder folder = subFolders.get(foldername);
+                folder.calculateHash();
+                builder.append(<span class="hljs-string">'#'</span>);
+                builder.append(foldername);
+                <span class="hljs-keyword">if</span> (folder.folderHash.length() &gt; <span class="hljs-number">0</span>) {
+                    builder.append(<span class="hljs-string">'('</span>);
+                    builder.append(folder.folderHash);
+                    builder.append(<span class="hljs-string">')'</span>);
+                }
+            }
+            folderHash = builder.toString();
+            <span class="hljs-keyword">if</span> (folderHash.length() &gt; <span class="hljs-number">0</span>) {
+                ArrayList&lt;Folder&gt; duplicateFolders =
+                        duplicates.computeIfAbsent(folderHash, k -&gt; <span class="hljs-keyword">new</span> ArrayList&lt;&gt;());
+                duplicateFolders.add(<span class="hljs-keyword">this</span>);
+            }
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">addPaths</span><span class="hljs-params">(List&lt;String&gt; parentPath)</span> </span>{
+            List&lt;String&gt; currentPath = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;(parentPath);
+            currentPath.add(name);
+            foldersWithRemovedNames.add(currentPath);
+            <span class="hljs-keyword">for</span> (Map.Entry&lt;String, Folder&gt; entry : subFolders.entrySet()) {
+                Folder folder = entry.getValue();
+                folder.addPaths(currentPath);
+            }
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

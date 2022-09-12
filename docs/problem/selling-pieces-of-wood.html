@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Selling Pieces of Wood - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2312. Selling Pieces of Wood</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/memoization">Memoization</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/tiling-a-rectangle-with-the-fewest-squares.html">Tiling a Rectangle with the Fewest Squares</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/number-of-ways-of-cutting-a-pizza.html">Number of Ways of Cutting a Pizza</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given two integers <code>m</code> and <code>n</code> that represent the height and width of a rectangular piece of wood. You are also given a 2D integer array <code>prices</code>, where <code>prices[i] = [hi, wi, pricei]</code> indicates you can sell a rectangular piece of wood of height <code>hi</code> and width <code>wi</code> for <code>pricei</code> dollars.</p>
+<p>To cut a piece of wood, you must make a vertical or horizontal cut across the <strong>entire</strong> height or width of the piece to split it into two smaller pieces. After cutting a piece of wood into some number of smaller pieces, you can sell pieces according to <code>prices</code>. You may sell multiple pieces of the same shape, and you do not have to sell all the shapes. The grain of the wood makes a difference, so you <strong>cannot</strong> rotate a piece to swap its height and width.</p>
+<p>Return **the *<em>maximum</em>* money you can earn after cutting an <strong><code>m x n</code></strong> piece of wood**.</p>
+<p>Note that you can cut the piece of wood as many times as you want.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2022/04/27/ex1.png" alt="" /></p>
+<pre><code class="hljs">Input: m = <span class="hljs-number">3</span>, n = <span class="hljs-number">5</span>, prices = [[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">7</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>]]
+Output: <span class="hljs-number">19</span>
+Explanation: The diagram above shows a possible scenario. It consists of:
+- <span class="hljs-number">2</span> pieces of wood shaped <span class="hljs-number">2</span> x <span class="hljs-number">2</span>, selling <span class="hljs-keyword">for</span> a price of <span class="hljs-number">2</span> * <span class="hljs-number">7</span> = <span class="hljs-number">14.</span>
+- <span class="hljs-number">1</span> piece of wood shaped <span class="hljs-number">2</span> x <span class="hljs-number">1</span>, selling <span class="hljs-keyword">for</span> a price of <span class="hljs-number">1</span> * <span class="hljs-number">3</span> = <span class="hljs-number">3.</span>
+- <span class="hljs-number">1</span> piece of wood shaped <span class="hljs-number">1</span> x <span class="hljs-number">4</span>, selling <span class="hljs-keyword">for</span> a price of <span class="hljs-number">1</span> * <span class="hljs-number">2</span> = <span class="hljs-number">2.</span>
+This obtains a total of <span class="hljs-number">14</span> + <span class="hljs-number">3</span> + <span class="hljs-number">2</span> = <span class="hljs-number">19</span> money earned.
+It can be shown that <span class="hljs-number">19</span> <span class="hljs-keyword">is</span> the maximum amount of money that can be earned.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2022/04/27/ex2new.png" alt="" /></p>
+<pre><code class="hljs">Input: m = <span class="hljs-number">4</span>, n = <span class="hljs-number">6</span>, prices = [[<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>]]
+Output: <span class="hljs-number">32</span>
+Explanation: The diagram above shows a possible scenario. It consists of:
+- <span class="hljs-number">3</span> pieces of wood shaped <span class="hljs-number">3</span> x <span class="hljs-number">2</span>, selling <span class="hljs-keyword">for</span> a price of <span class="hljs-number">3</span> * <span class="hljs-number">10</span> = <span class="hljs-number">30.</span>
+- <span class="hljs-number">1</span> piece of wood shaped <span class="hljs-number">1</span> x <span class="hljs-number">4</span>, selling <span class="hljs-keyword">for</span> a price of <span class="hljs-number">1</span> * <span class="hljs-number">2</span> = <span class="hljs-number">2.</span>
+This obtains a total of <span class="hljs-number">30</span> + <span class="hljs-number">2</span> = <span class="hljs-number">32</span> money earned.
+It can be shown that <span class="hljs-number">32</span> <span class="hljs-keyword">is</span> the maximum amount of money that can be earned.
+Notice that we cannot rotate the <span class="hljs-number">1</span> x <span class="hljs-number">4</span> piece of wood to obtain a <span class="hljs-number">4</span> x <span class="hljs-number">1</span> piece of wood.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= m, n &lt;= 200</code></p></li>
+<li><p><code>1 &lt;= prices.length &lt;= 2 * 104</code></p></li>
+<li><p><code>prices[i].length == 3</code></p></li>
+<li><p><code>1 &lt;= hi &lt;= m</code></p></li>
+<li><p><code>1 &lt;= wi &lt;= n</code></p></li>
+<li><p><code>1 &lt;= pricei &lt;= 106</code></p></li>
+<li><p>All the shapes of wood <code>(hi, wi)</code> are pairwise <strong>distinct</strong>.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">long</span> <span class="hljs-title">sellingWood</span><span class="hljs-params">(<span class="hljs-keyword">int</span> m, <span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[][] prices)</span> </span>{
+        <span class="hljs-comment">// dp[i][j] = Maximum profit selling wood of size i*j</span>
+        <span class="hljs-keyword">long</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[m][n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] price : prices) {
+            dp[price[<span class="hljs-number">0</span>] - <span class="hljs-number">1</span>][price[<span class="hljs-number">1</span>] - <span class="hljs-number">1</span>] = Math.max(dp[price[<span class="hljs-number">0</span>] - <span class="hljs-number">1</span>][price[<span class="hljs-number">1</span>] - <span class="hljs-number">1</span>], price[<span class="hljs-number">2</span>]);
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++) {
+                <span class="hljs-comment">// Cut Vertically</span>
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k = <span class="hljs-number">0</span>; k &lt; j; k++) {
+                    dp[i][j] = Math.max(dp[i][j], dp[i][k] + dp[i][j - k - <span class="hljs-number">1</span>]);
+                }
+                <span class="hljs-comment">// Cut Horizontally</span>
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k = <span class="hljs-number">0</span>; k &lt; i; k++) {
+                    dp[i][j] = Math.max(dp[i][j], dp[k][j] + dp[i - k - <span class="hljs-number">1</span>][j]);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> dp[m - <span class="hljs-number">1</span>][n - <span class="hljs-number">1</span>];
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

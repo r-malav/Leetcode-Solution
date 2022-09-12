@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Parallel Courses II - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1494. Parallel Courses II</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bit-manipulation">Bit Manipulation</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/graph">Graph</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bitmask">Bitmask</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/parallel-courses.html">Parallel Courses</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an integer <code>n</code>, which indicates that there are <code>n</code> courses labeled from <code>1</code> to <code>n</code>. You are also given an array <code>relations</code> where <code>relations[i] = [prevCoursei, nextCoursei]</code>, representing a prerequisite relationship between course <code>prevCoursei</code> and course <code>nextCoursei</code>: course <code>prevCoursei</code> has to be taken before course <code>nextCoursei</code>. Also, you are given the integer <code>k</code>.</p>
+<p>In one semester, you can take <strong>at most</strong> <code>k</code> courses as long as you have taken all the prerequisites in the <strong>previous</strong> semesters for the courses you are taking.</p>
+<p>Return **the *<em>minimum</em>* number of semesters needed to take all courses**. The testcases will be generated such that it is possible to take every course.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/05/22/leetcode_parallel_courses_1.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">4</span>, relations = [[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>]], k = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">3</span>
+Explanation: The figure above represents the given graph.
+In the first semester, you can take courses <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> <span class="hljs-number">3.</span>
+In the second semester, you can take course <span class="hljs-number">1.</span>
+In the third semester, you can take course <span class="hljs-number">4.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/05/22/leetcode_parallel_courses_2.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">5</span>, relations = [[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">5</span>]], k = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">4</span>
+Explanation: The figure above represents the given graph.
+In the first semester, you can only take courses <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> <span class="hljs-number">3</span> since you cannot take more than two per semester.
+In the second semester, you can take course <span class="hljs-number">4.</span>
+In the third semester, you can take course <span class="hljs-number">1.</span>
+In the fourth semester, you can take course <span class="hljs-number">5.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= n &lt;= 15</code></p></li>
+<li><p><code>1 &lt;= k &lt;= n</code></p></li>
+<li><p><code>0 &lt;= relations.length &lt;= n * (n-1) / 2</code></p></li>
+<li><p><code>relations[i].length == 2</code></p></li>
+<li><p><code>1 &lt;= prevCoursei, nextCoursei &lt;= n</code></p></li>
+<li><p><code>prevCoursei != nextCoursei</code></p></li>
+<li><p>All the pairs <code>[prevCoursei, nextCoursei]</code> are <strong>unique</strong>.</p></li>
+<li><p>The given graph is a directed acyclic graph.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minNumberOfSemesters</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[][] relations, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">int</span>[] pres = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] r : relations) {
+            <span class="hljs-keyword">int</span> prev = r[<span class="hljs-number">0</span>] - <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">int</span> next = r[<span class="hljs-number">1</span>] - <span class="hljs-number">1</span>;
+            pres[next] |= (<span class="hljs-number">1</span> &lt;&lt; prev);
+        }
+        <span class="hljs-keyword">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">1</span> &lt;&lt; n];
+        Arrays.fill(dp, n);
+        dp[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> mask = <span class="hljs-number">0</span>; mask &lt; dp.length; mask++) {
+            <span class="hljs-keyword">int</span> canTake = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+                <span class="hljs-comment">// already taken</span>
+                <span class="hljs-keyword">if</span> ((mask &amp; (<span class="hljs-number">1</span> &lt;&lt; i)) != <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">continue</span>;
+                }
+                <span class="hljs-comment">// satisfy all pres</span>
+                <span class="hljs-keyword">if</span> ((mask &amp; pres[i]) == pres[i]) {
+                    canTake |= (<span class="hljs-number">1</span> &lt;&lt; i);
+                }
+            }
+            <span class="hljs-comment">// loop each sub-masks</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> take = canTake; take &gt; <span class="hljs-number">0</span>; take = (take - <span class="hljs-number">1</span>) &amp; canTake) {
+                <span class="hljs-keyword">if</span> (Integer.bitCount(take) &gt; k) {
+                    <span class="hljs-keyword">continue</span>;
+                }
+                dp[take | mask] = Math.min(dp[take | mask], dp[mask] + <span class="hljs-number">1</span>);
+            }
+        }
+        <span class="hljs-keyword">return</span> dp[(<span class="hljs-number">1</span> &lt;&lt; n) - <span class="hljs-number">1</span>];
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

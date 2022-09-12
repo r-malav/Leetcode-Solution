@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Checking Existence of Edge Length Limited Paths - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1697. Checking Existence of Edge Length Limited Paths</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/union-find">Union Find</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/graph">Graph</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/checking-existence-of-edge-length-limited-paths-ii.html">Checking Existence of Edge Length Limited Paths II</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>An undirected graph of <code>n</code> nodes is defined by <code>edgeList</code>, where <code>edgeList[i] = [ui, vi, disi]</code> denotes an edge between nodes <code>ui</code> and <code>vi</code> with distance <code>disi</code>. Note that there may be <strong>multiple</strong> edges between two nodes.</p>
+<p>Given an array <code>queries</code>, where <code>queries[j] = [pj, qj, limitj]</code>, your task is to determine for each <code>queries[j]</code> whether there is a path between <code>pj</code> and <code>qj</code> such that each edge on the path has a distance <strong>strictly less than</strong> <code>limitj</code> .</p>
+<p>Return **a *<em>boolean array</em>* <strong><code>answer</code></strong>, where **<code>answer.length == queries.length</code> **and the **<code>jth</code> **value of **<code>answer</code> *<em>is <strong><code>true</code></strong> if there is a path for <strong><code>queries[j]</code></strong> is <strong><code>true</code></strong>, and <strong><code>false</code></strong> otherwise</em>*.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/12/08/h.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">3</span>, edgeList = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">8</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">16</span>]], queries = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>]]
+Output: [<span class="hljs-literal">false</span>,<span class="hljs-literal">true</span>]
+Explanation: The above figure shows the given graph. Note that there are two overlapping edges between <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-number">1</span> with distances <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> <span class="hljs-number">16.</span>
+For the first query, between <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-number">1</span> there <span class="hljs-keyword">is</span> no path where each distance <span class="hljs-keyword">is</span> less than <span class="hljs-number">2</span>, thus we <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">for</span> <span class="hljs-keyword">this</span> query.
+For the second query, there <span class="hljs-keyword">is</span> a path (<span class="hljs-number">0</span> -&gt; <span class="hljs-number">1</span> -&gt; <span class="hljs-number">2</span>) of two edges with distances less than <span class="hljs-number">5</span>, thus we <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">for</span> <span class="hljs-keyword">this</span> query.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/12/08/q.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">5</span>, edgeList = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">9</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">13</span>]], queries = [[<span class="hljs-number">0</span>,<span class="hljs-number">4</span>,<span class="hljs-number">14</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">13</span>]]
+Output: [<span class="hljs-literal">true</span>,<span class="hljs-literal">false</span>]
+Exaplanation: The above figure shows the given graph.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>2 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= edgeList.length, queries.length &lt;= 105</code></p></li>
+<li><p><code>edgeList[i].length == 3</code></p></li>
+<li><p><code>queries[j].length == 3</code></p></li>
+<li><p><code>0 &lt;= ui, vi, pj, qj &lt;= n - 1</code></p></li>
+<li><p><code>ui != vi</code></p></li>
+<li><p><code>pj != qj</code></p></li>
+<li><p><code>1 &lt;= disi, limitj &lt;= 109</code></p></li>
+<li><p>There may be <strong>multiple</strong> edges between two nodes.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Dsu</span> </span>{
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] parent;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Dsu</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+            parent = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+            Arrays.fill(parent, -<span class="hljs-number">1</span>);
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-keyword">int</span> num)</span> </span>{
+            <span class="hljs-keyword">if</span> (parent[num] == -<span class="hljs-number">1</span>) {
+                <span class="hljs-keyword">return</span> num;
+            }
+            parent[num] = find(parent[num]);
+            <span class="hljs-keyword">return</span> parent[num];
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">union</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a, <span class="hljs-keyword">int</span> b)</span> </span>{
+            <span class="hljs-keyword">int</span> p1 = find(a);
+            <span class="hljs-keyword">int</span> p2 = find(b);
+            <span class="hljs-keyword">if</span> (p1 != p2) {
+                parent[p2] = p1;
+            }
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span>[] distanceLimitedPathsExist(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[][] edgeList, <span class="hljs-keyword">int</span>[][] queries) {
+        Arrays.sort(edgeList, (o1, o2) -&gt; Integer.compare(o1[<span class="hljs-number">2</span>], o2[<span class="hljs-number">2</span>]));
+        <span class="hljs-keyword">int</span>[][] data = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[queries.length][<span class="hljs-number">4</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; queries.length; i++) {
+            data[i] = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {queries[i][<span class="hljs-number">0</span>], queries[i][<span class="hljs-number">1</span>], queries[i][<span class="hljs-number">2</span>], i};
+        }
+        Arrays.sort(data, (o1, o2) -&gt; Integer.compare(o1[<span class="hljs-number">2</span>], o2[<span class="hljs-number">2</span>]));
+        Dsu d = <span class="hljs-keyword">new</span> Dsu(n);
+        <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">boolean</span>[] ans = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[queries.length];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] datum : data) {
+            <span class="hljs-keyword">while</span> (j &lt; edgeList.length &amp;&amp; edgeList[j][<span class="hljs-number">2</span>] &lt; datum[<span class="hljs-number">2</span>]) {
+                d.union(edgeList[j][<span class="hljs-number">0</span>], edgeList[j][<span class="hljs-number">1</span>]);
+                j++;
+            }
+            <span class="hljs-keyword">if</span> (d.find(datum[<span class="hljs-number">0</span>]) == d.find(datum[<span class="hljs-number">1</span>])) {
+                ans[datum[<span class="hljs-number">3</span>]] = <span class="hljs-keyword">true</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Numbers At Most N Given Digit Set - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>902. Numbers At Most N Given Digit Set</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an array of <code>digits</code> which is sorted in <strong>non-decreasing</strong> order. You can write numbers using each <code>digits[i]</code> as many times as we want. For example, if <code>digits = ['1','3','5']</code>, we may write numbers such as <code>'13'</code>, <code>'551'</code>, and <code>'1351315'</code>.</p>
+<p>Return **the number of positive integers that can be generated **that are less than or equal to a given integer <code>n</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">digits</span> <span class="hljs-string">=</span> <span class="hljs-string">["1","3","5","7"],</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">100</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">20</span>
+<span class="hljs-attr">Explanation:</span> 
+<span class="hljs-attr">The 20 numbers that can be written are:</span>
+<span class="hljs-number">1</span><span class="hljs-string">,</span> <span class="hljs-number">3</span><span class="hljs-string">,</span> <span class="hljs-number">5</span><span class="hljs-string">,</span> <span class="hljs-number">7</span><span class="hljs-string">,</span> <span class="hljs-number">11</span><span class="hljs-string">,</span> <span class="hljs-number">13</span><span class="hljs-string">,</span> <span class="hljs-number">15</span><span class="hljs-string">,</span> <span class="hljs-number">17</span><span class="hljs-string">,</span> <span class="hljs-number">31</span><span class="hljs-string">,</span> <span class="hljs-number">33</span><span class="hljs-string">,</span> <span class="hljs-number">35</span><span class="hljs-string">,</span> <span class="hljs-number">37</span><span class="hljs-string">,</span> <span class="hljs-number">51</span><span class="hljs-string">,</span> <span class="hljs-number">53</span><span class="hljs-string">,</span> <span class="hljs-number">55</span><span class="hljs-string">,</span> <span class="hljs-number">57</span><span class="hljs-string">,</span> <span class="hljs-number">71</span><span class="hljs-string">,</span> <span class="hljs-number">73</span><span class="hljs-string">,</span> <span class="hljs-number">75</span><span class="hljs-string">,</span> <span class="hljs-number">77</span><span class="hljs-string">.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> <span class="hljs-keyword">digits </span>= [<span class="hljs-string">"1"</span>,<span class="hljs-string">"4"</span>,<span class="hljs-string">"9"</span>], n = <span class="hljs-number">1000000000</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">29523</span>
+<span class="hljs-symbol">Explanation:</span> 
+We can write <span class="hljs-number">3</span> one <span class="hljs-keyword">digit </span>numbers, <span class="hljs-number">9</span> two <span class="hljs-keyword">digit </span>numbers, <span class="hljs-number">27</span> three <span class="hljs-keyword">digit </span>numbers,
+<span class="hljs-number">81</span> four <span class="hljs-keyword">digit </span>numbers, <span class="hljs-number">243</span> five <span class="hljs-keyword">digit </span>numbers, <span class="hljs-number">729</span> six <span class="hljs-keyword">digit </span>numbers,
+<span class="hljs-number">2187</span> seven <span class="hljs-keyword">digit </span>numbers, <span class="hljs-number">6561</span> <span class="hljs-keyword">eight </span><span class="hljs-keyword">digit </span>numbers, <span class="hljs-keyword">and </span><span class="hljs-number">19683</span> nine <span class="hljs-keyword">digit </span>numbers.
+In total, this is <span class="hljs-number">29523</span> integers that can <span class="hljs-keyword">be </span>written using the <span class="hljs-keyword">digits </span>array.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">digits</span> <span class="hljs-string">=</span> <span class="hljs-string">["7"],</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">8</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">1</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= digits.length &lt;= 9</code></p></li>
+<li><p><code>digits[i].length == 1</code></p></li>
+<li><p><code>digits[i]</code> is a digit from&nbsp;<code>'1'</code>&nbsp;to <code>'9'</code>.</p></li>
+<li><p>All the values in&nbsp;<code>digits</code> are <strong>unique</strong>.</p></li>
+<li><p><code>digits</code> is sorted in&nbsp;<strong>non-decreasing</strong> order.</p></li>
+<li><p><code>1 &lt;= n &lt;= 109</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">atMostNGivenDigitSet</span><span class="hljs-params">(String[] digits, <span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+        String num = <span class="hljs-string">""</span> + n;
+        <span class="hljs-keyword">int</span> d = digits.length;
+        <span class="hljs-keyword">int</span> l = num.length();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; l; i++) {
+            ans += (<span class="hljs-keyword">int</span>) Math.pow(d, i);
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; l; i++) {
+            <span class="hljs-keyword">boolean</span> flag = <span class="hljs-keyword">false</span>;
+            <span class="hljs-keyword">for</span> (String digit : digits) {
+                <span class="hljs-keyword">if</span> (digit.charAt(<span class="hljs-number">0</span>) &lt; num.charAt(i)) {
+                    ans += (<span class="hljs-keyword">int</span>) Math.pow(d, (l - i - <span class="hljs-number">1</span>) * <span class="hljs-number">1.0</span>);
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (num.charAt(i) == digit.charAt(<span class="hljs-number">0</span>)) {
+                    flag = <span class="hljs-keyword">true</span>;
+                    <span class="hljs-keyword">break</span>;
+                }
+            }
+            <span class="hljs-keyword">if</span> (!flag) {
+                <span class="hljs-keyword">return</span> ans;
+            }
+        }
+        <span class="hljs-keyword">return</span> ans + <span class="hljs-number">1</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

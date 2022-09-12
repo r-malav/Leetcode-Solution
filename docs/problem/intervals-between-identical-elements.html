@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Intervals Between Identical Elements - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2121. Intervals Between Identical Elements</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/prefix-sum">Prefix Sum</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/continuous-subarray-sum.html">Continuous Subarray Sum</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>0-indexed</strong> array of <code>n</code> integers <code>arr</code>.</p>
+<p>The <strong>interval</strong> between two elements in <code>arr</code> is defined as the <strong>absolute difference</strong> between their indices. More formally, the <strong>interval</strong> between <code>arr[i]</code> and <code>arr[j]</code> is <code>|i - j|</code>.</p>
+<p>Return <strong>an array</strong> <code>intervals</code> <strong>of length</strong> <code>n</code> <strong>where</strong> <code>intervals[i]</code> **is *<em>the sum of intervals</em>* between <strong><code>arr[i]</code></strong> and each element in <strong><code>arr</code></strong> with the same value as <strong><code>arr[i]</code></strong>.**</p>
+<p><strong>Note:</strong> <code>|x|</code> is the absolute value of <code>x</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: arr = [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>]
+Output: [<span class="hljs-number">4</span>,<span class="hljs-number">2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]
+Explanation:
+- Index <span class="hljs-number">0</span>: Another <span class="hljs-number">2</span> <span class="hljs-keyword">is</span> found at index <span class="hljs-number">4.</span> |<span class="hljs-number">0</span> - <span class="hljs-number">4</span>| = <span class="hljs-number">4</span>
+- Index <span class="hljs-number">1</span>: Another <span class="hljs-number">1</span> <span class="hljs-keyword">is</span> found at index <span class="hljs-number">3.</span> |<span class="hljs-number">1</span> - <span class="hljs-number">3</span>| = <span class="hljs-number">2</span>
+- Index <span class="hljs-number">2</span>: Two more <span class="hljs-number">3</span>s are found at indices <span class="hljs-number">5</span> <span class="hljs-keyword">and</span> <span class="hljs-number">6.</span> |<span class="hljs-number">2</span> - <span class="hljs-number">5</span>| + |<span class="hljs-number">2</span> - <span class="hljs-number">6</span>| = <span class="hljs-number">7</span>
+- Index <span class="hljs-number">3</span>: Another <span class="hljs-number">1</span> <span class="hljs-keyword">is</span> found at index <span class="hljs-number">1.</span> |<span class="hljs-number">3</span> - <span class="hljs-number">1</span>| = <span class="hljs-number">2</span>
+- Index <span class="hljs-number">4</span>: Another <span class="hljs-number">2</span> <span class="hljs-keyword">is</span> found at index <span class="hljs-number">0.</span> |<span class="hljs-number">4</span> - <span class="hljs-number">0</span>| = <span class="hljs-number">4</span>
+- Index <span class="hljs-number">5</span>: Two more <span class="hljs-number">3</span>s are found at indices <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> <span class="hljs-number">6.</span> |<span class="hljs-number">5</span> - <span class="hljs-number">2</span>| + |<span class="hljs-number">5</span> - <span class="hljs-number">6</span>| = <span class="hljs-number">4</span>
+- Index <span class="hljs-number">6</span>: Two more <span class="hljs-number">3</span>s are found at indices <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> <span class="hljs-number">5.</span> |<span class="hljs-number">6</span> - <span class="hljs-number">2</span>| + |<span class="hljs-number">6</span> - <span class="hljs-number">5</span>| = <span class="hljs-number">5</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: arr = [<span class="hljs-number">10</span>,<span class="hljs-number">5</span>,<span class="hljs-number">10</span>,<span class="hljs-number">10</span>]
+Output: [<span class="hljs-number">5</span>,<span class="hljs-number">0</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+Explanation:
+- Index <span class="hljs-number">0</span>: Two more <span class="hljs-number">10</span>s are found at indices <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> <span class="hljs-number">3.</span> |<span class="hljs-number">0</span> - <span class="hljs-number">2</span>| + |<span class="hljs-number">0</span> - <span class="hljs-number">3</span>| = <span class="hljs-number">5</span>
+- Index <span class="hljs-number">1</span>: There <span class="hljs-keyword">is</span> only one <span class="hljs-number">5</span> <span class="hljs-keyword">in</span> the <span class="hljs-built_in">array</span>, so its sum of <span class="hljs-built_in">int</span>ervals to identical elements <span class="hljs-keyword">is</span> <span class="hljs-number">0.</span>
+- Index <span class="hljs-number">2</span>: Two more <span class="hljs-number">10</span>s are found at indices <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-number">3.</span> |<span class="hljs-number">2</span> - <span class="hljs-number">0</span>| + |<span class="hljs-number">2</span> - <span class="hljs-number">3</span>| = <span class="hljs-number">3</span>
+- Index <span class="hljs-number">3</span>: Two more <span class="hljs-number">10</span>s are found at indices <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-number">2.</span> |<span class="hljs-number">3</span> - <span class="hljs-number">0</span>| + |<span class="hljs-number">3</span> - <span class="hljs-number">2</span>| = <span class="hljs-number">4</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == arr.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= arr[i] &lt;= 105</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">long</span>[] getDistances(<span class="hljs-keyword">int</span>[] arr) {
+        <span class="hljs-keyword">int</span> n = arr.length;
+        Map&lt;Integer, List&lt;Integer&gt;&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            List&lt;Integer&gt; list = map.get(arr[i]);
+            <span class="hljs-keyword">if</span> (list == <span class="hljs-keyword">null</span>) {
+                list = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+            }
+            list.add(i);
+            map.put(arr[i], list);
+        }
+        <span class="hljs-keyword">long</span>[] ans = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[n];
+        Arrays.fill(ans, <span class="hljs-number">0</span>);
+        <span class="hljs-keyword">for</span> (List&lt;Integer&gt; list : map.values()) {
+            <span class="hljs-keyword">long</span> sum = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">int</span> first = list.get(<span class="hljs-number">0</span>);
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; list.size(); i++) {
+                sum = sum + list.get(i) - first;
+            }
+            ans[first] = sum;
+            <span class="hljs-keyword">int</span> prevElements = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">int</span> nextElements = list.size() - <span class="hljs-number">2</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; list.size(); i++) {
+                <span class="hljs-keyword">int</span> diff = list.get(i) - list.get(i - <span class="hljs-number">1</span>);
+                sum = sum + (<span class="hljs-keyword">long</span>) diff * (prevElements - nextElements);
+                ans[list.get(i)] = sum;
+                prevElements++;
+                nextElements--;
+            }
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

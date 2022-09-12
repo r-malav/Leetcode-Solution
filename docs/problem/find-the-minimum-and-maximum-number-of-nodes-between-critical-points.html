@@ -1,0 +1,88 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Find the Minimum and Maximum Number of Nodes Between Critical Points - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2058. Find the Minimum and Maximum Number of Nodes Between Critical Points</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/linked-list">Linked List</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A <strong>critical point</strong> in a linked list is defined as <strong>either</strong> a <strong>local maxima</strong> or a <strong>local minima</strong>.</p>
+<p>A node is a <strong>local maxima</strong> if the current node has a value <strong>strictly greater</strong> than the previous node and the next node.</p>
+<p>A node is a <strong>local minima</strong> if the current node has a value <strong>strictly smaller</strong> than the previous node and the next node.</p>
+<p>Note that a node can only be a local maxima/minima if there exists <strong>both</strong> a previous node and a next node.</p>
+<p>Given a linked list <code>head</code>, return **an array of length 2 containing *<em><code>[minDistance, maxDistance]</code></em>* where <strong><code>minDistance</code></strong> is the <strong>minimum distance</strong> between <strong>any&nbsp;two distinct</strong> critical points and <strong><code>maxDistance</code></strong> is the <strong>maximum distance</strong> between <strong>any&nbsp;two distinct</strong> critical points. If there are <strong>fewer</strong> than two critical points, return **<code>[-1, -1]</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/10/13/a1.png" alt="" /></p>
+<pre><code class="hljs">Input: head = [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]
+Output: [<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>]
+Explanation: There are no critical points <span class="hljs-keyword">in</span> [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>].
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/10/13/a2.png" alt="" /></p>
+<pre><code class="hljs">Input: head = [<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>]
+Explanation: There are three critical points:
+- [<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]: The third node <span class="hljs-keyword">is</span> a local minima because <span class="hljs-number">1</span> <span class="hljs-keyword">is</span> less than <span class="hljs-number">3</span> <span class="hljs-keyword">and</span> <span class="hljs-number">2.</span>
+- [<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]: The fifth node <span class="hljs-keyword">is</span> a local maxima because <span class="hljs-number">5</span> <span class="hljs-keyword">is</span> greater than <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> <span class="hljs-number">1.</span>
+- [<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]: The sixth node <span class="hljs-keyword">is</span> a local minima because <span class="hljs-number">1</span> <span class="hljs-keyword">is</span> less than <span class="hljs-number">5</span> <span class="hljs-keyword">and</span> <span class="hljs-number">2.</span>
+The minimum distance <span class="hljs-keyword">is</span> between the fifth <span class="hljs-keyword">and</span> the sixth node. minDistance = <span class="hljs-number">6</span> - <span class="hljs-number">5</span> = <span class="hljs-number">1.</span>
+The maximum distance <span class="hljs-keyword">is</span> between the third <span class="hljs-keyword">and</span> the sixth node. maxDistance = <span class="hljs-number">6</span> - <span class="hljs-number">3</span> = <span class="hljs-number">3.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/10/14/a5.png" alt="" /></p>
+<pre><code class="hljs">Input: head = [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">7</span>]
+Output: [<span class="hljs-number">3</span>,<span class="hljs-number">3</span>]
+Explanation: There are two critical points:
+- [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">7</span>]: The second node <span class="hljs-keyword">is</span> a local maxima because <span class="hljs-number">3</span> <span class="hljs-keyword">is</span> greater than <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-number">2.</span>
+- [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">7</span>]: The fifth node <span class="hljs-keyword">is</span> a local maxima because <span class="hljs-number">3</span> <span class="hljs-keyword">is</span> greater than <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> <span class="hljs-number">2.</span>
+Both the minimum <span class="hljs-keyword">and</span> maximum distances are between the second <span class="hljs-keyword">and</span> the fifth node.
+Thus, minDistance <span class="hljs-keyword">and</span> maxDistance <span class="hljs-keyword">is</span> <span class="hljs-number">5</span> - <span class="hljs-number">2</span> = <span class="hljs-number">3.</span>
+Note that the last node <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> considered a local maxima because it does <span class="hljs-keyword">not</span> have a next node.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p>The number of nodes in the list is in the range <code>[2, 105]</code>.</p></li>
+<li><p><code>1 &lt;= Node.val &lt;= 105</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] nodesBetweenCriticalPoints(ListNode head) {
+        ListNode p = head;
+        ListNode c = p.next;
+        ListNode n = c.next;
+        <span class="hljs-keyword">int</span> current = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> first = -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> last = -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> min = -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (n != <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">if</span> ((c.val &gt; p.val &amp;&amp; c.val &gt; n.val) || (c.val &lt; p.val &amp;&amp; c.val &lt; n.val)) {
+                <span class="hljs-keyword">if</span> (first == -<span class="hljs-number">1</span>) {
+                    first = current;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (min == -<span class="hljs-number">1</span>) {
+                    min = current - last;
+                } <span class="hljs-keyword">else</span> {
+                    min = Math.min(min, current - last);
+                }
+                last = current;
+            }
+            p = c;
+            c = n;
+            n = n.next;
+            current++;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {min, (last == first ? -<span class="hljs-number">1</span> : last - first)};
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>K Divisible Elements Subarrays - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2261. K Divisible Elements Subarrays</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/trie">Trie</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/rolling-hash">Rolling Hash</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-function">Hash Function</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/enumeration">Enumeration</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/subarrays-with-k-different-integers.html">Subarrays with K Different Integers</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/count-number-of-nice-subarrays.html">Count Number of Nice Subarrays</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/subarray-with-elements-greater-than-varying-threshold.html">Subarray With Elements Greater Than Varying Threshold</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an integer array <code>nums</code> and two integers <code>k</code> and <code>p</code>, return **the number of *<em>distinct subarrays</em>* which have <strong>at most</strong>** <code>k</code> <strong>elements divisible by</strong> <code>p</code>.</p>
+<p>Two arrays <code>nums1</code> and <code>nums2</code> are said to be <strong>distinct</strong> if:</p>
+<ul>
+<li><p>They are of <strong>different</strong> lengths, or</p></li>
+<li><p>There exists <strong>at least</strong> one index <code>i</code> where <code>nums1[i] != nums2[i]</code>.</p></li>
+</ul>
+<p>A <strong>subarray</strong> is defined as a <strong>non-empty</strong> contiguous sequence of elements in an array.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>], k = <span class="hljs-number">2</span>, p = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">11</span>
+Explanation:
+The elements at indices <span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-keyword">and</span> <span class="hljs-number">4</span> are divisible by p = <span class="hljs-number">2.</span>
+The <span class="hljs-number">11</span> distinct subarrays which have at most k = <span class="hljs-number">2</span> elements divisible by <span class="hljs-number">2</span> are:
+[<span class="hljs-number">2</span>], [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>], [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>], [<span class="hljs-number">3</span>], [<span class="hljs-number">3</span>,<span class="hljs-number">3</span>], [<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>], [<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>], [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>], [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>], <span class="hljs-keyword">and</span> [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>].
+Note that the subarrays [<span class="hljs-number">2</span>] <span class="hljs-keyword">and</span> [<span class="hljs-number">3</span>] occur more than once <span class="hljs-keyword">in</span> nums, but they should each be counted only once.
+The subarray [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>] should <span class="hljs-keyword">not</span> be counted because it has <span class="hljs-number">3</span> elements that are divisible by <span class="hljs-number">2.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>], k = <span class="hljs-number">4</span>, p = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">10</span>
+Explanation:
+All element of nums are divisible by p = <span class="hljs-number">1.</span>
+Also, every subarray of nums will have at most <span class="hljs-number">4</span> elements that are divisible by <span class="hljs-number">1.</span>
+Since all subarrays are distinct, the total number of subarrays satisfying all the constraints <span class="hljs-keyword">is</span> <span class="hljs-number">10.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= nums.length &lt;= 200</code></p></li>
+<li><p><code>1 &lt;= nums[i], p &lt;= 200</code></p></li>
+<li><p><code>1 &lt;= k &lt;= nums.length</code></p></li>
+</ul>
+<p>&nbsp;
+<strong>Follow up:</strong></p>
+<p>Can you solve this problem in O(n2) time complexity?</p>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">countDistinct</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> k, <span class="hljs-keyword">int</span> p)</span> </span>{
+        HashSet&lt;Long&gt; numSubarray = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+            <span class="hljs-keyword">int</span> countDiv = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">long</span> hashCode = <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = i; j &lt; nums.length; j++) {
+                hashCode = <span class="hljs-number">199L</span> * hashCode + nums[j];
+                <span class="hljs-keyword">if</span> (nums[j] % p == <span class="hljs-number">0</span>) {
+                    countDiv++;
+                }
+                <span class="hljs-keyword">if</span> (countDiv &lt;= k) {
+                    numSubarray.add(hashCode);
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">break</span>;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> numSubarray.size();
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Merge Triplets to Form Target Triplet - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1899. Merge Triplets to Form Target Triplet</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A <strong>triplet</strong> is an array of three integers. You are given a 2D integer array <code>triplets</code>, where <code>triplets[i] = [ai, bi, ci]</code> describes the <code>ith</code> <strong>triplet</strong>. You are also given an integer array <code>target = [x, y, z]</code> that describes the <strong>triplet</strong> you want to obtain.</p>
+<p>To obtain <code>target</code>, you may apply the following operation on <code>triplets</code> <strong>any number</strong> of times (possibly <strong>zero</strong>):</p>
+<pre><code>Choose two indices (**0-indexed**) <code>i</code> and <code>j</code> (<code>i != j</code>) and **update** <code>triplets[j]</code> to become <code>[max(ai, aj), max(bi, bj), max(ci, cj)]</code>.
+</code></pre>
+<ul>
+<li>For example, if <code>triplets[i] = [2, 5, 3]</code> and <code>triplets[j] = [1, 7, 5]</code>, <code>triplets[j]</code> will be updated to <code>[max(2, 1), max(5, 7), max(3, 5)] = [2, 7, 5]</code>.</li>
+</ul>
+<p>Return <code>true</code> **if it is possible to obtain the *<em><code>target</code></em>* <strong>triplet</strong> <strong><code>[x, y, z]</code></strong> as an** element** of <strong><code>triplets</code></strong>, or <strong><code>false</code></strong> otherwise**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: triplets = [[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">8</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">7</span>,<span class="hljs-number">5</span>]], target = [<span class="hljs-number">2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">5</span>]
+Output: <span class="hljs-literal">true</span>
+Explanation: Perform the following operations:
+- Choose the first <span class="hljs-keyword">and</span> last triplets [[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">8</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">7</span>,<span class="hljs-number">5</span>]]. Update the last triplet to be [max(<span class="hljs-number">2</span>,<span class="hljs-number">1</span>), max(<span class="hljs-number">5</span>,<span class="hljs-number">7</span>), max(<span class="hljs-number">3</span>,<span class="hljs-number">5</span>)] = [<span class="hljs-number">2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">5</span>]. triplets = [[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">8</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">5</span>]]
+The target triplet [<span class="hljs-number">2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">5</span>] <span class="hljs-keyword">is</span> now an element of triplets.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: triplets = [[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>]], target = [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>]
+Output: <span class="hljs-literal">false</span>
+Explanation: It <span class="hljs-keyword">is</span> impossible to have [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>] as an element because there <span class="hljs-keyword">is</span> no <span class="hljs-number">2</span> <span class="hljs-keyword">in</span> any of the triplets.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: triplets = [[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]], target = [<span class="hljs-number">5</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>]
+Output: <span class="hljs-literal">true</span>
+Explanation: Perform the following operations:
+- Choose the first <span class="hljs-keyword">and</span> third triplets [[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]]. Update the third triplet to be [max(<span class="hljs-number">2</span>,<span class="hljs-number">1</span>), max(<span class="hljs-number">5</span>,<span class="hljs-number">2</span>), max(<span class="hljs-number">3</span>,<span class="hljs-number">5</span>)] = [<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>]. triplets = [[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]].
+- Choose the third <span class="hljs-keyword">and</span> fourth triplets [[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]]. Update the fourth triplet to be [max(<span class="hljs-number">2</span>,<span class="hljs-number">5</span>), max(<span class="hljs-number">5</span>,<span class="hljs-number">2</span>), max(<span class="hljs-number">5</span>,<span class="hljs-number">3</span>)] = [<span class="hljs-number">5</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>]. triplets = [[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>]].
+The target triplet [<span class="hljs-number">5</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>] <span class="hljs-keyword">is</span> now an element of triplets.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= triplets.length &lt;= 105</code></p></li>
+<li><p><code>triplets[i].length == target.length == 3</code></p></li>
+<li><p><code>1 &lt;= ai, bi, ci, x, y, z &lt;= 1000</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">mergeTriplets</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] triplets, <span class="hljs-keyword">int</span>[] target)</span> </span>{
+        <span class="hljs-keyword">boolean</span> one = <span class="hljs-keyword">false</span>;
+        <span class="hljs-keyword">boolean</span> two = <span class="hljs-keyword">false</span>;
+        <span class="hljs-keyword">boolean</span> three = <span class="hljs-keyword">false</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] triplet : triplets) {
+            <span class="hljs-keyword">if</span> (!one
+                    &amp;&amp; triplet[<span class="hljs-number">0</span>] == target[<span class="hljs-number">0</span>]
+                    &amp;&amp; triplet[<span class="hljs-number">1</span>] &lt;= target[<span class="hljs-number">1</span>]
+                    &amp;&amp; triplet[<span class="hljs-number">2</span>] &lt;= target[<span class="hljs-number">2</span>]) {
+                one = <span class="hljs-keyword">true</span>;
+            }
+            <span class="hljs-keyword">if</span> (!two
+                    &amp;&amp; triplet[<span class="hljs-number">0</span>] &lt;= target[<span class="hljs-number">0</span>]
+                    &amp;&amp; triplet[<span class="hljs-number">1</span>] == target[<span class="hljs-number">1</span>]
+                    &amp;&amp; triplet[<span class="hljs-number">2</span>] &lt;= target[<span class="hljs-number">2</span>]) {
+                two = <span class="hljs-keyword">true</span>;
+            }
+            <span class="hljs-keyword">if</span> (!three
+                    &amp;&amp; triplet[<span class="hljs-number">0</span>] &lt;= target[<span class="hljs-number">0</span>]
+                    &amp;&amp; triplet[<span class="hljs-number">1</span>] &lt;= target[<span class="hljs-number">1</span>]
+                    &amp;&amp; triplet[<span class="hljs-number">2</span>] == target[<span class="hljs-number">2</span>]) {
+                three = <span class="hljs-keyword">true</span>;
+            }
+            <span class="hljs-keyword">if</span> (one &amp;&amp; two &amp;&amp; three) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

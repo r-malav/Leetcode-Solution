@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Number of Submatrices That Sum to Target - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1074. Number of Submatrices That Sum to Target</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/prefix-sum">Prefix Sum</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a <code>matrix</code>&nbsp;and a <code>target</code>, return the number of non-empty submatrices that sum to target.</p>
+<p>A submatrix <code>x1, y1, x2, y2</code> is the set of all cells <code>matrix[x][y]</code> with <code>x1 &lt;= x &lt;= x2</code> and <code>y1 &lt;= y &lt;= y2</code>.</p>
+<p>Two submatrices <code>(x1, y1, x2, y2)</code> and <code>(x1', y1', x2', y2')</code> are different if they have some coordinate&nbsp;that is different: for example, if <code>x1 != x1'</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/09/02/mate1.jpg" alt="" /></p>
+<pre><code class="hljs">Input: matrix = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]], target = <span class="hljs-number">0</span>
+Output: <span class="hljs-number">4</span>
+Explanation: The four <span class="hljs-number">1</span>x1 submatrices that only contain <span class="hljs-number">0.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: matrix = [[<span class="hljs-number">1</span>,<span class="hljs-number">-1</span>],[<span class="hljs-number">-1</span>,<span class="hljs-number">1</span>]], target = <span class="hljs-number">0</span>
+Output: <span class="hljs-number">5</span>
+Explanation: The two <span class="hljs-number">1</span>x2 submatrices, plus the two <span class="hljs-number">2</span>x1 submatrices, plus the <span class="hljs-number">2</span>x2 submatrix.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: matrix = <span class="hljs-string">[[904]]</span>, target = <span class="hljs-number">0</span>
+Output: <span class="hljs-number">0</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= matrix.length &lt;= 100</code></p></li>
+<li><p><code>1 &lt;= matrix[0].length &lt;= 100</code></p></li>
+<li><p><code>-1000 &lt;= matrix[i] &lt;= 1000</code></p></li>
+<li><p><code>-10^8 &lt;= target &lt;= 10^8</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">numSubmatrixSumTarget</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] matrix, <span class="hljs-keyword">int</span> target)</span> </span>{
+        <span class="hljs-keyword">int</span> rows = matrix.length;
+        <span class="hljs-keyword">int</span> columns = matrix[<span class="hljs-number">0</span>].length;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; rows; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>; j &lt; columns; j++) {
+                matrix[i][j] += matrix[i][j - <span class="hljs-number">1</span>];
+            }
+        }
+        HashMap&lt;Integer, Integer&gt; sumMap = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">int</span> cur;
+        <span class="hljs-keyword">int</span> res = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; columns; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = i; j &lt; columns; j++) {
+                sumMap.clear();
+                sumMap.put(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+                cur = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] ints : matrix) {
+                    cur += ints[j] - (i &gt; <span class="hljs-number">0</span> ? ints[i - <span class="hljs-number">1</span>] : <span class="hljs-number">0</span>);
+                    res += sumMap.getOrDefault(cur - target, <span class="hljs-number">0</span>);
+                    sumMap.put(cur, sumMap.getOrDefault(cur, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

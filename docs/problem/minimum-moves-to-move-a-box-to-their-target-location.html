@@ -1,0 +1,166 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Moves to Move a Box to Their Target Location - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1263. Minimum Moves to Move a Box to Their Target Location</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/heap-priority-queue">Heap (Priority Queue)</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A storekeeper is a game in which the player pushes boxes around in a warehouse trying to get them to target locations.</p>
+<p>The game is represented by an <code>m x n</code> grid of characters <code>grid</code> where each element is a wall, floor, or box.</p>
+<p>Your task is to move the box <code>'B'</code> to the target position <code>'T'</code> under the following rules:</p>
+<ul>
+<li><p>The character <code>'S'</code> represents the player. The player can move up, down, left, right in <code>grid</code> if it is a floor (empty cell).</p></li>
+<li><p>The character <code>'.'</code> represents the floor which means a free cell to walk.</p></li>
+<li><p>The character <code>'#' </code>represents the wall which means an obstacle (impossible to walk there).</p></li>
+<li><p>There is only one box <code>'B'</code> and one target cell <code>'T'</code> in the <code>grid</code>.</p></li>
+<li><p>The box can be moved to an adjacent free cell by standing next to the box and then moving in the direction of the box. This is a <strong>push</strong>.</p></li>
+<li><p>The player cannot walk through the box.</p></li>
+</ul>
+<p>Return **the minimum number of *<em>pushes</em>* to move the box to the target**. If there is no way to reach the target, return <code>-1</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/11/06/sample_1_1620.png" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: grid = [[<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>],
+               [<span class="hljs-string">"#"</span>,<span class="hljs-string">"T"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>],
+               [<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>],
+               [<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>],
+               [<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"S"</span>,<span class="hljs-string">"#"</span>],
+               [<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>]]
+<span class="hljs-symbol">Output</span>: <span class="hljs-number">3</span>
+<span class="hljs-symbol">Explanation</span>: <span class="hljs-symbol">We</span> return only the number of times the box is pushed.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: grid = [[<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>],
+               [<span class="hljs-string">"#"</span>,<span class="hljs-string">"T"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>],
+               [<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>],
+               [<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>],
+               [<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"S"</span>,<span class="hljs-string">"#"</span>],
+               [<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>]]
+<span class="hljs-symbol">Output</span>: <span class="hljs-number">-1</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: grid = [[<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>],
+               [<span class="hljs-string">"#"</span>,<span class="hljs-string">"T"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>],
+               [<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"B"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>],
+               [<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"#"</span>],
+               [<span class="hljs-string">"#"</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"."</span>,<span class="hljs-string">"S"</span>,<span class="hljs-string">"#"</span>],
+               [<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>,<span class="hljs-string">"#"</span>]]
+<span class="hljs-symbol">Output</span>: <span class="hljs-number">5</span>
+<span class="hljs-symbol">Explanation</span>: push the box down, left, left, up and up.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == grid.length</code></p></li>
+<li><p><code>n == grid[i].length</code></p></li>
+<li><p><code>1 &lt;= m, n &lt;= 20</code></p></li>
+<li><p><code>grid</code> contains only characters <code>'.'</code>, <code>'#'</code>, <code>'S'</code>, <code>'T'</code>, or <code>'B'</code>.</p></li>
+<li><p>There is only one character <code>'S'</code>, <code>'B'</code>, and <code>'T'</code> in the <code>grid</code>.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> n;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> m;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">char</span>[][] grid;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span>[][] dirs = {{<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {<span class="hljs-number">0</span>, <span class="hljs-number">1</span>}, {-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>}};
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minPushBox</span><span class="hljs-params">(<span class="hljs-keyword">char</span>[][] grid)</span> </span>{
+        n = grid.length;
+        m = grid[<span class="hljs-number">0</span>].length;
+        <span class="hljs-keyword">this</span>.grid = grid;
+        <span class="hljs-keyword">int</span>[] box = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">2</span>];
+        <span class="hljs-keyword">int</span>[] target = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">2</span>];
+        <span class="hljs-keyword">int</span>[] player = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">2</span>];
+        findLocations(box, target, player);
+        Queue&lt;<span class="hljs-keyword">int</span>[]&gt; q = <span class="hljs-keyword">new</span> LinkedList&lt;&gt;();
+        q.offer(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {box[<span class="hljs-number">0</span>], box[<span class="hljs-number">1</span>], player[<span class="hljs-number">0</span>], player[<span class="hljs-number">1</span>]});
+        <span class="hljs-comment">// for 4 directions</span>
+        <span class="hljs-keyword">boolean</span>[][][] visited = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[n][m][<span class="hljs-number">4</span>];
+        <span class="hljs-keyword">int</span> steps = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+            <span class="hljs-keyword">int</span> size = q.size();
+            <span class="hljs-keyword">while</span> (size-- &gt; <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">int</span>[] cur = q.poll();
+                <span class="hljs-keyword">if</span> (cur != <span class="hljs-keyword">null</span> &amp;&amp; cur[<span class="hljs-number">0</span>] == target[<span class="hljs-number">0</span>] &amp;&amp; cur[<span class="hljs-number">1</span>] == target[<span class="hljs-number">1</span>]) {
+                    <span class="hljs-keyword">return</span> steps;
+                }
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++) {
+                    <span class="hljs-keyword">if</span> (cur != <span class="hljs-keyword">null</span>) {
+                        <span class="hljs-keyword">int</span>[] newPlayerLoc = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {cur[<span class="hljs-number">0</span>] + dirs[i][<span class="hljs-number">0</span>], cur[<span class="hljs-number">1</span>] + dirs[i][<span class="hljs-number">1</span>]};
+                        <span class="hljs-keyword">int</span>[] newBoxLoc = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {cur[<span class="hljs-number">0</span>] - dirs[i][<span class="hljs-number">0</span>], cur[<span class="hljs-number">1</span>] - dirs[i][<span class="hljs-number">1</span>]};
+                        <span class="hljs-keyword">if</span> (visited[cur[<span class="hljs-number">0</span>]][cur[<span class="hljs-number">1</span>]][i]
+                                || isOutOfBounds(newPlayerLoc, newBoxLoc)
+                                || !isReachable(newPlayerLoc, cur)) {
+                            <span class="hljs-keyword">continue</span>;
+                        }
+                        visited[cur[<span class="hljs-number">0</span>]][cur[<span class="hljs-number">1</span>]][i] = <span class="hljs-keyword">true</span>;
+                        q.offer(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {newBoxLoc[<span class="hljs-number">0</span>], newBoxLoc[<span class="hljs-number">1</span>], cur[<span class="hljs-number">0</span>], cur[<span class="hljs-number">1</span>]});
+                    }
+                }
+            }
+            steps++;
+        }
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isReachable</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] targetPlayerLoc, <span class="hljs-keyword">int</span>[] cur)</span> </span>{
+        <span class="hljs-keyword">boolean</span>[][] visited = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[n][m];
+        visited[cur[<span class="hljs-number">0</span>]][cur[<span class="hljs-number">1</span>]] = <span class="hljs-keyword">true</span>;
+        visited[cur[<span class="hljs-number">2</span>]][cur[<span class="hljs-number">3</span>]] = <span class="hljs-keyword">true</span>;
+        Queue&lt;<span class="hljs-keyword">int</span>[]&gt; q = <span class="hljs-keyword">new</span> LinkedList&lt;&gt;();
+        q.offer(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {cur[<span class="hljs-number">2</span>], cur[<span class="hljs-number">3</span>]});
+        <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+            <span class="hljs-keyword">int</span>[] playerLoc = q.poll();
+            <span class="hljs-keyword">if</span> (playerLoc[<span class="hljs-number">0</span>] == targetPlayerLoc[<span class="hljs-number">0</span>] &amp;&amp; playerLoc[<span class="hljs-number">1</span>] == targetPlayerLoc[<span class="hljs-number">1</span>]) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+            }
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] d : dirs) {
+                <span class="hljs-keyword">int</span> x = playerLoc[<span class="hljs-number">0</span>] + d[<span class="hljs-number">0</span>];
+                <span class="hljs-keyword">int</span> y = playerLoc[<span class="hljs-number">1</span>] + d[<span class="hljs-number">1</span>];
+                <span class="hljs-keyword">if</span> (isOutOfBounds(x, y) || visited[x][y]) {
+                    <span class="hljs-keyword">continue</span>;
+                }
+                visited[x][y] = <span class="hljs-keyword">true</span>;
+                q.offer(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {x, y});
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isOutOfBounds</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] player, <span class="hljs-keyword">int</span>[] box)</span> </span>{
+        <span class="hljs-keyword">return</span> isOutOfBounds(player[<span class="hljs-number">0</span>], player[<span class="hljs-number">1</span>]) || isOutOfBounds(box[<span class="hljs-number">0</span>], box[<span class="hljs-number">1</span>]);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isOutOfBounds</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span> y)</span> </span>{
+        <span class="hljs-keyword">return</span> (x &lt; <span class="hljs-number">0</span> || y &lt; <span class="hljs-number">0</span> || x == n || y == m || grid[x][y] == <span class="hljs-string">'#'</span>);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">findLocations</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] box, <span class="hljs-keyword">int</span>[] target, <span class="hljs-keyword">int</span>[] player)</span> </span>{
+        <span class="hljs-keyword">boolean</span> p = <span class="hljs-keyword">false</span>;
+        <span class="hljs-keyword">boolean</span> t = <span class="hljs-keyword">false</span>;
+        <span class="hljs-keyword">boolean</span> b = <span class="hljs-keyword">false</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; m; j++) {
+                <span class="hljs-keyword">if</span> (grid[i][j] == <span class="hljs-string">'S'</span>) {
+                    player[<span class="hljs-number">0</span>] = i;
+                    player[<span class="hljs-number">1</span>] = j;
+                    p = <span class="hljs-keyword">true</span>;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (grid[i][j] == <span class="hljs-string">'T'</span>) {
+                    target[<span class="hljs-number">0</span>] = i;
+                    target[<span class="hljs-number">1</span>] = j;
+                    t = <span class="hljs-keyword">true</span>;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (grid[i][j] == <span class="hljs-string">'B'</span>) {
+                    box[<span class="hljs-number">0</span>] = i;
+                    box[<span class="hljs-number">1</span>] = j;
+                    b = <span class="hljs-keyword">true</span>;
+                }
+                <span class="hljs-keyword">if</span> (p &amp;&amp; b &amp;&amp; t) {
+                    <span class="hljs-comment">// found all</span>
+                    <span class="hljs-keyword">return</span>;
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

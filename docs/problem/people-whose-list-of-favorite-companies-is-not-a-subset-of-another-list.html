@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>People Whose List of Favorite Companies Is Not a Subset of Another List - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1452. People Whose List of Favorite Companies Is Not a Subset of Another List</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given the array <code>favoriteCompanies</code> where <code>favoriteCompanies[i]</code> is the list of favorites companies for the <code>ith</code> person (<strong>indexed from 0</strong>).</p>
+<p>**Return the indices of people whose list of favorite companies is not a *<em>subset</em>* of any other list of favorites companies**. You must return the indices in increasing order.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: favoriteCompanies = [[<span class="hljs-string">"leetcode"</span>,<span class="hljs-string">"google"</span>,<span class="hljs-string">"facebook"</span>],[<span class="hljs-string">"google"</span>,<span class="hljs-string">"microsoft"</span>],[<span class="hljs-string">"google"</span>,<span class="hljs-string">"facebook"</span>],[<span class="hljs-string">"google"</span>],[<span class="hljs-string">"amazon"</span>]]
+<span class="hljs-symbol">Output</span>: [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>] 
+<span class="hljs-symbol">Explanation</span>: 
+<span class="hljs-symbol">Person</span> with index=<span class="hljs-number">2</span> has favoriteCompanies[<span class="hljs-number">2</span>]=[<span class="hljs-string">"google"</span>,<span class="hljs-string">"facebook"</span>] which is a subset of favoriteCompanies[<span class="hljs-number">0</span>]=[<span class="hljs-string">"leetcode"</span>,<span class="hljs-string">"google"</span>,<span class="hljs-string">"facebook"</span>] corresponding to the person with index <span class="hljs-number">0.</span> 
+<span class="hljs-symbol">Person</span> with index=<span class="hljs-number">3</span> has favoriteCompanies[<span class="hljs-number">3</span>]=[<span class="hljs-string">"google"</span>] which is a subset of favoriteCompanies[<span class="hljs-number">0</span>]=[<span class="hljs-string">"leetcode"</span>,<span class="hljs-string">"google"</span>,<span class="hljs-string">"facebook"</span>] and favoriteCompanies[<span class="hljs-number">1</span>]=[<span class="hljs-string">"google"</span>,<span class="hljs-string">"microsoft"</span>]. 
+<span class="hljs-symbol">Other</span> lists of favorite companies are not a subset of another list, therefore, the answer is [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>].
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: favoriteCompanies = [[<span class="hljs-string">"leetcode"</span>,<span class="hljs-string">"google"</span>,<span class="hljs-string">"facebook"</span>],[<span class="hljs-string">"leetcode"</span>,<span class="hljs-string">"amazon"</span>],[<span class="hljs-string">"facebook"</span>,<span class="hljs-string">"google"</span>]]
+<span class="hljs-symbol">Output</span>: [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>] 
+<span class="hljs-symbol">Explanation</span>: <span class="hljs-symbol">In</span> this case favoriteCompanies[<span class="hljs-number">2</span>]=[<span class="hljs-string">"facebook"</span>,<span class="hljs-string">"google"</span>] is a subset of favoriteCompanies[<span class="hljs-number">0</span>]=[<span class="hljs-string">"leetcode"</span>,<span class="hljs-string">"google"</span>,<span class="hljs-string">"facebook"</span>], therefore, the answer is [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>].
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: favoriteCompanies = [[<span class="hljs-string">"leetcode"</span>],[<span class="hljs-string">"google"</span>],[<span class="hljs-string">"facebook"</span>],[<span class="hljs-string">"amazon"</span>]]
+<span class="hljs-symbol">Output</span>: [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= favoriteCompanies.length &lt;= 100</code></p></li>
+<li><p><code>1 &lt;= favoriteCompanies[i].length &lt;= 500</code></p></li>
+<li><p><code>1 &lt;= favoriteCompanies[i][j].length &lt;= 20</code></p></li>
+<li><p>All strings in <code>favoriteCompanies[i]</code> are <strong>distinct</strong>.</p></li>
+<li><p>All lists of favorite companies are <strong>distinct</strong>, that is, If we sort alphabetically each list then <code>favoriteCompanies[i] != favoriteCompanies[j].</code></p></li>
+<li><p>All strings consist of lowercase English letters only.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title">peopleIndexes</span><span class="hljs-params">(List&lt;List&lt;String&gt;&gt; favoriteCompanies)</span> </span>{
+        <span class="hljs-keyword">int</span> n = favoriteCompanies.size();
+        List&lt;Integer&gt; res = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        List&lt;Set&lt;String&gt;&gt; in = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">for</span> (List&lt;String&gt; list : favoriteCompanies) {
+            in.add(<span class="hljs-keyword">new</span> HashSet&lt;&gt;(list));
+        }
+        outer:
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j : res) {
+                <span class="hljs-keyword">if</span> (isSubset(in.get(i), in.get(j))) {
+                    <span class="hljs-keyword">continue</span> outer;
+                }
+            }
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = i + <span class="hljs-number">1</span>; j &lt; n; j++) {
+                <span class="hljs-keyword">if</span> (isSubset(in.get(i), in.get(j))) {
+                    <span class="hljs-keyword">continue</span> outer;
+                }
+            }
+            res.add(i);
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isSubset</span><span class="hljs-params">(Set&lt;String&gt; subset, Set&lt;String&gt; set)</span> </span>{
+        <span class="hljs-keyword">if</span> (subset.size() &gt;= set.size()) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+        }
+        <span class="hljs-keyword">return</span> set.containsAll(subset);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

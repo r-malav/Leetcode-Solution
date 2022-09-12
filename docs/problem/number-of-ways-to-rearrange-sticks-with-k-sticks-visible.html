@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Number of Ways to Rearrange Sticks With K Sticks Visible - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1866. Number of Ways to Rearrange Sticks With K Sticks Visible</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/combinatorics">Combinatorics</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There are <code>n</code> uniquely-sized sticks whose lengths are integers from <code>1</code> to <code>n</code>. You want to arrange the sticks such that <strong>exactly</strong> <code>k</code>&nbsp;sticks are <strong>visible</strong> from the left. A stick&nbsp;is <strong>visible</strong> from the left if there are no <strong>longer</strong>&nbsp;sticks to the <strong>left</strong> of it.</p>
+<ul>
+<li>For example, if the sticks are arranged <code>[1,3,2,5,4]</code>, then the sticks with lengths <code>1</code>, <code>3</code>, and <code>5</code> are visible from the left.</li>
+</ul>
+<p>Given <code>n</code> and <code>k</code>, return **the *<em>number</em>* of such arrangements**. Since the answer may be large, return it *<em>modulo</em>* <code>109 + 7</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">3</span>, k = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">3</span>
+Explanation: [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>], [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>], <span class="hljs-keyword">and</span> [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>] are the only arrangements such that exactly <span class="hljs-number">2</span> sticks are visible.
+The visible sticks are underlined.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">5</span>, k = <span class="hljs-number">5</span>
+Output: <span class="hljs-number">1</span>
+Explanation: [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>] <span class="hljs-keyword">is</span> the only arrangement such that all <span class="hljs-number">5</span> sticks are visible.
+The visible sticks are underlined.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">20</span><span class="hljs-string">,</span> <span class="hljs-string">k</span> <span class="hljs-string">=</span> <span class="hljs-number">11</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">647427950</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">There</span> <span class="hljs-string">are</span> <span class="hljs-number">647427950</span> <span class="hljs-string">(mod</span> <span class="hljs-number">109</span> <span class="hljs-string">+</span> <span class="hljs-number">7</span><span class="hljs-string">)</span> <span class="hljs-string">ways</span> <span class="hljs-string">to</span> <span class="hljs-string">rearrange</span> <span class="hljs-string">the</span> <span class="hljs-string">sticks</span> <span class="hljs-string">such</span> <span class="hljs-string">that</span> <span class="hljs-string">exactly</span> <span class="hljs-number">11</span> <span class="hljs-string">sticks</span> <span class="hljs-string">are</span> <span class="hljs-string">visible.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= n &lt;= 1000</code></p></li>
+<li><p><code>1 &lt;= k &lt;= n</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> MOD = <span class="hljs-number">1_000_000_007</span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">rearrangeSticks</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">if</span> (k &gt; n || k &lt; <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">if</span> (k == n) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">long</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[k + <span class="hljs-number">1</span>];
+        Arrays.fill(dp, <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i + k &lt;= n; i++) {
+            <span class="hljs-keyword">long</span>[] dp2 = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[k + <span class="hljs-number">1</span>];
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>; j &lt;= k; j++) {
+                dp2[j] = (dp2[j - <span class="hljs-number">1</span>] + (i + j - <span class="hljs-number">1</span>) * dp[j]) % MOD;
+            }
+            dp = dp2;
+        }
+        <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>) dp[k];
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

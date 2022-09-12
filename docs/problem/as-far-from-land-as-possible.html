@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>As Far from Land as Possible - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1162. As Far from Land as Possible</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/shortest-distance-from-all-buildings.html">Shortest Distance from All Buildings</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/k-highest-ranked-items-within-a-price-range.html">K Highest Ranked Items Within a Price Range</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an <code>n x n</code> <code>grid</code>&nbsp;containing only values <code>0</code> and <code>1</code>, where&nbsp;<code>0</code> represents water&nbsp;and <code>1</code> represents land, find a water cell such that its distance to the nearest land cell is maximized, and return the distance.&nbsp;If no land or water exists in the grid, return <code>-1</code>.</p>
+<p>The distance used in this problem is the Manhattan distance:&nbsp;the distance between two cells <code>(x0, y0)</code> and <code>(x1, y1)</code> is <code>|x0 - x1| + |y0 - y1|</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/05/03/1336_ex1.JPG" alt="" /></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]]
+Output: <span class="hljs-number">2</span>
+Explanation: The cell (<span class="hljs-number">1</span>, <span class="hljs-number">1</span>) <span class="hljs-keyword">is</span> as far as possible <span class="hljs-keyword">from</span> all the land with distance <span class="hljs-number">2.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/05/03/1336_ex2.JPG" alt="" /></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]]
+Output: <span class="hljs-number">4</span>
+Explanation: The cell (<span class="hljs-number">2</span>, <span class="hljs-number">2</span>) <span class="hljs-keyword">is</span> as far as possible <span class="hljs-keyword">from</span> all the land with distance <span class="hljs-number">4.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == grid.length</code></p></li>
+<li><p><code>n == grid[i].length</code></p></li>
+<li><p><code>1 &lt;= n&amp;nbsp;&lt;= 100</code></p></li>
+<li><p><code>grid[i][j]</code>&nbsp;is <code>0</code> or <code>1</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxDistance</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] grid)</span> </span>{
+        Queue&lt;<span class="hljs-keyword">int</span>[]&gt; q = <span class="hljs-keyword">new</span> LinkedList&lt;&gt;();
+        <span class="hljs-keyword">int</span> n = grid.length;
+        <span class="hljs-keyword">int</span> m = grid[<span class="hljs-number">0</span>].length;
+        <span class="hljs-keyword">boolean</span>[][] vis = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[n][m];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; m; j++) {
+                <span class="hljs-keyword">if</span> (grid[i][j] == <span class="hljs-number">1</span>) {
+                    q.add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {i, j});
+                    vis[i][j] = <span class="hljs-keyword">true</span>;
+                }
+            }
+        }
+        <span class="hljs-keyword">if</span> (q.isEmpty() || q.size() == n * m) {
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">int</span>[] dir = {-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>};
+        <span class="hljs-keyword">int</span> maxDistance = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> level = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+            <span class="hljs-keyword">int</span> size = q.size();
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; size; i++) {
+                <span class="hljs-keyword">int</span>[] top = q.poll();
+                <span class="hljs-keyword">int</span> currX = Objects.requireNonNull(top)[<span class="hljs-number">0</span>];
+                <span class="hljs-keyword">int</span> currY = top[<span class="hljs-number">1</span>];
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; dir.length - <span class="hljs-number">1</span>; j++) {
+                    <span class="hljs-keyword">int</span> x = currX + dir[j];
+                    <span class="hljs-keyword">int</span> y = currY + dir[j + <span class="hljs-number">1</span>];
+
+                    <span class="hljs-keyword">if</span> (x &gt;= <span class="hljs-number">0</span> &amp;&amp; x != n &amp;&amp; y &gt;= <span class="hljs-number">0</span> &amp;&amp; y != n &amp;&amp; !vis[x][y]) {
+                        maxDistance = Math.max(maxDistance, level);
+                        vis[x][y] = <span class="hljs-keyword">true</span>;
+                        q.add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {x, y});
+                    }
+                }
+            }
+            level++;
+        }
+        <span class="hljs-keyword">return</span> maxDistance;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

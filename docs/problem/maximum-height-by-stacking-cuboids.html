@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Height by Stacking Cuboids - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1691. Maximum Height by Stacking Cuboids</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/the-number-of-weak-characters-in-the-game.html">The Number of Weak Characters in the Game</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-number-of-groups-entering-a-competition.html">Maximum Number of Groups Entering a Competition</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given <code>n</code> <code>cuboids</code> where the dimensions of the <code>ith</code> cuboid is <code>cuboids[i] = [widthi, lengthi, heighti]</code> (<strong>0-indexed</strong>). Choose a <strong>subset</strong> of <code>cuboids</code> and place them on each other.</p>
+<p>You can place cuboid <code>i</code> on cuboid <code>j</code> if <code>widthi &lt;= widthj</code> and <code>lengthi &lt;= lengthj</code> and <code>heighti &lt;= heightj</code>. You can rearrange any cuboid's dimensions by rotating it to put it on another cuboid.</p>
+<p>Return **the *<em>maximum height</em>* of the stacked** <code>cuboids</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/10/21/image.jpg" alt="" /></p>
+<pre><code class="hljs">Input: cuboids = [[<span class="hljs-number">50</span>,<span class="hljs-number">45</span>,<span class="hljs-number">20</span>],[<span class="hljs-number">95</span>,<span class="hljs-number">37</span>,<span class="hljs-number">53</span>],[<span class="hljs-number">45</span>,<span class="hljs-number">23</span>,<span class="hljs-number">12</span>]]
+Output: <span class="hljs-number">190</span>
+Explanation:
+Cuboid <span class="hljs-number">1</span> <span class="hljs-keyword">is</span> placed on the bottom with the <span class="hljs-number">53</span>x37 side facing down with height <span class="hljs-number">95.</span>
+Cuboid <span class="hljs-number">0</span> <span class="hljs-keyword">is</span> placed next with the <span class="hljs-number">45</span>x20 side facing down with height <span class="hljs-number">50.</span>
+Cuboid <span class="hljs-number">2</span> <span class="hljs-keyword">is</span> placed next with the <span class="hljs-number">23</span>x12 side facing down with height <span class="hljs-number">45.</span>
+The total height <span class="hljs-keyword">is</span> <span class="hljs-number">95</span> + <span class="hljs-number">50</span> + <span class="hljs-number">45</span> = <span class="hljs-number">190.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">cuboids</span> <span class="hljs-string">=</span> <span class="hljs-string">[[38,25,45],[76,35,3]]</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">76</span>
+<span class="hljs-attr">Explanation:</span>
+<span class="hljs-string">You</span> <span class="hljs-string">can't</span> <span class="hljs-string">place</span> <span class="hljs-string">any</span> <span class="hljs-string">of</span> <span class="hljs-string">the</span> <span class="hljs-string">cuboids</span> <span class="hljs-string">on</span> <span class="hljs-string">the</span> <span class="hljs-string">other.</span>
+<span class="hljs-string">We</span> <span class="hljs-string">choose</span> <span class="hljs-string">cuboid</span> <span class="hljs-number">1</span> <span class="hljs-string">and</span> <span class="hljs-string">rotate</span> <span class="hljs-string">it</span> <span class="hljs-string">so</span> <span class="hljs-string">that</span> <span class="hljs-string">the</span> <span class="hljs-string">35x3</span> <span class="hljs-string">side</span> <span class="hljs-string">is</span> <span class="hljs-string">facing</span> <span class="hljs-string">down</span> <span class="hljs-string">and</span> <span class="hljs-string">its</span> <span class="hljs-string">height</span> <span class="hljs-string">is</span> <span class="hljs-number">76</span><span class="hljs-string">.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: cuboids = [[<span class="hljs-number">7</span>,<span class="hljs-number">11</span>,<span class="hljs-number">17</span>],[<span class="hljs-number">7</span>,<span class="hljs-number">17</span>,<span class="hljs-number">11</span>],[<span class="hljs-number">11</span>,<span class="hljs-number">7</span>,<span class="hljs-number">17</span>],[<span class="hljs-number">11</span>,<span class="hljs-number">17</span>,<span class="hljs-number">7</span>],[<span class="hljs-number">17</span>,<span class="hljs-number">7</span>,<span class="hljs-number">11</span>],[<span class="hljs-number">17</span>,<span class="hljs-number">11</span>,<span class="hljs-number">7</span>]]
+Output: <span class="hljs-number">102</span>
+Explanation:
+After rearranging the cuboids, you can see that all cuboids have the same dimension.
+You can place the <span class="hljs-number">11</span>x7 side down on all cuboids so their heights are <span class="hljs-number">17.</span>
+The maximum height of stacked cuboids <span class="hljs-keyword">is</span> <span class="hljs-number">6</span> * <span class="hljs-number">17</span> = <span class="hljs-number">102.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == cuboids.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 100</code></p></li>
+<li><p><code>1 &lt;= widthi, lengthi, heighti &lt;= 100</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxHeight</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] arr)</span> </span>{
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] a : arr) {
+            Arrays.sort(a);
+        }
+        Arrays.sort(
+                arr,
+                (a, b) -&gt; {
+                    <span class="hljs-keyword">if</span> (a[<span class="hljs-number">0</span>] != b[<span class="hljs-number">0</span>]) {
+                        <span class="hljs-keyword">return</span> a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>];
+                    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a[<span class="hljs-number">1</span>] != b[<span class="hljs-number">1</span>]) {
+                        <span class="hljs-keyword">return</span> a[<span class="hljs-number">1</span>] - b[<span class="hljs-number">1</span>];
+                    }
+                    <span class="hljs-keyword">return</span> a[<span class="hljs-number">2</span>] - b[<span class="hljs-number">2</span>];
+                });
+        <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[arr.length];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; arr.length; i++) {
+            dp[i] = arr[i][<span class="hljs-number">2</span>];
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; i; j++) {
+                <span class="hljs-keyword">if</span> (arr[i][<span class="hljs-number">0</span>] &gt;= arr[j][<span class="hljs-number">0</span>] &amp;&amp; arr[i][<span class="hljs-number">1</span>] &gt;= arr[j][<span class="hljs-number">1</span>] &amp;&amp; arr[i][<span class="hljs-number">2</span>] &gt;= arr[j][<span class="hljs-number">2</span>]) {
+                    dp[i] = Math.max(dp[i], arr[i][<span class="hljs-number">2</span>] + dp[j]);
+                }
+            }
+            ans = Math.max(ans, dp[i]);
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

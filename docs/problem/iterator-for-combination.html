@@ -1,0 +1,90 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Iterator for Combination - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1286. Iterator for Combination</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/backtracking">Backtracking</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/design">Design</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/iterator">Iterator</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Design the <code>CombinationIterator</code> class:</p>
+<ul>
+<li><p><code>CombinationIterator(string characters, int combinationLength)</code> Initializes the object with a string <code>characters</code> of <strong>sorted distinct</strong> lowercase English letters and a number <code>combinationLength</code> as arguments.</p></li>
+<li><p><code>next()</code> Returns the next combination of length <code>combinationLength</code> in <strong>lexicographical order</strong>.</p></li>
+<li><p><code>hasNext()</code> Returns <code>true</code> if and only if there exists a next combination.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input
+[<span class="hljs-string">"CombinationIterator"</span>, <span class="hljs-string">"next"</span>, <span class="hljs-string">"hasNext"</span>, <span class="hljs-string">"next"</span>, <span class="hljs-string">"hasNext"</span>, <span class="hljs-string">"next"</span>, <span class="hljs-string">"hasNext"</span>]
+[[<span class="hljs-string">"abc"</span>, <span class="hljs-number">2</span>], [], [], [], [], [], []]
+Output
+[null, <span class="hljs-string">"ab"</span>, <span class="hljs-literal">true</span>, <span class="hljs-string">"ac"</span>, <span class="hljs-literal">true</span>, <span class="hljs-string">"bc"</span>, <span class="hljs-literal">false</span>]
+
+Explanation
+CombinationIterator itr = new CombinationIterator(<span class="hljs-string">"abc"</span>, <span class="hljs-number">2</span>);
+itr.<span class="hljs-keyword">next</span>();    <span class="hljs-regexp">//</span> <span class="hljs-keyword">return</span> <span class="hljs-string">"ab"</span>
+itr.hasNext(); <span class="hljs-regexp">//</span> <span class="hljs-keyword">return</span> True
+itr.<span class="hljs-keyword">next</span>();    <span class="hljs-regexp">//</span> <span class="hljs-keyword">return</span> <span class="hljs-string">"ac"</span>
+itr.hasNext(); <span class="hljs-regexp">//</span> <span class="hljs-keyword">return</span> True
+itr.<span class="hljs-keyword">next</span>();    <span class="hljs-regexp">//</span> <span class="hljs-keyword">return</span> <span class="hljs-string">"bc"</span>
+itr.hasNext(); <span class="hljs-regexp">//</span> <span class="hljs-keyword">return</span> False
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= combinationLength &lt;= characters.length &lt;= 15</code></p></li>
+<li><p>All the characters of <code>characters</code> are <strong>unique</strong>.</p></li>
+<li><p>At most <code>104</code> calls will be made to <code>next</code> and <code>hasNext</code>.</p></li>
+<li><p>It is guaranteed that all calls of the function <code>next</code> are valid.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CombinationIterator</span> </span>{
+    <span class="hljs-keyword">private</span> List&lt;String&gt; list;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> index;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> combinationLength;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span>[] visited;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">CombinationIterator</span><span class="hljs-params">(String characters, <span class="hljs-keyword">int</span> combinationLength)</span> </span>{
+        <span class="hljs-keyword">this</span>.index = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">this</span>.list = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">this</span>.combinationLength = combinationLength;
+        <span class="hljs-keyword">this</span>.visited = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[characters.length()];
+        buildAllCombinations(characters, <span class="hljs-number">0</span>, <span class="hljs-keyword">new</span> StringBuilder(), visited);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">buildAllCombinations</span><span class="hljs-params">(
+            String characters, <span class="hljs-keyword">int</span> start, StringBuilder sb, <span class="hljs-keyword">boolean</span>[] visited)</span> </span>{
+        <span class="hljs-keyword">if</span> (sb.length() == combinationLength) {
+            list.add(sb.toString());
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">int</span> i = start;
+            <span class="hljs-keyword">while</span> (i &lt; characters.length()) {
+                <span class="hljs-keyword">if</span> (!visited[i]) {
+                    sb.append(characters.charAt(i));
+                    visited[i] = <span class="hljs-keyword">true</span>;
+                    buildAllCombinations(characters, i++, sb, visited);
+                    visited[i - <span class="hljs-number">1</span>] = <span class="hljs-keyword">false</span>;
+                    sb.setLength(sb.length() - <span class="hljs-number">1</span>);
+                } <span class="hljs-keyword">else</span> {
+                    i++;
+                }
+            }
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">next</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> list.get(index++);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">hasNext</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> index &lt; list.size();
+    }
+}
+
+<span class="hljs-comment">/**
+ * Your CombinationIterator object will be instantiated and called as such:
+ * CombinationIterator obj = new CombinationIterator(characters, combinationLength);
+ * String param_1 = obj.next();
+ * boolean param_2 = obj.hasNext();
+ */</span>
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

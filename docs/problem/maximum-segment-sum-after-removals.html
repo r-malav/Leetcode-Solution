@@ -1,0 +1,109 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Segment Sum After Removals - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2382. Maximum Segment Sum After Removals</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/union-find">Union Find</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/prefix-sum">Prefix Sum</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/ordered-set">Ordered Set</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given two <strong>0-indexed</strong> integer arrays <code>nums</code> and <code>removeQueries</code>, both of length <code>n</code>. For the <code>ith</code> query, the element in <code>nums</code> at the index <code>removeQueries[i]</code> is removed, splitting <code>nums</code> into different segments.</p>
+<p>A <strong>segment</strong> is a contiguous sequence of <strong>positive</strong> integers in <code>nums</code>. A <strong>segment sum</strong> is the sum of every element in a segment.</p>
+<p>Return** an integer array <strong><code>answer</code></strong>, of length <strong><code>n</code></strong>, where <strong><code>answer[i]</code></strong> is the <strong>maximum</strong> segment sum after applying the **<code>ith</code> *<em>removal.</em>*</p>
+<p><strong>Note:</strong> The same index will <strong>not</strong> be removed more than once.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">1</span>], removeQueries = [<span class="hljs-number">0</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>]
+Output: [<span class="hljs-number">14</span>,<span class="hljs-number">7</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>]
+Explanation: Using <span class="hljs-number">0</span> to indicate a removed element, the answer <span class="hljs-keyword">is</span> as follows:
+Query <span class="hljs-number">1</span>: Remove the <span class="hljs-number">0</span>th element, nums becomes [<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">1</span>] <span class="hljs-keyword">and</span> the maximum segment sum <span class="hljs-keyword">is</span> <span class="hljs-number">14</span> <span class="hljs-keyword">for</span> segment [<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">1</span>].
+Query <span class="hljs-number">2</span>: Remove the <span class="hljs-number">3</span>rd element, nums becomes [<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>] <span class="hljs-keyword">and</span> the maximum segment sum <span class="hljs-keyword">is</span> <span class="hljs-number">7</span> <span class="hljs-keyword">for</span> segment [<span class="hljs-number">2</span>,<span class="hljs-number">5</span>].
+Query <span class="hljs-number">3</span>: Remove the <span class="hljs-number">2</span>nd element, nums becomes [<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>] <span class="hljs-keyword">and</span> the maximum segment sum <span class="hljs-keyword">is</span> <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> segment [<span class="hljs-number">2</span>]. 
+Query <span class="hljs-number">4</span>: Remove the <span class="hljs-number">4</span>th element, nums becomes [<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>] <span class="hljs-keyword">and</span> the maximum segment sum <span class="hljs-keyword">is</span> <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> segment [<span class="hljs-number">2</span>]. 
+Query <span class="hljs-number">5</span>: Remove the <span class="hljs-number">1</span>st element, nums becomes [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>] <span class="hljs-keyword">and</span> the maximum segment sum <span class="hljs-keyword">is</span> <span class="hljs-number">0</span>, since there are no segments.
+Finally, we <span class="hljs-keyword">return</span> [<span class="hljs-number">14</span>,<span class="hljs-number">7</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>].
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">11</span>,<span class="hljs-number">1</span>], removeQueries = [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]
+Output: [<span class="hljs-number">16</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">0</span>]
+Explanation: Using <span class="hljs-number">0</span> to indicate a removed element, the answer <span class="hljs-keyword">is</span> as follows:
+Query <span class="hljs-number">1</span>: Remove the <span class="hljs-number">3</span>rd element, nums becomes [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">11</span>,<span class="hljs-number">0</span>] <span class="hljs-keyword">and</span> the maximum segment sum <span class="hljs-keyword">is</span> <span class="hljs-number">16</span> <span class="hljs-keyword">for</span> segment [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">11</span>].
+Query <span class="hljs-number">2</span>: Remove the <span class="hljs-number">2</span>nd element, nums becomes [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>] <span class="hljs-keyword">and</span> the maximum segment sum <span class="hljs-keyword">is</span> <span class="hljs-number">5</span> <span class="hljs-keyword">for</span> segment [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>].
+Query <span class="hljs-number">3</span>: Remove the <span class="hljs-number">1</span>st element, nums becomes [<span class="hljs-number">3</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>] <span class="hljs-keyword">and</span> the maximum segment sum <span class="hljs-keyword">is</span> <span class="hljs-number">3</span> <span class="hljs-keyword">for</span> segment [<span class="hljs-number">3</span>].
+Query <span class="hljs-number">4</span>: Remove the <span class="hljs-number">0</span>th element, nums becomes [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>] <span class="hljs-keyword">and</span> the maximum segment sum <span class="hljs-keyword">is</span> <span class="hljs-number">0</span>, since there are no segments.
+Finally, we <span class="hljs-keyword">return</span> [<span class="hljs-number">16</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">0</span>].
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == nums.length == removeQueries.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= nums[i] &lt;= 109</code></p></li>
+<li><p><code>0 &lt;= removeQueries[i] &lt; n</code></p></li>
+<li><p>All the values of <code>removeQueries</code> are <strong>unique</strong>.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UF</span> </span>{
+        <span class="hljs-keyword">int</span>[] root;
+        <span class="hljs-keyword">long</span>[] sum;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">UF</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+            <span class="hljs-keyword">this</span>.root = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+            Arrays.fill(<span class="hljs-keyword">this</span>.root, -<span class="hljs-number">1</span>);
+            <span class="hljs-keyword">this</span>.sum = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[n];
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">insert</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span> value)</span> </span>{
+            <span class="hljs-keyword">if</span> (root[x] != -<span class="hljs-number">1</span> || sum[x] != <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">return</span>;
+            }
+            <span class="hljs-keyword">this</span>.root[x] = x;
+            <span class="hljs-keyword">this</span>.sum[x] = value;
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span> </span>{
+            <span class="hljs-keyword">while</span> (root[x] != x) {
+                <span class="hljs-keyword">int</span> fa = root[x];
+                <span class="hljs-keyword">int</span> ga = root[fa];
+                root[x] = ga;
+                x = fa;
+            }
+            <span class="hljs-keyword">return</span> x;
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">union</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span> y)</span> </span>{
+            <span class="hljs-keyword">int</span> rx = find(x);
+            <span class="hljs-keyword">int</span> ry = find(y);
+            <span class="hljs-keyword">if</span> (x == y) {
+                <span class="hljs-keyword">return</span>;
+            }
+            root[rx] = ry;
+            sum[ry] += sum[rx];
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">has</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span> </span>{
+            <span class="hljs-keyword">return</span> root[x] != -<span class="hljs-number">1</span> || sum[x] != <span class="hljs-number">0</span>;
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">long</span>[] maximumSegmentSum(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span>[] removeQueries) {
+        <span class="hljs-keyword">int</span> n = removeQueries.length;
+        <span class="hljs-keyword">long</span>[] ret = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[n];
+        <span class="hljs-keyword">long</span> max = <span class="hljs-number">0L</span>;
+        UF uf = <span class="hljs-keyword">new</span> UF(n);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = n - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            <span class="hljs-keyword">int</span> u = removeQueries[i];
+            uf.insert(u, nums[u]);
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> v = u - <span class="hljs-number">1</span>; v &lt;= u + <span class="hljs-number">1</span>; v += <span class="hljs-number">2</span>) {
+                <span class="hljs-keyword">if</span> (v &gt;= <span class="hljs-number">0</span> &amp;&amp; v &lt; n &amp;&amp; uf.has(v)) {
+                    uf.union(v, u);
+                }
+            }
+            ret[i] = max;
+            <span class="hljs-keyword">int</span> ru = uf.find(u);
+            max = Math.max(max, uf.sum[ru]);
+        }
+        <span class="hljs-keyword">return</span> ret;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

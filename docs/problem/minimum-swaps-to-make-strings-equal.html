@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Swaps to Make Strings Equal - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1247. Minimum Swaps to Make Strings Equal</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/determine-if-two-strings-are-close.html">Determine if Two Strings Are Close</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given two strings <code>s1</code> and <code>s2</code> of equal length consisting of letters <code>"x"</code> and <code>"y"</code> <strong>only</strong>. Your task is to make these two strings equal to each other. You can swap any two characters that belong to <strong>different</strong> strings, which means: swap <code>s1[i]</code> and <code>s2[j]</code>.</p>
+<p>Return the minimum number of swaps required to make <code>s1</code> and <code>s2</code> equal, or return <code>-1</code> if it is impossible to do so.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> <span class="hljs-built_in">s1</span> = <span class="hljs-string">"xx"</span>, <span class="hljs-built_in">s2</span> = <span class="hljs-string">"yy"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">1</span>
+<span class="hljs-symbol">Explanation:</span> <span class="hljs-keyword">Swap </span><span class="hljs-built_in">s1</span>[<span class="hljs-number">0</span>] <span class="hljs-keyword">and </span><span class="hljs-built_in">s2</span>[<span class="hljs-number">1</span>], <span class="hljs-built_in">s1</span> = <span class="hljs-string">"yx"</span>, <span class="hljs-built_in">s2</span> = <span class="hljs-string">"yx"</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> <span class="hljs-built_in">s1</span> = <span class="hljs-string">"xy"</span>, <span class="hljs-built_in">s2</span> = <span class="hljs-string">"yx"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">2</span>
+<span class="hljs-symbol">Explanation:</span> <span class="hljs-keyword">Swap </span><span class="hljs-built_in">s1</span>[<span class="hljs-number">0</span>] <span class="hljs-keyword">and </span><span class="hljs-built_in">s2</span>[<span class="hljs-number">0</span>], <span class="hljs-built_in">s1</span> = <span class="hljs-string">"yy"</span>, <span class="hljs-built_in">s2</span> = <span class="hljs-string">"xx"</span>.
+<span class="hljs-keyword">Swap </span><span class="hljs-built_in">s1</span>[<span class="hljs-number">0</span>] <span class="hljs-keyword">and </span><span class="hljs-built_in">s2</span>[<span class="hljs-number">1</span>], <span class="hljs-built_in">s1</span> = <span class="hljs-string">"xy"</span>, <span class="hljs-built_in">s2</span> = <span class="hljs-string">"xy"</span>.
+Note that you cannot <span class="hljs-keyword">swap </span><span class="hljs-built_in">s1</span>[<span class="hljs-number">0</span>] <span class="hljs-keyword">and </span><span class="hljs-built_in">s1</span>[<span class="hljs-number">1</span>] to make <span class="hljs-built_in">s1</span> equal to <span class="hljs-string">"yx"</span>, <span class="hljs-built_in">cause</span> we can only <span class="hljs-keyword">swap </span>chars in <span class="hljs-keyword">different </span>strings.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: <span class="hljs-built_in">s1</span> = <span class="hljs-string">"xx"</span>, <span class="hljs-built_in">s2</span> = <span class="hljs-string">"xy"</span>
+<span class="hljs-symbol">Output</span>: -<span class="hljs-number">1</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s1.length, s2.length &lt;= 1000</code></p></li>
+<li><p><code>s1, s2</code> only contain <code>'x'</code> or <code>'y'</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minimumSwap</span><span class="hljs-params">(String s1, String s2)</span> </span>{
+        <span class="hljs-keyword">int</span> len = s1.length();
+        <span class="hljs-keyword">int</span> countX1 = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> countY1 = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> countX2 = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> countY2 = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) {
+            <span class="hljs-keyword">if</span> (s1.charAt(i) != s2.charAt(i)) {
+                <span class="hljs-keyword">if</span> (s1.charAt(i) == <span class="hljs-string">'x'</span>) {
+                    countX1++;
+                } <span class="hljs-keyword">else</span> {
+                    countY1++;
+                }
+                <span class="hljs-keyword">if</span> (s2.charAt(i) == <span class="hljs-string">'x'</span>) {
+                    countX2++;
+                } <span class="hljs-keyword">else</span> {
+                    countY2++;
+                }
+            }
+        }
+
+        <span class="hljs-keyword">if</span> ((countX1 + countX2) % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+        }
+
+        <span class="hljs-keyword">if</span> (countX1 + countX2 &gt; countY1 + countY2) {
+            <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>) Math.ceil(countY1 * <span class="hljs-number">1.0</span> / <span class="hljs-number">2</span>) + (<span class="hljs-keyword">int</span>) Math.ceil(countY2 * <span class="hljs-number">1.0</span> / <span class="hljs-number">2</span>);
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>) Math.ceil(countX1 * <span class="hljs-number">1.0</span> / <span class="hljs-number">2</span>) + (<span class="hljs-keyword">int</span>) Math.ceil(countX2 * <span class="hljs-number">1.0</span> / <span class="hljs-number">2</span>);
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Build Array Where You Can Find The Maximum Exactly K Comparisons - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1420. Build Array Where You Can Find The Maximum Exactly K Comparisons</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given three integers <code>n</code>, <code>m</code> and <code>k</code>. Consider the following algorithm to find the maximum element of an array of positive integers:</p>
+<p><img src="https://assets.leetcode.com/uploads/2020/04/02/e.png" alt="" /></p>
+<p>You should build the array arr which has the following properties:</p>
+<ul>
+<li><p><code>arr</code> has exactly <code>n</code> integers.</p></li>
+<li><p><code>1 &lt;= arr[i] &lt;= m</code> where <code>(0 &lt;= i &lt; n)</code>.</p></li>
+<li><p>After applying the mentioned algorithm to <code>arr</code>, the value <code>search_cost</code> is equal to <code>k</code>.</p></li>
+</ul>
+<p>Return <strong>the number of ways</strong> to build the array <code>arr</code> under the mentioned conditions. As the answer may grow large, the answer <strong>must be</strong> computed modulo <code>109 + 7</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">2</span>, m = <span class="hljs-number">3</span>, k = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">6</span>
+Explanation: The possible <span class="hljs-built_in">array</span>s are [<span class="hljs-number">1</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">2</span>] [<span class="hljs-number">3</span>, <span class="hljs-number">3</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span><span class="hljs-string">,</span> <span class="hljs-string">m</span> <span class="hljs-string">=</span> <span class="hljs-number">2</span><span class="hljs-string">,</span> <span class="hljs-string">k</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">0</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">There</span> <span class="hljs-string">are</span> <span class="hljs-literal">no</span> <span class="hljs-string">possible</span> <span class="hljs-string">arrays</span> <span class="hljs-string">that</span> <span class="hljs-string">satisify</span> <span class="hljs-string">the</span> <span class="hljs-string">mentioned</span> <span class="hljs-string">conditions.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">9</span>, m = <span class="hljs-number">1</span>, k = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">1</span>
+Explanation: The only possible <span class="hljs-built_in">array</span> <span class="hljs-keyword">is</span> [<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= n &lt;= 50</code></p></li>
+<li><p><code>1 &lt;= m &lt;= 100</code></p></li>
+<li><p><code>0 &lt;= k &lt;= n</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> MOD = <span class="hljs-number">1_000_000_007</span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">numOfArrays</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> m, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">long</span>[][] ways = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[m + <span class="hljs-number">1</span>][k + <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">long</span>[][] sums = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[m + <span class="hljs-number">1</span>][k + <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> max = <span class="hljs-number">1</span>; max &lt;= m; max++) {
+            ways[max][<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;
+            sums[max][<span class="hljs-number">1</span>] = ways[max][<span class="hljs-number">1</span>] + sums[max - <span class="hljs-number">1</span>][<span class="hljs-number">1</span>];
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> count = <span class="hljs-number">2</span>; count &lt;= n; count++) {
+            <span class="hljs-keyword">long</span>[][] ways2 = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[m + <span class="hljs-number">1</span>][k + <span class="hljs-number">1</span>];
+            <span class="hljs-keyword">long</span>[][] sums2 = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[m + <span class="hljs-number">1</span>][k + <span class="hljs-number">1</span>];
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> max = <span class="hljs-number">1</span>; max &lt;= m; max++) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> cost = <span class="hljs-number">1</span>; cost &lt;= k; cost++) {
+                    <span class="hljs-keyword">long</span> noCost = max * ways[max][cost] % MOD;
+                    <span class="hljs-keyword">long</span> newCost = sums[max - <span class="hljs-number">1</span>][cost - <span class="hljs-number">1</span>];
+                    ways2[max][cost] = (noCost + newCost) % MOD;
+                    sums2[max][cost] = (sums2[max - <span class="hljs-number">1</span>][cost] + ways2[max][cost]) % MOD;
+                }
+            }
+            ways = ways2;
+            sums = sums2;
+        }
+        <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>) sums[m][k];
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

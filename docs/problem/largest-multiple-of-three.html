@@ -1,0 +1,88 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Largest Multiple of Three - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1363. Largest Multiple of Three</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an array of digits <code>digits</code>, return **the largest multiple of *<em>three</em>* that can be formed by concatenating some of the given digits in <strong>any order</strong>**. If there is no answer return an empty string.</p>
+<p>Since the answer may not fit in an integer data type, return the answer as a string. Note that the returning answer must not contain unnecessary leading zeros.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: digits = [<span class="hljs-number">8</span>,<span class="hljs-number">1</span>,<span class="hljs-number">9</span>]
+Output: <span class="hljs-string">"981"</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: digits = [<span class="hljs-number">8</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]
+Output: <span class="hljs-string">"8760"</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> digits = [<span class="hljs-number">1</span>]
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">""</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= digits.length &lt;= 104</code></p></li>
+<li><p><code>0 &lt;= digits[i] &lt;= 9</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">largestMultipleOfThree</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] digits)</span> </span>{
+        <span class="hljs-keyword">int</span> sum = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span>[] count = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">10</span>];
+        <span class="hljs-comment">// Here we are using the property that any no is divisible by 3 when its sum of digits is</span>
+        <span class="hljs-comment">// divisible by 3</span>
+        <span class="hljs-comment">// get sum of digits and count of each digit</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> x : digits) {
+            sum += x;
+            count[x]++;
+        }
+        StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();
+        <span class="hljs-keyword">int</span>[] copied = Arrays.copyOf(count, count.length);
+        <span class="hljs-comment">// if sum % 3 != 0 then processing required</span>
+        <span class="hljs-keyword">if</span> (sum % <span class="hljs-number">3</span> != <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">int</span> rem = sum % <span class="hljs-number">3</span>;
+            <span class="hljs-keyword">int</span> oldRem = rem;
+            <span class="hljs-keyword">while</span> (oldRem != <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">while</span> (rem != <span class="hljs-number">0</span>) {
+                    <span class="hljs-comment">// if the remainder that we are trying to delete and its required digits is not</span>
+                    <span class="hljs-comment">// present</span>
+                    <span class="hljs-comment">// then the value will become -ve at that digit</span>
+                    copied[rem % <span class="hljs-number">10</span>]--;
+                    <span class="hljs-comment">// increase the remainder by 3 each time a -ve value is found</span>
+                    <span class="hljs-comment">// and reset the rem and copied from orig count array and break</span>
+                    <span class="hljs-keyword">if</span> (copied[rem % <span class="hljs-number">10</span>] &lt; <span class="hljs-number">0</span>) {
+                        oldRem += <span class="hljs-number">3</span>;
+                        rem = oldRem;
+                        copied = Arrays.copyOf(count, count.length);
+                        <span class="hljs-keyword">break</span>;
+                    }
+                    rem /= <span class="hljs-number">10</span>;
+                    <span class="hljs-keyword">if</span> (rem == <span class="hljs-number">0</span>) {
+                        oldRem = <span class="hljs-number">0</span>;
+                    }
+                }
+            }
+        }
+        <span class="hljs-comment">// generate the largest number by considering from the last digit ie 9,8,7,6...</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">9</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            <span class="hljs-keyword">int</span> val = copied[i];
+            <span class="hljs-keyword">while</span> (val &gt; <span class="hljs-number">0</span>) {
+                sb.append(i);
+                val--;
+            }
+        }
+        <span class="hljs-comment">// check for any leading zeroes and remove</span>
+        <span class="hljs-keyword">while</span> (sb.length() &gt; <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">if</span> (sb.charAt(<span class="hljs-number">0</span>) != <span class="hljs-string">'0'</span>) {
+                <span class="hljs-keyword">break</span>;
+            } <span class="hljs-keyword">else</span> {
+                sb.deleteCharAt(<span class="hljs-number">0</span>);
+            }
+        }
+        <span class="hljs-keyword">return</span> sb.toString();
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

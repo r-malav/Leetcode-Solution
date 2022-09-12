@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Find Common Characters - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1002. Find Common Characters</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/intersection-of-two-arrays-ii.html">Intersection of Two Arrays II</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a string array <code>words</code>, return **an array of all characters that show up in all strings within the *<em><code>words</code></em>* (including duplicates)**. You may return the answer in *<em>any order</em>*.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> words = [<span class="hljs-string">"bella"</span>,<span class="hljs-string">"label"</span>,<span class="hljs-string">"roller"</span>]
+<span class="hljs-symbol">Output:</span> [<span class="hljs-string">"e"</span>,<span class="hljs-string">"l"</span>,<span class="hljs-string">"l"</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> words = [<span class="hljs-string">"cool"</span>,<span class="hljs-string">"lock"</span>,<span class="hljs-string">"cook"</span>]
+<span class="hljs-symbol">Output:</span> [<span class="hljs-string">"c"</span>,<span class="hljs-string">"o"</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= words.length &lt;= 100</code></p></li>
+<li><p><code>1 &lt;= words[i].length &lt;= 100</code></p></li>
+<li><p><code>words[i]</code> consists of lowercase English letters.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title">commonChars</span><span class="hljs-params">(String[] words)</span> </span>{
+        <span class="hljs-keyword">if</span> (words == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(<span class="hljs-string">"words null"</span>);
+        }
+        <span class="hljs-keyword">if</span> (words.length == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        }
+        String tmp = words[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; words.length; i++) {
+            tmp = getCommon(tmp, words[i]);
+        }
+        List&lt;String&gt; result = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; tmp.length(); i++) {
+            result.add(String.valueOf(tmp.charAt(i)));
+        }
+        <span class="hljs-keyword">return</span> result;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> String <span class="hljs-title">getCommon</span><span class="hljs-params">(String s1, String s2)</span> </span>{
+        <span class="hljs-keyword">if</span> (s1.length() == <span class="hljs-number">0</span> || s2.length() == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-string">""</span>;
+        }
+        <span class="hljs-keyword">int</span>[] c1c = countChars(s1);
+        <span class="hljs-keyword">int</span>[] c2c = countChars(s2);
+        StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; c1c.length; i++) {
+            <span class="hljs-keyword">int</span> m = Math.min(c1c[i], c2c[i]);
+            <span class="hljs-keyword">while</span> (m &gt; <span class="hljs-number">0</span>) {
+                sb.append((<span class="hljs-keyword">char</span>) (<span class="hljs-string">'a'</span> + i));
+                m--;
+            }
+        }
+        <span class="hljs-keyword">return</span> sb.toString();
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] countChars(String str) {
+        <span class="hljs-keyword">int</span>[] result = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">26</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; str.length(); i++) {
+            result[str.charAt(i) - <span class="hljs-string">'a'</span>]++;
+        }
+        <span class="hljs-keyword">return</span> result;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

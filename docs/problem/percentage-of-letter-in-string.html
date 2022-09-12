@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Percentage of Letter in String - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2278. Percentage of Letter in String</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/sort-characters-by-frequency.html">Sort Characters By Frequency</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a string <code>s</code> and a character <code>letter</code>, return** the <strong>percentage</strong> of characters in <strong><code>s</code></strong> that equal <strong><code>letter</code></strong> <strong>rounded down</strong> to the nearest whole percent.**</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">s</span> <span class="hljs-string">=</span> <span class="hljs-string">"foobar"</span><span class="hljs-string">,</span> <span class="hljs-string">letter</span> <span class="hljs-string">=</span> <span class="hljs-string">"o"</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">33</span>
+<span class="hljs-attr">Explanation:</span>
+<span class="hljs-string">The</span> <span class="hljs-string">percentage</span> <span class="hljs-string">of</span> <span class="hljs-string">characters</span> <span class="hljs-string">in</span> <span class="hljs-string">s</span> <span class="hljs-string">that</span> <span class="hljs-string">equal</span> <span class="hljs-string">the</span> <span class="hljs-string">letter</span> <span class="hljs-string">'o'</span> <span class="hljs-string">is</span> <span class="hljs-number">2</span> <span class="hljs-string">/</span> <span class="hljs-number">6</span> <span class="hljs-string">*</span> <span class="hljs-number">100</span><span class="hljs-string">%</span> <span class="hljs-string">=</span> <span class="hljs-number">33</span><span class="hljs-string">%</span> <span class="hljs-string">when</span> <span class="hljs-string">rounded</span> <span class="hljs-string">down,</span> <span class="hljs-string">so</span> <span class="hljs-string">we</span> <span class="hljs-string">return</span> <span class="hljs-number">33</span><span class="hljs-string">.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> s = <span class="hljs-string">"jjjj"</span>, letter = <span class="hljs-string">"k"</span>
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-number">0</span>
+Explanation:
+The percentage of characters in s that equal the letter <span class="hljs-string">'k'</span> <span class="hljs-keyword">is</span> <span class="hljs-number">0</span>%, <span class="hljs-keyword">so</span> we <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 100</code></p></li>
+<li><p><code>s</code> consists of lowercase English letters.</p></li>
+<li><p><code>letter</code> is a lowercase English letter.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">percentageLetter</span><span class="hljs-params">(String s, <span class="hljs-keyword">char</span> letter)</span> </span>{
+        <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> n = s.length();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> (s.charAt(i) == letter) {
+                ++count;
+            }
+        }
+        <span class="hljs-keyword">return</span> (count * <span class="hljs-number">100</span>) / (n);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

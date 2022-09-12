@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Swap For Longest Repeated Character Substring - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1156. Swap For Longest Repeated Character Substring</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sliding-window">Sliding Window</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a string <code>text</code>. You can swap two of the characters in the <code>text</code>.</p>
+<p>Return <strong>the length of the longest substring with repeated characters</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: <span class="hljs-keyword">text</span> = <span class="hljs-string">"ababa"</span>
+Output: <span class="hljs-number">3</span>
+Explanation: We can swap <span class="hljs-keyword">the</span> <span class="hljs-keyword">first</span> <span class="hljs-string">'b'</span> <span class="hljs-keyword">with</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">last</span> <span class="hljs-string">'a'</span>, <span class="hljs-keyword">or</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">last</span> <span class="hljs-string">'b'</span> <span class="hljs-keyword">with</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">first</span> <span class="hljs-string">'a'</span>. Then, <span class="hljs-keyword">the</span> longest repeated <span class="hljs-keyword">character</span> substring is <span class="hljs-string">"aaa"</span> <span class="hljs-keyword">with</span> <span class="hljs-built_in">length</span> <span class="hljs-number">3.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: <span class="hljs-keyword">text</span> = <span class="hljs-string">"aaabaaa"</span>
+Output: <span class="hljs-number">6</span>
+Explanation: Swap <span class="hljs-string">'b'</span> <span class="hljs-keyword">with</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">last</span> <span class="hljs-string">'a'</span> (<span class="hljs-keyword">or</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">first</span> <span class="hljs-string">'a'</span>), <span class="hljs-keyword">and</span> we <span class="hljs-built_in">get</span> longest repeated <span class="hljs-keyword">character</span> substring <span class="hljs-string">"aaaaaa"</span> <span class="hljs-keyword">with</span> <span class="hljs-built_in">length</span> <span class="hljs-number">6.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-keyword">Input</span>: <span class="hljs-type">text</span> = "aaaaa"
+Output: <span class="hljs-number">5</span>
+Explanation: <span class="hljs-keyword">No</span> need <span class="hljs-keyword">to</span> swap, longest repeated <span class="hljs-type">character</span> substring <span class="hljs-keyword">is</span> "aaaaa" <span class="hljs-keyword">with</span> length <span class="hljs-keyword">is</span> <span class="hljs-number">5.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= text.length &lt;= 2 * 104</code></p></li>
+<li><p><code>text</code> consist of lowercase English characters only.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Pair</span> </span>{
+        <span class="hljs-keyword">char</span> character;
+        <span class="hljs-keyword">int</span> count;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Pair</span><span class="hljs-params">(<span class="hljs-keyword">char</span> c, <span class="hljs-keyword">int</span> count)</span> </span>{
+            <span class="hljs-keyword">this</span>.character = c;
+            <span class="hljs-keyword">this</span>.count = count;
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxRepOpt1</span><span class="hljs-params">(String text)</span> </span>{
+        List&lt;Pair&gt; pairs = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        Map&lt;Character, Integer&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-comment">// collect counts for each char-block</span>
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (i &lt; text.length()) {
+            <span class="hljs-keyword">char</span> c = text.charAt(i);
+            <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">while</span> (i &lt; text.length() &amp;&amp; text.charAt(i) == c) {
+                count++;
+                i++;
+            }
+            pairs.add(<span class="hljs-keyword">new</span> Pair(c, count));
+            map.put(c, map.getOrDefault(c, <span class="hljs-number">0</span>) + count);
+        }
+        <span class="hljs-keyword">int</span> max = <span class="hljs-number">0</span>;
+        <span class="hljs-comment">// case 1, swap 1 item to the boundary of a consecutive cha-block to achieve possible max</span>
+        <span class="hljs-comment">// length</span>
+        <span class="hljs-comment">// we need total count to make sure whether a swap is possible!</span>
+        <span class="hljs-keyword">for</span> (Pair p : pairs) {
+            <span class="hljs-keyword">int</span> totalCount = map.get(p.character);
+            <span class="hljs-keyword">if</span> (totalCount &gt; p.count) {
+                max = Math.max(max, p.count + <span class="hljs-number">1</span>);
+            } <span class="hljs-keyword">else</span> {
+                max = Math.max(max, p.count);
+            }
+        }
+        <span class="hljs-comment">// case 2, find xxxxYxxxxx pattern</span>
+        <span class="hljs-comment">// we need total count to make sure whether a swap is possible!</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>; j &lt; pairs.size() - <span class="hljs-number">1</span>; j++) {
+            <span class="hljs-keyword">if</span> (pairs.get(j - <span class="hljs-number">1</span>).character == pairs.get(j + <span class="hljs-number">1</span>).character
+                    &amp;&amp; pairs.get(j).count == <span class="hljs-number">1</span>) {
+                <span class="hljs-keyword">int</span> totalCount = map.get(pairs.get(j - <span class="hljs-number">1</span>).character);
+                <span class="hljs-keyword">int</span> groupSum = pairs.get(j - <span class="hljs-number">1</span>).count + pairs.get(j + <span class="hljs-number">1</span>).count;
+                <span class="hljs-keyword">if</span> (totalCount &gt; groupSum) {
+                    max = Math.max(max, groupSum + <span class="hljs-number">1</span>);
+                } <span class="hljs-keyword">else</span> {
+                    max = Math.max(max, groupSum);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> max;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

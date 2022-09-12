@@ -1,0 +1,98 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>The Number of the Smallest Unoccupied Chair - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1942. The Number of the Smallest Unoccupied Chair</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/heap-priority-queue">Heap (Priority Queue)</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/ordered-set">Ordered Set</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is a party where <code>n</code> friends numbered from <code>0</code> to <code>n - 1</code> are attending. There is an <strong>infinite</strong> number of chairs in this party that are numbered from <code>0</code> to <code>infinity</code>. When a friend arrives at the party, they sit on the unoccupied chair with the <strong>smallest number</strong>.</p>
+<ul>
+<li>For example, if chairs <code>0</code>, <code>1</code>, and <code>5</code> are occupied when a friend comes, they will sit on chair number <code>2</code>.</li>
+</ul>
+<p>When a friend leaves the party, their chair becomes unoccupied at the moment they leave. If another friend arrives at that same moment, they can sit in that chair.</p>
+<p>You are given a <strong>0-indexed</strong> 2D integer array <code>times</code> where <code>times[i] = [arrivali, leavingi]</code>, indicating the arrival and leaving times of the <code>ith</code> friend respectively, and an integer <code>targetFriend</code>. All arrival times are <strong>distinct</strong>.</p>
+<p>Return** the <strong>chair number</strong> that the friend numbered <strong><code>targetFriend</code></strong> will sit on**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: times = [[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">6</span>]], targetFriend = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">1</span>
+Explanation: 
+- Friend <span class="hljs-number">0</span> arrives at time <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> sits on chair <span class="hljs-number">0.</span>
+- Friend <span class="hljs-number">1</span> arrives at time <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> sits on chair <span class="hljs-number">1.</span>
+- Friend <span class="hljs-number">1</span> leaves at time <span class="hljs-number">3</span> <span class="hljs-keyword">and</span> chair <span class="hljs-number">1</span> becomes empty.
+- Friend <span class="hljs-number">0</span> leaves at time <span class="hljs-number">4</span> <span class="hljs-keyword">and</span> chair <span class="hljs-number">0</span> becomes empty.
+- Friend <span class="hljs-number">2</span> arrives at time <span class="hljs-number">4</span> <span class="hljs-keyword">and</span> sits on chair <span class="hljs-number">0.</span>
+Since friend <span class="hljs-number">1</span> sat on chair <span class="hljs-number">1</span>, we <span class="hljs-keyword">return</span> <span class="hljs-number">1.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: times = [[<span class="hljs-number">3</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">6</span>]], targetFriend = <span class="hljs-number">0</span>
+Output: <span class="hljs-number">2</span>
+Explanation: 
+- Friend <span class="hljs-number">1</span> arrives at time <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> sits on chair <span class="hljs-number">0.</span>
+- Friend <span class="hljs-number">2</span> arrives at time <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> sits on chair <span class="hljs-number">1.</span>
+- Friend <span class="hljs-number">0</span> arrives at time <span class="hljs-number">3</span> <span class="hljs-keyword">and</span> sits on chair <span class="hljs-number">2.</span>
+- Friend <span class="hljs-number">1</span> leaves at time <span class="hljs-number">5</span> <span class="hljs-keyword">and</span> chair <span class="hljs-number">0</span> becomes empty.
+- Friend <span class="hljs-number">2</span> leaves at time <span class="hljs-number">6</span> <span class="hljs-keyword">and</span> chair <span class="hljs-number">1</span> becomes empty.
+- Friend <span class="hljs-number">0</span> leaves at time <span class="hljs-number">10</span> <span class="hljs-keyword">and</span> chair <span class="hljs-number">2</span> becomes empty.
+Since friend <span class="hljs-number">0</span> sat on chair <span class="hljs-number">2</span>, we <span class="hljs-keyword">return</span> <span class="hljs-number">2.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == times.length</code></p></li>
+<li><p><code>2 &lt;= n &lt;= 104</code></p></li>
+<li><p><code>times[i].length == 2</code></p></li>
+<li><p><code>1 &lt;= arrivali &lt; leavingi &lt;= 105</code></p></li>
+<li><p><code>0 &lt;= targetFriend &lt;= n - 1</code></p></li>
+<li><p>Each <code>arrivali</code> time is <strong>distinct</strong>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">smallestChair</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] times, <span class="hljs-keyword">int</span> targetFriend)</span> </span>{
+        PriorityQueue&lt;Integer&gt; minheap = <span class="hljs-keyword">new</span> PriorityQueue&lt;&gt;();
+        minheap.offer(<span class="hljs-number">0</span>);
+        Person[] all = <span class="hljs-keyword">new</span> Person[times.length * <span class="hljs-number">2</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; times.length; i++) {
+            all[<span class="hljs-number">2</span> * i] = <span class="hljs-keyword">new</span> Person(i, times[i][<span class="hljs-number">0</span>], <span class="hljs-keyword">false</span>, <span class="hljs-keyword">true</span>);
+            all[<span class="hljs-number">2</span> * i + <span class="hljs-number">1</span>] = <span class="hljs-keyword">new</span> Person(i, times[i][<span class="hljs-number">1</span>], <span class="hljs-keyword">true</span>, <span class="hljs-keyword">false</span>);
+        }
+        Arrays.sort(
+                all,
+                (a, b) -&gt; {
+                    <span class="hljs-keyword">int</span> i = a.leave ? -<span class="hljs-number">1</span> : <span class="hljs-number">1</span>;
+                    <span class="hljs-keyword">int</span> j = b.leave ? -<span class="hljs-number">1</span> : <span class="hljs-number">1</span>;
+                    <span class="hljs-keyword">return</span> a.time == b.time ? i - j : a.time - b.time;
+                });
+
+        <span class="hljs-keyword">int</span>[] seat = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[times.length];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; <span class="hljs-keyword">true</span>; i++) {
+            <span class="hljs-keyword">if</span> (all[i].arrive) {
+                <span class="hljs-keyword">if</span> (targetFriend == all[i].idx) {
+                    <span class="hljs-keyword">return</span> minheap.peek();
+                }
+                seat[all[i].idx] = minheap.poll();
+                <span class="hljs-keyword">if</span> (minheap.isEmpty()) {
+                    minheap.offer(seat[all[i].idx] + <span class="hljs-number">1</span>);
+                }
+            } <span class="hljs-keyword">else</span> {
+                minheap.offer(seat[all[i].idx]);
+            }
+        }
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Person</span> </span>{
+        <span class="hljs-keyword">boolean</span> leave;
+        <span class="hljs-keyword">boolean</span> arrive;
+        <span class="hljs-keyword">int</span> time;
+        <span class="hljs-keyword">int</span> idx;
+
+        Person(<span class="hljs-keyword">int</span> idx, <span class="hljs-keyword">int</span> time, <span class="hljs-keyword">boolean</span> leave, <span class="hljs-keyword">boolean</span> arrive) {
+            <span class="hljs-keyword">this</span>.time = time;
+            <span class="hljs-keyword">this</span>.leave = leave;
+            <span class="hljs-keyword">this</span>.arrive = arrive;
+            <span class="hljs-keyword">this</span>.idx = idx;
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

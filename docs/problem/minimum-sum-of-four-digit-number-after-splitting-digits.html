@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Sum of Four Digit Number After Splitting Digits - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2160. Minimum Sum of Four Digit Number After Splitting Digits</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/add-digits.html">Add Digits</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>positive</strong> integer <code>num</code> consisting of exactly four digits. Split <code>num</code> into two new integers <code>new1</code> and <code>new2</code> by using the <strong>digits</strong> found in <code>num</code>. <strong>Leading zeros</strong> are allowed in <code>new1</code> and <code>new2</code>, and <strong>all</strong> the digits found in <code>num</code> must be used.</p>
+<ul>
+<li>For example, given <code>num = 2932</code>, you have the following digits: two <code>2</code>'s, one <code>9</code> and one <code>3</code>. Some of the possible pairs <code>[new1, new2]</code> are <code>[22, 93]</code>, <code>[23, 92]</code>, <code>[223, 9]</code> and <code>[2, 329]</code>.</li>
+</ul>
+<p>Return **the *<em>minimum</em>* possible sum of <strong><code>new1</code></strong> and **<code>new2</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: num = <span class="hljs-number">2932</span>
+Output: <span class="hljs-number">52</span>
+Explanation: Some possible pairs [new1, new2] are [<span class="hljs-number">29</span>, <span class="hljs-number">23</span>], [<span class="hljs-number">223</span>, <span class="hljs-number">9</span>], etc.
+The minimum sum can be obtained by the pair [<span class="hljs-number">29</span>, <span class="hljs-number">23</span>]: <span class="hljs-number">29</span> + <span class="hljs-number">23</span> = <span class="hljs-number">52.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: num = <span class="hljs-number">4009</span>
+Output: <span class="hljs-number">13</span>
+Explanation: Some possible pairs [new1, new2] are [<span class="hljs-number">0</span>, <span class="hljs-number">49</span>], [<span class="hljs-number">490</span>, <span class="hljs-number">0</span>], etc. 
+The minimum sum can be obtained by the pair [<span class="hljs-number">4</span>, <span class="hljs-number">9</span>]: <span class="hljs-number">4</span> + <span class="hljs-number">9</span> = <span class="hljs-number">13.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1000 &lt;= num &lt;= 9999</code></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minimumSum</span><span class="hljs-params">(<span class="hljs-keyword">int</span> num)</span> </span>{
+        <span class="hljs-keyword">int</span>[] digit = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">4</span>];
+        <span class="hljs-keyword">int</span> cur = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (num &gt; <span class="hljs-number">0</span>) {
+            digit[cur++] = num % <span class="hljs-number">10</span>;
+            num /= <span class="hljs-number">10</span>;
+        }
+        Arrays.sort(digit);
+        <span class="hljs-keyword">int</span> num1 = digit[<span class="hljs-number">0</span>] * <span class="hljs-number">10</span> + digit[<span class="hljs-number">2</span>];
+        <span class="hljs-keyword">int</span> num2 = digit[<span class="hljs-number">1</span>] * <span class="hljs-number">10</span> + digit[<span class="hljs-number">3</span>];
+        <span class="hljs-keyword">return</span> num1 + num2;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

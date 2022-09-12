@@ -1,0 +1,112 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Cost to Reach Destination in Time - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1928. Minimum Cost to Reach Destination in Time</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/graph">Graph</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-cost-of-trip-with-k-highways.html">Maximum Cost of Trip With K Highways</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-path-quality-of-a-graph.html">Maximum Path Quality of a Graph</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-cost-to-reach-city-with-discounts.html">Minimum Cost to Reach City With Discounts</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is a country of <code>n</code> cities numbered from <code>0</code> to <code>n - 1</code> where <strong>all the cities are connected</strong> by bi-directional roads. The roads are represented as a 2D integer array <code>edges</code> where <code>edges[i] = [xi, yi, timei]</code> denotes a road between cities <code>xi</code> and <code>yi</code> that takes <code>timei</code> minutes to travel. There may be multiple roads of differing travel times connecting the same two cities, but no road connects a city to itself.</p>
+<p>Each time you pass through a city, you must pay a passing fee. This is represented as a <strong>0-indexed</strong> integer array <code>passingFees</code> of length <code>n</code> where <code>passingFees[j]</code> is the amount of dollars you must pay when you pass through city <code>j</code>.</p>
+<p>In the beginning, you are at city <code>0</code> and want to reach city <code>n - 1</code> in <code>maxTime</code>** minutes or less**. The *<em>cost</em>* of your journey is the <strong>summation of passing fees</strong> for each city that you passed through at some moment of your journey (<strong>including</strong> the source and destination cities).</p>
+<p>Given <code>maxTime</code>, <code>edges</code>, and <code>passingFees</code>, return **the *<em>minimum cost</em>* to complete your journey, or <strong><code>-1</code></strong> if you cannot complete it within <strong><code>maxTime</code></strong> minutes**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/06/04/leetgraph1-1.png" alt="" /></p>
+<pre><code class="hljs">Input: maxTime = <span class="hljs-number">30</span>, edges = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">15</span>]], passingFees = [<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">20</span>,<span class="hljs-number">20</span>,<span class="hljs-number">3</span>]
+Output: <span class="hljs-number">11</span>
+Explanation: The path to take <span class="hljs-keyword">is</span> <span class="hljs-number">0</span> -&gt; <span class="hljs-number">1</span> -&gt; <span class="hljs-number">2</span> -&gt; <span class="hljs-number">5</span>, which takes <span class="hljs-number">30</span> minutes <span class="hljs-keyword">and</span> has $<span class="hljs-number">11</span> worth of passing fees.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/06/04/copy-of-leetgraph1-1.png" alt="" /></p>
+<pre><code class="hljs">Input: maxTime = <span class="hljs-number">29</span>, edges = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">15</span>]], passingFees = [<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">20</span>,<span class="hljs-number">20</span>,<span class="hljs-number">3</span>]
+Output: <span class="hljs-number">48</span>
+Explanation: The path to take <span class="hljs-keyword">is</span> <span class="hljs-number">0</span> -&gt; <span class="hljs-number">3</span> -&gt; <span class="hljs-number">4</span> -&gt; <span class="hljs-number">5</span>, which takes <span class="hljs-number">26</span> minutes <span class="hljs-keyword">and</span> has $<span class="hljs-number">48</span> worth of passing fees.
+You cannot take path <span class="hljs-number">0</span> -&gt; <span class="hljs-number">1</span> -&gt; <span class="hljs-number">2</span> -&gt; <span class="hljs-number">5</span> since it would take too long.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: maxTime = <span class="hljs-number">25</span>, edges = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">15</span>]], passingFees = [<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">20</span>,<span class="hljs-number">20</span>,<span class="hljs-number">3</span>]
+Output: <span class="hljs-number">-1</span>
+Explanation: There <span class="hljs-keyword">is</span> no way to reach city <span class="hljs-number">5</span> <span class="hljs-keyword">from</span> city <span class="hljs-number">0</span> within <span class="hljs-number">25</span> minutes.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= maxTime &lt;= 1000</code></p></li>
+<li><p><code>n == passingFees.length</code></p></li>
+<li><p><code>2 &lt;= n &lt;= 1000</code></p></li>
+<li><p><code>n - 1 &lt;= edges.length &lt;= 1000</code></p></li>
+<li><p><code>0 &lt;= xi, yi &lt;= n - 1</code></p></li>
+<li><p><code>1 &lt;= timei &lt;= 1000</code></p></li>
+<li><p><code>1 &lt;= passingFees[j] &lt;= 1000</code>&nbsp;</p></li>
+<li><p>The graph may contain multiple edges between two nodes.</p></li>
+<li><p>The graph does not contain self loops.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minCost</span><span class="hljs-params">(<span class="hljs-keyword">int</span> maxTime, <span class="hljs-keyword">int</span>[][] edges, <span class="hljs-keyword">int</span>[] passingFees)</span> </span>{
+        <span class="hljs-keyword">final</span> PriorityQueue&lt;Tuple&gt; pq =
+                <span class="hljs-keyword">new</span> PriorityQueue&lt;&gt;((a, b) -&gt; a.cost == b.cost ? a.time - b.time : a.cost - b.cost);
+        <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> n = passingFees.length;
+        <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span>[] minTime = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        Arrays.fill(minTime, Integer.MAX_VALUE);
+        <span class="hljs-keyword">final</span> Graph graph = <span class="hljs-keyword">new</span> Graph();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span>[] edge : edges) {
+            graph.addEdge(edge[<span class="hljs-number">0</span>], edge[<span class="hljs-number">1</span>], edge[<span class="hljs-number">2</span>]);
+        }
+        pq.offer(<span class="hljs-keyword">new</span> Tuple(<span class="hljs-number">0</span>, passingFees[<span class="hljs-number">0</span>], <span class="hljs-number">0</span>));
+        <span class="hljs-keyword">while</span> (!pq.isEmpty()) {
+            <span class="hljs-keyword">final</span> Tuple curr = pq.poll();
+            <span class="hljs-keyword">if</span> (curr.time &lt;= maxTime &amp;&amp; curr.time &lt; minTime[curr.node]) {
+                minTime[curr.node] = curr.time;
+                <span class="hljs-keyword">if</span> (curr.node == n - <span class="hljs-number">1</span>) {
+                    <span class="hljs-keyword">return</span> curr.cost;
+                }
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">final</span> Edge edge : graph.getEdges(curr.node)) {
+                    <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> time = curr.time + edge.weight;
+                    <span class="hljs-keyword">if</span> (time &gt; maxTime || time &gt;= minTime[edge.dst]) {
+                        <span class="hljs-keyword">continue</span>;
+                    }
+                    pq.offer(<span class="hljs-keyword">new</span> Tuple(edge.dst, curr.cost + passingFees[edge.dst], time));
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Graph</span> </span>{
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Map&lt;Integer, List&lt;Edge&gt;&gt; edges = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+
+        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">addEdge</span><span class="hljs-params">(<span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> src, <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> dst, <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> weight)</span> </span>{
+            <span class="hljs-keyword">this</span>.edges.computeIfAbsent(src, k -&gt; <span class="hljs-keyword">new</span> ArrayList&lt;&gt;()).add(<span class="hljs-keyword">new</span> Edge(dst, weight));
+            <span class="hljs-keyword">this</span>.edges.computeIfAbsent(dst, k -&gt; <span class="hljs-keyword">new</span> ArrayList&lt;&gt;()).add(<span class="hljs-keyword">new</span> Edge(src, weight));
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">private</span> List&lt;Edge&gt; <span class="hljs-title">getEdges</span><span class="hljs-params">(<span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> node)</span> </span>{
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.edges.getOrDefault(node, <span class="hljs-keyword">new</span> ArrayList&lt;&gt;());
+        }
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Edge</span> </span>{
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> dst;
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> weight;
+
+        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-title">Edge</span><span class="hljs-params">(<span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> dst, <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> weight)</span> </span>{
+            <span class="hljs-keyword">this</span>.dst = dst;
+            <span class="hljs-keyword">this</span>.weight = weight;
+        }
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Tuple</span> </span>{
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> node;
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> cost;
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> time;
+
+        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-title">Tuple</span><span class="hljs-params">(<span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> node, <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> cost, <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> time)</span> </span>{
+            <span class="hljs-keyword">this</span>.node = node;
+            <span class="hljs-keyword">this</span>.cost = cost;
+            <span class="hljs-keyword">this</span>.time = time;
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimize Hamming Distance After Swap Operations - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1722. Minimize Hamming Distance After Swap Operations</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/union-find">Union Find</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/smallest-string-with-swaps.html">Smallest String With Swaps</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given two integer arrays, <code>source</code> and <code>target</code>, both of length <code>n</code>. You are also given an array <code>allowedSwaps</code> where each <code>allowedSwaps[i] = [ai, bi]</code> indicates that you are allowed to swap the elements at index <code>ai</code> and index <code>bi</code> <strong>(0-indexed)</strong> of array <code>source</code>. Note that you can swap elements at a specific pair of indices <strong>multiple</strong> times and in <strong>any</strong> order.</p>
+<p>The <strong>Hamming distance</strong> of two arrays of the same length, <code>source</code> and <code>target</code>, is the number of positions where the elements are different. Formally, it is the number of indices <code>i</code> for <code>0 &lt;= i &lt;= n-1</code> where <code>source[i] != target[i]</code> <strong>(0-indexed)</strong>.</p>
+<p>Return **the *<em>minimum Hamming distance</em>* of <strong><code>source</code></strong> and <strong><code>target</code></strong> after performing <strong>any</strong> amount of swap operations on array <strong><code>source</code></strong>.**</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: source = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>], target = [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>], allowedSwaps = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]]
+Output: <span class="hljs-number">1</span>
+Explanation: source can be transformed the following way:
+- Swap indices <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-number">1</span>: source = [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+- Swap indices <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> <span class="hljs-number">3</span>: source = [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>]
+The Hamming distance of source <span class="hljs-keyword">and</span> target <span class="hljs-keyword">is</span> <span class="hljs-number">1</span> as they differ <span class="hljs-keyword">in</span> <span class="hljs-number">1</span> position: index <span class="hljs-number">3.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: source = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>], target = [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>], allowedSwaps = []
+Output: <span class="hljs-number">2</span>
+Explanation: There are no allowed swaps.
+The Hamming distance of source <span class="hljs-keyword">and</span> target <span class="hljs-keyword">is</span> <span class="hljs-number">2</span> as they differ <span class="hljs-keyword">in</span> <span class="hljs-number">2</span> positions: index <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> index <span class="hljs-number">2.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: source = [<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>], target = [<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], allowedSwaps = [[<span class="hljs-number">0</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>]]
+Output: <span class="hljs-number">0</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == source.length == target.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= source[i], target[i] &lt;= 105</code></p></li>
+<li><p><code>0 &lt;= allowedSwaps.length &lt;= 105</code></p></li>
+<li><p><code>allowedSwaps[i].length == 2</code></p></li>
+<li><p><code>0 &lt;= ai, bi &lt;= n - 1</code></p></li>
+<li><p><code>ai != bi</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minimumHammingDistance</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] source, <span class="hljs-keyword">int</span>[] target, <span class="hljs-keyword">int</span>[][] allowedSwaps)</span> </span>{
+        <span class="hljs-keyword">int</span> i;
+        <span class="hljs-keyword">int</span> n = source.length;
+        <span class="hljs-keyword">int</span> weight = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span>[] parent = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            parent[i] = i;
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] swap : allowedSwaps) {
+            union(swap[<span class="hljs-number">0</span>], swap[<span class="hljs-number">1</span>], parent);
+        }
+        HashMap&lt;Integer, List&lt;Integer&gt;&gt; components = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            find(i, parent);
+            List&lt;Integer&gt; list = components.getOrDefault(parent[i], <span class="hljs-keyword">new</span> ArrayList&lt;&gt;());
+            list.add(i);
+            components.put(parent[i], list);
+        }
+        <span class="hljs-keyword">for</span> (Map.Entry&lt;Integer, List&lt;Integer&gt;&gt; entry : components.entrySet()) {
+            weight += getHammingDistance(source, target, entry.getValue());
+        }
+        <span class="hljs-keyword">return</span> weight;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getHammingDistance</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] source, <span class="hljs-keyword">int</span>[] target, List&lt;Integer&gt; indices)</span> </span>{
+        HashMap&lt;Integer, Integer&gt; list1 = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        HashMap&lt;Integer, Integer&gt; list2 = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i : indices) {
+            list1.put(target[i], <span class="hljs-number">1</span> + list1.getOrDefault(target[i], <span class="hljs-number">0</span>));
+            list2.put(source[i], <span class="hljs-number">1</span> + list2.getOrDefault(source[i], <span class="hljs-number">0</span>));
+        }
+        <span class="hljs-keyword">int</span> size = indices.size();
+        <span class="hljs-keyword">for</span> (Map.Entry&lt;Integer, Integer&gt; entry : list1.entrySet()) {
+            size -= Math.min(entry.getValue(), list2.getOrDefault(entry.getKey(), <span class="hljs-number">0</span>));
+        }
+        <span class="hljs-keyword">return</span> size;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">union</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span> y, <span class="hljs-keyword">int</span>[] parent)</span> </span>{
+        <span class="hljs-keyword">if</span> (x != y) {
+            <span class="hljs-keyword">int</span> a = find(x, parent);
+            <span class="hljs-keyword">int</span> b = find(y, parent);
+            <span class="hljs-keyword">if</span> (a != b) {
+                parent[a] = b;
+            }
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span>[] parent)</span> </span>{
+        <span class="hljs-keyword">int</span> y = x;
+        <span class="hljs-keyword">while</span> (y != parent[y]) {
+            y = parent[y];
+        }
+        parent[x] = y;
+        <span class="hljs-keyword">return</span> y;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Number of Buckets Required to Collect Rainwater from Houses - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2086. Minimum Number of Buckets Required to Collect Rainwater from Houses</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-number-of-people-that-can-be-caught-in-tag.html">Maximum Number of People That Can Be Caught in Tag</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/brightest-position-on-street.html">Brightest Position on Street</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>0-index</strong><strong>ed</strong> string <code>street</code>. Each character in <code>street</code> is either <code>'H'</code> representing a house or <code>'.'</code> representing an empty space.</p>
+<p>You can place buckets on the <strong>empty spaces</strong> to collect rainwater that falls from the adjacent houses. The rainwater from a house at index <code>i</code> is collected if a bucket is placed at index <code>i - 1</code> <strong>and/or</strong> index <code>i + 1</code>. A single bucket, if placed adjacent to two houses, can collect the rainwater from <strong>both</strong> houses.</p>
+<p>Return **the **minimum **number of buckets needed so that for *<em>every</em>* house, there is <strong>at least</strong> one bucket collecting rainwater from it, or <strong><code>-1</code></strong> if it is impossible.**</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: street = <span class="hljs-string">"H..H"</span>
+Output: <span class="hljs-number">2</span>
+Explanation:
+We can <span class="hljs-built_in">put</span> buckets <span class="hljs-keyword">at</span> index <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> index <span class="hljs-number">2.</span>
+<span class="hljs-string">"H..H"</span> -&gt; <span class="hljs-string">"HBBH"</span> (<span class="hljs-string">'B'</span> denotes where <span class="hljs-keyword">a</span> bucket is placed).
+The house <span class="hljs-keyword">at</span> index <span class="hljs-number">0</span> has <span class="hljs-keyword">a</span> bucket <span class="hljs-built_in">to</span> its <span class="hljs-literal">right</span>, <span class="hljs-keyword">and</span> <span class="hljs-keyword">the</span> house <span class="hljs-keyword">at</span> index <span class="hljs-number">3</span> has <span class="hljs-keyword">a</span> bucket <span class="hljs-built_in">to</span> its left.
+Thus, <span class="hljs-keyword">for</span> every house, there is <span class="hljs-keyword">at</span> least <span class="hljs-literal">one</span> bucket collecting rainwater <span class="hljs-built_in">from</span> <span class="hljs-keyword">it</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: street = <span class="hljs-string">".H.H."</span>
+Output: <span class="hljs-number">1</span>
+Explanation:
+We can <span class="hljs-built_in">put</span> <span class="hljs-keyword">a</span> bucket <span class="hljs-keyword">at</span> index <span class="hljs-number">2.</span>
+<span class="hljs-string">".H.H."</span> -&gt; <span class="hljs-string">".HBH."</span> (<span class="hljs-string">'B'</span> denotes where <span class="hljs-keyword">a</span> bucket is placed).
+The house <span class="hljs-keyword">at</span> index <span class="hljs-number">1</span> has <span class="hljs-keyword">a</span> bucket <span class="hljs-built_in">to</span> its <span class="hljs-literal">right</span>, <span class="hljs-keyword">and</span> <span class="hljs-keyword">the</span> house <span class="hljs-keyword">at</span> index <span class="hljs-number">3</span> has <span class="hljs-keyword">a</span> bucket <span class="hljs-built_in">to</span> its left.
+Thus, <span class="hljs-keyword">for</span> every house, there is <span class="hljs-keyword">at</span> least <span class="hljs-literal">one</span> bucket collecting rainwater <span class="hljs-built_in">from</span> <span class="hljs-keyword">it</span>.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: street = <span class="hljs-string">".HHH."</span>
+Output: <span class="hljs-number">-1</span>
+Explanation:
+There is no <span class="hljs-literal">empty</span> <span class="hljs-literal">space</span> <span class="hljs-built_in">to</span> place <span class="hljs-keyword">a</span> bucket <span class="hljs-built_in">to</span> collect <span class="hljs-keyword">the</span> rainwater <span class="hljs-built_in">from</span> <span class="hljs-keyword">the</span> house <span class="hljs-keyword">at</span> index <span class="hljs-number">2.</span>
+Thus, <span class="hljs-keyword">it</span> is impossible <span class="hljs-built_in">to</span> collect <span class="hljs-keyword">the</span> rainwater <span class="hljs-built_in">from</span> all <span class="hljs-keyword">the</span> houses.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= street.length &lt;= 105</code></p></li>
+<li><p><code>street[i]</code> is either<code>'H'</code> or <code>'.'</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minimumBuckets</span><span class="hljs-params">(String street)</span> </span>{
+        <span class="hljs-comment">// check if houses have space in between or not</span>
+        <span class="hljs-comment">// eg:".HHH."</span>
+        <span class="hljs-comment">// array formation</span>
+        <span class="hljs-keyword">char</span>[] arr = street.toCharArray();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; arr.length; i++) {
+            <span class="hljs-keyword">if</span> (arr[i] == <span class="hljs-string">'.'</span>) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-keyword">if</span> (i + <span class="hljs-number">1</span> &lt; arr.length &amp;&amp; arr[i + <span class="hljs-number">1</span>] == <span class="hljs-string">'.'</span>) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-comment">// H is present before curr character</span>
+            <span class="hljs-keyword">if</span> (i - <span class="hljs-number">1</span> &gt;= <span class="hljs-number">0</span> &amp;&amp; arr[i - <span class="hljs-number">1</span>] == <span class="hljs-string">'.'</span>) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">int</span> x = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; arr.length; j++) {
+            <span class="hljs-comment">// point move next we only take care of H</span>
+            <span class="hljs-keyword">if</span> (arr[j] == <span class="hljs-string">'H'</span>) {
+                <span class="hljs-keyword">if</span> (j - <span class="hljs-number">1</span> &gt;= <span class="hljs-number">0</span> &amp;&amp; arr[j - <span class="hljs-number">1</span>] == <span class="hljs-string">'X'</span>) {
+                    <span class="hljs-keyword">continue</span>;
+                }
+                <span class="hljs-keyword">if</span> (j + <span class="hljs-number">1</span> &lt; arr.length &amp;&amp; arr[j + <span class="hljs-number">1</span>] == <span class="hljs-string">'.'</span>) {
+                    arr[j + <span class="hljs-number">1</span>] = <span class="hljs-string">'X'</span>;
+                } <span class="hljs-keyword">else</span> {
+                    arr[j - <span class="hljs-number">1</span>] = <span class="hljs-string">'X'</span>;
+                }
+                x++;
+            }
+        }
+        <span class="hljs-keyword">return</span> x;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

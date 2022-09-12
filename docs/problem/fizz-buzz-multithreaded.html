@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Fizz Buzz Multithreaded - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1195. Fizz Buzz Multithreaded</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/concurrency">Concurrency</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/fizz-buzz.html">Fizz Buzz</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/print-zero-even-odd.html">Print Zero Even Odd</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You have the four functions:</p>
+<ul>
+<li><p><code>printFizz</code> that prints the word <code>"fizz"</code> to the console,</p></li>
+<li><p><code>printBuzz</code> that prints the word <code>"buzz"</code> to the console,</p></li>
+<li><p><code>printFizzBuzz</code> that prints the word <code>"fizzbuzz"</code> to the console, and</p></li>
+<li><p><code>printNumber</code> that prints a given integer to the console.</p></li>
+</ul>
+<p>You are given an instance of the class <code>FizzBuzz</code> that has four functions: <code>fizz</code>, <code>buzz</code>, <code>fizzbuzz</code> and <code>number</code>. The same instance of <code>FizzBuzz</code> will be passed to four different threads:</p>
+<ul>
+<li><p><strong>Thread A:</strong> calls <code>fizz()</code> that should output the word <code>"fizz"</code>.</p></li>
+<li><p><strong>Thread B:</strong> calls <code>buzz()</code> that should output the word <code>"buzz"</code>.</p></li>
+<li><p><strong>Thread C:</strong> calls <code>fizzbuzz()</code> that should output the word <code>"fizzbuzz"</code>.</p></li>
+<li><p><strong>Thread D:</strong> calls <code>number()</code> that should only output the integers.</p></li>
+</ul>
+<p>Modify the given class to output the series <code>[1, 2, "fizz", 4, "buzz", ...]</code> where the <code>ith</code> token (<strong>1-indexed</strong>) of the series is:</p>
+<ul>
+<li><p><code>"fizzbuzz"</code> if <code>i</code> is divisible by <code>3</code> and <code>5</code>,</p></li>
+<li><p><code>"fizz"</code> if <code>i</code> is divisible by <code>3</code> and not <code>5</code>,</p></li>
+<li><p><code>"buzz"</code> if <code>i</code> is divisible by <code>5</code> and not <code>3</code>, or</p></li>
+<li><p><code>i</code> if <code>i</code> is not divisible by <code>3</code> or <code>5</code>.</p></li>
+</ul>
+<p>Implement the <code>FizzBuzz</code> class:</p>
+<ul>
+<li><p><code>FizzBuzz(int n)</code> Initializes the object with the number <code>n</code> that represents the length of the sequence that should be printed.</p></li>
+<li><p><code>void fizz(printFizz)</code> Calls <code>printFizz</code> to output <code>"fizz"</code>.</p></li>
+<li><p><code>void buzz(printBuzz)</code> Calls <code>printBuzz</code> to output <code>"buzz"</code>.</p></li>
+<li><p><code>void fizzbuzz(printFizzBuzz)</code> Calls <code>printFizzBuzz</code> to output <code>"fizzbuzz"</code>.</p></li>
+<li><p><code>void number(printNumber)</code> Calls <code>printnumber</code> to output the numbers.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">15</span>
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-string">"fizz"</span>,<span class="hljs-number">4</span>,<span class="hljs-string">"buzz"</span>,<span class="hljs-string">"fizz"</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>,<span class="hljs-string">"fizz"</span>,<span class="hljs-string">"buzz"</span>,<span class="hljs-number">11</span>,<span class="hljs-string">"fizz"</span>,<span class="hljs-number">13</span>,<span class="hljs-number">14</span>,<span class="hljs-string">"fizzbuzz"</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">5</span>
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-string">"fizz"</span>,<span class="hljs-number">4</span>,<span class="hljs-string">"buzz"</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= n &lt;= 50</code></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FizzBuzz</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> AtomicInteger count = <span class="hljs-keyword">new</span> AtomicInteger(<span class="hljs-number">1</span>);
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> n;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">FizzBuzz</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-keyword">this</span>.n = n;
+    }
+
+    <span class="hljs-comment">// printFizz.run() outputs "fizz".</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">fizz</span><span class="hljs-params">(Runnable printFizz)</span> <span class="hljs-keyword">throws</span> InterruptedException </span>{
+        <span class="hljs-keyword">int</span> i;
+        <span class="hljs-keyword">while</span> ((i = count.get()) &lt;= n) {
+            <span class="hljs-keyword">if</span> (i % <span class="hljs-number">3</span> == <span class="hljs-number">0</span> &amp;&amp; i % <span class="hljs-number">5</span> != <span class="hljs-number">0</span>) {
+                printFizz.run();
+                count.compareAndSet(i, i + <span class="hljs-number">1</span>);
+            }
+        }
+    }
+
+    <span class="hljs-comment">// printBuzz.run() outputs "buzz".</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">buzz</span><span class="hljs-params">(Runnable printBuzz)</span> <span class="hljs-keyword">throws</span> InterruptedException </span>{
+        <span class="hljs-keyword">int</span> i;
+        <span class="hljs-keyword">while</span> ((i = count.get()) &lt;= n) {
+            count.get();
+            <span class="hljs-keyword">if</span> (i % <span class="hljs-number">5</span> == <span class="hljs-number">0</span> &amp;&amp; i % <span class="hljs-number">3</span> != <span class="hljs-number">0</span>) {
+                printBuzz.run();
+                count.compareAndSet(i, i + <span class="hljs-number">1</span>);
+            }
+        }
+    }
+
+    <span class="hljs-comment">// printFizzBuzz.run() outputs "fizzbuzz".</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">fizzbuzz</span><span class="hljs-params">(Runnable printFizzBuzz)</span> <span class="hljs-keyword">throws</span> InterruptedException </span>{
+        <span class="hljs-keyword">int</span> i;
+        <span class="hljs-keyword">while</span> ((i = count.get()) &lt;= n) {
+            <span class="hljs-keyword">if</span> (i % <span class="hljs-number">15</span> == <span class="hljs-number">0</span>) {
+                printFizzBuzz.run();
+                count.compareAndSet(i, i + <span class="hljs-number">1</span>);
+            }
+        }
+    }
+
+    <span class="hljs-comment">// printNumber.accept(x) outputs "x", where x is an integer.</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">number</span><span class="hljs-params">(IntConsumer printNumber)</span> <span class="hljs-keyword">throws</span> InterruptedException </span>{
+        <span class="hljs-keyword">int</span> i;
+        <span class="hljs-keyword">while</span> ((i = count.get()) &lt;= n) {
+            <span class="hljs-keyword">if</span> (i % <span class="hljs-number">5</span> != <span class="hljs-number">0</span> &amp;&amp; i % <span class="hljs-number">3</span> != <span class="hljs-number">0</span>) {
+                printNumber.accept(i);
+                count.compareAndSet(i, i + <span class="hljs-number">1</span>);
+            }
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Units on a Truck - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1710. Maximum Units on a Truck</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-bags-with-full-capacity-of-rocks.html">Maximum Bags With Full Capacity of Rocks</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are assigned to put some amount of boxes onto <strong>one truck</strong>. You are given a 2D array <code>boxTypes</code>, where <code>boxTypes[i] = [numberOfBoxesi, numberOfUnitsPerBoxi]</code>:</p>
+<ul>
+<li><p><code>numberOfBoxesi</code> is the number of boxes of type <code>i</code>.</p></li>
+<li><p><code>numberOfUnitsPerBoxi</code> is the number of units in each box of the type <code>i</code>.</p></li>
+</ul>
+<p>You are also given an integer <code>truckSize</code>, which is the <strong>maximum</strong> number of <strong>boxes</strong> that can be put on the truck. You can choose any boxes to put on the truck as long as the number&nbsp;of boxes does not exceed <code>truckSize</code>.</p>
+<p>Return **the *<em>maximum</em>* total number of <strong>units</strong> that can be put on the truck.**</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: boxTypes = [[1,3],[2,2],[3,1]], truckSize = 4
+Output: 8
+Explanation: There are:
+- 1 box of the first<span class="hljs-built_in"> type </span>that contains 3 units.
+- 2 boxes of the second<span class="hljs-built_in"> type </span>that contain 2 units each.
+- 3 boxes of the third<span class="hljs-built_in"> type </span>that contain 1 unit each.
+You can take all the boxes of the first <span class="hljs-keyword">and</span> second types, <span class="hljs-keyword">and</span> one box of the third type.
+The total number of units will be = (1 * 3) + (2 * 2) + (1 * 1) = 8.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: boxTypes = [[<span class="hljs-number">5</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">7</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">9</span>]], truckSize = <span class="hljs-number">10</span>
+Output: <span class="hljs-number">91</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= boxTypes.length &lt;= 1000</code></p></li>
+<li><p><code>1 &lt;= numberOfBoxesi, numberOfUnitsPerBoxi &lt;= 1000</code></p></li>
+<li><p><code>1 &lt;= truckSize &lt;= 106</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maximumUnits</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] boxTypes, <span class="hljs-keyword">int</span> truckSize)</span> </span>{
+        Arrays.sort(boxTypes, (b1, b2) -&gt; Integer.compare(b2[<span class="hljs-number">1</span>], b1[<span class="hljs-number">1</span>]));
+        <span class="hljs-keyword">int</span> maxUnits = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (truckSize &gt; <span class="hljs-number">0</span> &amp;&amp; i &lt; boxTypes.length) {
+            <span class="hljs-keyword">if</span> (boxTypes[i][<span class="hljs-number">0</span>] &lt;= truckSize) {
+                maxUnits += boxTypes[i][<span class="hljs-number">0</span>] * boxTypes[i][<span class="hljs-number">1</span>];
+                truckSize -= boxTypes[i][<span class="hljs-number">0</span>];
+            } <span class="hljs-keyword">else</span> {
+                maxUnits += Math.min(truckSize, boxTypes[i][<span class="hljs-number">0</span>]) * boxTypes[i][<span class="hljs-number">1</span>];
+                truckSize -= Math.min(truckSize, boxTypes[i][<span class="hljs-number">0</span>]);
+            }
+            i++;
+        }
+        <span class="hljs-keyword">return</span> maxUnits;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

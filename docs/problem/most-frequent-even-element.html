@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Most Frequent Even Element - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2404. Most Frequent Even Element</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/majority-element.html">Majority Element</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/majority-element-ii.html">Majority Element II</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/top-k-frequent-elements.html">Top K Frequent Elements</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/sort-characters-by-frequency.html">Sort Characters By Frequency</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an integer array <code>nums</code>, return <strong>the most frequent even element</strong>.</p>
+<p>If there is a tie, return the <strong>smallest</strong> one. If there is no such element, return <code>-1</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>]
+Output: <span class="hljs-number">2</span>
+Explanation:
+The even elements are <span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">and</span> <span class="hljs-number">4.</span> Of these, <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> <span class="hljs-number">4</span> appear the most.
+We <span class="hljs-keyword">return</span> the smallest one, which <span class="hljs-keyword">is</span> <span class="hljs-number">2.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">4</span>,<span class="hljs-number">4</span>,<span class="hljs-number">4</span>,<span class="hljs-number">9</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>]
+Output: <span class="hljs-number">4</span>
+Explanation: <span class="hljs-number">4</span> <span class="hljs-keyword">is</span> the even element appears the most.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">29</span>,<span class="hljs-number">47</span>,<span class="hljs-number">21</span>,<span class="hljs-number">41</span>,<span class="hljs-number">13</span>,<span class="hljs-number">37</span>,<span class="hljs-number">25</span>,<span class="hljs-number">7</span>]
+Output: <span class="hljs-number">-1</span>
+Explanation: There <span class="hljs-keyword">is</span> no even element.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= nums.length &lt;= 2000</code></p></li>
+<li><p><code>0 &lt;= nums[i] &lt;= 105</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">mostFrequentEven</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] A)</span> </span>{
+        HashMap&lt;Integer,Integer&gt; mp= <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">int</span> val=<span class="hljs-number">1000000</span>,freq=<span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i:A){
+            <span class="hljs-comment">//if even element</span>
+            <span class="hljs-keyword">if</span>(i%<span class="hljs-number">2</span>==<span class="hljs-number">0</span>){
+                <span class="hljs-comment">//increase frequency in map</span>
+                <span class="hljs-keyword">int</span> curr= mp.getOrDefault(i,<span class="hljs-number">0</span>)+<span class="hljs-number">1</span>;
+                mp.put(i,curr);
+                <span class="hljs-comment">//Update smallest with greatest frequency</span>
+                <span class="hljs-keyword">if</span>(curr&gt;freq || curr==freq &amp;&amp; i&lt;val){
+                    val=i;
+                    freq=curr;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> freq==<span class="hljs-number">0</span>? -<span class="hljs-number">1</span> : val;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

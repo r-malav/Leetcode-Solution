@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Check if Number Has Equal Digit Count and Digit Value - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2283. Check if Number Has Equal Digit Count and Digit Value</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/counting">Counting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/self-dividing-numbers.html">Self Dividing Numbers</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>0-indexed</strong> string <code>num</code> of length <code>n</code> consisting of digits.</p>
+<p>Return <code>true</code> **if for *<em>every</em>* index <strong><code>i</code></strong> in the range <strong><code>0 &lt;= i &lt; n</code></strong>, the digit <strong><code>i</code></strong> occurs <strong><code>num[i]</code></strong> times in <strong><code>num</code></strong>, otherwise return **<code>false</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: <span class="hljs-built_in">num</span> = <span class="hljs-string">"1210"</span>
+Output: <span class="hljs-literal">true</span>
+Explanation:
+<span class="hljs-built_in">num</span>[<span class="hljs-number">0</span>] = <span class="hljs-string">'1'</span>. The digit <span class="hljs-number">0</span> occurs once <span class="hljs-keyword">in</span> <span class="hljs-built_in">num</span>.
+<span class="hljs-built_in">num</span>[<span class="hljs-number">1</span>] = <span class="hljs-string">'2'</span>. The digit <span class="hljs-number">1</span> occurs twice <span class="hljs-keyword">in</span> <span class="hljs-built_in">num</span>.
+<span class="hljs-built_in">num</span>[<span class="hljs-number">2</span>] = <span class="hljs-string">'1'</span>. The digit <span class="hljs-number">2</span> occurs once <span class="hljs-keyword">in</span> <span class="hljs-built_in">num</span>.
+<span class="hljs-built_in">num</span>[<span class="hljs-number">3</span>] = <span class="hljs-string">'0'</span>. The digit <span class="hljs-number">3</span> occurs <span class="hljs-literal">zero</span> times <span class="hljs-keyword">in</span> <span class="hljs-built_in">num</span>.
+The condition holds <span class="hljs-literal">true</span> <span class="hljs-keyword">for</span> every index <span class="hljs-keyword">in</span> <span class="hljs-string">"1210"</span>, so <span class="hljs-literal">return</span> <span class="hljs-literal">true</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: <span class="hljs-built_in">num</span> = <span class="hljs-string">"030"</span>
+Output: <span class="hljs-literal">false</span>
+Explanation:
+<span class="hljs-built_in">num</span>[<span class="hljs-number">0</span>] = <span class="hljs-string">'0'</span>. The digit <span class="hljs-number">0</span> should occur <span class="hljs-literal">zero</span> times, but actually occurs twice <span class="hljs-keyword">in</span> <span class="hljs-built_in">num</span>.
+<span class="hljs-built_in">num</span>[<span class="hljs-number">1</span>] = <span class="hljs-string">'3'</span>. The digit <span class="hljs-number">1</span> should occur <span class="hljs-literal">three</span> times, but actually occurs <span class="hljs-literal">zero</span> times <span class="hljs-keyword">in</span> <span class="hljs-built_in">num</span>.
+<span class="hljs-built_in">num</span>[<span class="hljs-number">2</span>] = <span class="hljs-string">'0'</span>. The digit <span class="hljs-number">2</span> occurs <span class="hljs-literal">zero</span> times <span class="hljs-keyword">in</span> <span class="hljs-built_in">num</span>.
+The indices <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-number">1</span> both violate <span class="hljs-keyword">the</span> condition, so <span class="hljs-literal">return</span> <span class="hljs-literal">false</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == num.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 10</code></p></li>
+<li><p><code>num</code> consists of digits.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">digitCount</span><span class="hljs-params">(String num)</span> </span>{
+        <span class="hljs-keyword">int</span>[] cnt = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">11</span>];
+        <span class="hljs-keyword">char</span>[] arr = num.toCharArray();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> d : arr) {
+            ++cnt[d - <span class="hljs-string">'0'</span>];
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; arr.length; i++) {
+            <span class="hljs-keyword">if</span> (cnt[i] != arr[i] - <span class="hljs-string">'0'</span>) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

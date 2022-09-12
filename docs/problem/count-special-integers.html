@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Count Special Integers - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2376. Count Special Integers</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/count-numbers-with-unique-digits.html">Count Numbers with Unique Digits</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/k-th-smallest-in-lexicographical-order.html">K-th Smallest in Lexicographical Order</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>We call a positive integer <strong>special</strong> if all of its digits are <strong>distinct</strong>.</p>
+<p>Given a <strong>positive</strong> integer <code>n</code>, return **the number of special integers that belong to the interval **<code>[1, n]</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">20</span>
+Output: <span class="hljs-number">19</span>
+Explanation: All the <span class="hljs-built_in">int</span>egers <span class="hljs-keyword">from</span> <span class="hljs-number">1</span> to <span class="hljs-number">20</span>, except <span class="hljs-number">11</span>, are special. Thus, there are <span class="hljs-number">19</span> special <span class="hljs-built_in">int</span>egers.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">5</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">All</span> <span class="hljs-string">the</span> <span class="hljs-string">integers</span> <span class="hljs-string">from</span> <span class="hljs-number">1</span> <span class="hljs-string">to</span> <span class="hljs-number">5</span> <span class="hljs-string">are</span> <span class="hljs-string">special.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">135</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">110</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">There</span> <span class="hljs-string">are</span> <span class="hljs-number">110</span> <span class="hljs-string">integers</span> <span class="hljs-string">from</span> <span class="hljs-number">1</span> <span class="hljs-string">to</span> <span class="hljs-number">135</span> <span class="hljs-string">that</span> <span class="hljs-string">are</span> <span class="hljs-string">special.</span>
+<span class="hljs-attr">Some of the integers that are not special are:</span> <span class="hljs-number">22</span><span class="hljs-string">,</span> <span class="hljs-number">114</span><span class="hljs-string">,</span> <span class="hljs-string">and</span> <span class="hljs-number">131</span><span class="hljs-string">.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= n &lt;= 2 * 109</code></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] cntMap;
+    <span class="hljs-comment">// number n as an array, splitted by each digit</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] digits;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">countSpecialNumbers</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-keyword">if</span> (n &lt; <span class="hljs-number">10</span>) {
+            <span class="hljs-keyword">return</span> n;
+        }
+        <span class="hljs-keyword">int</span> len = (<span class="hljs-keyword">int</span>) Math.log10(n) + <span class="hljs-number">1</span>;
+        cntMap = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[len - <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">int</span> res = countUnbounded(len);
+        digits = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[len];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = len - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--, n /= <span class="hljs-number">10</span>) {
+            digits[i] = n % <span class="hljs-number">10</span>;
+        }
+        <span class="hljs-keyword">return</span> res + dfs(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> mask)</span> </span>{
+        <span class="hljs-keyword">if</span> (i == digits.length) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">int</span> res = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = i == <span class="hljs-number">0</span> ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>; j &lt; digits[i]; j++) {
+            <span class="hljs-keyword">if</span> ((mask &amp; (<span class="hljs-number">1</span> &lt;&lt; j)) == <span class="hljs-number">0</span>) {
+                <span class="hljs-comment">// unbounded lens left</span>
+                <span class="hljs-keyword">int</span> unbounded = digits.length - <span class="hljs-number">2</span> - i;
+                res += unbounded &gt;= <span class="hljs-number">0</span> ? count(unbounded, <span class="hljs-number">9</span> - i) : <span class="hljs-number">1</span>;
+            }
+        }
+        <span class="hljs-keyword">if</span> ((mask &amp; (<span class="hljs-number">1</span> &lt;&lt; digits[i])) == <span class="hljs-number">0</span>) {
+            res += dfs(i + <span class="hljs-number">1</span>, mask | (<span class="hljs-number">1</span> &lt;&lt; digits[i]));
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">count</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> max)</span> </span>{
+        <span class="hljs-keyword">if</span> (i == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> max;
+        }
+        <span class="hljs-keyword">return</span> (max - i) * count(i - <span class="hljs-number">1</span>, max);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">countUnbounded</span><span class="hljs-params">(<span class="hljs-keyword">int</span> len)</span> </span>{
+        <span class="hljs-keyword">int</span> res = <span class="hljs-number">9</span>;
+        cntMap[<span class="hljs-number">0</span>] = <span class="hljs-number">9</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; len - <span class="hljs-number">2</span>; i++) {
+            res += cntMap[i + <span class="hljs-number">1</span>] = cntMap[i] * (<span class="hljs-number">9</span> - i);
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

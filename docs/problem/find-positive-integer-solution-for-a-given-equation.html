@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Find Positive Integer Solution for a Given Equation - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1237. Find Positive Integer Solution for a Given Equation</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/two-pointers">Two Pointers</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/interactive">Interactive</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a callable function <code>f(x, y)</code> <strong>with a hidden formula</strong> and a value <code>z</code>, reverse engineer the formula and return **all positive integer pairs *<em><code>x</code></em>* and <strong><code>y</code></strong> where **<code>f(x,y) == z</code>. You may return the pairs in any order.</p>
+<p>While the exact formula is hidden, the function is monotonically increasing, i.e.:</p>
+<ul>
+<li><p><code>f(x, y) &lt; f(x + 1, y)</code></p></li>
+<li><p><code>f(x, y) &lt; f(x, y + 1)</code></p></li>
+</ul>
+<p>The function interface is defined like this:</p>
+<pre><code class="hljs"><span class="hljs-selector-tag">interface</span> <span class="hljs-selector-tag">CustomFunction</span> {
+<span class="hljs-attribute">public</span>:
+  // Returns some positive integer <span class="hljs-built_in">f</span>(x, y) for two positive integers x and y based on a formula.
+  int <span class="hljs-built_in">f</span>(int x, int y);
+};
+</code></pre>
+<p>We will judge your solution as follows:</p>
+<ul>
+<li><p>The judge has a list of <code>9</code> hidden implementations of <code>CustomFunction</code>, along with a way to generate an <strong>answer key</strong> of all valid pairs for a specific <code>z</code>.</p></li>
+<li><p>The judge will receive two inputs: a <code>function_id</code> (to determine which implementation to test your code with), and the target <code>z</code>.</p></li>
+<li><p>The judge will call your <code>findSolution</code> and compare your results with the <strong>answer key</strong>.</p></li>
+<li><p>If your results match the <strong>answer key</strong>, your solution will be <code>Accepted</code>.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">function_id</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span><span class="hljs-string">,</span> <span class="hljs-string">z</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-string">[[1,4],[2,3],[3,2],[4,1]]</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">The</span> <span class="hljs-string">hidden</span> <span class="hljs-string">formula</span> <span class="hljs-string">for</span> <span class="hljs-string">function_id</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span> <span class="hljs-string">is</span> <span class="hljs-string">f(x,</span> <span class="hljs-string">y)</span> <span class="hljs-string">=</span> <span class="hljs-string">x</span> <span class="hljs-string">+</span> <span class="hljs-string">y.</span>
+<span class="hljs-string">The</span> <span class="hljs-string">following</span> <span class="hljs-string">positive</span> <span class="hljs-string">integer</span> <span class="hljs-string">values</span> <span class="hljs-string">of</span> <span class="hljs-string">x</span> <span class="hljs-string">and</span> <span class="hljs-string">y</span> <span class="hljs-string">make</span> <span class="hljs-string">f(x,</span> <span class="hljs-string">y)</span> <span class="hljs-attr">equal to 5:</span>
+<span class="hljs-string">x=1,</span> <span class="hljs-string">y=4</span> <span class="hljs-string">-&gt;</span> <span class="hljs-string">f(1,</span> <span class="hljs-number">4</span><span class="hljs-string">)</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span> <span class="hljs-string">+</span> <span class="hljs-number">4</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span><span class="hljs-string">.</span>
+<span class="hljs-string">x=2,</span> <span class="hljs-string">y=3</span> <span class="hljs-string">-&gt;</span> <span class="hljs-string">f(2,</span> <span class="hljs-number">3</span><span class="hljs-string">)</span> <span class="hljs-string">=</span> <span class="hljs-number">2</span> <span class="hljs-string">+</span> <span class="hljs-number">3</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span><span class="hljs-string">.</span>
+<span class="hljs-string">x=3,</span> <span class="hljs-string">y=2</span> <span class="hljs-string">-&gt;</span> <span class="hljs-string">f(3,</span> <span class="hljs-number">2</span><span class="hljs-string">)</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span> <span class="hljs-string">+</span> <span class="hljs-number">2</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span><span class="hljs-string">.</span>
+<span class="hljs-string">x=4,</span> <span class="hljs-string">y=1</span> <span class="hljs-string">-&gt;</span> <span class="hljs-string">f(4,</span> <span class="hljs-number">1</span><span class="hljs-string">)</span> <span class="hljs-string">=</span> <span class="hljs-number">4</span> <span class="hljs-string">+</span> <span class="hljs-number">1</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span><span class="hljs-string">.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">function_id</span> <span class="hljs-string">=</span> <span class="hljs-number">2</span><span class="hljs-string">,</span> <span class="hljs-string">z</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-string">[[1,5],[5,1]]</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">The</span> <span class="hljs-string">hidden</span> <span class="hljs-string">formula</span> <span class="hljs-string">for</span> <span class="hljs-string">function_id</span> <span class="hljs-string">=</span> <span class="hljs-number">2</span> <span class="hljs-string">is</span> <span class="hljs-string">f(x,</span> <span class="hljs-string">y)</span> <span class="hljs-string">=</span> <span class="hljs-string">x</span> <span class="hljs-string">*</span> <span class="hljs-string">y.</span>
+<span class="hljs-string">The</span> <span class="hljs-string">following</span> <span class="hljs-string">positive</span> <span class="hljs-string">integer</span> <span class="hljs-string">values</span> <span class="hljs-string">of</span> <span class="hljs-string">x</span> <span class="hljs-string">and</span> <span class="hljs-string">y</span> <span class="hljs-string">make</span> <span class="hljs-string">f(x,</span> <span class="hljs-string">y)</span> <span class="hljs-attr">equal to 5:</span>
+<span class="hljs-string">x=1,</span> <span class="hljs-string">y=5</span> <span class="hljs-string">-&gt;</span> <span class="hljs-string">f(1,</span> <span class="hljs-number">5</span><span class="hljs-string">)</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span> <span class="hljs-string">*</span> <span class="hljs-number">5</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span><span class="hljs-string">.</span>
+<span class="hljs-string">x=5,</span> <span class="hljs-string">y=1</span> <span class="hljs-string">-&gt;</span> <span class="hljs-string">f(5,</span> <span class="hljs-number">1</span><span class="hljs-string">)</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span> <span class="hljs-string">*</span> <span class="hljs-number">1</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span><span class="hljs-string">.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= function_id &lt;= 9</code></p></li>
+<li><p><code>1 &lt;= z &lt;= 100</code></p></li>
+<li><p>It is guaranteed that the solutions of <code>f(x, y) == z</code> will be in the range <code>1 &lt;= x, y &lt;= 1000</code>.</p></li>
+<li><p>It is also guaranteed that <code>f(x, y)</code> will fit in 32 bit signed integer if <code>1 &lt;= x, y &lt;= 1000</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/*
+ * // This is the custom function interface.
+ * // You should not implement it, or speculate about its implementation
+ * class CustomFunction {
+ *     // Returns f(x, y) for any given positive integers x and y.
+ *     // Note that f(x, y) is increasing with respect to both x and y.
+ *     // i.e. f(x, y) &lt; f(x + 1, y), f(x, y) &lt; f(x, y + 1)
+ *     public int f(int x, int y);
+ * };
+ */</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+
+    <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; findSolution(CustomFunction customfunction, <span class="hljs-keyword">int</span> z) {
+        List&lt;List&lt;Integer&gt;&gt; result = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">int</span> x = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> y = <span class="hljs-number">1000</span>;
+        <span class="hljs-keyword">while</span> (x &lt; <span class="hljs-number">1001</span> &amp;&amp; y &gt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">int</span> functionResult = customfunction.f(x, y);
+            <span class="hljs-keyword">if</span> (functionResult &lt; z) {
+                x++;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (functionResult &gt; z) {
+                y--;
+            } <span class="hljs-keyword">else</span> {
+                result.add(Arrays.asList(x++, y--));
+            }
+        }
+        <span class="hljs-keyword">return</span> result;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

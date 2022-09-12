@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Path In Zigzag Labelled Binary Tree - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1104. Path In Zigzag Labelled Binary Tree</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/tree">Tree</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-tree">Binary Tree</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>In an infinite binary tree where every node has two children, the nodes are labelled in row order.</p>
+<p>In the odd numbered rows (ie., the first, third, fifth,…), the labelling is left to right, while in the even numbered rows (second, fourth, sixth,…), the labelling is right to left.</p>
+<p><img src="https://assets.leetcode.com/uploads/2019/06/24/tree.png" alt="" /></p>
+<p>Given the <code>label</code> of a node in this tree, return the labels in the path from the root of the tree to the&nbsp;node with that <code>label</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: label = <span class="hljs-number">14</span>
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">14</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: label = <span class="hljs-number">26</span>
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">6</span>,<span class="hljs-number">10</span>,<span class="hljs-number">26</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= label &lt;= 10^6</code></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title">pathInZigZagTree</span><span class="hljs-params">(<span class="hljs-keyword">int</span> label)</span> </span>{
+        List&lt;Integer&gt; answer = <span class="hljs-keyword">new</span> LinkedList&lt;&gt;();
+        <span class="hljs-keyword">while</span> (label != <span class="hljs-number">0</span>) {
+            answer.add(<span class="hljs-number">0</span>, label);
+            <span class="hljs-keyword">int</span> logNode = (<span class="hljs-keyword">int</span>) (Math.log(label) / Math.log(<span class="hljs-number">2</span>));
+            <span class="hljs-keyword">int</span> levelStart = (<span class="hljs-keyword">int</span>) (Math.pow(<span class="hljs-number">2</span>, logNode));
+            <span class="hljs-keyword">int</span> diff = label - levelStart;
+            <span class="hljs-keyword">int</span> d2 = diff / <span class="hljs-number">2</span>;
+            <span class="hljs-keyword">int</span> prevEnd = levelStart - <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">int</span> prevLabel = prevEnd - d2;
+            label = prevLabel;
+        }
+        <span class="hljs-keyword">return</span> answer;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

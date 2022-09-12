@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Generate a String With Characters That Have Odd Counts - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1374. Generate a String With Characters That Have Odd Counts</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an&nbsp;integer <code>n</code>, **return a string with <code>n</code>&nbsp;characters such that each character in such string occurs *<em>an odd number of times</em>***.</p>
+<p>The returned string must contain only lowercase English letters. If there are multiples valid strings, return <strong>any</strong> of them. &nbsp;</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: n = 4
+Output: <span class="hljs-string">"pppz"</span>
+Explanation: <span class="hljs-string">"pppz"</span> is a valid string since the character <span class="hljs-string">'p'</span> occurs three times <span class="hljs-keyword">and</span> the character <span class="hljs-string">'z'</span> occurs once.<span class="hljs-built_in"> Note </span>that there are many other valid strings such as <span class="hljs-string">"ohhh"</span> <span class="hljs-keyword">and</span> <span class="hljs-string">"love"</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: n = 2
+Output: <span class="hljs-string">"xy"</span>
+Explanation: <span class="hljs-string">"xy"</span> is a valid string since the characters <span class="hljs-string">'x'</span> <span class="hljs-keyword">and</span> <span class="hljs-string">'y'</span> occur once.<span class="hljs-built_in"> Note </span>that there are many other valid strings such as <span class="hljs-string">"ag"</span> <span class="hljs-keyword">and</span> <span class="hljs-string">"ur"</span>.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> n = <span class="hljs-number">7</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">"holasss"</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= n &lt;= 500</code></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">generateTheString</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+        StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();
+        <span class="hljs-keyword">if</span> (n &gt; <span class="hljs-number">1</span> &amp;&amp; n % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">while</span> (n-- &gt; <span class="hljs-number">1</span>) {
+                sb.append(<span class="hljs-string">"a"</span>);
+            }
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (n &gt; <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">while</span> (n-- &gt; <span class="hljs-number">2</span>) {
+                sb.append(<span class="hljs-string">"a"</span>);
+            }
+            sb.append(<span class="hljs-string">"b"</span>);
+        }
+        sb.append(<span class="hljs-string">"z"</span>);
+        <span class="hljs-keyword">return</span> sb.toString();
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

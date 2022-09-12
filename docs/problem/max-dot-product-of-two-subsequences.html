@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Max Dot Product of Two Subsequences - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1458. Max Dot Product of Two Subsequences</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given two arrays <code>nums1</code>&nbsp;and <code>nums2</code>.</p>
+<p>Return the maximum dot product&nbsp;between&nbsp;<strong>non-empty</strong> subsequences of nums1 and nums2 with the same length.</p>
+<p>A subsequence of a array is a new array which is formed from the original array by deleting some (can be none) of the characters without disturbing the relative positions of the remaining characters. (ie,&nbsp;<code>[2,3,5]</code>&nbsp;is a subsequence of&nbsp;<code>[1,2,3,4,5]</code>&nbsp;while <code>[1,5,3]</code>&nbsp;is not).</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums1 = [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">5</span>], nums2 = [<span class="hljs-number">3</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-6</span>]
+Output: <span class="hljs-number">18</span>
+Explanation: Take subsequence [<span class="hljs-number">2</span>,<span class="hljs-number">-2</span>] <span class="hljs-keyword">from</span> nums1 <span class="hljs-keyword">and</span> subsequence [<span class="hljs-number">3</span>,<span class="hljs-number">-6</span>] <span class="hljs-keyword">from</span> nums2.
+Their dot product <span class="hljs-keyword">is</span> (<span class="hljs-number">2</span>*<span class="hljs-number">3</span> + (<span class="hljs-number">-2</span>)*(<span class="hljs-number">-6</span>)) = <span class="hljs-number">18.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums1 = [<span class="hljs-number">3</span>,<span class="hljs-number">-2</span>], nums2 = [<span class="hljs-number">2</span>,<span class="hljs-number">-6</span>,<span class="hljs-number">7</span>]
+Output: <span class="hljs-number">21</span>
+Explanation: Take subsequence [<span class="hljs-number">3</span>] <span class="hljs-keyword">from</span> nums1 <span class="hljs-keyword">and</span> subsequence [<span class="hljs-number">7</span>] <span class="hljs-keyword">from</span> nums2.
+Their dot product <span class="hljs-keyword">is</span> (<span class="hljs-number">3</span>*<span class="hljs-number">7</span>) = <span class="hljs-number">21.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: nums1 = [<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>], nums2 = [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]
+Output: <span class="hljs-number">-1</span>
+Explanation: Take subsequence [<span class="hljs-number">-1</span>] <span class="hljs-keyword">from</span> nums1 <span class="hljs-keyword">and</span> subsequence [<span class="hljs-number">1</span>] <span class="hljs-keyword">from</span> nums2.
+Their dot product <span class="hljs-keyword">is</span> <span class="hljs-number">-1.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= nums1.length, nums2.length &lt;= 500</code></p></li>
+<li><p><code>-1000 &lt;= nums1[i], nums2[i] &lt;= 1000</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxDotProduct</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums1, <span class="hljs-keyword">int</span>[] nums2)</span> </span>{
+        <span class="hljs-keyword">int</span>[][] marks = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[nums1.length][nums2.length];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nums1.length; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; nums2.length; j++) {
+                <span class="hljs-keyword">int</span> max = nums1[i] * nums2[j];
+                <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; j &gt; <span class="hljs-number">0</span>) {
+                    max = Math.max(max, max + marks[i - <span class="hljs-number">1</span>][j - <span class="hljs-number">1</span>]);
+                }
+                <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span>) {
+                    max = Math.max(max, marks[i - <span class="hljs-number">1</span>][j]);
+                }
+                <span class="hljs-keyword">if</span> (j &gt; <span class="hljs-number">0</span>) {
+                    max = Math.max(max, marks[i][j - <span class="hljs-number">1</span>]);
+                }
+                marks[i][j] = max;
+            }
+        }
+        <span class="hljs-keyword">return</span> marks[nums1.length - <span class="hljs-number">1</span>][nums2.length - <span class="hljs-number">1</span>];
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

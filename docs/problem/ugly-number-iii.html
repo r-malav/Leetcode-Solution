@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Ugly Number III - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1201. Ugly Number III</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/number-theory">Number Theory</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/ugly-number-ii.html">Ugly Number II</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>An <strong>ugly number</strong> is a positive integer that is divisible by <code>a</code>, <code>b</code>, or <code>c</code>.</p>
+<p>Given four integers <code>n</code>, <code>a</code>, <code>b</code>, and <code>c</code>, return the <code>nth</code> <strong>ugly number</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span><span class="hljs-string">,</span> <span class="hljs-string">a</span> <span class="hljs-string">=</span> <span class="hljs-number">2</span><span class="hljs-string">,</span> <span class="hljs-string">b</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span><span class="hljs-string">,</span> <span class="hljs-string">c</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">4</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">The</span> <span class="hljs-string">ugly</span> <span class="hljs-string">numbers</span> <span class="hljs-string">are</span> <span class="hljs-number">2</span><span class="hljs-string">,</span> <span class="hljs-number">3</span><span class="hljs-string">,</span> <span class="hljs-number">4</span><span class="hljs-string">,</span> <span class="hljs-number">5</span><span class="hljs-string">,</span> <span class="hljs-number">6</span><span class="hljs-string">,</span> <span class="hljs-number">8</span><span class="hljs-string">,</span> <span class="hljs-number">9</span><span class="hljs-string">,</span> <span class="hljs-number">10</span><span class="hljs-string">...</span> <span class="hljs-string">The</span> <span class="hljs-string">3rd</span> <span class="hljs-string">is</span> <span class="hljs-number">4</span><span class="hljs-string">.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">4</span><span class="hljs-string">,</span> <span class="hljs-string">a</span> <span class="hljs-string">=</span> <span class="hljs-number">2</span><span class="hljs-string">,</span> <span class="hljs-string">b</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span><span class="hljs-string">,</span> <span class="hljs-string">c</span> <span class="hljs-string">=</span> <span class="hljs-number">4</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">6</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">The</span> <span class="hljs-string">ugly</span> <span class="hljs-string">numbers</span> <span class="hljs-string">are</span> <span class="hljs-number">2</span><span class="hljs-string">,</span> <span class="hljs-number">3</span><span class="hljs-string">,</span> <span class="hljs-number">4</span><span class="hljs-string">,</span> <span class="hljs-number">6</span><span class="hljs-string">,</span> <span class="hljs-number">8</span><span class="hljs-string">,</span> <span class="hljs-number">9</span><span class="hljs-string">,</span> <span class="hljs-number">10</span><span class="hljs-string">,</span> <span class="hljs-number">12</span><span class="hljs-string">...</span> <span class="hljs-string">The</span> <span class="hljs-string">4th</span> <span class="hljs-string">is</span> <span class="hljs-number">6</span><span class="hljs-string">.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span><span class="hljs-string">,</span> <span class="hljs-string">a</span> <span class="hljs-string">=</span> <span class="hljs-number">2</span><span class="hljs-string">,</span> <span class="hljs-string">b</span> <span class="hljs-string">=</span> <span class="hljs-number">11</span><span class="hljs-string">,</span> <span class="hljs-string">c</span> <span class="hljs-string">=</span> <span class="hljs-number">13</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">10</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">The</span> <span class="hljs-string">ugly</span> <span class="hljs-string">numbers</span> <span class="hljs-string">are</span> <span class="hljs-number">2</span><span class="hljs-string">,</span> <span class="hljs-number">4</span><span class="hljs-string">,</span> <span class="hljs-number">6</span><span class="hljs-string">,</span> <span class="hljs-number">8</span><span class="hljs-string">,</span> <span class="hljs-number">10</span><span class="hljs-string">,</span> <span class="hljs-number">11</span><span class="hljs-string">,</span> <span class="hljs-number">12</span><span class="hljs-string">,</span> <span class="hljs-number">13</span><span class="hljs-string">...</span> <span class="hljs-string">The</span> <span class="hljs-string">5th</span> <span class="hljs-string">is</span> <span class="hljs-number">10</span><span class="hljs-string">.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= n, a, b, c &lt;= 109</code></p></li>
+<li><p><code>1 &lt;= a * b * c &lt;= 1018</code></p></li>
+<li><p>It is guaranteed that the result will be in range <code>[1, 2 * 109]</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> <span class="hljs-title">getLcm</span><span class="hljs-params">(<span class="hljs-keyword">long</span> a, <span class="hljs-keyword">long</span> b)</span> </span>{
+        <span class="hljs-keyword">long</span> mx = a;
+        <span class="hljs-keyword">long</span> mn = b;
+        <span class="hljs-keyword">if</span> (a &lt; b) {
+            mx = b;
+            mn = a;
+        }
+        <span class="hljs-keyword">while</span> (mn != <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">long</span> tmp = mn;
+            mn = mx % mn;
+            mx = tmp;
+        }
+        <span class="hljs-keyword">return</span> (a * b) / mx;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">nthUglyNumber</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> a, <span class="hljs-keyword">int</span> b, <span class="hljs-keyword">int</span> c)</span> </span>{
+        <span class="hljs-keyword">long</span> ab = getLcm(a, b);
+        <span class="hljs-keyword">long</span> ac = getLcm(a, c);
+        <span class="hljs-keyword">long</span> bc = getLcm(b, c);
+        <span class="hljs-keyword">long</span> abc = getLcm(a, bc);
+
+        <span class="hljs-keyword">long</span> left = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">long</span> right = <span class="hljs-number">2000000001</span>;
+        <span class="hljs-keyword">if</span> (a != <span class="hljs-number">0</span> &amp;&amp; b != <span class="hljs-number">0</span> &amp;&amp; c != <span class="hljs-number">0</span> &amp;&amp; bc != <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">while</span> (left &lt; right) {
+                <span class="hljs-keyword">long</span> mid = left + (right - left) / <span class="hljs-number">2</span>;
+                <span class="hljs-keyword">if</span> (mid / a + mid / b + mid / c - mid / ab - mid / ac - mid / bc + mid / abc &gt;= n) {
+                    right = mid;
+                } <span class="hljs-keyword">else</span> {
+                    left = mid + <span class="hljs-number">1</span>;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>) left;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

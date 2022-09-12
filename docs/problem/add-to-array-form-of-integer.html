@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Add to Array-Form of Integer - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>989. Add to Array-Form of Integer</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/add-two-numbers.html">Add Two Numbers</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/plus-one.html">Plus One</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/add-binary.html">Add Binary</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/add-strings.html">Add Strings</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>The <strong>array-form</strong> of an integer <code>num</code> is an array representing its digits in left to right order.</p>
+<ul>
+<li>For example, for <code>num = 1321</code>, the array form is <code>[1,3,2,1]</code>.</li>
+</ul>
+<p>Given <code>num</code>, the <strong>array-form</strong> of an integer, and an integer <code>k</code>, return **the *<em>array-form</em>* of the integer** <code>num + k</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: num = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>], k = <span class="hljs-number">34</span>
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+Explanation: <span class="hljs-number">1200</span> + <span class="hljs-number">34</span> = <span class="hljs-number">1234</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: num = [<span class="hljs-number">2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">4</span>], k = <span class="hljs-number">181</span>
+Output: [<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>]
+Explanation: <span class="hljs-number">274</span> + <span class="hljs-number">181</span> = <span class="hljs-number">455</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: num = [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">5</span>], k = <span class="hljs-number">806</span>
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]
+Explanation: <span class="hljs-number">215</span> + <span class="hljs-number">806</span> = <span class="hljs-number">1021</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= num.length &lt;= 104</code></p></li>
+<li><p><code>0 &lt;= num[i] &lt;= 9</code></p></li>
+<li><p><code>num</code> does not contain any leading zeros except for the zero itself.</p></li>
+<li><p><code>1 &lt;= k &lt;= 104</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title">addToArrayForm</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] num, <span class="hljs-keyword">int</span> k)</span> </span>{
+        ArrayList&lt;Integer&gt; result = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">int</span> carry = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = num.length - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            <span class="hljs-keyword">int</span> temp = num[i] + k % <span class="hljs-number">10</span> + carry;
+            result.add(temp % <span class="hljs-number">10</span>);
+            carry = temp / <span class="hljs-number">10</span>;
+            k /= <span class="hljs-number">10</span>;
+        }
+        <span class="hljs-keyword">while</span> (k &gt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">int</span> t = k % <span class="hljs-number">10</span> + carry;
+            result.add(t % <span class="hljs-number">10</span>);
+            carry = t / <span class="hljs-number">10</span>;
+            k /= <span class="hljs-number">10</span>;
+        }
+        <span class="hljs-keyword">if</span> (carry == <span class="hljs-number">1</span>) {
+            result.add(<span class="hljs-number">1</span>);
+        }
+        Collections.reverse(result);
+        <span class="hljs-keyword">return</span> result;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

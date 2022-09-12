@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Clumsy Factorial - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1006. Clumsy Factorial</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/stack">Stack</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/simulation">Simulation</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>The <strong>factorial</strong> of a positive integer <code>n</code> is the product of all positive integers less than or equal to <code>n</code>.</p>
+<ul>
+<li>For example, <code>factorial(10) = 10 * 9 * 8 * 7 * 6 * 5 * 4 * 3 * 2 * 1</code>.</li>
+</ul>
+<p>We make a <strong>clumsy factorial</strong> using the integers in decreasing order by swapping out the multiply operations for a fixed rotation of operations with multiply <code>'*'</code>, divide <code>'/'</code>, add <code>'+'</code>, and subtract <code>'-'</code> in this order.</p>
+<ul>
+<li>For example, <code>clumsy(10) = 10 * 9 / 8 + 7 - 6 * 5 / 4 + 3 - 2 * 1</code>.</li>
+</ul>
+<p>However, these operations are still applied using the usual order of operations of arithmetic. We do all multiplication and division steps before any addition or subtraction steps, and multiplication and division steps are processed left to right.</p>
+<p>Additionally, the division that we use is floor division such that <code>10 * 9 / 8 = 90 / 8 = 11</code>.</p>
+<p>Given an integer <code>n</code>, return **the clumsy factorial of **<code>n</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">4</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">7</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-number">7</span> <span class="hljs-string">=</span> <span class="hljs-number">4</span> <span class="hljs-string">*</span> <span class="hljs-number">3</span> <span class="hljs-string">/</span> <span class="hljs-number">2</span> <span class="hljs-string">+</span> <span class="hljs-number">1</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">10</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">12</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-number">12</span> <span class="hljs-string">=</span> <span class="hljs-number">10</span> <span class="hljs-string">*</span> <span class="hljs-number">9</span> <span class="hljs-string">/</span> <span class="hljs-number">8</span> <span class="hljs-string">+</span> <span class="hljs-number">7</span> <span class="hljs-bullet">-</span> <span class="hljs-number">6</span> <span class="hljs-string">*</span> <span class="hljs-number">5</span> <span class="hljs-string">/</span> <span class="hljs-number">4</span> <span class="hljs-string">+</span> <span class="hljs-number">3</span> <span class="hljs-bullet">-</span> <span class="hljs-number">2</span> <span class="hljs-string">*</span> <span class="hljs-number">1</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= n &lt;= 104</code></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> m = <span class="hljs-number">1</span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">clumsy</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-keyword">int</span> num;
+        <span class="hljs-keyword">if</span> (n &gt;= <span class="hljs-number">4</span>) {
+            num = m * n * (n - <span class="hljs-number">1</span>) / (n - <span class="hljs-number">2</span>) + (n - <span class="hljs-number">3</span>);
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (n == <span class="hljs-number">3</span>) {
+            num = m * n * (n - <span class="hljs-number">1</span>) / (n - <span class="hljs-number">2</span>);
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (n == <span class="hljs-number">2</span>) {
+            num = m * n * (n - <span class="hljs-number">1</span>);
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (n == <span class="hljs-number">1</span>) {
+            num = m * n;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        m = -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">return</span> num + clumsy(n - <span class="hljs-number">4</span>);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

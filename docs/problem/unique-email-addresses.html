@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Unique Email Addresses - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>929. Unique Email Addresses</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Every <strong>valid email</strong> consists of a <strong>local name</strong> and a <strong>domain name</strong>, separated by the <code>'@'</code> sign. Besides lowercase letters, the email may contain one or more <code>'.'</code> or <code>'+'</code>.</p>
+<ul>
+<li>For example, in <code>"alice@leetcode.com"</code>, <code>"alice"</code> is the <strong>local name</strong>, and <code>"leetcode.com"</code> is the <strong>domain name</strong>.</li>
+</ul>
+<p>If you add periods <code>'.'</code> between some characters in the <strong>local name</strong> part of an email address, mail sent there will be forwarded to the same address without dots in the local name. Note that this rule <strong>does not apply</strong> to <strong>domain names</strong>.</p>
+<ul>
+<li>For example, <code>"alice.z@leetcode.com"</code> and <code>"alicez@leetcode.com"</code> forward to the same email address.</li>
+</ul>
+<p>If you add a plus <code>'+'</code> in the <strong>local name</strong>, everything after the first plus sign <strong>will be ignored</strong>. This allows certain emails to be filtered. Note that this rule <strong>does not apply</strong> to <strong>domain names</strong>.</p>
+<ul>
+<li>For example, <code>"m.y+name@email.com"</code> will be forwarded to <code>"my@email.com"</code>.</li>
+</ul>
+<p>It is possible to use both of these rules at the same time.</p>
+<p>Given an array of strings <code>emails</code> where we send one email to each <code>emails[i]</code>, return <strong>the number of different addresses that actually receive mails</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: emails = [<span class="hljs-string">"test.email+alex@leetcode.com"</span>,<span class="hljs-string">"test.e.mail+bob.cathy@leetcode.com"</span>,<span class="hljs-string">"testemail+david@lee.tcode.com"</span>]
+Output: <span class="hljs-number">2</span>
+Explanation: <span class="hljs-string">"testemail@leetcode.com"</span> <span class="hljs-keyword">and</span> <span class="hljs-string">"testemail@lee.tcode.com"</span> actually receive mails.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: emails = [<span class="hljs-string">"a@leetcode.com"</span>,<span class="hljs-string">"b@leetcode.com"</span>,<span class="hljs-string">"c@leetcode.com"</span>]
+Output: <span class="hljs-number">3</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= emails.length &lt;= 100</code></p></li>
+<li><p><code>1 &lt;= emails[i].length &lt;= 100</code></p></li>
+<li><p><code>emails[i]</code> consist of lowercase English letters, <code>'+'</code>, <code>'.'</code> and <code>'@'</code>.</p></li>
+<li><p>Each <code>emails[i]</code> contains exactly one <code>'@'</code> character.</p></li>
+<li><p>All local and domain names are non-empty.</p></li>
+<li><p>Local names do not start with a <code>'+'</code> character.</p></li>
+<li><p>Domain names end with the <code>".com"</code> suffix.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">numUniqueEmails</span><span class="hljs-params">(String[] emails)</span> </span>{
+        Set&lt;String&gt; set = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+        <span class="hljs-keyword">for</span> (String s : emails) {
+            StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();
+            <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">while</span> (i &lt; s.length()) {
+                <span class="hljs-keyword">char</span> c = s.charAt(i);
+                <span class="hljs-keyword">if</span> (c == <span class="hljs-string">'+'</span> || c == <span class="hljs-string">'@'</span>) {
+                    sb.append(<span class="hljs-string">'@'</span>);
+                    i = s.indexOf(<span class="hljs-string">"@"</span>) + <span class="hljs-number">1</span>;
+                    sb.append(s.substring(i));
+                    <span class="hljs-keyword">break</span>;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c != <span class="hljs-string">'.'</span>) {
+                    sb.append(c);
+                }
+                i++;
+            }
+            set.add(sb.toString());
+        }
+        <span class="hljs-keyword">return</span> set.size();
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

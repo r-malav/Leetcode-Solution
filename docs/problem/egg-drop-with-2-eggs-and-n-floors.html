@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Egg Drop With 2 Eggs and N Floors - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1884. Egg Drop With 2 Eggs and N Floors</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/super-egg-drop.html">Super Egg Drop</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given <strong>two identical</strong> eggs and you have access to a building with <code>n</code> floors labeled from <code>1</code> to <code>n</code>.</p>
+<p>You know that there exists a floor <code>f</code> where <code>0 &lt;= f &lt;= n</code> such that any egg dropped at a floor <strong>higher</strong> than <code>f</code> will <strong>break</strong>, and any egg dropped <strong>at or below</strong> floor <code>f</code> will <strong>not break</strong>.</p>
+<p>In each move, you may take an <strong>unbroken</strong> egg and drop it from any floor <code>x</code> (where <code>1 &lt;= x &lt;= n</code>). If the egg breaks, you can no longer use it. However, if the egg does not break, you may <strong>reuse</strong> it in future moves.</p>
+<p>Return **the *<em>minimum number of moves</em>* that you need to determine <strong>with certainty</strong> what the value of **<code>f</code> is.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">2</span>
+Explanation: We can drop <span class="hljs-keyword">the</span> <span class="hljs-keyword">first</span> egg <span class="hljs-keyword">from</span> floor <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">second</span> egg <span class="hljs-keyword">from</span> floor <span class="hljs-number">2.</span>
+If <span class="hljs-keyword">the</span> <span class="hljs-keyword">first</span> egg breaks, we know <span class="hljs-keyword">that</span> f = <span class="hljs-number">0.</span>
+If <span class="hljs-keyword">the</span> <span class="hljs-keyword">second</span> egg breaks <span class="hljs-keyword">but</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">first</span> egg didn't, we know <span class="hljs-keyword">that</span> f = <span class="hljs-number">1.</span>
+Otherwise, <span class="hljs-keyword">if</span> both eggs survive, we know <span class="hljs-keyword">that</span> f = <span class="hljs-number">2.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">100</span>
+Output: <span class="hljs-number">14</span>
+Explanation: One optimal strategy <span class="hljs-keyword">is</span>:
+- Drop the <span class="hljs-number">1</span>st egg at floor <span class="hljs-number">9.</span> If it breaks, we know f <span class="hljs-keyword">is</span> between <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-number">8.</span> Drop the <span class="hljs-number">2</span>nd egg starting <span class="hljs-keyword">from</span> floor <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> going up one at a time to find f within <span class="hljs-number">8</span> more drops. Total drops <span class="hljs-keyword">is</span> <span class="hljs-number">1</span> + <span class="hljs-number">8</span> = <span class="hljs-number">9.</span>
+- If the <span class="hljs-number">1</span>st egg does <span class="hljs-keyword">not</span> <span class="hljs-keyword">break</span>, drop the <span class="hljs-number">1</span>st egg again at floor <span class="hljs-number">22.</span> If it breaks, we know f <span class="hljs-keyword">is</span> between <span class="hljs-number">9</span> <span class="hljs-keyword">and</span> <span class="hljs-number">21.</span> Drop the <span class="hljs-number">2</span>nd egg starting <span class="hljs-keyword">from</span> floor <span class="hljs-number">10</span> <span class="hljs-keyword">and</span> going up one at a time to find f within <span class="hljs-number">12</span> more drops. Total drops <span class="hljs-keyword">is</span> <span class="hljs-number">2</span> + <span class="hljs-number">12</span> = <span class="hljs-number">14.</span>
+- If the <span class="hljs-number">1</span>st egg does <span class="hljs-keyword">not</span> <span class="hljs-keyword">break</span> again, follow a similar process dropping the <span class="hljs-number">1</span>st egg <span class="hljs-keyword">from</span> floors <span class="hljs-number">34</span>, <span class="hljs-number">45</span>, <span class="hljs-number">55</span>, <span class="hljs-number">64</span>, <span class="hljs-number">72</span>, <span class="hljs-number">79</span>, <span class="hljs-number">85</span>, <span class="hljs-number">90</span>, <span class="hljs-number">94</span>, <span class="hljs-number">97</span>, <span class="hljs-number">99</span>, <span class="hljs-keyword">and</span> <span class="hljs-number">100.</span>
+Regardless of the outcome, it takes at most <span class="hljs-number">14</span> drops to determine f.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= n &lt;= 1000</code></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">twoEggDrop</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-comment">// given x steps, the maximum floors I can test with two eggs</span>
+        <span class="hljs-keyword">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n + <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+            <span class="hljs-comment">// move is i, previous move is i - 1,</span>
+            <span class="hljs-comment">// we put egg on floor i, if egg breaks, we can check i - 1 floors with i - 1 moves</span>
+            <span class="hljs-comment">// if egg does not break, we can check dp[i-1] floors having two eggs to with i - 1</span>
+            <span class="hljs-comment">// moves</span>
+            dp[i] = <span class="hljs-number">1</span> + i - <span class="hljs-number">1</span> + dp[i - <span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (dp[i] &gt;= n) {
+                <span class="hljs-keyword">return</span> i;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

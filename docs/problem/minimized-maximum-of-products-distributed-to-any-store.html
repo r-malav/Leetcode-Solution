@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimized Maximum of Products Distributed to Any Store - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2064. Minimized Maximum of Products Distributed to Any Store</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/koko-eating-bananas.html">Koko Eating Bananas</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/capacity-to-ship-packages-within-d-days.html">Capacity To Ship Packages Within D Days</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-candies-allocated-to-k-children.html">Maximum Candies Allocated to K Children</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/find-the-smallest-divisor-given-a-threshold.html">Find the Smallest Divisor Given a Threshold</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/magnetic-force-between-two-balls.html">Magnetic Force Between Two Balls</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-limit-of-balls-in-a-bag.html">Minimum Limit of Balls in a Bag</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-time-to-complete-trips.html">Minimum Time to Complete Trips</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-number-of-robots-within-budget.html">Maximum Number of Robots Within Budget</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an integer <code>n</code> indicating there are <code>n</code> specialty retail stores. There are <code>m</code> product types of varying amounts, which are given as a <strong>0-indexed</strong> integer array <code>quantities</code>, where <code>quantities[i]</code> represents the number of products of the <code>ith</code> product type.</p>
+<p>You need to distribute <strong>all products</strong> to the retail stores following these rules:</p>
+<ul>
+<li><p>A store can only be given <strong>at most one product type</strong> but can be given <strong>any</strong> amount of it.</p></li>
+<li><p>After distribution, each store will have been given some number of products (possibly <code>0</code>). Let <code>x</code> represent the maximum number of products given to any store. You want <code>x</code> to be as small as possible, i.e., you want to <strong>minimize</strong> the <strong>maximum</strong> number of products that are given to any store.</p></li>
+</ul>
+<p>Return <strong>the minimum possible</strong> <code>x</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">6</span>, quantities = [<span class="hljs-number">11</span>,<span class="hljs-number">6</span>]
+Output: <span class="hljs-number">3</span>
+Explanation: One optimal way <span class="hljs-keyword">is</span>:
+- The <span class="hljs-number">11</span> products of type <span class="hljs-number">0</span> are distributed to the first four stores <span class="hljs-keyword">in</span> these amounts: <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>
+- The <span class="hljs-number">6</span> products of type <span class="hljs-number">1</span> are distributed to the other two stores <span class="hljs-keyword">in</span> these amounts: <span class="hljs-number">3</span>, <span class="hljs-number">3</span>
+The maximum number of products given to any store <span class="hljs-keyword">is</span> max(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>) = <span class="hljs-number">3.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: n = 7, quantities = [15,10,10]
+Output: 5
+Explanation: One optimal way is:
+- The 15 products of<span class="hljs-built_in"> type </span>0 are distributed <span class="hljs-keyword">to</span> the first three stores <span class="hljs-keyword">in</span> these amounts: 5, 5, 5
+- The 10 products of<span class="hljs-built_in"> type </span>1 are distributed <span class="hljs-keyword">to</span> the next two stores <span class="hljs-keyword">in</span> these amounts: 5, 5
+- The 10 products of<span class="hljs-built_in"> type </span>2 are distributed <span class="hljs-keyword">to</span> the last two stores <span class="hljs-keyword">in</span> these amounts: 5, 5
+The maximum number of products given <span class="hljs-keyword">to</span> any store is max(5, 5, 5, 5, 5, 5, 5) = 5.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: n = 1, quantities = [100000]
+Output: 100000
+Explanation: The only optimal way is:
+- The 100000 products of<span class="hljs-built_in"> type </span>0 are distributed <span class="hljs-keyword">to</span> the only store.
+The maximum number of products given <span class="hljs-keyword">to</span> any store is max(100000) = 100000.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == quantities.length</code></p></li>
+<li><p><code>1 &lt;= m &lt;= n &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= quantities[i] &lt;= 105</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minimizedMaximum</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[] q)</span> </span>{
+        <span class="hljs-keyword">int</span> min = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> max = maxi(q);
+        <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (min &lt;= max) {
+            <span class="hljs-keyword">int</span> mid = min + (max - min) / <span class="hljs-number">2</span>;
+            <span class="hljs-keyword">if</span> (condition(q, mid, n)) {
+                ans = mid;
+                max = mid - <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> {
+                min = mid + <span class="hljs-number">1</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">condition</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] arr, <span class="hljs-keyword">int</span> mid, <span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> num : arr) {
+            ans += (num) / mid;
+            <span class="hljs-keyword">if</span> (num % mid != <span class="hljs-number">0</span>) {
+                ans++;
+            }
+        }
+        <span class="hljs-keyword">return</span> ans &lt;= n;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxi</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] arr)</span> </span>{
+        <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> n : arr) {
+            ans = Math.max(ans, n);
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

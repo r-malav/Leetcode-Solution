@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Rows Covered by Columns - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2397. Maximum Rows Covered by Columns</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/backtracking">Backtracking</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bit-manipulation">Bit Manipulation</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/enumeration">Enumeration</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/matchsticks-to-square.html">Matchsticks to Square</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/partition-to-k-equal-sum-subsets.html">Partition to K Equal Sum Subsets</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/find-the-shortest-superstring.html">Find the Shortest Superstring</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/smallest-sufficient-team.html">Smallest Sufficient Team</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/fair-distribution-of-cookies.html">Fair Distribution of Cookies</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>0-indexed</strong> <code>m x n</code> binary matrix <code>matrix</code> and an integer <code>numSelect</code>, which denotes the number of <strong>distinct</strong> columns you must select from <code>matrix</code>.</p>
+<p>Let us consider <code>s = {c1, c2, ...., cnumSelect}</code> as the set of columns selected by you. A row <code>row</code> is <strong>covered</strong> by <code>s</code> if:</p>
+<ul>
+<li><p>For each cell <code>matrix[row][col]</code> (<code>0 &lt;= col &lt;= n - 1</code>) where <code>matrix[row][col] == 1</code>, <code>col</code> is present in <code>s</code> or,</p></li>
+<li><p><strong>No cell</strong> in <code>row</code> has a value of <code>1</code>.</p></li>
+</ul>
+<p>You need to choose <code>numSelect</code> columns such that the number of rows that are covered is <strong>maximized</strong>.</p>
+<p>Return **the *<em>maximum</em>* number of rows that can be <strong>covered</strong> by a set of <strong><code>numSelect</code></strong> columns.**</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2022/07/14/rowscovered.png" alt="" /></p>
+<pre><code class="hljs">Input: matrix = [[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]], numSelect = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">3</span>
+Explanation: One possible way to cover <span class="hljs-number">3</span> rows <span class="hljs-keyword">is</span> shown <span class="hljs-keyword">in</span> the diagram above.
+We choose s = {<span class="hljs-number">0</span>, <span class="hljs-number">2</span>}.
+- Row <span class="hljs-number">0</span> <span class="hljs-keyword">is</span> covered because it has no occurrences of <span class="hljs-number">1.</span>
+- Row <span class="hljs-number">1</span> <span class="hljs-keyword">is</span> covered because the columns with value <span class="hljs-number">1</span>, i.e. <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-number">2</span> are present <span class="hljs-keyword">in</span> s.
+- Row <span class="hljs-number">2</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> covered because matrix[<span class="hljs-number">2</span>][<span class="hljs-number">1</span>] == <span class="hljs-number">1</span> but <span class="hljs-number">1</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> present <span class="hljs-keyword">in</span> s.
+- Row <span class="hljs-number">3</span> <span class="hljs-keyword">is</span> covered because matrix[<span class="hljs-number">2</span>][<span class="hljs-number">2</span>] == <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-number">2</span> <span class="hljs-keyword">is</span> present <span class="hljs-keyword">in</span> s.
+Thus, we can cover three rows.
+Note that s = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>} will also cover <span class="hljs-number">3</span> rows, but it can be shown that no more than three rows can be covered.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2022/07/14/rowscovered2.png" alt="" /></p>
+<pre><code class="hljs">Input: matrix = [[<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>]], numSelect = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">2</span>
+Explanation: Selecting the only column will result <span class="hljs-keyword">in</span> both rows being covered since the entire matrix <span class="hljs-keyword">is</span> selected.
+Therefore, we <span class="hljs-keyword">return</span> <span class="hljs-number">2.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == matrix.length</code></p></li>
+<li><p><code>n == matrix[i].length</code></p></li>
+<li><p><code>1 &lt;= m, n &lt;= 12</code></p></li>
+<li><p><code>matrix[i][j]</code> is either <code>0</code> or <code>1</code>.</p></li>
+<li><p><code>1 &lt;= numSelect&amp;nbsp;&lt;= n</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maximumRows</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] mat, <span class="hljs-keyword">int</span> cols)</span> </span>{
+
+        <span class="hljs-keyword">int</span> m=mat.length;
+        <span class="hljs-keyword">int</span> n=mat[<span class="hljs-number">0</span>].length;
+
+        <span class="hljs-keyword">int</span>[] s=<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+
+        <span class="hljs-keyword">return</span> f(<span class="hljs-number">0</span>,m,n,cols,mat,s);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">f</span><span class="hljs-params">(<span class="hljs-keyword">int</span> ind,<span class="hljs-keyword">int</span> m,<span class="hljs-keyword">int</span> n,<span class="hljs-keyword">int</span> cols,<span class="hljs-keyword">int</span>[][] mat,<span class="hljs-keyword">int</span>[] s)</span></span>{
+
+        <span class="hljs-keyword">if</span>(cols==<span class="hljs-number">0</span>){
+            <span class="hljs-keyword">int</span> count=<span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>; i&lt;m; i++){
+            <span class="hljs-comment">//supposing that this row is valid</span>
+                <span class="hljs-keyword">boolean</span> selected=<span class="hljs-keyword">true</span>;
+                <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j=<span class="hljs-number">0</span>; j&lt;n; j++){
+                <span class="hljs-comment">//if any cell of this row violates the given two conditions, then the row is discarded</span>
+                    <span class="hljs-keyword">if</span>(mat[i][j]==<span class="hljs-number">1</span> &amp;&amp; s[j]!=<span class="hljs-number">1</span>)
+                        selected=<span class="hljs-keyword">false</span>;
+                }
+                <span class="hljs-keyword">if</span>(selected)
+                    count+=<span class="hljs-number">1</span>;
+            }
+
+            <span class="hljs-keyword">return</span> count;
+        }
+
+        <span class="hljs-keyword">int</span> ans=-<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=ind; i&lt;n; i++){
+
+            s[i]=<span class="hljs-number">1</span>; <span class="hljs-comment">//do</span>
+            ans=Math.max(ans,f(i+<span class="hljs-number">1</span>,m,n,cols-<span class="hljs-number">1</span>,mat,s));
+            s[i]=<span class="hljs-number">0</span>; <span class="hljs-comment">//undo / backtrack</span>
+        }
+
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

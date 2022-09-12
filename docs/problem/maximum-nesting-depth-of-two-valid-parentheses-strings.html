@@ -1,0 +1,67 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Nesting Depth of Two Valid Parentheses Strings - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1111. Maximum Nesting Depth of Two Valid Parentheses Strings</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/stack">Stack</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-nesting-depth-of-the-parentheses.html">Maximum Nesting Depth of the Parentheses</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A string is a <strong>valid parentheses string</strong>&nbsp;(denoted VPS) if and only if it consists of <code>"("</code> and <code>")"</code> characters only, and:</p>
+<ul>
+<li><p>It is the empty string, or</p></li>
+<li><p>It can be written as&nbsp;<code>AB</code>&nbsp;(<code>A</code>&nbsp;concatenated with&nbsp;<code>B</code>), where&nbsp;<code>A</code>&nbsp;and&nbsp;<code>B</code>&nbsp;are VPS's, or</p></li>
+<li><p>It can be written as&nbsp;<code>(A)</code>, where&nbsp;<code>A</code>&nbsp;is a VPS.</p></li>
+</ul>
+<p>We can&nbsp;similarly define the <strong>nesting depth</strong> <code>depth(S)</code> of any VPS <code>S</code> as follows:</p>
+<ul>
+<li><p><code>depth("") = 0</code></p></li>
+<li><p><code>depth(A + B) = max(depth(A), depth(B))</code>, where <code>A</code> and <code>B</code> are VPS's</p></li>
+<li><p><code>depth("(" + A + ")") = 1 + depth(A)</code>, where <code>A</code> is a VPS.</p></li>
+</ul>
+<p>For example,&nbsp; <code>""</code>,&nbsp;<code>"()()"</code>, and&nbsp;<code>"()(()())"</code>&nbsp;are VPS's (with nesting depths 0, 1, and 2), and <code>")("</code> and <code>"(()"</code> are not VPS's.</p>
+<p>&nbsp;</p>
+<p>Given a VPS seq, split it into two disjoint subsequences <code>A</code> and <code>B</code>, such that&nbsp;<code>A</code> and <code>B</code> are VPS's (and&nbsp;<code>A.length + B.length = seq.length</code>).</p>
+<p>Now choose <strong>any</strong> such <code>A</code> and <code>B</code> such that&nbsp;<code>max(depth(A), depth(B))</code> is the minimum possible value.</p>
+<p>Return an <code>answer</code> array (of length <code>seq.length</code>) that encodes such a&nbsp;choice of <code>A</code> and <code>B</code>:&nbsp; <code>answer[i] = 0</code> if <code>seq[i]</code> is part of <code>A</code>, else <code>answer[i] = 1</code>.&nbsp; Note that even though multiple answers may exist, you may return any of them.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: seq = <span class="hljs-string">"(()())"</span>
+Output: [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: seq = <span class="hljs-string">"()(())()"</span>
+Output: [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= seq.size &lt;= 10000</code></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] maxDepthAfterSplit(String seq) {
+        <span class="hljs-keyword">int</span> n = seq.length();
+        <span class="hljs-keyword">int</span>[] ans = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        <span class="hljs-keyword">char</span>[] chars = seq.toCharArray();
+        <span class="hljs-keyword">int</span> depth = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> (chars[i] == <span class="hljs-string">'('</span>) {
+                depth++;
+                <span class="hljs-keyword">if</span> (depth % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) {
+                    ans[i] = <span class="hljs-number">0</span>;
+                } <span class="hljs-keyword">else</span> {
+                    ans[i] = <span class="hljs-number">1</span>;
+                }
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">if</span> (depth % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) {
+                    ans[i] = <span class="hljs-number">0</span>;
+                } <span class="hljs-keyword">else</span> {
+                    ans[i] = <span class="hljs-number">1</span>;
+                }
+                depth--;
+            }
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

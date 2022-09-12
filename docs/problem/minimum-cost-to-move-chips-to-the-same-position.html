@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Cost to Move Chips to The Same Position - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1217. Minimum Cost to Move Chips to The Same Position</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-number-of-operations-to-move-all-balls-to-each-box.html">Minimum Number of Operations to Move All Balls to Each Box</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>We have <code>n</code> chips, where the position of the <code>ith</code> chip is <code>position[i]</code>.</p>
+<p>We need to move all the chips to <strong>the same position</strong>. In one step, we can change the position of the <code>ith</code> chip from <code>position[i]</code> to:</p>
+<ul>
+<li><p><code>position[i] + 2</code> or <code>position[i] - 2</code> with <code>cost = 0</code>.</p></li>
+<li><p><code>position[i] + 1</code> or <code>position[i] - 1</code> with <code>cost = 1</code>.</p></li>
+</ul>
+<p>Return <strong>the minimum cost</strong> needed to move all the chips to the same position.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/08/15/chips_e1.jpg" alt="" /></p>
+<pre><code class="hljs">Input: <span class="hljs-built_in">position</span> = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+Output: <span class="hljs-number">1</span>
+Explanation: First <span class="hljs-built_in">step</span>: <span class="hljs-built_in">Move</span> the chip at <span class="hljs-built_in">position</span> <span class="hljs-number">3</span> <span class="hljs-keyword">to</span> <span class="hljs-built_in">position</span> <span class="hljs-number">1</span> <span class="hljs-keyword">with</span> cost = <span class="hljs-number">0</span>.
+Second <span class="hljs-built_in">step</span>: <span class="hljs-built_in">Move</span> the chip at <span class="hljs-built_in">position</span> <span class="hljs-number">2</span> <span class="hljs-keyword">to</span> <span class="hljs-built_in">position</span> <span class="hljs-number">1</span> <span class="hljs-keyword">with</span> cost = <span class="hljs-number">1</span>.
+Total cost is <span class="hljs-number">1</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/08/15/chip_e2.jpg" alt="" /></p>
+<pre><code class="hljs">Input: position = [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>]
+Output: <span class="hljs-number">2</span>
+Explanation: We can move the two chips at position  <span class="hljs-number">3</span> to position <span class="hljs-number">2.</span> Each move has cost = <span class="hljs-number">1.</span> The total cost = <span class="hljs-number">2.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: position = [<span class="hljs-number">1</span>,<span class="hljs-number">1000000000</span>]
+Output: <span class="hljs-number">1</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= position.length &lt;= 100</code></p></li>
+<li><p><code>1 &lt;= position[i] &lt;= 10^9</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minCostToMoveChips</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] position)</span> </span>{
+        <span class="hljs-keyword">int</span> chipsAtOddPosition = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> chipsAtEvenPosition = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j : position) {
+            <span class="hljs-keyword">if</span> (j % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) {
+                chipsAtEvenPosition++;
+            } <span class="hljs-keyword">else</span> {
+                chipsAtOddPosition++;
+            }
+        }
+        <span class="hljs-keyword">return</span> Math.min(chipsAtEvenPosition, chipsAtOddPosition);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

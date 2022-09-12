@@ -1,0 +1,115 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Brace Expansion II - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1096. Brace Expansion II</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/backtracking">Backtracking</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/stack">Stack</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/brace-expansion.html">Brace Expansion</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Under the grammar given below, strings can represent a set of lowercase words. Let&nbsp;<code>R(expr)</code>&nbsp;denote the set of words the expression represents.</p>
+<p>The grammar can best be understood through simple examples:</p>
+<pre><code>Single letters represent a singleton set containing that word.
+</code></pre>
+<ul>
+<li><p><code>R("a") = {"a"}</code></p></li>
+<li><p><code>R("w") = {"w"}</code></p>
+<p>When we take a comma-delimited list of two or more expressions, we take the union of possibilities.</p></li>
+<li><p><code>R("{a,b,c}") = {"a","b","c"}</code></p></li>
+<li><p><code>R("{{a,b},{b,c}}") = {"a","b","c"}</code> (notice the final set only contains each word at most once)</p>
+<p>When we concatenate two expressions, we take the set of possible concatenations between two words where the first word comes from the first expression and the second word comes from the second expression.</p></li>
+<li><p><code>R("{a,b}{c,d}") = {"ac","ad","bc","bd"}</code></p></li>
+<li><p><code>R("a{b,c}{d,e}f{g,h}") = {"abdfg", "abdfh", "abefg", "abefh", "acdfg", "acdfh", "acefg", "acefh"}</code></p></li>
+</ul>
+<p>Formally, the three rules for our grammar:</p>
+<ul>
+<li><p>For every lowercase letter <code>x</code>, we have <code>R(x) = {x}</code>.</p></li>
+<li><p>For expressions <code>e1, e2, ... , ek</code> with <code>k &gt;= 2</code>, we have <code>R({e1, e2, ...}) = R(e1) ∪ R(e2) ∪ ...</code></p></li>
+<li><p>For expressions <code>e1</code> and <code>e2</code>, we have <code>R(e1 + e2) = {a + b for (a, b) in R(e1) × R(e2)}</code>, where <code>+</code> denotes concatenation, and <code>×</code> denotes the cartesian product.</p></li>
+</ul>
+<p>Given an expression representing a set of words under the given grammar, return <strong>the sorted list of words that the expression represents</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> expression = <span class="hljs-string">"{a,b}{c,{d,e}}"</span>
+<span class="hljs-symbol">Output:</span> [<span class="hljs-string">"ac"</span>,<span class="hljs-string">"ad"</span>,<span class="hljs-string">"ae"</span>,<span class="hljs-string">"bc"</span>,<span class="hljs-string">"bd"</span>,<span class="hljs-string">"be"</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-keyword">Input</span>: expression = "{{a,z},a{b,c},{ab,z}}"
+Output: ["a","ab","ac","z"]
+Explanation: <span class="hljs-keyword">Each</span> <span class="hljs-keyword">distinct</span> word <span class="hljs-keyword">is</span> written <span class="hljs-keyword">only</span> once <span class="hljs-keyword">in</span> the final answer.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= expression.length &lt;= 60</code></p></li>
+<li><p><code>expression[i]</code> consists of <code>'{'</code>, <code>'}'</code>, <code>','</code>or lowercase English letters.</p></li>
+<li><p>The given&nbsp;<code>expression</code>&nbsp;represents a set of words based on the grammar given in the description.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title">braceExpansionII</span><span class="hljs-params">(String expression)</span> </span>{
+        Set&lt;String&gt; res = flatten(expression);
+        List&lt;String&gt; sorted = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;(res);
+        Collections.sort(sorted);
+        <span class="hljs-keyword">return</span> sorted;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> Set&lt;String&gt; <span class="hljs-title">flatten</span><span class="hljs-params">(String expression)</span> </span>{
+        Set&lt;String&gt; res = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+        <span class="hljs-comment">// A temp set to store cartesian product results.</span>
+        Set&lt;String&gt; curSet = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+        <span class="hljs-keyword">int</span> idx = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (idx &lt; expression.length()) {
+            <span class="hljs-keyword">if</span> (expression.charAt(idx) == <span class="hljs-string">'{'</span>) {
+                <span class="hljs-comment">// end will be the index of matching "}"</span>
+                <span class="hljs-keyword">int</span> end = findClosingBrace(expression, idx);
+                Set&lt;String&gt; set = flatten(expression.substring(idx + <span class="hljs-number">1</span>, end));
+                curSet = concatenateSet(curSet, set);
+                idx = end + <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (Character.isLowerCase(expression.charAt(idx))) {
+                <span class="hljs-comment">// Create set with single element</span>
+                Set&lt;String&gt; set =
+                        <span class="hljs-keyword">new</span> HashSet&lt;&gt;(Arrays.asList(Character.toString(expression.charAt(idx))));
+                curSet = concatenateSet(curSet, set);
+                idx++;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (expression.charAt(idx) == <span class="hljs-string">','</span>) {
+                res.addAll(curSet);
+                curSet.clear();
+                idx++;
+            }
+        }
+        <span class="hljs-comment">// Don't forget!</span>
+        res.addAll(curSet);
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> Set&lt;String&gt; <span class="hljs-title">concatenateSet</span><span class="hljs-params">(Set&lt;String&gt; set1, Set&lt;String&gt; set2)</span> </span>{
+        <span class="hljs-keyword">if</span> (set1.isEmpty() || set2.isEmpty()) {
+            <span class="hljs-keyword">return</span> !set2.isEmpty() ? <span class="hljs-keyword">new</span> HashSet&lt;&gt;(set2) : <span class="hljs-keyword">new</span> HashSet&lt;&gt;(set1);
+        }
+        Set&lt;String&gt; res = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+        <span class="hljs-keyword">for</span> (String s1 : set1) {
+            <span class="hljs-keyword">for</span> (String s2 : set2) {
+                res.add(s1 + s2);
+            }
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">findClosingBrace</span><span class="hljs-params">(String expression, <span class="hljs-keyword">int</span> start)</span> </span>{
+        <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> idx = start;
+        <span class="hljs-keyword">while</span> (idx &lt; expression.length()) {
+            <span class="hljs-keyword">if</span> (expression.charAt(idx) == <span class="hljs-string">'{'</span>) {
+                count++;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (expression.charAt(idx) == <span class="hljs-string">'}'</span>) {
+                count--;
+            }
+            <span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">break</span>;
+            }
+            idx++;
+        }
+        <span class="hljs-keyword">return</span> idx;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Basic Calculator - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>224. Basic Calculator</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/math">Math</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/string">String</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/stack">Stack</a></li><li><a href="https://baffinlee.com/leetcode-javascript/tag/recursion">Recursion</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/evaluate-reverse-polish-notation.html">Evaluate Reverse Polish Notation</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/basic-calculator-ii.html">Basic Calculator II</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/different-ways-to-add-parentheses.html">Different Ways to Add Parentheses</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/expression-add-operators.html">Expression Add Operators</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/basic-calculator-iii.html">Basic Calculator III</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/the-score-of-students-solving-math-expression.html">The Score of Students Solving Math Expression</a></li><li><a href="https://baffinlee.com/leetcode-javascript/problem/minimize-result-by-adding-parentheses-to-expression.html">Minimize Result by Adding Parentheses to Expression</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Basic Calculator - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>224. Basic Calculator</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/stack">Stack</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/recursion">Recursion</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/evaluate-reverse-polish-notation.html">Evaluate Reverse Polish Notation</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/basic-calculator-ii.html">Basic Calculator II</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/different-ways-to-add-parentheses.html">Different Ways to Add Parentheses</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/expression-add-operators.html">Expression Add Operators</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/basic-calculator-iii.html">Basic Calculator III</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/the-score-of-students-solving-math-expression.html">The Score of Students Solving Math Expression</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimize-result-by-adding-parentheses-to-expression.html">Minimize Result by Adding Parentheses to Expression</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
 <p>Given a string <code>s</code> representing a valid expression, implement a basic calculator to evaluate it, and return <strong>the result of the evaluation</strong>.</p>
 <p><strong>Note:</strong> You are <strong>not</strong> allowed to use any built-in function which evaluates strings as mathematical expressions, such as <code>eval()</code>.</p>
 <p>&nbsp;
@@ -25,7 +25,51 @@ Output: 23
 <li><p>There will be no two consecutive operators in the input.</p></li>
 <li><p>Every number and running calculation will fit in a signed 32-bit integer.</p></li>
 </ul>
-<h2 id="solution">Solution</h2>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">calculate</span><span class="hljs-params">(String s)</span> </span>{
+        <span class="hljs-keyword">char</span>[] ca = s.toCharArray();
+        <span class="hljs-keyword">return</span> helper(ca);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">helper</span><span class="hljs-params">(<span class="hljs-keyword">char</span>[] ca)</span> </span>{
+        <span class="hljs-keyword">int</span> num = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> prenum = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">boolean</span> isPlus = <span class="hljs-keyword">true</span>;
+        <span class="hljs-keyword">for</span> (; i &lt; ca.length; i++) {
+            <span class="hljs-keyword">char</span> c = ca[i];
+            <span class="hljs-keyword">if</span> (c != <span class="hljs-string">' '</span>) {
+                <span class="hljs-keyword">if</span> (c &gt;= <span class="hljs-string">'0'</span> &amp;&amp; c &lt;= <span class="hljs-string">'9'</span>) {
+                    <span class="hljs-keyword">if</span> (num == <span class="hljs-number">0</span>) {
+                        num = (c - <span class="hljs-string">'0'</span>);
+                    } <span class="hljs-keyword">else</span> {
+                        num = num * <span class="hljs-number">10</span> + c - <span class="hljs-string">'0'</span>;
+                    }
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c == <span class="hljs-string">'+'</span>) {
+                    prenum += num * (isPlus ? <span class="hljs-number">1</span> : -<span class="hljs-number">1</span>);
+                    isPlus = <span class="hljs-keyword">true</span>;
+                    num = <span class="hljs-number">0</span>;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c == <span class="hljs-string">'-'</span>) {
+                    prenum += num * (isPlus ? <span class="hljs-number">1</span> : -<span class="hljs-number">1</span>);
+                    num = <span class="hljs-number">0</span>;
+                    isPlus = <span class="hljs-keyword">false</span>;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c == <span class="hljs-string">'('</span>) {
+                    i++;
+                    prenum += helper(ca) * (isPlus ? <span class="hljs-number">1</span> : -<span class="hljs-number">1</span>);
+                    isPlus = <span class="hljs-keyword">true</span>;
+                    num = <span class="hljs-number">0</span>;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c == <span class="hljs-string">')'</span>) {
+                    <span class="hljs-keyword">return</span> prenum + num * (isPlus ? <span class="hljs-number">1</span> : -<span class="hljs-number">1</span>);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> prenum + num * (isPlus ? <span class="hljs-number">1</span> : -<span class="hljs-number">1</span>);
+    }
+}
+</code></pre>
+<h2 id="solution-javascript">Solution (Javascript)</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
  * <span class="hljs-doctag">@param <span class="hljs-type">{string}</span> <span class="hljs-variable">s</span></span>
  * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
@@ -69,4 +113,4 @@ Output: 23
 <ul>
 <li>Time complexity : O(n).</li>
 <li>Space complexity : O(n).</li>
-</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

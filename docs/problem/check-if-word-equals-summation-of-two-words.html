@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Check if Word Equals Summation of Two Words - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1880. Check if Word Equals Summation of Two Words</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>The <strong>letter value</strong> of a letter is its position in the alphabet <strong>starting from 0</strong> (i.e. <code>'a' -&gt; 0</code>, <code>'b' -&gt; 1</code>, <code>'c' -&gt; 2</code>, etc.).</p>
+<p>The <strong>numerical value</strong> of some string of lowercase English letters <code>s</code> is the <strong>concatenation</strong> of the <strong>letter values</strong> of each letter in <code>s</code>, which is then <strong>converted</strong> into an integer.</p>
+<ul>
+<li>For example, if <code>s = "acb"</code>, we concatenate each letter's letter value, resulting in <code>"021"</code>. After converting it, we get <code>21</code>.</li>
+</ul>
+<p>You are given three strings <code>firstWord</code>, <code>secondWord</code>, and <code>targetWord</code>, each consisting of lowercase English letters <code>'a'</code> through <code>'j'</code> <strong>inclusive</strong>.</p>
+<p>Return <code>true</code> **if the *<em>summation</em>* of the <strong>numerical values</strong> of <strong><code>firstWord</code></strong> and <strong><code>secondWord</code></strong> equals the <strong>numerical value</strong> of <strong><code>targetWord</code></strong>, or <strong><code>false</code></strong> otherwise.**</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: firstWord = <span class="hljs-string">"acb"</span>, secondWord = <span class="hljs-string">"cba"</span>, targetWord = <span class="hljs-string">"cdb"</span>
+Output: <span class="hljs-literal">true</span>
+Explanation:
+The numerical value <span class="hljs-keyword">of</span> firstWord <span class="hljs-keyword">is</span> <span class="hljs-string">"acb"</span><span class="hljs-function"> -&gt;</span> <span class="hljs-string">"021"</span><span class="hljs-function"> -&gt;</span> <span class="hljs-number">21.</span>
+The numerical value <span class="hljs-keyword">of</span> secondWord <span class="hljs-keyword">is</span> <span class="hljs-string">"cba"</span><span class="hljs-function"> -&gt;</span> <span class="hljs-string">"210"</span><span class="hljs-function"> -&gt;</span> <span class="hljs-number">210.</span>
+The numerical value <span class="hljs-keyword">of</span> targetWord <span class="hljs-keyword">is</span> <span class="hljs-string">"cdb"</span><span class="hljs-function"> -&gt;</span> <span class="hljs-string">"231"</span><span class="hljs-function"> -&gt;</span> <span class="hljs-number">231.</span>
+We <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> because <span class="hljs-number">21</span> + <span class="hljs-number">210</span> == <span class="hljs-number">231.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: firstWord = <span class="hljs-string">"aaa"</span>, secondWord = <span class="hljs-string">"a"</span>, targetWord = <span class="hljs-string">"aab"</span>
+Output: <span class="hljs-literal">false</span>
+Explanation: 
+The numerical value <span class="hljs-keyword">of</span> firstWord <span class="hljs-keyword">is</span> <span class="hljs-string">"aaa"</span><span class="hljs-function"> -&gt;</span> <span class="hljs-string">"000"</span><span class="hljs-function"> -&gt;</span> <span class="hljs-number">0.</span>
+The numerical value <span class="hljs-keyword">of</span> secondWord <span class="hljs-keyword">is</span> <span class="hljs-string">"a"</span><span class="hljs-function"> -&gt;</span> <span class="hljs-string">"0"</span><span class="hljs-function"> -&gt;</span> <span class="hljs-number">0.</span>
+The numerical value <span class="hljs-keyword">of</span> targetWord <span class="hljs-keyword">is</span> <span class="hljs-string">"aab"</span><span class="hljs-function"> -&gt;</span> <span class="hljs-string">"001"</span><span class="hljs-function"> -&gt;</span> <span class="hljs-number">1.</span>
+We <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> because <span class="hljs-number">0</span> + <span class="hljs-number">0</span> != <span class="hljs-number">1.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: firstWord = <span class="hljs-string">"aaa"</span>, secondWord = <span class="hljs-string">"a"</span>, targetWord = <span class="hljs-string">"aaaa"</span>
+Output: <span class="hljs-literal">true</span>
+Explanation: 
+The numerical value <span class="hljs-keyword">of</span> firstWord <span class="hljs-keyword">is</span> <span class="hljs-string">"aaa"</span><span class="hljs-function"> -&gt;</span> <span class="hljs-string">"000"</span><span class="hljs-function"> -&gt;</span> <span class="hljs-number">0.</span>
+The numerical value <span class="hljs-keyword">of</span> secondWord <span class="hljs-keyword">is</span> <span class="hljs-string">"a"</span><span class="hljs-function"> -&gt;</span> <span class="hljs-string">"0"</span><span class="hljs-function"> -&gt;</span> <span class="hljs-number">0.</span>
+The numerical value <span class="hljs-keyword">of</span> targetWord <span class="hljs-keyword">is</span> <span class="hljs-string">"aaaa"</span><span class="hljs-function"> -&gt;</span> <span class="hljs-string">"0000"</span><span class="hljs-function"> -&gt;</span> <span class="hljs-number">0.</span>
+We <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> because <span class="hljs-number">0</span> + <span class="hljs-number">0</span> == <span class="hljs-number">0.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= firstWord.length, </code><code>secondWord.length, </code><code>targetWord.length &lt;= 8</code></p></li>
+<li><p><code>firstWord</code>, <code>secondWord</code>, and <code>targetWord</code> consist of lowercase English letters from <code>'a'</code> to <code>'j'</code> <strong>inclusive</strong>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isSumEqual</span><span class="hljs-params">(String firstWord, String secondWord, String targetWord)</span> </span>{
+        StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();
+        <span class="hljs-keyword">int</span> a = getSum(firstWord, sb);
+        sb.setLength(<span class="hljs-number">0</span>);
+        <span class="hljs-keyword">int</span> b = getSum(secondWord, sb);
+        sb.setLength(<span class="hljs-number">0</span>);
+        <span class="hljs-keyword">int</span> c = getSum(targetWord, sb);
+        <span class="hljs-keyword">return</span> a + b == c;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getSum</span><span class="hljs-params">(String firstWord, StringBuilder sb)</span> </span>{
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> c : firstWord.toCharArray()) {
+            sb.append(c - <span class="hljs-string">'a'</span>);
+        }
+        <span class="hljs-keyword">return</span> Integer.parseInt(sb.toString());
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

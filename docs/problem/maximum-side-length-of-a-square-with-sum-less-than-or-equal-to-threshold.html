@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Side Length of a Square with Sum Less than or Equal to Threshold - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1292. Maximum Side Length of a Square with Sum Less than or Equal to Threshold</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/prefix-sum">Prefix Sum</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a <code>m x n</code> matrix <code>mat</code> and an integer <code>threshold</code>, return **the maximum side-length of a square with a sum less than or equal to *<em><code>threshold</code></em>* or return <strong><code>0</code></strong> if there is no such square**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/12/05/e1.png" alt="" /></p>
+<pre><code class="hljs">Input: mat = [[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>]], threshold = <span class="hljs-number">4</span>
+Output: <span class="hljs-number">2</span>
+Explanation: The maximum side length of square with sum less than <span class="hljs-number">4</span> <span class="hljs-keyword">is</span> <span class="hljs-number">2</span> as shown.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: mat = [[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]], threshold = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">0</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == mat.length</code></p></li>
+<li><p><code>n == mat[i].length</code></p></li>
+<li><p><code>1 &lt;= m, n &lt;= 300</code></p></li>
+<li><p><code>0 &lt;= mat[i][j] &lt;= 104</code></p></li>
+<li><p><code>0 &lt;= threshold &lt;= 105</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxSideLength</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] mat, <span class="hljs-keyword">int</span> threshold)</span> </span>{
+        <span class="hljs-keyword">int</span> m = mat.length;
+        <span class="hljs-keyword">int</span> n = mat[<span class="hljs-number">0</span>].length;
+        <span class="hljs-keyword">int</span>[][] prefix = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[m][n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++) {
+                <span class="hljs-keyword">if</span> (i == <span class="hljs-number">0</span> &amp;&amp; j == <span class="hljs-number">0</span>) {
+                    prefix[i][j] = mat[i][j];
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (i == <span class="hljs-number">0</span>) {
+                    prefix[i][j] = mat[i][j] + prefix[<span class="hljs-number">0</span>][j - <span class="hljs-number">1</span>];
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (j == <span class="hljs-number">0</span>) {
+                    prefix[i][j] = mat[i][j] + prefix[i - <span class="hljs-number">1</span>][<span class="hljs-number">0</span>];
+                } <span class="hljs-keyword">else</span> {
+                    prefix[i][j] =
+                            mat[i][j] + prefix[i][j - <span class="hljs-number">1</span>] + prefix[i - <span class="hljs-number">1</span>][j] - prefix[i - <span class="hljs-number">1</span>][j - <span class="hljs-number">1</span>];
+                }
+            }
+        }
+        <span class="hljs-keyword">int</span> low = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> high = Math.min(m, n);
+        <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (low &lt;= high) {
+            <span class="hljs-keyword">int</span> mid = (low + high) / <span class="hljs-number">2</span>;
+            <span class="hljs-keyword">if</span> (min(mid, prefix) &gt; threshold) {
+                high = mid - <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> {
+                ans = mid;
+                low = mid + <span class="hljs-number">1</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">min</span><span class="hljs-params">(<span class="hljs-keyword">int</span> length, <span class="hljs-keyword">int</span>[][] prefix)</span> </span>{
+        <span class="hljs-keyword">int</span> min = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = length - <span class="hljs-number">1</span>; i &lt; prefix.length; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = length - <span class="hljs-number">1</span>; j &lt; prefix[<span class="hljs-number">0</span>].length; j++) {
+                <span class="hljs-keyword">if</span> (i == length - <span class="hljs-number">1</span> &amp;&amp; j == length - <span class="hljs-number">1</span>) {
+                    min = prefix[i][j];
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (i - length &lt; <span class="hljs-number">0</span>) {
+                    min = Math.min(min, prefix[i][j] - prefix[i][j - length]);
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (j - length &lt; <span class="hljs-number">0</span>) {
+                    min = Math.min(min, prefix[i][j] - prefix[i - length][j]);
+                } <span class="hljs-keyword">else</span> {
+                    min =
+                            Math.min(
+                                    min,
+                                    prefix[i][j]
+                                            - prefix[i][j - length]
+                                            - prefix[i - length][j]
+                                            + prefix[i - length][j - length]);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> min;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

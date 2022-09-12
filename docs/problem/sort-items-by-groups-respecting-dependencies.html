@@ -1,0 +1,136 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Sort Items by Groups Respecting Dependencies - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1203. Sort Items by Groups Respecting Dependencies</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/graph">Graph</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/topological-sort">Topological Sort</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There are&nbsp;<code>n</code>&nbsp;items each&nbsp;belonging to zero or one of&nbsp;<code>m</code>&nbsp;groups where <code>group[i]</code>&nbsp;is the group that the <code>i</code>-th item belongs to and it's equal to <code>-1</code>&nbsp;if the <code>i</code>-th item belongs to no group. The items and the groups are zero indexed. A group can have no item belonging to it.</p>
+<p>Return a sorted list of the items such that:</p>
+<ul>
+<li><p>The items that belong to the same group are next to each other in the sorted list.</p></li>
+<li><p>There are some&nbsp;relations&nbsp;between these items where&nbsp;<code>beforeItems[i]</code>&nbsp;is a list containing all the items that should come before the&nbsp;<code>i</code>-th item in the sorted array (to the left of the&nbsp;<code>i</code>-th item).</p></li>
+</ul>
+<p>Return any solution if there is more than one solution and return an <strong>empty list</strong>&nbsp;if there is no solution.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/09/11/1359_ex1.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">8</span>, m = <span class="hljs-number">2</span>, group = [<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>], beforeItems = [[],[<span class="hljs-number">6</span>],[<span class="hljs-number">5</span>],[<span class="hljs-number">6</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">6</span>],[],[],[]]
+Output: [<span class="hljs-number">6</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">7</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">8</span>, m = <span class="hljs-number">2</span>, group = [<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>], beforeItems = [[],[<span class="hljs-number">6</span>],[<span class="hljs-number">5</span>],[<span class="hljs-number">6</span>],[<span class="hljs-number">3</span>],[],[<span class="hljs-number">4</span>],[]]
+Output: []
+Explanation:&amp;nbsp;This <span class="hljs-keyword">is</span> the same as example <span class="hljs-number">1</span> except that <span class="hljs-number">4</span> needs to be before <span class="hljs-number">6</span> <span class="hljs-keyword">in</span> the sorted list.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= m &lt;= n &lt;= 3 * 104</code></p></li>
+<li><p><code>group.length == beforeItems.length == n</code></p></li>
+<li><p><code>-1 &lt;= group[i] &lt;= m - 1</code></p></li>
+<li><p><code>0 &lt;= beforeItems[i].length &lt;= n - 1</code></p></li>
+<li><p><code>0 &lt;= beforeItems[i][j] &lt;= n - 1</code></p></li>
+<li><p><code>i != beforeItems[i][j]</code></p></li>
+<li><p><code>beforeItems[i]&amp;nbsp;</code>does not contain&nbsp;duplicates elements.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span>[] topoSort(<span class="hljs-keyword">int</span> temp, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; adj) {
+        <span class="hljs-keyword">int</span>[] indegree = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[temp];
+        <span class="hljs-keyword">for</span> (ArrayList&lt;Integer&gt; edges : adj) {
+            <span class="hljs-keyword">for</span> (Integer edge : edges) {
+                indegree[edge]++;
+            }
+        }
+        Stack&lt;Integer&gt; q = <span class="hljs-keyword">new</span> Stack&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; temp; ++i) {
+            <span class="hljs-keyword">if</span> (indegree[i] == <span class="hljs-number">0</span>) {
+                q.push(i);
+            }
+        }
+        <span class="hljs-keyword">if</span> (q.isEmpty()) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">0</span>];
+        }
+        ArrayList&lt;Integer&gt; topo = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+            <span class="hljs-keyword">int</span> v = q.pop();
+            topo.add(v);
+            ArrayList&lt;Integer&gt; edges = adj.get(v);
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> nbr : edges) {
+                indegree[nbr]--;
+                <span class="hljs-keyword">if</span> (indegree[nbr] == <span class="hljs-number">0</span>) {
+                    q.push(nbr);
+                }
+            }
+        }
+        <span class="hljs-keyword">if</span> (topo.size() != temp) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">0</span>];
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">int</span>[] ans = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[topo.size()];
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; topo.size(); ++i) {
+                ans[i] = topo.get(i);
+            }
+            <span class="hljs-keyword">return</span> ans;
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] sortItems(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> m, <span class="hljs-keyword">int</span>[] group, List&lt;List&lt;Integer&gt;&gt; beforeItems) {
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">int</span> nodes = n + <span class="hljs-number">2</span> * m;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nodes; ++i) {
+            graph.add(<span class="hljs-keyword">new</span> ArrayList&lt;&gt;());
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+            List&lt;Integer&gt; before = beforeItems.get(i);
+            <span class="hljs-keyword">if</span> (group[i] == -<span class="hljs-number">1</span> &amp;&amp; before.isEmpty()) {
+                <span class="hljs-comment">// continue</span>
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (before.isEmpty()) {
+                <span class="hljs-keyword">int</span> groupStart = n + group[i] * <span class="hljs-number">2</span>;
+                <span class="hljs-keyword">int</span> ge = n + group[i] * <span class="hljs-number">2</span> + <span class="hljs-number">1</span>;
+                graph.get(groupStart).add(i);
+                graph.get(i).add(ge);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (group[i] == -<span class="hljs-number">1</span>) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> temp : before) {
+                    <span class="hljs-keyword">if</span> (group[temp] == -<span class="hljs-number">1</span>) {
+                        graph.get(temp).add(i);
+                    } <span class="hljs-keyword">else</span> {
+                        <span class="hljs-keyword">int</span> ge = n + group[temp] * <span class="hljs-number">2</span> + <span class="hljs-number">1</span>;
+                        graph.get(ge).add(i);
+                    }
+                }
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">int</span> groupStart = n + group[i] * <span class="hljs-number">2</span>;
+                <span class="hljs-keyword">int</span> groupEnd = n + group[i] * <span class="hljs-number">2</span> + <span class="hljs-number">1</span>;
+                graph.get(groupStart).add(i);
+                graph.get(i).add(groupEnd);
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> temp : before) {
+                    <span class="hljs-keyword">if</span> (group[temp] == -<span class="hljs-number">1</span>) {
+                        graph.get(temp).add(groupStart);
+                    } <span class="hljs-keyword">else</span> {
+                        <span class="hljs-keyword">if</span> (group[temp] == group[i]) {
+                            graph.get(temp).add(i);
+                        } <span class="hljs-keyword">else</span> {
+                            groupEnd = n + group[temp] * <span class="hljs-number">2</span> + <span class="hljs-number">1</span>;
+                            graph.get(groupEnd).add(groupStart);
+                        }
+                    }
+                }
+            }
+        }
+        <span class="hljs-keyword">int</span>[] temp = topoSort(nodes, graph);
+        <span class="hljs-keyword">if</span> (temp.length == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> temp;
+        }
+        <span class="hljs-keyword">int</span>[] ans = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k : temp) {
+            <span class="hljs-keyword">if</span> (k &lt; n) {
+                ans[j++] = k;
+            }
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

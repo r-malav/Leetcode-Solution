@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Coordinate With Maximum Network Quality - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1620. Coordinate With Maximum Network Quality</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/enumeration">Enumeration</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an array of network towers <code>towers</code>, where <code>towers[i] = [xi, yi, qi]</code> denotes the <code>ith</code> network tower with location <code>(xi, yi)</code> and quality factor <code>qi</code>. All the coordinates are <strong>integral coordinates</strong> on the X-Y plane, and the distance between the two coordinates is the <strong>Euclidean distance</strong>.</p>
+<p>You are also given an integer <code>radius</code> where a tower is <strong>reachable</strong> if the distance is <strong>less than or equal to</strong> <code>radius</code>. Outside that distance, the signal becomes garbled, and the tower is <strong>not reachable</strong>.</p>
+<p>The signal quality of the <code>ith</code> tower at a coordinate <code>(x, y)</code> is calculated with the formula <code>⌊qi / (1 + d)⌋</code>, where <code>d</code> is the distance between the tower and the coordinate. The <strong>network quality</strong> at a coordinate is the sum of the signal qualities from all the <strong>reachable</strong> towers.</p>
+<p>Return **the array *<em><code>[cx, cy]</code></em>* representing the <strong>integral</strong> coordinate <strong><code>(cx, cy)</code></strong> where the <strong>network quality</strong> is maximum. If there are multiple coordinates with the same <strong>network quality</strong>, return the lexicographically minimum <strong>non-negative</strong> coordinate.**</p>
+<p><strong>Note:</strong></p>
+<pre><code>A coordinate <code>(x1, y1)</code> is lexicographically smaller than <code>(x2, y2)</code> if either:
+</code></pre>
+<ul>
+<li><p><code>x1 &lt; x2</code>, or</p></li>
+<li><p><code>x1 == x2</code> and <code>y1 &lt; y2</code>.</p></li>
+
+<li><p><code>⌊val⌋</code> is the greatest integer less than or equal to <code>val</code> (the floor function).</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/09/22/untitled-diagram.png" alt="" /></p>
+<pre><code class="hljs">Input: towers = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">7</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">9</span>]], radius = <span class="hljs-number">2</span>
+Output: [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]
+Explanation: At coordinate (<span class="hljs-number">2</span>, <span class="hljs-number">1</span>) the total quality <span class="hljs-keyword">is</span> <span class="hljs-number">13.</span>
+- Quality of <span class="hljs-number">7</span> <span class="hljs-keyword">from</span> (<span class="hljs-number">2</span>, <span class="hljs-number">1</span>) results <span class="hljs-keyword">in</span> ⌊<span class="hljs-number">7</span> / (<span class="hljs-number">1</span> + sqrt(<span class="hljs-number">0</span>)⌋ = ⌊<span class="hljs-number">7</span>⌋ = <span class="hljs-number">7</span>
+- Quality of <span class="hljs-number">5</span> <span class="hljs-keyword">from</span> (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>) results <span class="hljs-keyword">in</span> ⌊<span class="hljs-number">5</span> / (<span class="hljs-number">1</span> + sqrt(<span class="hljs-number">2</span>)⌋ = ⌊<span class="hljs-number">2.07</span>⌋ = <span class="hljs-number">2</span>
+- Quality of <span class="hljs-number">9</span> <span class="hljs-keyword">from</span> (<span class="hljs-number">3</span>, <span class="hljs-number">1</span>) results <span class="hljs-keyword">in</span> ⌊<span class="hljs-number">9</span> / (<span class="hljs-number">1</span> + sqrt(<span class="hljs-number">1</span>)⌋ = ⌊<span class="hljs-number">4.5</span>⌋ = <span class="hljs-number">4</span>
+No other coordinate has a higher network quality.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: towers = [[23,11,21]],<span class="hljs-built_in"> radius </span>= 9
+Output: [23,11]
+Explanation: Since there is only one tower, the<span class="hljs-built_in"> network </span>quality is highest right at the tower<span class="hljs-string">'s location.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: towers = [[1,2,13],[2,1,7],[0,1,9]],<span class="hljs-built_in"> radius </span>= 2
+Output: [1,2]
+Explanation: Coordinate (1, 2) has the highest<span class="hljs-built_in"> network </span>quality.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= towers.length &lt;= 50</code></p></li>
+<li><p><code>towers[i].length == 3</code></p></li>
+<li><p><code>0 &lt;= xi, yi, qi &lt;= 50</code></p></li>
+<li><p><code>1 &lt;= radius &lt;= 50</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] bestCoordinate(<span class="hljs-keyword">int</span>[][] towers, <span class="hljs-keyword">int</span> radius) {
+        <span class="hljs-keyword">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">2</span>];
+        <span class="hljs-keyword">double</span> maxQuality = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">double</span> quality;
+        <span class="hljs-keyword">int</span> finalX = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> finalY = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">51</span>; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">51</span>; j++) {
+                quality = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] tower : towers) {
+                    <span class="hljs-keyword">int</span> x = tower[<span class="hljs-number">0</span>] - i;
+                    <span class="hljs-keyword">int</span> y = tower[<span class="hljs-number">1</span>] - j;
+                    <span class="hljs-keyword">double</span> dist = Math.sqrt((<span class="hljs-keyword">double</span>) x * x + y * y);
+                    <span class="hljs-keyword">if</span> (dist &lt;= radius) {
+                        quality += Math.floor(tower[<span class="hljs-number">2</span>] / (<span class="hljs-number">1</span> + dist));
+                    }
+                }
+                <span class="hljs-keyword">if</span> (maxQuality &lt; quality) {
+                    maxQuality = quality;
+                    finalX = i;
+                    finalY = j;
+                }
+            }
+        }
+        res[<span class="hljs-number">0</span>] = finalX;
+        res[<span class="hljs-number">1</span>] = finalY;
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

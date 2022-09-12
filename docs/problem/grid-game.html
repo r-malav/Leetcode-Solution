@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Grid Game - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2017. Grid Game</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/prefix-sum">Prefix Sum</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>0-indexed</strong> 2D array <code>grid</code> of size <code>2 x n</code>, where <code>grid[r][c]</code> represents the number of points at position <code>(r, c)</code> on the matrix. Two robots are playing a game on this matrix.</p>
+<p>Both robots initially start at <code>(0, 0)</code> and want to reach <code>(1, n-1)</code>. Each robot may only move to the <strong>right</strong> (<code>(r, c)</code> to <code>(r, c + 1)</code>) or **down **(<code>(r, c)</code> to <code>(r + 1, c)</code>).</p>
+<p>At the start of the game, the <strong>first</strong> robot moves from <code>(0, 0)</code> to <code>(1, n-1)</code>, collecting all the points from the cells on its path. For all cells <code>(r, c)</code> traversed on the path, <code>grid[r][c]</code> is set to <code>0</code>. Then, the <strong>second</strong> robot moves from <code>(0, 0)</code> to <code>(1, n-1)</code>, collecting the points on its path. Note that their paths may intersect with one another.</p>
+<p>The <strong>first</strong> robot wants to <strong>minimize</strong> the number of points collected by the <strong>second</strong> robot. In contrast, the **second **robot wants to <strong>maximize</strong> the number of points it collects. If both robots play <strong>optimally</strong>, return **the *<em>number of points</em>* collected by the <strong>second</strong> robot.**</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/09/08/a1.png" alt="" /></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>]]
+Output: <span class="hljs-number">4</span>
+Explanation: The optimal path taken by the first robot <span class="hljs-keyword">is</span> shown <span class="hljs-keyword">in</span> red, <span class="hljs-keyword">and</span> the optimal path taken by the second robot <span class="hljs-keyword">is</span> shown <span class="hljs-keyword">in</span> blue.
+The cells visited by the first robot are <span class="hljs-keyword">set</span> to <span class="hljs-number">0.</span>
+The second robot will collect <span class="hljs-number">0</span> + <span class="hljs-number">0</span> + <span class="hljs-number">4</span> + <span class="hljs-number">0</span> = <span class="hljs-number">4</span> points.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/09/08/a2.png" alt="" /></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">8</span>,<span class="hljs-number">5</span>,<span class="hljs-number">2</span>]]
+Output: <span class="hljs-number">4</span>
+Explanation: The optimal path taken by the first robot <span class="hljs-keyword">is</span> shown <span class="hljs-keyword">in</span> red, <span class="hljs-keyword">and</span> the optimal path taken by the second robot <span class="hljs-keyword">is</span> shown <span class="hljs-keyword">in</span> blue.
+The cells visited by the first robot are <span class="hljs-keyword">set</span> to <span class="hljs-number">0.</span>
+The second robot will collect <span class="hljs-number">0</span> + <span class="hljs-number">3</span> + <span class="hljs-number">1</span> + <span class="hljs-number">0</span> = <span class="hljs-number">4</span> points.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/09/08/a3.png" alt="" /></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">15</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]]
+Output: <span class="hljs-number">7</span>
+Explanation: The optimal path taken by the first robot <span class="hljs-keyword">is</span> shown <span class="hljs-keyword">in</span> red, <span class="hljs-keyword">and</span> the optimal path taken by the second robot <span class="hljs-keyword">is</span> shown <span class="hljs-keyword">in</span> blue.
+The cells visited by the first robot are <span class="hljs-keyword">set</span> to <span class="hljs-number">0.</span>
+The second robot will collect <span class="hljs-number">0</span> + <span class="hljs-number">1</span> + <span class="hljs-number">3</span> + <span class="hljs-number">3</span> + <span class="hljs-number">0</span> = <span class="hljs-number">7</span> points.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>grid.length == 2</code></p></li>
+<li><p><code>n == grid[r].length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 5 * 104</code></p></li>
+<li><p><code>1 &lt;= grid[r][c] &lt;= 105</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">long</span> <span class="hljs-title">gridGame</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] grid)</span> </span>{
+        <span class="hljs-keyword">int</span> n = grid[<span class="hljs-number">0</span>].length;
+        <span class="hljs-keyword">long</span>[] cum0 = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[n + <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">long</span>[] cum1 = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[n + <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            cum0[i + <span class="hljs-number">1</span>] = cum0[i] + grid[<span class="hljs-number">0</span>][i];
+            cum1[i + <span class="hljs-number">1</span>] = cum1[i] + grid[<span class="hljs-number">1</span>][i];
+        }
+        <span class="hljs-keyword">long</span> ans = Long.MAX_VALUE;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            ans = Math.min(ans, Math.max(cum0[n] - cum0[i + <span class="hljs-number">1</span>], cum1[i]));
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

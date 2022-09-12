@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Angle Between Hands of a Clock - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1344. Angle Between Hands of a Clock</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given two numbers, <code>hour</code> and <code>minutes</code>, return **the smaller angle (in degrees) formed between the *<em><code>hour</code></em>* and the <strong><code>minute</code></strong> hand**.</p>
+<p>Answers within <code>10-5</code> of the actual value will be accepted as correct.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/12/26/sample_1_1673.png" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">hour</span> <span class="hljs-string">=</span> <span class="hljs-number">12</span><span class="hljs-string">,</span> <span class="hljs-string">minutes</span> <span class="hljs-string">=</span> <span class="hljs-number">30</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">165</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/12/26/sample_2_1673.png" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">hour</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span><span class="hljs-string">,</span> <span class="hljs-string">minutes</span> <span class="hljs-string">=</span> <span class="hljs-number">30</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">75</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/12/26/sample_3_1673.png" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">hour</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span><span class="hljs-string">,</span> <span class="hljs-string">minutes</span> <span class="hljs-string">=</span> <span class="hljs-number">15</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">7.5</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= hour &lt;= 12</code></p></li>
+<li><p><code>0 &lt;= minutes &lt;= 59</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">double</span> <span class="hljs-title">angleClock</span><span class="hljs-params">(<span class="hljs-keyword">int</span> hour, <span class="hljs-keyword">int</span> minutes)</span> </span>{
+        <span class="hljs-keyword">double</span> minAngle = minutes * <span class="hljs-number">360.0</span> / <span class="hljs-number">60</span>;
+        <span class="hljs-keyword">double</span> hourAnglePart1 = hour != <span class="hljs-number">12</span> ? (hour * <span class="hljs-number">360.0</span>) / <span class="hljs-number">12</span> : <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">double</span> hourAnglePart2 = (<span class="hljs-keyword">double</span>) (<span class="hljs-number">30</span> * minutes) / (<span class="hljs-keyword">double</span>) <span class="hljs-number">60</span>;
+        <span class="hljs-keyword">double</span> hourAngle = hourAnglePart1 + hourAnglePart2;
+        <span class="hljs-keyword">double</span> preResult = Math.abs(minAngle - (hourAngle));
+        <span class="hljs-keyword">return</span> preResult &gt; <span class="hljs-number">180</span> ? <span class="hljs-number">360</span> - preResult : preResult;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

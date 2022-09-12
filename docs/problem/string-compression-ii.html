@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>String Compression II - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1531. String Compression II</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Run-length encoding is a string compression method that works by&nbsp;replacing consecutive identical characters (repeated 2 or more times) with the concatenation of the character and the number marking the count of the characters (length of the run). For example, to compress the string&nbsp;<code>"aabccc"</code>&nbsp;we replace <code>"aa"</code>&nbsp;by&nbsp;<code>"a2"</code>&nbsp;and replace <code>"ccc"</code>&nbsp;by&nbsp;<code>"c3"</code>. Thus the compressed string becomes <code>"a2bc3"</code>.</p>
+<p>Notice that in this problem, we are not adding&nbsp;<code>'1'</code>&nbsp;after single characters.</p>
+<p>Given a&nbsp;string <code>s</code>&nbsp;and an integer <code>k</code>. You need to delete <strong>at most</strong>&nbsp;<code>k</code> characters from&nbsp;<code>s</code>&nbsp;such that the run-length encoded version of <code>s</code>&nbsp;has minimum length.</p>
+<p>Find the **minimum length of the run-length encoded&nbsp;version of *<em><code>s</code></em>* after deleting at most <strong><code>k</code></strong> characters**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"aaabcccd"</span>, k = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">4</span>
+Explanation: Compressing s <span class="hljs-keyword">without</span> deleting anything will give us <span class="hljs-string">"a3bc3d"</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">length</span> <span class="hljs-number">6.</span> Deleting <span class="hljs-keyword">any</span> <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">characters</span> <span class="hljs-string">'a'</span> <span class="hljs-keyword">or</span> <span class="hljs-string">'c'</span> would <span class="hljs-keyword">at</span> most decrease <span class="hljs-keyword">the</span> <span class="hljs-built_in">length</span> <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> compressed <span class="hljs-keyword">string</span> <span class="hljs-built_in">to</span> <span class="hljs-number">5</span>, <span class="hljs-keyword">for</span> instance <span class="hljs-built_in">delete</span> <span class="hljs-number">2</span> <span class="hljs-string">'a'</span> <span class="hljs-keyword">then</span> we will have s = <span class="hljs-string">"abcccd"</span> which compressed is abc3d. Therefore, <span class="hljs-keyword">the</span> optimal way is <span class="hljs-built_in">to</span> <span class="hljs-built_in">delete</span> <span class="hljs-string">'b'</span> <span class="hljs-keyword">and</span> <span class="hljs-string">'d'</span>, <span class="hljs-keyword">then</span> <span class="hljs-keyword">the</span> compressed <span class="hljs-built_in">version</span> <span class="hljs-keyword">of</span> s will be <span class="hljs-string">"a3c3"</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">length</span> <span class="hljs-number">4.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"aabbaa"</span>, k = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">2</span>
+Explanation: If we <span class="hljs-built_in">delete</span> both <span class="hljs-string">'b'</span> <span class="hljs-keyword">characters</span>, <span class="hljs-keyword">the</span> resulting compressed <span class="hljs-keyword">string</span> would be <span class="hljs-string">"a4"</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">length</span> <span class="hljs-number">2.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> s = <span class="hljs-string">"aaaaaaaaaaa"</span>, <span class="hljs-keyword">k</span> = <span class="hljs-number">0</span>
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-number">3</span>
+Explanation: Since <span class="hljs-keyword">k</span> <span class="hljs-keyword">is</span> zero, we cannot <span class="hljs-keyword">delete</span> anything. The compressed <span class="hljs-built_in">string</span> <span class="hljs-keyword">is</span> <span class="hljs-string">"a11"</span> of length <span class="hljs-number">3</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 100</code></p></li>
+<li><p><code>0 &lt;= k &lt;= s.length</code></p></li>
+<li><p><code>s</code> contains only lowercase English letters.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">101</span>][<span class="hljs-number">101</span>];
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getLen</span><span class="hljs-params">(<span class="hljs-keyword">int</span> cnt)</span> </span>{
+        <span class="hljs-keyword">if</span> (cnt == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">if</span> (cnt == <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">if</span> (cnt &lt; <span class="hljs-number">10</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">2</span>;
+        }
+        <span class="hljs-keyword">if</span> (cnt &lt; <span class="hljs-number">100</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">3</span>;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-number">4</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getLengthOfOptimalCompression</span><span class="hljs-params">(String s, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">char</span>[] sarr = s.toCharArray();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt;= s.length(); i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt;= k; j++) {
+                dp[i][j] = -<span class="hljs-number">1</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> dfs(sarr, <span class="hljs-number">0</span>, k);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">char</span>[] sarr, <span class="hljs-keyword">int</span> pos, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">if</span> (k &lt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">if</span> (pos == sarr.length || sarr.length - pos &lt;= k) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">if</span> (dp[pos][k] != -<span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> dp[pos][k];
+        }
+        <span class="hljs-keyword">int</span>[] cnts = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">26</span>];
+        <span class="hljs-keyword">int</span> most = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> res = -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = pos; j &lt; sarr.length; j++) {
+            cnts[sarr[j] - <span class="hljs-string">'a'</span>]++;
+            most = Math.max(most, cnts[sarr[j] - <span class="hljs-string">'a'</span>]);
+            <span class="hljs-keyword">int</span> cost = dfs(sarr, j + <span class="hljs-number">1</span>, k - (j - pos + <span class="hljs-number">1</span> - most));
+            <span class="hljs-keyword">if</span> (cost == -<span class="hljs-number">1</span>) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-keyword">if</span> (res == -<span class="hljs-number">1</span>) {
+                res = cost + getLen(most);
+            } <span class="hljs-keyword">else</span> {
+                res = Math.min(res, cost + getLen(most));
+            }
+        }
+        dp[pos][k] = res;
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

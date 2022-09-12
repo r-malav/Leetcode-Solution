@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Find the K-Sum of an Array - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2386. Find the K-Sum of an Array</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/heap-priority-queue">Heap (Priority Queue)</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an integer array <code>nums</code> and a <strong>positive</strong> integer <code>k</code>. You can choose any <strong>subsequence</strong> of the array and sum all of its elements together.</p>
+<p>We define the <strong>K-Sum</strong> of the array as the <code>kth</code> <strong>largest</strong> subsequence sum that can be obtained (<strong>not</strong> necessarily distinct).</p>
+<p>Return <strong>the K-Sum of the array</strong>.</p>
+<p>A <strong>subsequence</strong> is an array that can be derived from another array by deleting some or no elements without changing the order of the remaining elements.</p>
+<p><strong>Note</strong> that the empty subsequence is considered to have a sum of <code>0</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">-2</span>], k = <span class="hljs-number">5</span>
+Output: <span class="hljs-number">2</span>
+Explanation: All the possible subsequence sums that we can obtain are the following sorted <span class="hljs-keyword">in</span> decreasing order:
+- <span class="hljs-number">6</span>, <span class="hljs-number">4</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">-2.</span>
+The <span class="hljs-number">5</span>-Sum of the <span class="hljs-built_in">array</span> <span class="hljs-keyword">is</span> <span class="hljs-number">2.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">-10</span>,<span class="hljs-number">12</span>], k = <span class="hljs-number">16</span>
+Output: <span class="hljs-number">10</span>
+Explanation: The <span class="hljs-number">16</span>-Sum of the <span class="hljs-built_in">array</span> <span class="hljs-keyword">is</span> <span class="hljs-number">10.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == nums.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>-109 &lt;= nums[i] &lt;= 109</code></p></li>
+<li><p><code>1 &lt;= k &lt;= min(2000, 2n)</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">long</span> <span class="hljs-title">kSum</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">long</span> sum = <span class="hljs-number">0L</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+            <span class="hljs-keyword">if</span> (nums[i] &gt; <span class="hljs-number">0</span>) {
+                sum += nums[i];
+            } <span class="hljs-keyword">else</span> {
+                nums[i] = -nums[i];
+            }
+        }
+        Arrays.sort(nums);
+        PriorityQueue&lt;Pair&lt;Long, Integer&gt;&gt; pq =
+                <span class="hljs-keyword">new</span> PriorityQueue&lt;&gt;((a, b) -&gt; Long.compare(b.getKey(), a.getKey()));
+        pq.offer(<span class="hljs-keyword">new</span> Pair&lt;&gt;(sum, <span class="hljs-number">0</span>));
+        <span class="hljs-keyword">while</span> (k-- &gt; <span class="hljs-number">1</span>) {
+            Pair&lt;Long, Integer&gt; top = pq.poll();
+            <span class="hljs-keyword">long</span> s = top.getKey();
+            <span class="hljs-keyword">int</span> i = top.getValue();
+            <span class="hljs-keyword">if</span> (i &lt; nums.length) {
+                pq.offer(<span class="hljs-keyword">new</span> Pair&lt;&gt;(s - nums[i], i + <span class="hljs-number">1</span>));
+                <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span>) {
+                    pq.offer(<span class="hljs-keyword">new</span> Pair&lt;&gt;(s - nums[i] + nums[i - <span class="hljs-number">1</span>], i + <span class="hljs-number">1</span>));
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> pq.peek().getKey();
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Pair</span>&lt;<span class="hljs-title">K</span>, <span class="hljs-title">V</span>&gt; </span>{
+        K key;
+        V value;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Pair</span><span class="hljs-params">(K key, V value)</span> </span>{
+            <span class="hljs-keyword">this</span>.key = key;
+            <span class="hljs-keyword">this</span>.value = value;
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> K <span class="hljs-title">getKey</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">return</span> key;
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> V <span class="hljs-title">getValue</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">return</span> value;
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

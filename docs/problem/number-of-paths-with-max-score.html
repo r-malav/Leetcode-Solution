@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Number of Paths with Max Score - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1301. Number of Paths with Max Score</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a square <code>board</code>&nbsp;of characters. You can move on the board starting at the bottom right square marked with the character&nbsp;<code>'S'</code>.</p>
+<p>You need&nbsp;to reach the top left square marked with the character <code>'E'</code>. The rest of the squares are labeled either with a numeric character&nbsp;<code>1, 2, ..., 9</code> or with an obstacle <code>'X'</code>. In one move you can go up, left or up-left (diagonally) only if there is no obstacle there.</p>
+<p>Return a list of two integers: the first integer is the maximum sum of numeric characters you can collect, and the second is the number of such paths that you can take to get that maximum sum, <strong>taken modulo <code>10^9 + 7</code></strong>.</p>
+<p>In case there is no path, return&nbsp;<code>[0, 0]</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> board = [<span class="hljs-string">"E23"</span>,<span class="hljs-string">"2X2"</span>,<span class="hljs-string">"12S"</span>]
+<span class="hljs-symbol">Output:</span> [<span class="hljs-number">7</span>,<span class="hljs-number">1</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> board = [<span class="hljs-string">"E12"</span>,<span class="hljs-string">"1X1"</span>,<span class="hljs-string">"21S"</span>]
+<span class="hljs-symbol">Output:</span> [<span class="hljs-number">4</span>,<span class="hljs-number">2</span>]
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> board = [<span class="hljs-string">"E11"</span>,<span class="hljs-string">"XXX"</span>,<span class="hljs-string">"11S"</span>]
+<span class="hljs-symbol">Output:</span> [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>2 &lt;= board.length == board[i].length &lt;= 100</code></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-keyword">import</span> java.util.List;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span>[][] DIRECTIONS = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[][] {{<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {<span class="hljs-number">0</span>, <span class="hljs-number">1</span>}, {<span class="hljs-number">1</span>, <span class="hljs-number">1</span>}};
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] pathsWithMaxScore(List&lt;String&gt; board) {
+        <span class="hljs-keyword">int</span> rows = board.size();
+        <span class="hljs-keyword">int</span> columns = board.get(<span class="hljs-number">0</span>).length();
+        <span class="hljs-keyword">int</span>[][][] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[rows][columns][<span class="hljs-number">2</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> r = rows - <span class="hljs-number">1</span>; r &gt;= <span class="hljs-number">0</span>; r--) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> c = columns - <span class="hljs-number">1</span>; c &gt;= <span class="hljs-number">0</span>; c--) {
+                <span class="hljs-keyword">char</span> current = board.get(r).charAt(c);
+                <span class="hljs-keyword">if</span> (current == <span class="hljs-string">'S'</span>) {
+                    dp[r][c][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
+                    dp[r][c][<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (current != <span class="hljs-string">'X'</span>) {
+                    <span class="hljs-keyword">int</span> maxScore = <span class="hljs-number">0</span>;
+                    <span class="hljs-keyword">int</span> paths = <span class="hljs-number">0</span>;
+                    <span class="hljs-keyword">int</span> currentScore = current == <span class="hljs-string">'E'</span> ? <span class="hljs-number">0</span> : current - <span class="hljs-string">'0'</span>;
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] dir : DIRECTIONS) {
+                        <span class="hljs-keyword">int</span> nextR = r + dir[<span class="hljs-number">0</span>];
+                        <span class="hljs-keyword">int</span> nextC = c + dir[<span class="hljs-number">1</span>];
+                        <span class="hljs-keyword">if</span> (nextR &lt; rows &amp;&amp; nextC &lt; columns &amp;&amp; dp[nextR][nextC][<span class="hljs-number">1</span>] &gt; <span class="hljs-number">0</span>) {
+                            <span class="hljs-keyword">if</span> (dp[nextR][nextC][<span class="hljs-number">0</span>] + currentScore &gt; maxScore) {
+                                maxScore = dp[nextR][nextC][<span class="hljs-number">0</span>] + currentScore;
+                                paths = dp[nextR][nextC][<span class="hljs-number">1</span>];
+                            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (dp[nextR][nextC][<span class="hljs-number">0</span>] + currentScore == maxScore) {
+                                paths = (paths + dp[nextR][nextC][<span class="hljs-number">1</span>]) % <span class="hljs-number">1000000007</span>;
+                            }
+                        }
+                    }
+                    dp[r][c][<span class="hljs-number">0</span>] = maxScore;
+                    dp[r][c][<span class="hljs-number">1</span>] = paths;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">0</span>], dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">1</span>]};
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

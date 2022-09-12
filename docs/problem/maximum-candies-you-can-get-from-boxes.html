@@ -1,0 +1,88 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Candies You Can Get from Boxes - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1298. Maximum Candies You Can Get from Boxes</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You have <code>n</code> boxes labeled from <code>0</code> to <code>n - 1</code>. You are given four arrays: <code>status</code>, <code>candies</code>, <code>keys</code>, and <code>containedBoxes</code> where:</p>
+<ul>
+<li><p><code>status[i]</code> is <code>1</code> if the <code>ith</code> box is open and <code>0</code> if the <code>ith</code> box is closed,</p></li>
+<li><p><code>candies[i]</code> is the number of candies in the <code>ith</code> box,</p></li>
+<li><p><code>keys[i]</code> is a list of the labels of the boxes you can open after opening the <code>ith</code> box.</p></li>
+<li><p><code>containedBoxes[i]</code> is a list of the boxes you found inside the <code>ith</code> box.</p></li>
+</ul>
+<p>You are given an integer array <code>initialBoxes</code> that contains the labels of the boxes you initially have. You can take all the candies in <strong>any open box</strong> and you can use the keys in it to open new boxes and you also can use the boxes you find in it.</p>
+<p>Return <strong>the maximum number of candies you can get following the rules above</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: status = [<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>], candies = [<span class="hljs-number">7</span>,<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">100</span>], keys = [[],[],[<span class="hljs-number">1</span>],[]], containedBoxes = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">3</span>],[],[]], initialBoxes = [<span class="hljs-number">0</span>]
+Output: <span class="hljs-number">16</span>
+Explanation: You will be initially given box <span class="hljs-number">0.</span> You will find <span class="hljs-number">7</span> candies <span class="hljs-keyword">in</span> it <span class="hljs-keyword">and</span> boxes <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-number">2.</span>
+Box <span class="hljs-number">1</span> <span class="hljs-keyword">is</span> closed <span class="hljs-keyword">and</span> you <span class="hljs-keyword">do</span> <span class="hljs-keyword">not</span> have a key <span class="hljs-keyword">for</span> it so you will open box <span class="hljs-number">2.</span> You will find <span class="hljs-number">4</span> candies <span class="hljs-keyword">and</span> a key to box <span class="hljs-number">1</span> <span class="hljs-keyword">in</span> box <span class="hljs-number">2.</span>
+In box <span class="hljs-number">1</span>, you will find <span class="hljs-number">5</span> candies <span class="hljs-keyword">and</span> box <span class="hljs-number">3</span> but you will <span class="hljs-keyword">not</span> find a key to box <span class="hljs-number">3</span> so box <span class="hljs-number">3</span> will remain closed.
+Total number of candies collected = <span class="hljs-number">7</span> + <span class="hljs-number">4</span> + <span class="hljs-number">5</span> = <span class="hljs-number">16</span> candy.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: status = [<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>], candies = [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>], keys = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>],[],[],[],[],[]], containedBoxes = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>],[],[],[],[],[]], initialBoxes = [<span class="hljs-number">0</span>]
+Output: <span class="hljs-number">6</span>
+Explanation: You have initially box <span class="hljs-number">0.</span> Opening it you can find boxes <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span> <span class="hljs-keyword">and</span> <span class="hljs-number">5</span> <span class="hljs-keyword">and</span> their keys.
+The total number of candies will be <span class="hljs-number">6.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == status.length == candies.length == keys.length == containedBoxes.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 1000</code></p></li>
+<li><p><code>status[i]</code> is either <code>0</code> or <code>1</code>.</p></li>
+<li><p><code>1 &lt;= candies[i] &lt;= 1000</code></p></li>
+<li><p><code>0 &lt;= keys[i].length &lt;= n</code></p></li>
+<li><p><code>0 &lt;= keys[i][j] &lt; n</code></p></li>
+<li><p>All values of <code>keys[i]</code> are <strong>unique</strong>.</p></li>
+<li><p><code>0 &lt;= containedBoxes[i].length &lt;= n</code></p></li>
+<li><p><code>0 &lt;= containedBoxes[i][j] &lt; n</code></p></li>
+<li><p>All values of <code>containedBoxes[i]</code> are unique.</p></li>
+<li><p>Each box is contained in one box at most.</p></li>
+<li><p><code>0 &lt;= initialBoxes.length &lt;= n</code></p></li>
+<li><p><code>0 &lt;= initialBoxes[i] &lt; n</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-keyword">import</span> java.util.LinkedList;
+<span class="hljs-keyword">import</span> java.util.Queue;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxCandies</span><span class="hljs-params">(
+            <span class="hljs-keyword">int</span>[] status, <span class="hljs-keyword">int</span>[] candies, <span class="hljs-keyword">int</span>[][] keys, <span class="hljs-keyword">int</span>[][] containedBoxes, <span class="hljs-keyword">int</span>[] initialBoxes)</span> </span>{
+        <span class="hljs-keyword">int</span> collectedCandies = <span class="hljs-number">0</span>;
+        Queue&lt;Integer&gt; boxes = <span class="hljs-keyword">new</span> LinkedList&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> box : initialBoxes) {
+            boxes.offer(box);
+        }
+        <span class="hljs-keyword">int</span> unseen = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (!boxes.isEmpty()) {
+            <span class="hljs-keyword">if</span> (unseen == boxes.size()) {
+                <span class="hljs-keyword">break</span>;
+            }
+            <span class="hljs-keyword">int</span> curBox = boxes.poll();
+            <span class="hljs-keyword">if</span> (status[curBox] == <span class="hljs-number">0</span>) {
+                unseen++;
+                boxes.offer(curBox);
+            } <span class="hljs-keyword">else</span> {
+                unseen = <span class="hljs-number">0</span>;
+                <span class="hljs-comment">// collect candies</span>
+                collectedCandies += candies[curBox];
+                <span class="hljs-comment">// open keys</span>
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> key : keys[curBox]) {
+                    status[key] = <span class="hljs-number">1</span>;
+                }
+                <span class="hljs-comment">// collect contained boxes</span>
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> box : containedBoxes[curBox]) {
+                    boxes.offer(box);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> collectedCandies;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

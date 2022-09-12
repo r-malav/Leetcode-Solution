@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Check if Every Row and Column Contains All Numbers - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2133. Check if Every Row and Column Contains All Numbers</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/valid-sudoku.html">Valid Sudoku</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/matrix-diagonal-sum.html">Matrix Diagonal Sum</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>An <code>n x n</code> matrix is <strong>valid</strong> if every row and every column contains <strong>all</strong> the integers from <code>1</code> to <code>n</code> (<strong>inclusive</strong>).</p>
+<p>Given an <code>n x n</code> integer matrix <code>matrix</code>, return <code>true</code> **if the matrix is **valid<strong>.</strong> Otherwise, return <code>false</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/12/21/example1drawio.png" alt="" /></p>
+<pre><code class="hljs">Input: matrix = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]]
+Output: <span class="hljs-literal">true</span>
+Explanation: In <span class="hljs-keyword">this</span> <span class="hljs-keyword">case</span>, n = <span class="hljs-number">3</span>, <span class="hljs-keyword">and</span> every row <span class="hljs-keyword">and</span> column contains the numbers <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">and</span> <span class="hljs-number">3.</span>
+Hence, we <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/12/21/example2drawio.png" alt="" /></p>
+<pre><code class="hljs">Input: matrix = [[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]]
+Output: <span class="hljs-literal">false</span>
+Explanation: In <span class="hljs-keyword">this</span> <span class="hljs-keyword">case</span>, n = <span class="hljs-number">3</span>, but the first row <span class="hljs-keyword">and</span> the first column <span class="hljs-keyword">do</span> <span class="hljs-keyword">not</span> contain the numbers <span class="hljs-number">2</span> <span class="hljs-keyword">or</span> <span class="hljs-number">3.</span>
+Hence, we <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == matrix.length == matrix[i].length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 100</code></p></li>
+<li><p><code>1 &lt;= matrix[i][j] &lt;= n</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">checkValid</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] matrix)</span> </span>{
+        <span class="hljs-keyword">int</span> n = matrix.length;
+        Set&lt;Integer&gt; set = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] ints : matrix) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> anInt : ints) {
+                set.add(anInt);
+            }
+            <span class="hljs-keyword">if</span> (set.size() != n) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            }
+            set.clear();
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; matrix[<span class="hljs-number">0</span>].length; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] ints : matrix) {
+                set.add(ints[i]);
+            }
+            <span class="hljs-keyword">if</span> (set.size() != n) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            }
+            set.clear();
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

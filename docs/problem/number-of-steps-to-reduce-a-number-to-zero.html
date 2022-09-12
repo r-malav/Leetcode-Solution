@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Number of Steps to Reduce a Number to Zero - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1342. Number of Steps to Reduce a Number to Zero</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/backtracking">Backtracking</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an integer <code>num</code>, return <em>the number of steps to reduce it to zero</em>.</p>
+<p>In one step, if the current number is even, you have to divide it by <code>2</code>, otherwise, you have to subtract <code>1</code> from it.</p>
+<p><strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: num = <span class="hljs-number">14</span>
+Output: <span class="hljs-number">6</span>
+Explanation: 
+Step <span class="hljs-number">1</span>) <span class="hljs-number">14</span> <span class="hljs-keyword">is</span> even; divide by <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> obtain <span class="hljs-number">7.</span> 
+Step <span class="hljs-number">2</span>) <span class="hljs-number">7</span> <span class="hljs-keyword">is</span> odd; subtract <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> obtain <span class="hljs-number">6.</span>
+Step <span class="hljs-number">3</span>) <span class="hljs-number">6</span> <span class="hljs-keyword">is</span> even; divide by <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> obtain <span class="hljs-number">3.</span> 
+Step <span class="hljs-number">4</span>) <span class="hljs-number">3</span> <span class="hljs-keyword">is</span> odd; subtract <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> obtain <span class="hljs-number">2.</span> 
+Step <span class="hljs-number">5</span>) <span class="hljs-number">2</span> <span class="hljs-keyword">is</span> even; divide by <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> obtain <span class="hljs-number">1.</span> 
+Step <span class="hljs-number">6</span>) <span class="hljs-number">1</span> <span class="hljs-keyword">is</span> odd; subtract <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> obtain <span class="hljs-number">0.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: num = <span class="hljs-number">8</span>
+Output: <span class="hljs-number">4</span>
+Explanation: 
+Step <span class="hljs-number">1</span>) <span class="hljs-number">8</span> <span class="hljs-keyword">is</span> even; divide by <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> obtain <span class="hljs-number">4.</span> 
+Step <span class="hljs-number">2</span>) <span class="hljs-number">4</span> <span class="hljs-keyword">is</span> even; divide by <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> obtain <span class="hljs-number">2.</span> 
+Step <span class="hljs-number">3</span>) <span class="hljs-number">2</span> <span class="hljs-keyword">is</span> even; divide by <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> obtain <span class="hljs-number">1.</span> 
+Step <span class="hljs-number">4</span>) <span class="hljs-number">1</span> <span class="hljs-keyword">is</span> odd; subtract <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> obtain <span class="hljs-number">0.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">num</span> <span class="hljs-string">=</span> <span class="hljs-number">123</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">12</span>
+</code></pre>
+<p><strong>Constraint:</strong></p>
+<ul>
+<li><code>0 &lt;= num &lt;= 10^6</code></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">num</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
+ */</span>
+<span class="hljs-keyword">var</span> numberOfSteps = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">num</span>) </span>{
+    <span class="hljs-keyword">let</span> ans = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> (; num; ans++)
+        <span class="hljs-keyword">if</span> (num % <span class="hljs-number">2</span>) num--
+        <span class="hljs-keyword">else</span> num /= <span class="hljs-number">2</span>
+    <span class="hljs-keyword">return</span> ans
+};
+</code></pre></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

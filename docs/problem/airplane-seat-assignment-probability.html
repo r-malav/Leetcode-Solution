@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Airplane Seat Assignment Probability - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1227. Airplane Seat Assignment Probability</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/brainteaser">Brainteaser</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/probability-and-statistics">Probability and Statistics</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p><code>n</code> passengers board an airplane with exactly <code>n</code> seats. The first passenger has lost the ticket and picks a seat randomly. But after that, the rest of the passengers will:</p>
+<ul>
+<li><p>Take their own seat if it is still available, and</p></li>
+<li><p>Pick other seats randomly when they find their seat occupied</p></li>
+</ul>
+<p>Return **the probability that the *<em><code>nth</code></em>* person gets his own seat**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> n = <span class="hljs-number">1</span>
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-number">1.00000</span>
+Explanation: The <span class="hljs-keyword">first</span> person can <span class="hljs-keyword">only</span> <span class="hljs-built_in">get</span> the <span class="hljs-keyword">first</span> seat.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">0.50000</span>
+Explanation: The <span class="hljs-keyword">second</span> person has <span class="hljs-keyword">a</span> probability <span class="hljs-keyword">of</span> <span class="hljs-number">0.5</span> <span class="hljs-built_in">to</span> <span class="hljs-built_in">get</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">second</span> seat (when <span class="hljs-keyword">first</span> person gets <span class="hljs-keyword">the</span> <span class="hljs-keyword">first</span> seat).
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= n &lt;= 105</code></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">double</span> <span class="hljs-title">nthPersonGetsNthSeat</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-keyword">if</span> (n == <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1.0</span>D;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0.5</span>D;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

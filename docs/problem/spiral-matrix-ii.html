@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Spiral Matrix II - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://baffinlee.com/leetcode-javascript/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://baffinlee.com/leetcode-javascript/static/css/app.css"/></head><body><header><h1>59. Spiral Matrix II</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://baffinlee.com/leetcode-javascript/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/tag/array">Array</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://baffinlee.com/leetcode-javascript/problem/spiral-matrix.html">Spiral Matrix</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Spiral Matrix II - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>59. Spiral Matrix II</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/spiral-matrix.html">Spiral Matrix</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
 <p>Given a positive integer <strong>n</strong>, generate a square matrix filled with elements from 1 to <strong>n</strong>2 in spiral order.</p>
 <p><strong>Example:</strong></p>
 <pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-number">3</span>
@@ -9,7 +9,42 @@
  <span class="hljs-string">[</span> <span class="hljs-number">7</span><span class="hljs-string">,</span> <span class="hljs-number">6</span><span class="hljs-string">,</span> <span class="hljs-number">5</span> <span class="hljs-string">]</span>
 <span class="hljs-string">]</span>
 </code></pre>
-<h2 id="solution">Solution</h2>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[][] generateMatrix(<span class="hljs-keyword">int</span> n) {
+        <span class="hljs-keyword">int</span> num = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> rStart = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> rEnd = n - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> cStart = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> cEnd = n - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span>[][] spiral = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n][n];
+        <span class="hljs-keyword">while</span> (rStart &lt;= rEnd &amp;&amp; cStart &lt;= cEnd) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k = cStart; k &lt;= cEnd; k++) {
+                spiral[rStart][k] = num++;
+            }
+            rStart++;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k = rStart; k &lt;= rEnd; k++) {
+                spiral[k][cEnd] = num++;
+            }
+            cEnd--;
+            <span class="hljs-keyword">if</span> (rStart &lt;= rEnd) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k = cEnd; k &gt;= cStart; k--) {
+                    spiral[rEnd][k] = num++;
+                }
+            }
+            rEnd--;
+            <span class="hljs-keyword">if</span> (cStart &lt;= cEnd) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k = rEnd; k &gt;= rStart; k--) {
+                    spiral[k][cStart] = num++;
+                }
+            }
+            cStart++;
+        }
+        <span class="hljs-keyword">return</span> spiral;
+    }
+}
+</code></pre>
+<h2 id="solution-javascript">Solution (Javascript)</h2>
 <pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
  * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">n</span></span>
  * <span class="hljs-doctag">@return <span class="hljs-type">{number[][]}</span></span>
@@ -44,4 +79,4 @@
 <ul>
 <li>Time complexity : O(n^2).</li>
 <li>Space complexity : O(n^2).</li>
-</ul></article></main><footer><a href="https://github.com/BaffinLee/leetcode-javascript" target="_blank"><img src="https://baffinlee.com/leetcode-javascript/static/img/github.png" alt="github"/></a></footer></body></html>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

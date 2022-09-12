@@ -1,0 +1,93 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Number of Days to Make m Bouquets - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1482. Minimum Number of Days to Make m Bouquets</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximize-the-confusion-of-an-exam.html">Maximize the Confusion of an Exam</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/earliest-possible-day-of-full-bloom.html">Earliest Possible Day of Full Bloom</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an integer array <code>bloomDay</code>, an integer <code>m</code> and an integer <code>k</code>.</p>
+<p>You want to make <code>m</code> bouquets. To make a bouquet, you need to use <code>k</code> <strong>adjacent flowers</strong> from the garden.</p>
+<p>The garden consists of <code>n</code> flowers, the <code>ith</code> flower will bloom in the <code>bloomDay[i]</code> and then can be used in <strong>exactly one</strong> bouquet.</p>
+<p>Return **the minimum number of days you need to wait to be able to make *<em><code>m</code></em>* bouquets from the garden**. If it is impossible to make m bouquets return <code>-1</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: bloomDay = [<span class="hljs-number">1</span>,<span class="hljs-number">10</span>,<span class="hljs-number">3</span>,<span class="hljs-number">10</span>,<span class="hljs-number">2</span>], m = <span class="hljs-number">3</span>, k = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">3</span>
+Explanation: Let us see what happened <span class="hljs-keyword">in</span> the first three days. x means flower bloomed <span class="hljs-keyword">and</span> _ means flower did <span class="hljs-keyword">not</span> bloom <span class="hljs-keyword">in</span> the garden.
+We need <span class="hljs-number">3</span> bouquets each should contain <span class="hljs-number">1</span> flower.
+After day <span class="hljs-number">1</span>: [x, _, _, _, _]   <span class="hljs-comment">// we can only make one bouquet.</span>
+After day <span class="hljs-number">2</span>: [x, _, _, _, x]   <span class="hljs-comment">// we can only make two bouquets.</span>
+After day <span class="hljs-number">3</span>: [x, _, x, _, x]   <span class="hljs-comment">// we can make 3 bouquets. The answer is 3.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: bloomDay = [<span class="hljs-number">1</span>,<span class="hljs-number">10</span>,<span class="hljs-number">3</span>,<span class="hljs-number">10</span>,<span class="hljs-number">2</span>], m = <span class="hljs-number">3</span>, k = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">-1</span>
+Explanation: We need <span class="hljs-number">3</span> bouquets each has <span class="hljs-number">2</span> flowers, that means we need <span class="hljs-number">6</span> flowers. We only have <span class="hljs-number">5</span> flowers so it <span class="hljs-keyword">is</span> impossible to <span class="hljs-keyword">get</span> the needed bouquets <span class="hljs-keyword">and</span> we <span class="hljs-keyword">return</span> <span class="hljs-number">-1.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: bloomDay = [<span class="hljs-number">7</span>,<span class="hljs-number">7</span>,<span class="hljs-number">7</span>,<span class="hljs-number">7</span>,<span class="hljs-number">12</span>,<span class="hljs-number">7</span>,<span class="hljs-number">7</span>], m = <span class="hljs-number">2</span>, k = <span class="hljs-number">3</span>
+Output: <span class="hljs-number">12</span>
+Explanation: We need <span class="hljs-number">2</span> bouquets each should have <span class="hljs-number">3</span> flowers.
+Here <span class="hljs-keyword">is</span> the garden after the <span class="hljs-number">7</span> <span class="hljs-keyword">and</span> <span class="hljs-number">12</span> days:
+After day <span class="hljs-number">7</span>: [x, x, x, x, _, x, x]
+We can make one bouquet of the first three flowers that bloomed. We cannot make another bouquet <span class="hljs-keyword">from</span> the last three flowers that bloomed because they are <span class="hljs-keyword">not</span> adjacent.
+After day <span class="hljs-number">12</span>: [x, x, x, x, x, x, x]
+It <span class="hljs-keyword">is</span> obvious that we can make two bouquets <span class="hljs-keyword">in</span> different ways.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>bloomDay.length == n</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= bloomDay[i] &lt;= 109</code></p></li>
+<li><p><code>1 &lt;= m &lt;= 106</code></p></li>
+<li><p><code>1 &lt;= k &lt;= n</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minDays</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] bloomDay, <span class="hljs-keyword">int</span> m, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">int</span> n = bloomDay.length;
+        <span class="hljs-keyword">if</span> (m * k &gt; n) {
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">int</span> left = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> right = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> day : bloomDay) {
+            right = Math.max(right, day);
+        }
+        <span class="hljs-keyword">while</span> (left &lt; right) {
+            <span class="hljs-keyword">int</span> guess = (left + right) / <span class="hljs-number">2</span>;
+            <span class="hljs-keyword">boolean</span> judgeResult = judge(bloomDay, m, k, guess);
+            <span class="hljs-keyword">if</span> (!judgeResult) {
+                left = guess + <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!judge(bloomDay, m, k, guess - <span class="hljs-number">1</span>)) {
+                <span class="hljs-keyword">return</span> guess;
+            } <span class="hljs-keyword">else</span> {
+                right = guess;
+            }
+        }
+        <span class="hljs-keyword">return</span> left;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">judge</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] bloomDay, <span class="hljs-keyword">int</span> m, <span class="hljs-keyword">int</span> k, <span class="hljs-keyword">int</span> guess)</span> </span>{
+        <span class="hljs-keyword">int</span> bouquets = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> cnt = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j : bloomDay) {
+            <span class="hljs-keyword">if</span> (j &lt;= guess) {
+                cnt++;
+                <span class="hljs-keyword">if</span> (cnt == k) {
+                    cnt = <span class="hljs-number">0</span>;
+                    bouquets++;
+                    <span class="hljs-keyword">if</span> (bouquets &gt;= m) {
+                        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+                    }
+                }
+            } <span class="hljs-keyword">else</span> {
+                cnt = <span class="hljs-number">0</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

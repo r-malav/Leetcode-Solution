@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Score After Splitting a String - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1422. Maximum Score After Splitting a String</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a&nbsp;string <code>s</code>&nbsp;of zeros and ones, **return the maximum score after splitting the string into two *<em>non-empty</em>* substrings** (i.e. <strong>left</strong> substring and <strong>right</strong> substring).</p>
+<p>The score after splitting a string is the number of <strong>zeros</strong> in the <strong>left</strong> substring plus the number of <strong>ones</strong> in the <strong>right</strong> substring.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: <span class="hljs-attr">s</span> = <span class="hljs-string">"011101"</span>
+Output: <span class="hljs-number">5</span> 
+Explanation: 
+All possible ways of splitting s into two non-empty substrings are:
+<span class="hljs-attr">left</span> = <span class="hljs-string">"0"</span> <span class="hljs-literal">and</span> <span class="hljs-attr">right</span> = <span class="hljs-string">"11101"</span>, <span class="hljs-attr">score</span> = <span class="hljs-number">1</span> + <span class="hljs-number">4</span> = <span class="hljs-number">5</span> 
+<span class="hljs-attr">left</span> = <span class="hljs-string">"01"</span> <span class="hljs-literal">and</span> <span class="hljs-attr">right</span> = <span class="hljs-string">"1101"</span>, <span class="hljs-attr">score</span> = <span class="hljs-number">1</span> + <span class="hljs-number">3</span> = <span class="hljs-number">4</span> 
+<span class="hljs-attr">left</span> = <span class="hljs-string">"011"</span> <span class="hljs-literal">and</span> <span class="hljs-attr">right</span> = <span class="hljs-string">"101"</span>, <span class="hljs-attr">score</span> = <span class="hljs-number">1</span> + <span class="hljs-number">2</span> = <span class="hljs-number">3</span> 
+<span class="hljs-attr">left</span> = <span class="hljs-string">"0111"</span> <span class="hljs-literal">and</span> <span class="hljs-attr">right</span> = <span class="hljs-string">"01"</span>, <span class="hljs-attr">score</span> = <span class="hljs-number">1</span> + <span class="hljs-number">1</span> = <span class="hljs-number">2</span> 
+<span class="hljs-attr">left</span> = <span class="hljs-string">"01110"</span> <span class="hljs-literal">and</span> <span class="hljs-attr">right</span> = <span class="hljs-string">"1"</span>, <span class="hljs-attr">score</span> = <span class="hljs-number">2</span> + <span class="hljs-number">1</span> = <span class="hljs-number">3</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> s = <span class="hljs-string">"00111"</span>
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-number">5</span>
+Explanation: When <span class="hljs-keyword">left</span> = <span class="hljs-string">"00"</span> <span class="hljs-built_in">and</span> <span class="hljs-keyword">right</span> = <span class="hljs-string">"111"</span>, we <span class="hljs-built_in">get</span> the maximum score = <span class="hljs-number">2</span> + <span class="hljs-number">3</span> = <span class="hljs-number">5</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> s = <span class="hljs-string">"1111"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">3</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>2 &lt;= s.length &lt;= 500</code></p></li>
+<li><p>The string <code>s</code> consists of characters <code>'0'</code> and <code>'1'</code> only.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxScore</span><span class="hljs-params">(String s)</span> </span>{
+        <span class="hljs-keyword">int</span> zeroes = s.charAt(<span class="hljs-number">0</span>) == <span class="hljs-string">'0'</span> ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> ones = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; s.length(); i++) {
+            <span class="hljs-keyword">if</span> (s.charAt(i) == <span class="hljs-string">'1'</span>) {
+                ones++;
+            }
+        }
+        <span class="hljs-keyword">int</span> maxScore = zeroes + ones;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; s.length() - <span class="hljs-number">1</span>; i++) {
+            <span class="hljs-keyword">if</span> (s.charAt(i) == <span class="hljs-string">'0'</span>) {
+                zeroes++;
+            } <span class="hljs-keyword">else</span> {
+                ones--;
+            }
+            maxScore = Math.max(maxScore, zeroes + ones);
+        }
+        <span class="hljs-keyword">return</span> maxScore;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Avoid Flood in The City - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1488. Avoid Flood in The City</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/heap-priority-queue">Heap (Priority Queue)</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Your country has an infinite number of lakes. Initially, all the lakes are empty, but when it rains over the <code>nth</code> lake, the <code>nth</code> lake becomes full of water. If it rains over a lake that is <strong>full of water</strong>, there will be a <strong>flood</strong>. Your goal is to avoid floods in any lake.</p>
+<p>Given an integer array <code>rains</code> where:</p>
+<ul>
+<li><p><code>rains[i] &gt; 0</code> means there will be rains over the <code>rains[i]</code> lake.</p></li>
+<li><p><code>rains[i] == 0</code> means there are no rains this day and you can choose <strong>one lake</strong> this day and <strong>dry it</strong>.</p></li>
+</ul>
+<p>Return <strong>an array <code>ans</code></strong> where:</p>
+<ul>
+<li><p><code>ans.length == rains.length</code></p></li>
+<li><p><code>ans[i] == -1</code> if <code>rains[i] &gt; 0</code>.</p></li>
+<li><p><code>ans[i]</code> is the lake you choose to dry in the <code>ith</code> day if <code>rains[i] == 0</code>.</p></li>
+</ul>
+<p>If there are multiple valid answers return <strong>any</strong> of them. If it is impossible to avoid flood return <strong>an empty array</strong>.</p>
+<p>Notice that if you chose to dry a full lake, it becomes empty, but if you chose to dry an empty lake, nothing changes.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: rains = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+Output: [<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>]
+Explanation: After the first day full lakes are [<span class="hljs-number">1</span>]
+After the second day full lakes are [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
+After the third day full lakes are [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+After the fourth day full lakes are [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+There<span class="hljs-string">'s no day to dry any lake and there is no flood in any lake.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: rains = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]
+Output: [<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>]
+Explanation: After the first day full lakes are [<span class="hljs-number">1</span>]
+After the second day full lakes are [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
+After the third day, we dry lake <span class="hljs-number">2.</span> Full lakes are [<span class="hljs-number">1</span>]
+After the fourth day, we dry lake <span class="hljs-number">1.</span> There <span class="hljs-keyword">is</span> no full lakes.
+After the fifth day, full lakes are [<span class="hljs-number">2</span>].
+After the sixth day, full lakes are [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>].
+It <span class="hljs-keyword">is</span> easy that <span class="hljs-keyword">this</span> scenario <span class="hljs-keyword">is</span> flood-free. [<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>] <span class="hljs-keyword">is</span> another acceptable scenario.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: rains = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
+Output: []
+Explanation: After <span class="hljs-keyword">the</span> <span class="hljs-keyword">second</span> <span class="hljs-built_in">day</span>, full lakes are  [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]. We have <span class="hljs-keyword">to</span> dry one lake <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">third</span> <span class="hljs-built_in">day</span>.
+After <span class="hljs-keyword">that</span>, <span class="hljs-keyword">it</span> will rain <span class="hljs-keyword">over</span> lakes [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]. It's easy <span class="hljs-keyword">to</span> prove <span class="hljs-keyword">that</span> no matter which lake you choose <span class="hljs-keyword">to</span> dry <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> <span class="hljs-number">3</span>rd <span class="hljs-built_in">day</span>, <span class="hljs-keyword">the</span> other one will flood.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= rains.length &lt;= 105</code></p></li>
+<li><p><code>0 &lt;= rains[i] &lt;= 109</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] avoidFlood(<span class="hljs-keyword">int</span>[] rains) {
+        HashMap&lt;Integer, Integer&gt; hm = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        TreeSet&lt;Integer&gt; tree = <span class="hljs-keyword">new</span> TreeSet&lt;&gt;();
+        <span class="hljs-keyword">int</span>[] ans = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[rains.length];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; rains.length; i = i + <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">int</span> val = rains[i];
+            <span class="hljs-keyword">if</span> (val != <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">if</span> (hm.containsKey(val)) {
+                    <span class="hljs-keyword">int</span> mapVal = hm.get(val);
+                    <span class="hljs-keyword">if</span> (tree.ceiling(mapVal) != <span class="hljs-keyword">null</span>) {
+                        ans[tree.ceiling(mapVal)] = val;
+                        hm.put(val, i);
+                        tree.remove(tree.ceiling(mapVal));
+                    } <span class="hljs-keyword">else</span> {
+                        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">0</span>];
+                    }
+                } <span class="hljs-keyword">else</span> {
+                    hm.put(val, i);
+                }
+                ans[i] = -<span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> {
+                tree.add(i);
+            }
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> tr : tree) {
+            ans[tr] = <span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

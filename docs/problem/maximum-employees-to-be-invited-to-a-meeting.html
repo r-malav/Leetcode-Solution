@@ -1,0 +1,131 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Employees to Be Invited to a Meeting - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2127. Maximum Employees to Be Invited to a Meeting</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/graph">Graph</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/topological-sort">Topological Sort</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/redundant-connection.html">Redundant Connection</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/parallel-courses-iii.html">Parallel Courses III</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/process-restricted-friend-requests.html">Process Restricted Friend Requests</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A company is organizing a meeting and has a list of <code>n</code> employees, waiting to be invited. They have arranged for a large <strong>circular</strong> table, capable of seating <strong>any number</strong> of employees.</p>
+<p>The employees are numbered from <code>0</code> to <code>n - 1</code>. Each employee has a <strong>favorite</strong> person and they will attend the meeting <strong>only if</strong> they can sit next to their favorite person at the table. The favorite person of an employee is <strong>not</strong> themself.</p>
+<p>Given a <strong>0-indexed</strong> integer array <code>favorite</code>, where <code>favorite[i]</code> denotes the favorite person of the <code>ith</code> employee, return **the *<em>maximum number of employees</em>* that can be invited to the meeting**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/12/14/ex1.png" alt="" /></p>
+<pre><code class="hljs">Input: favorite = [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
+Output: <span class="hljs-number">3</span>
+Explanation:
+The above figure shows how the company can invite employees <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-keyword">and</span> <span class="hljs-number">2</span>, <span class="hljs-keyword">and</span> seat them at the round table.
+All employees cannot be invited because employee <span class="hljs-number">2</span> cannot sit beside employees <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-keyword">and</span> <span class="hljs-number">3</span>, simultaneously.
+Note that the company can also invite employees <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">and</span> <span class="hljs-number">3</span>, <span class="hljs-keyword">and</span> give them their desired seats.
+The maximum number of employees that can be invited to the meeting <span class="hljs-keyword">is</span> <span class="hljs-number">3.</span> 
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: favorite = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>]
+Output: <span class="hljs-number">3</span>
+Explanation: 
+Each employee <span class="hljs-keyword">is</span> the favorite person of at least one other employee, <span class="hljs-keyword">and</span> the only way the company can invite them <span class="hljs-keyword">is</span> <span class="hljs-keyword">if</span> they invite every employee.
+The seating arrangement will be the same as that <span class="hljs-keyword">in</span> the figure given <span class="hljs-keyword">in</span> example <span class="hljs-number">1</span>:
+- Employee <span class="hljs-number">0</span> will sit between employees <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> <span class="hljs-number">1.</span>
+- Employee <span class="hljs-number">1</span> will sit between employees <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-number">2.</span>
+- Employee <span class="hljs-number">2</span> will sit between employees <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-number">0.</span>
+The maximum number of employees that can be invited to the meeting <span class="hljs-keyword">is</span> <span class="hljs-number">3.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/12/14/ex2.png" alt="" /></p>
+<pre><code class="hljs">Input: favorite = [<span class="hljs-number">3</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>]
+Output: <span class="hljs-number">4</span>
+Explanation:
+The above figure shows how the company will invite employees <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-keyword">and</span> <span class="hljs-number">4</span>, <span class="hljs-keyword">and</span> seat them at the round table.
+Employee <span class="hljs-number">2</span> cannot be invited because the two spots next to their favorite employee <span class="hljs-number">1</span> are taken.
+So the company leaves them <span class="hljs-keyword">out</span> of the meeting.
+The maximum number of employees that can be invited to the meeting <span class="hljs-keyword">is</span> <span class="hljs-number">4.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == favorite.length</code></p></li>
+<li><p><code>2 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>0 &lt;= favorite[i] &lt;=&amp;nbsp;n - 1</code></p></li>
+<li><p><code>favorite[i] != i</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-keyword">enum</span> State { INIT, VISITING, VISITED }
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maximumInvitations</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] favorite)</span> </span>{
+    <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> n = favorite.length;
+    <span class="hljs-keyword">int</span> sumComponentsLength = <span class="hljs-number">0</span>; <span class="hljs-comment">// component: a -&gt; b -&gt; c &lt;-&gt; x &lt;- y</span>
+    List&lt;Integer&gt;[] graph = <span class="hljs-keyword">new</span> List[n];
+    <span class="hljs-keyword">int</span>[] inDegree = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+    <span class="hljs-keyword">int</span>[] maxChainLength = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+    Arrays.fill(maxChainLength, <span class="hljs-number">1</span>);
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i)
+      graph[i] = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+
+    <span class="hljs-comment">// build graph</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+      graph[i].add(favorite[i]);
+      ++inDegree[favorite[i]];
+    }
+
+    <span class="hljs-comment">// topology</span>
+    Queue&lt;Integer&gt; q = IntStream.range(<span class="hljs-number">0</span>, n)
+                           .filter(i -&gt; inDegree[i] == <span class="hljs-number">0</span>)
+                           .boxed()
+                           .collect(Collectors.toCollection(ArrayDeque::<span class="hljs-keyword">new</span>));
+
+    <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+      <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> u = q.poll();
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> v : graph[u]) {
+        <span class="hljs-keyword">if</span> (--inDegree[v] == <span class="hljs-number">0</span>)
+          q.offer(v);
+        maxChainLength[v] = Math.max(maxChainLength[v], <span class="hljs-number">1</span> + maxChainLength[u]);
+      }
+    }
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i)
+      <span class="hljs-keyword">if</span> (favorite[favorite[i]] == i)
+        <span class="hljs-comment">// i &lt;-&gt; favorite[i] (cycle's length = 2)</span>
+        sumComponentsLength += maxChainLength[i] + maxChainLength[favorite[i]];
+
+    <span class="hljs-keyword">int</span>[] parent = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+    Arrays.fill(parent, -<span class="hljs-number">1</span>);
+    <span class="hljs-keyword">boolean</span>[] seen = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[n];
+    State[] state = <span class="hljs-keyword">new</span> State[n];
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i)
+      <span class="hljs-keyword">if</span> (!seen[i])
+        findCycle(graph, i, parent, seen, state);
+
+    <span class="hljs-keyword">return</span> Math.max(sumComponentsLength / <span class="hljs-number">2</span>, maxCycleLength);
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> maxCycleLength = <span class="hljs-number">0</span>; <span class="hljs-comment">// cycle : a -&gt; b -&gt; c -&gt; a</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">findCycle</span><span class="hljs-params">(List&lt;Integer&gt;[] graph, <span class="hljs-keyword">int</span> u, <span class="hljs-keyword">int</span>[] parent, <span class="hljs-keyword">boolean</span>[] seen,
+                         State[] state)</span> </span>{
+    seen[u] = <span class="hljs-keyword">true</span>;
+    state[u] = State.VISITING;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> v : graph[u]) {
+      <span class="hljs-keyword">if</span> (!seen[v]) {
+        parent[v] = u;
+        findCycle(graph, v, parent, seen, state);
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (state[v] == State.VISITING) {
+        <span class="hljs-comment">// find the cycle's length</span>
+        <span class="hljs-keyword">int</span> curr = u;
+        <span class="hljs-keyword">int</span> cycleLength = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (curr != v) {
+          curr = parent[curr];
+          ++cycleLength;
+        }
+        maxCycleLength = Math.max(maxCycleLength, cycleLength);
+      }
+    }
+
+    state[u] = State.VISITED;
+  }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

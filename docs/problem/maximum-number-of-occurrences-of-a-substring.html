@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Number of Occurrences of a Substring - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1297. Maximum Number of Occurrences of a Substring</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sliding-window">Sliding Window</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/rearrange-characters-to-make-target-string.html">Rearrange Characters to Make Target String</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a string <code>s</code>, return the maximum number of ocurrences of <strong>any</strong> substring under the following rules:</p>
+<ul>
+<li><p>The number of unique characters in the substring must be less than or equal to <code>maxLetters</code>.</p></li>
+<li><p>The substring size must be between <code>minSize</code> and <code>maxSize</code> inclusive.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">s</span> <span class="hljs-string">=</span> <span class="hljs-string">"aababcaab"</span><span class="hljs-string">,</span> <span class="hljs-string">maxLetters</span> <span class="hljs-string">=</span> <span class="hljs-number">2</span><span class="hljs-string">,</span> <span class="hljs-string">minSize</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span><span class="hljs-string">,</span> <span class="hljs-string">maxSize</span> <span class="hljs-string">=</span> <span class="hljs-number">4</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">2</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">Substring</span> <span class="hljs-string">"aab"</span> <span class="hljs-string">has</span> <span class="hljs-number">2</span> <span class="hljs-string">ocurrences</span> <span class="hljs-string">in</span> <span class="hljs-string">the</span> <span class="hljs-string">original</span> <span class="hljs-string">string.</span>
+<span class="hljs-string">It</span> <span class="hljs-string">satisfies</span> <span class="hljs-string">the</span> <span class="hljs-string">conditions,</span> <span class="hljs-number">2</span> <span class="hljs-string">unique</span> <span class="hljs-string">letters</span> <span class="hljs-string">and</span> <span class="hljs-string">size</span> <span class="hljs-number">3</span> <span class="hljs-string">(between</span> <span class="hljs-string">minSize</span> <span class="hljs-string">and</span> <span class="hljs-string">maxSize).</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">s</span> <span class="hljs-string">=</span> <span class="hljs-string">"aaaa"</span><span class="hljs-string">,</span> <span class="hljs-string">maxLetters</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span><span class="hljs-string">,</span> <span class="hljs-string">minSize</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span><span class="hljs-string">,</span> <span class="hljs-string">maxSize</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">2</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">Substring</span> <span class="hljs-string">"aaa"</span> <span class="hljs-string">occur</span> <span class="hljs-number">2</span> <span class="hljs-string">times</span> <span class="hljs-string">in</span> <span class="hljs-string">the</span> <span class="hljs-string">string.</span> <span class="hljs-string">It</span> <span class="hljs-string">can</span> <span class="hljs-string">overlap.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= maxLetters &lt;= 26</code></p></li>
+<li><p><code>1 &lt;= minSize &lt;= maxSize &lt;= min(26, s.length)</code></p></li>
+<li><p><code>s</code> consists of only lowercase English letters.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxFreq</span><span class="hljs-params">(String s, <span class="hljs-keyword">int</span> max, <span class="hljs-keyword">int</span> minSize, <span class="hljs-keyword">int</span> maxSize)</span> </span>{
+        <span class="hljs-comment">// the map of occurrences</span>
+        Map&lt;String, Integer&gt; sub2Count = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-comment">// sliding window indices</span>
+        <span class="hljs-keyword">int</span> lo = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> hi = minSize - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> maxCount = <span class="hljs-number">0</span>;
+        <span class="hljs-comment">// unique letters counter</span>
+        <span class="hljs-keyword">char</span>[] uniq = <span class="hljs-keyword">new</span> <span class="hljs-keyword">char</span>[<span class="hljs-number">26</span>];
+        <span class="hljs-keyword">int</span> uniqCount = <span class="hljs-number">0</span>;
+        <span class="hljs-comment">// initial window calculation - `hi` is excluded here!</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> ch : s.substring(lo, hi).toCharArray()) {
+            uniq[ch - <span class="hljs-string">'a'</span>] += <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">if</span> (uniq[ch - <span class="hljs-string">'a'</span>] == <span class="hljs-number">1</span>) {
+                uniqCount++;
+            }
+        }
+        <span class="hljs-keyword">while</span> (hi &lt; s.length()) {
+            <span class="hljs-comment">// handle increment of hi</span>
+            <span class="hljs-keyword">char</span> hiCh = s.charAt(hi);
+            uniq[hiCh - <span class="hljs-string">'a'</span>] += <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">if</span> (uniq[hiCh - <span class="hljs-string">'a'</span>] == <span class="hljs-number">1</span>) {
+                uniqCount++;
+            }
+            ++hi;
+            <span class="hljs-comment">// add the substring to the map of occurences</span>
+            String sub = s.substring(lo, hi);
+            <span class="hljs-keyword">if</span> (uniqCount &lt;= max) {
+                <span class="hljs-keyword">int</span> count = <span class="hljs-number">1</span>;
+                <span class="hljs-keyword">if</span> (sub2Count.containsKey(sub)) {
+                    count += sub2Count.get(sub);
+                }
+                sub2Count.put(sub, count);
+                maxCount = Math.max(maxCount, count);
+            }
+            <span class="hljs-comment">// handle increment of lo</span>
+            <span class="hljs-keyword">char</span> loCh = s.charAt(lo);
+            uniq[loCh - <span class="hljs-string">'a'</span>] -= <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">if</span> (uniq[loCh - <span class="hljs-string">'a'</span>] == <span class="hljs-number">0</span>) {
+                uniqCount--;
+            }
+            ++lo;
+        }
+        <span class="hljs-keyword">return</span> maxCount;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

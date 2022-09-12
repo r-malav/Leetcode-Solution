@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Find Kth Largest XOR Coordinate Value - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1738. Find Kth Largest XOR Coordinate Value</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/divide-and-conquer">Divide and Conquer</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bit-manipulation">Bit Manipulation</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/heap-priority-queue">Heap (Priority Queue)</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/prefix-sum">Prefix Sum</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/quickselect">Quickselect</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a 2D <code>matrix</code> of size <code>m x n</code>, consisting of non-negative integers. You are also given an integer <code>k</code>.</p>
+<p>The <strong>value</strong> of coordinate <code>(a, b)</code> of the matrix is the XOR of all <code>matrix[i][j]</code> where <code>0 &lt;= i &lt;= a &lt; m</code> and <code>0 &lt;= j &lt;= b &lt; n</code> <strong>(0-indexed)</strong>.</p>
+<p>Find the <code>kth</code> largest value <strong>(1-indexed)</strong> of all the coordinates of <code>matrix</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: matrix = [[<span class="hljs-number">5</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">6</span>]], k = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">7</span>
+Explanation: The value of coordinate (<span class="hljs-number">0</span>,<span class="hljs-number">1</span>) <span class="hljs-keyword">is</span> <span class="hljs-number">5</span> XOR <span class="hljs-number">2</span> = <span class="hljs-number">7</span>, which <span class="hljs-keyword">is</span> the largest value.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: matrix = [[<span class="hljs-number">5</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">6</span>]], k = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">5</span>
+Explanation: The value of coordinate (<span class="hljs-number">0</span>,<span class="hljs-number">0</span>) <span class="hljs-keyword">is</span> <span class="hljs-number">5</span> = <span class="hljs-number">5</span>, which <span class="hljs-keyword">is</span> the <span class="hljs-number">2</span>nd largest value.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: matrix = [[<span class="hljs-number">5</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">6</span>]], k = <span class="hljs-number">3</span>
+Output: <span class="hljs-number">4</span>
+Explanation: The value of coordinate (<span class="hljs-number">1</span>,<span class="hljs-number">0</span>) <span class="hljs-keyword">is</span> <span class="hljs-number">5</span> XOR <span class="hljs-number">1</span> = <span class="hljs-number">4</span>, which <span class="hljs-keyword">is</span> the <span class="hljs-number">3</span>rd largest value.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == matrix.length</code></p></li>
+<li><p><code>n == matrix[i].length</code></p></li>
+<li><p><code>1 &lt;= m, n &lt;= 1000</code></p></li>
+<li><p><code>0 &lt;= matrix[i][j] &lt;= 106</code></p></li>
+<li><p><code>1 &lt;= k &lt;= m * n</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">kthLargestValue</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] matrix, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">int</span> t = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> rows = matrix.length;
+        <span class="hljs-keyword">int</span> cols = matrix[<span class="hljs-number">0</span>].length;
+        <span class="hljs-keyword">int</span>[][] prefixXor = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[rows + <span class="hljs-number">1</span>][cols + <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">int</span>[] array = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[rows * cols];
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> r = <span class="hljs-number">1</span>; r &lt;= rows; r++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> c = <span class="hljs-number">1</span>; c &lt;= cols; c++) {
+                prefixXor[r][c] =
+                        matrix[r - <span class="hljs-number">1</span>][c - <span class="hljs-number">1</span>]
+                                ^ prefixXor[r - <span class="hljs-number">1</span>][c]
+                                ^ prefixXor[r][c - <span class="hljs-number">1</span>]
+                                ^ prefixXor[r - <span class="hljs-number">1</span>][c - <span class="hljs-number">1</span>];
+                array[t++] = prefixXor[r][c];
+            }
+        }
+
+        <span class="hljs-keyword">int</span> target = array.length - k;
+        quickSelect(array, <span class="hljs-number">0</span>, array.length - <span class="hljs-number">1</span>, target);
+        <span class="hljs-keyword">return</span> array[target];
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">quickSelect</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] array, <span class="hljs-keyword">int</span> left, <span class="hljs-keyword">int</span> right, <span class="hljs-keyword">int</span> target)</span> </span>{
+        <span class="hljs-keyword">if</span> (left == right) {
+            <span class="hljs-keyword">return</span> left;
+        }
+
+        <span class="hljs-keyword">int</span> pivot = array[right];
+        <span class="hljs-keyword">int</span> j = left;
+        <span class="hljs-keyword">int</span> k = right - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (j &lt;= k) {
+            <span class="hljs-keyword">if</span> (array[j] &lt; pivot) {
+                j++;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (array[k] &gt; pivot) {
+                k--;
+            } <span class="hljs-keyword">else</span> {
+                swap(array, j++, k--);
+            }
+        }
+        swap(array, j, right);
+        <span class="hljs-keyword">if</span> (j == target) {
+            <span class="hljs-keyword">return</span> j;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (j &gt; target) {
+            <span class="hljs-keyword">return</span> quickSelect(array, left, j - <span class="hljs-number">1</span>, target);
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">return</span> quickSelect(array, j + <span class="hljs-number">1</span>, right, target);
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">swap</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] array, <span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j)</span> </span>{
+        <span class="hljs-keyword">int</span> tmp = array[i];
+        array[i] = array[j];
+        array[j] = tmp;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

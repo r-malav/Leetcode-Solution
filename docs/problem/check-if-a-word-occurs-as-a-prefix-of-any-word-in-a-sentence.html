@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Check If a Word Occurs As a Prefix of Any Word in a Sentence - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1455. Check If a Word Occurs As a Prefix of Any Word in a Sentence</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string-matching">String Matching</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/counting-words-with-a-given-prefix.html">Counting Words With a Given Prefix</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/count-prefixes-of-a-given-string.html">Count Prefixes of a Given String</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a <code>sentence</code> that consists of some words separated by a <strong>single space</strong>, and a <code>searchWord</code>, check if <code>searchWord</code> is a prefix of any word in <code>sentence</code>.</p>
+<p>Return **the index of the word in *<em><code>sentence</code></em>* (<strong>1-indexed</strong>) where <strong><code>searchWord</code></strong> is a prefix of this word**. If <code>searchWord</code> is a prefix of more than one word, return the index of the first word *<em>(minimum index)</em>*. If there is no such word return <code>-1</code>.</p>
+<p>A <strong>prefix</strong> of a string <code>s</code> is any leading contiguous substring of <code>s</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: sentence = <span class="hljs-string">"i love eating burger"</span>, searchWord = <span class="hljs-string">"burg"</span>
+Output: 4
+Explanation: <span class="hljs-string">"burg"</span> is<span class="hljs-built_in"> prefix </span>of <span class="hljs-string">"burger"</span> which is the 4th word <span class="hljs-keyword">in</span> the sentence.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: sentence = <span class="hljs-string">"this problem is an easy problem"</span>, searchWord = <span class="hljs-string">"pro"</span>
+Output: 2
+Explanation: <span class="hljs-string">"pro"</span> is<span class="hljs-built_in"> prefix </span>of <span class="hljs-string">"problem"</span> which is the 2nd <span class="hljs-keyword">and</span> the 6th word <span class="hljs-keyword">in</span> the sentence, but we return 2 as it<span class="hljs-string">'s the minimal index.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: sentence = <span class="hljs-string">"i am tired"</span>, searchWord = <span class="hljs-string">"you"</span>
+Output: -1
+Explanation: <span class="hljs-string">"you"</span> is <span class="hljs-keyword">not</span> a<span class="hljs-built_in"> prefix </span>of any word <span class="hljs-keyword">in</span> the sentence.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= sentence.length &lt;= 100</code></p></li>
+<li><p><code>1 &lt;= searchWord.length &lt;= 10</code></p></li>
+<li><p><code>sentence</code> consists of lowercase English letters and spaces.</p></li>
+<li><p><code>searchWord</code> consists of lowercase English letters.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">isPrefixOfWord</span><span class="hljs-params">(String sentence, String searchWord)</span> </span>{
+        String[] words = sentence.split(<span class="hljs-string">" "</span>);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; words.length; i++) {
+            <span class="hljs-keyword">if</span> (words[i].startsWith(searchWord)) {
+                <span class="hljs-keyword">return</span> i + <span class="hljs-number">1</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

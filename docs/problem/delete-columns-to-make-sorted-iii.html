@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Delete Columns to Make Sorted III - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1000. Delete Columns to Make Sorted III</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an array of <code>n</code> strings <code>strs</code>, all of the same length.</p>
+<p>We may choose any deletion indices, and we delete all the characters in those indices for each string.</p>
+<p>For example, if we have <code>strs = ["abcdef","uvwxyz"]</code> and deletion indices <code>{0, 2, 3}</code>, then the final array after deletions is <code>["bef", "vyz"]</code>.</p>
+<p>Suppose we chose a set of deletion indices <code>answer</code> such that after deletions, the final array has <strong>every string (row) in lexicographic</strong> order. (i.e., <code>(strs[0][0] &lt;= strs[0][1] &lt;= ... &lt;= strs[0][strs[0].length - 1])</code>, and <code>(strs[1][0] &lt;= strs[1][1] &lt;= ... &lt;= strs[1][strs[1].length - 1])</code>, and so on). Return <strong>the minimum possible value of</strong> <code>answer.length</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: strs = [<span class="hljs-string">"babca"</span>,<span class="hljs-string">"bbazb"</span>]
+Output: 3
+Explanation: After deleting columns 0, 1,<span class="hljs-built_in"> and </span>4, the<span class="hljs-keyword"> final</span><span class="hljs-built_in"> array </span>is strs = [<span class="hljs-string">"bc"</span>, <span class="hljs-string">"az"</span>].
+Both these rows are individually in lexicographic order (ie. strs[0][0] &lt;= strs[0][1]<span class="hljs-built_in"> and </span>strs[1][0] &lt;= strs[1][1]).
+Note that strs[0] &gt; strs[1] - the<span class="hljs-built_in"> array </span>strs is<span class="hljs-built_in"> not </span>necessarily in lexicographic order.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-keyword">Input</span>: strs = ["edcba"]
+Output: <span class="hljs-number">4</span>
+Explanation: <span class="hljs-keyword">If</span> we <span class="hljs-keyword">delete</span> less than <span class="hljs-number">4</span> <span class="hljs-keyword">columns</span>, the <span class="hljs-keyword">only</span> <span class="hljs-keyword">row</span> will <span class="hljs-keyword">not</span> be lexicographically sorted.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> strs = [<span class="hljs-string">"ghi"</span>,<span class="hljs-string">"def"</span>,<span class="hljs-string">"abc"</span>]
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">0</span>
+<span class="hljs-symbol">Explanation:</span> All rows are already lexicographically sorted.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == strs.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 100</code></p></li>
+<li><p><code>1 &lt;= strs[i].length &lt;= 100</code></p></li>
+<li><p><code>strs[i]</code> consists of lowercase English letters.</p></li>
+
+
+<li><p>&nbsp;</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minDeletionSize</span><span class="hljs-params">(String[] strs)</span> </span>{
+        <span class="hljs-comment">// 0-current-delete,1-current-kept;</span>
+        <span class="hljs-keyword">int</span> n = strs[<span class="hljs-number">0</span>].length();
+        <span class="hljs-keyword">int</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n + <span class="hljs-number">1</span>][<span class="hljs-number">2</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+            dp[i][<span class="hljs-number">0</span>] = <span class="hljs-number">1</span> + Math.min(dp[i - <span class="hljs-number">1</span>][<span class="hljs-number">0</span>], dp[i - <span class="hljs-number">1</span>][<span class="hljs-number">1</span>]);
+            <span class="hljs-keyword">int</span> j;
+            <span class="hljs-keyword">int</span> min = i - <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">for</span> (j = i - <span class="hljs-number">1</span>; j &gt; <span class="hljs-number">0</span>; j--) {
+                <span class="hljs-keyword">boolean</span> lexico = <span class="hljs-keyword">true</span>;
+                <span class="hljs-keyword">for</span> (String str : strs) {
+                    <span class="hljs-keyword">if</span> (str.charAt(i - <span class="hljs-number">1</span>) &lt; str.charAt(j - <span class="hljs-number">1</span>)) {
+                        lexico = <span class="hljs-keyword">false</span>;
+                        <span class="hljs-keyword">break</span>;
+                    }
+                }
+                <span class="hljs-keyword">if</span> (lexico) {
+                    min = Math.min(min, dp[j][<span class="hljs-number">1</span>] + i - j - <span class="hljs-number">1</span>);
+                }
+            }
+            dp[i][<span class="hljs-number">1</span>] = min;
+        }
+        <span class="hljs-keyword">return</span> Math.min(dp[n][<span class="hljs-number">0</span>], dp[n][<span class="hljs-number">1</span>]);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

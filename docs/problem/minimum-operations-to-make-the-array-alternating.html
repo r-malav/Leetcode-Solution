@@ -1,0 +1,93 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Operations to Make the Array Alternating - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2170. Minimum Operations to Make the Array Alternating</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/counting">Counting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-deletions-to-make-array-beautiful.html">Minimum Deletions to Make Array Beautiful</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-number-of-flips-to-make-the-binary-string-alternating.html">Minimum Number of Flips to Make the Binary String Alternating</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>0-indexed</strong> array <code>nums</code> consisting of <code>n</code> positive integers.</p>
+<p>The array <code>nums</code> is called <strong>alternating</strong> if:</p>
+<ul>
+<li><p><code>nums[i - 2] == nums[i]</code>, where <code>2 &lt;= i &lt;= n - 1</code>.</p></li>
+<li><p><code>nums[i - 1] != nums[i]</code>, where <code>1 &lt;= i &lt;= n - 1</code>.</p></li>
+</ul>
+<p>In one <strong>operation</strong>, you can choose an index <code>i</code> and <strong>change</strong> <code>nums[i]</code> into <strong>any</strong> positive integer.</p>
+<p>Return **the *<em>minimum number of operations</em>* required to make the array alternating**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>]
+Output: <span class="hljs-number">3</span>
+Explanation:
+One way to make the <span class="hljs-built_in">array</span> alternating <span class="hljs-keyword">is</span> by converting it to [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>].
+The number of operations required <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span> <span class="hljs-keyword">case</span> <span class="hljs-keyword">is</span> <span class="hljs-number">3.</span>
+It can be proven that it <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> possible to make the <span class="hljs-built_in">array</span> alternating <span class="hljs-keyword">in</span> less than <span class="hljs-number">3</span> operations. 
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]
+Output: <span class="hljs-number">2</span>
+Explanation:
+One way to make the <span class="hljs-built_in">array</span> alternating <span class="hljs-keyword">is</span> by converting it to [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>].
+The number of operations required <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span> <span class="hljs-keyword">case</span> <span class="hljs-keyword">is</span> <span class="hljs-number">2.</span>
+Note that the <span class="hljs-built_in">array</span> cannot be converted to [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>] because <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span> <span class="hljs-keyword">case</span> nums[<span class="hljs-number">0</span>] == nums[<span class="hljs-number">1</span>] which violates the conditions of an alternating <span class="hljs-built_in">array</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= nums.length &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= nums[i] &lt;= 105</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minimumOperations</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>{
+        <span class="hljs-keyword">int</span> maxOdd = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> maxEven = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> max = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> n = nums.length;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> num : nums) {
+            max = Math.max(max, num);
+        }
+        <span class="hljs-keyword">int</span>[] even = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[max + <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">int</span>[] odd = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[max + <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> (i % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) {
+                even[nums[i]]++;
+            } <span class="hljs-keyword">else</span> {
+                odd[nums[i]]++;
+            }
+        }
+        <span class="hljs-keyword">int</span> t1 = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> t2 = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; max + <span class="hljs-number">1</span>; i++) {
+            <span class="hljs-keyword">if</span> (even[i] &gt; maxEven) {
+                maxEven = even[i];
+                t1 = i;
+            }
+            <span class="hljs-keyword">if</span> (odd[i] &gt; maxOdd) {
+                maxOdd = odd[i];
+                t2 = i;
+            }
+        }
+        <span class="hljs-keyword">int</span> ans;
+        <span class="hljs-keyword">if</span> (t1 == t2) {
+            <span class="hljs-keyword">int</span> secondEven = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">int</span> secondOdd = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; max + <span class="hljs-number">1</span>; i++) {
+                <span class="hljs-keyword">if</span> (i != t1 &amp;&amp; even[i] &gt; secondEven) {
+                    secondEven = even[i];
+                }
+                <span class="hljs-keyword">if</span> (i != t2 &amp;&amp; odd[i] &gt; secondOdd) {
+                    secondOdd = odd[i];
+                }
+            }
+            ans =
+                    Math.min(
+                            (n / <span class="hljs-number">2</span> + n % <span class="hljs-number">2</span> - maxEven) + (n / <span class="hljs-number">2</span> - secondOdd),
+                            (n / <span class="hljs-number">2</span> + n % <span class="hljs-number">2</span> - secondEven) + (n / <span class="hljs-number">2</span> - maxOdd));
+        } <span class="hljs-keyword">else</span> {
+            ans = n / <span class="hljs-number">2</span> + n % <span class="hljs-number">2</span> - maxEven + n / <span class="hljs-number">2</span> - maxOdd;
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

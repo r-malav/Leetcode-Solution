@@ -1,0 +1,55 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Replace All Digits with Characters - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1844. Replace All Digits with Characters</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/shifting-letters.html">Shifting Letters</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>0-indexed</strong> string <code>s</code> that has lowercase English letters in its <strong>even</strong> indices and digits in its <strong>odd</strong> indices.</p>
+<p>There is a function <code>shift(c, x)</code>, where <code>c</code> is a character and <code>x</code> is a digit, that returns the <code>xth</code> character after <code>c</code>.</p>
+<ul>
+<li>For example, <code>shift('a', 5) = 'f'</code> and <code>shift('x', 0) = 'x'</code>.</li>
+</ul>
+<p>For every <strong>odd</strong>&nbsp;index <code>i</code>, you want to replace the digit <code>s[i]</code> with <code>shift(s[i-1], s[i])</code>.</p>
+<p>Return <code>s</code>** after replacing all digits. It is <strong>guaranteed</strong> that <strong><code>shift(s[i-1], s[i])</code></strong> will never exceed **<code>'z'</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"a1c1e1"</span>
+Output: <span class="hljs-string">"abcdef"</span>
+Explanation: The digits are replaced <span class="hljs-keyword">as</span> follows:
+- <span class="hljs-function"><span class="hljs-title">s</span>[1] -&gt;</span> shift(<span class="hljs-string">'a'</span>,<span class="hljs-number">1</span>) = <span class="hljs-string">'b'</span>
+- <span class="hljs-function"><span class="hljs-title">s</span>[3] -&gt;</span> shift(<span class="hljs-string">'c'</span>,<span class="hljs-number">1</span>) = <span class="hljs-string">'d'</span>
+- <span class="hljs-function"><span class="hljs-title">s</span>[5] -&gt;</span> shift(<span class="hljs-string">'e'</span>,<span class="hljs-number">1</span>) = <span class="hljs-string">'f'</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"a1b2c3d4e"</span>
+Output: <span class="hljs-string">"abbdcfdhe"</span>
+Explanation: The digits are replaced <span class="hljs-keyword">as</span> follows:
+- <span class="hljs-function"><span class="hljs-title">s</span>[1] -&gt;</span> shift(<span class="hljs-string">'a'</span>,<span class="hljs-number">1</span>) = <span class="hljs-string">'b'</span>
+- <span class="hljs-function"><span class="hljs-title">s</span>[3] -&gt;</span> shift(<span class="hljs-string">'b'</span>,<span class="hljs-number">2</span>) = <span class="hljs-string">'d'</span>
+- <span class="hljs-function"><span class="hljs-title">s</span>[5] -&gt;</span> shift(<span class="hljs-string">'c'</span>,<span class="hljs-number">3</span>) = <span class="hljs-string">'f'</span>
+- <span class="hljs-function"><span class="hljs-title">s</span>[7] -&gt;</span> shift(<span class="hljs-string">'d'</span>,<span class="hljs-number">4</span>) = <span class="hljs-string">'h'</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 100</code></p></li>
+<li><p><code>s</code> consists only of lowercase English letters and digits.</p></li>
+<li><p><code>shift(s[i-1], s[i]) &lt;= 'z'</code> for all <strong>odd</strong> indices <code>i</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">replaceDigits</span><span class="hljs-params">(String s)</span> </span>{
+        StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> c : s.toCharArray()) {
+            <span class="hljs-keyword">if</span> (Character.isAlphabetic(c)) {
+                sb.append(c);
+            } <span class="hljs-keyword">else</span> {
+                sb.append((<span class="hljs-keyword">char</span>) (sb.charAt(sb.length() - <span class="hljs-number">1</span>) + Character.getNumericValue(c)));
+            }
+        }
+        <span class="hljs-keyword">return</span> sb.toString();
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

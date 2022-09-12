@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Optimal Partition of String - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2405. Optimal Partition of String</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/longest-substring-without-repeating-characters.html">Longest Substring Without Repeating Characters</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/longest-substring-with-at-least-k-repeating-characters.html">Longest Substring with At Least K Repeating Characters</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/partition-labels.html">Partition Labels</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/partition-array-into-disjoint-intervals.html">Partition Array into Disjoint Intervals</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a string <code>s</code>, partition the string into one or more <strong>substrings</strong> such that the characters in each substring are <strong>unique</strong>. That is, no letter appears in a single substring more than <strong>once</strong>.</p>
+<p>Return **the *<em>minimum</em>* number of substrings in such a partition.**</p>
+<p>Note that each character should belong to exactly one substring in a partition.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> s = <span class="hljs-string">"abacaba"</span>
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-number">4</span>
+Explanation:
+Two possible partitions are (<span class="hljs-string">"a"</span>,<span class="hljs-string">"ba"</span>,<span class="hljs-string">"cab"</span>,<span class="hljs-string">"a"</span>) <span class="hljs-built_in">and</span> (<span class="hljs-string">"ab"</span>,<span class="hljs-string">"a"</span>,<span class="hljs-string">"ca"</span>,<span class="hljs-string">"ba"</span>).
+It can <span class="hljs-keyword">be</span> shown that <span class="hljs-number">4</span> <span class="hljs-keyword">is</span> the minimum <span class="hljs-keyword">number</span> of substrings needed.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> s = <span class="hljs-string">"ssssss"</span>
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-number">6</span>
+Explanation:
+The <span class="hljs-keyword">only</span> valid partition <span class="hljs-keyword">is</span> (<span class="hljs-string">"s"</span>,<span class="hljs-string">"s"</span>,<span class="hljs-string">"s"</span>,<span class="hljs-string">"s"</span>,<span class="hljs-string">"s"</span>,<span class="hljs-string">"s"</span>).
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 105</code></p></li>
+<li><p><code>s</code> consists of only English lowercase letters.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">partitionString</span><span class="hljs-params">(String s)</span> </span>{
+        <span class="hljs-keyword">int</span> count = (s.isEmpty()) ? <span class="hljs-number">0</span> : <span class="hljs-number">1</span>;
+        HashSet&lt;Character&gt; letters = <span class="hljs-keyword">new</span> HashSet&lt;Character&gt;(); <span class="hljs-comment">// creating a set to find unique letters in substring</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+            <span class="hljs-keyword">if</span> (letters.contains(s.charAt(i))) { <span class="hljs-comment">// if we encounter a duplicate</span>
+                letters.clear(); <span class="hljs-comment">// remove all letters in set</span>
+                count++; <span class="hljs-comment">// increment count</span>
+            }
+            letters.add(s.charAt(i)); 
+        }
+        <span class="hljs-keyword">return</span> count;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Number of Days to Disconnect Island - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1568. Minimum Number of Days to Disconnect Island</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/strongly-connected-component">Strongly Connected Component</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an <code>m x n</code> binary grid <code>grid</code> where <code>1</code> represents land and <code>0</code> represents water. An <strong>island</strong> is a maximal <strong>4-directionally</strong> (horizontal or vertical) connected group of <code>1</code>'s.</p>
+<p>The grid is said to be <strong>connected</strong> if we have <strong>exactly one island</strong>, otherwise is said <strong>disconnected</strong>.</p>
+<p>In one day, we are allowed to change **any **single land cell <code>(1)</code> into a water cell <code>(0)</code>.</p>
+<p>Return <strong>the minimum number of days to disconnect the grid</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/12/24/land1.jpg" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-attribute">Input</span>: grid = [[0,1,1,0],[0,1,1,0],[0,0,0,0]]
+
+<span class="markdown">Output: 2
+Explanation: We need at least 2 days to get a disconnected grid.
+Change land grid[<span class="hljs-string">1</span>][<span class="hljs-symbol">1</span>] and grid[<span class="hljs-string">0</span>][<span class="hljs-symbol">2</span>] to water and get 2 disconnected island.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/12/24/land2.jpg" alt="" /></p>
+<pre><code class="hljs">Input: grid = <span class="hljs-string">[[1,1]]</span>
+Output: <span class="hljs-number">2</span>
+Explanation: Grid of full water is also disconnected (<span class="hljs-string">[[1,1]]</span> -&gt; <span class="hljs-string">[[0,0]]</span>), <span class="hljs-number">0</span> islands.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == grid.length</code></p></li>
+<li><p><code>n == grid[i].length</code></p></li>
+<li><p><code>1 &lt;= m, n &lt;= 30</code></p></li>
+<li><p><code>grid[i][j]</code> is either <code>0</code> or <code>1</code>.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span>[][] dirs = {{<span class="hljs-number">0</span>, <span class="hljs-number">1</span>}, {<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>}, {<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}};
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minDays</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] grid)</span> </span>{
+        <span class="hljs-keyword">int</span> m = grid.length;
+        <span class="hljs-keyword">int</span> n = grid[<span class="hljs-number">0</span>].length;
+        <span class="hljs-keyword">int</span> numOfIslands = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">boolean</span> hasArticulationPoint = <span class="hljs-keyword">false</span>;
+        <span class="hljs-keyword">int</span> color = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> minIslandSize = m * n;
+        <span class="hljs-keyword">int</span>[][] time = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[m][n];
+        <span class="hljs-keyword">int</span>[][] low = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[m][n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++) {
+                <span class="hljs-keyword">if</span> (grid[i][j] == <span class="hljs-number">1</span>) {
+                    numOfIslands++;
+                    color++;
+                    List&lt;Integer&gt; articulationPoints = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+                    <span class="hljs-keyword">int</span>[] islandSize = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">1</span>];
+                    tarjan(i, j, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, time, low, grid, articulationPoints, color, islandSize);
+                    minIslandSize = Math.min(minIslandSize, islandSize[<span class="hljs-number">0</span>]);
+                    <span class="hljs-keyword">if</span> (!articulationPoints.isEmpty()) {
+                        hasArticulationPoint = <span class="hljs-keyword">true</span>;
+                    }
+                }
+            }
+        }
+        <span class="hljs-keyword">if</span> (numOfIslands &gt;= <span class="hljs-number">2</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">if</span> (numOfIslands == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">if</span> (numOfIslands == <span class="hljs-number">1</span> &amp;&amp; minIslandSize == <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">return</span> hasArticulationPoint ? <span class="hljs-number">1</span> : <span class="hljs-number">2</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">tarjan</span><span class="hljs-params">(
+            <span class="hljs-keyword">int</span> x,
+            <span class="hljs-keyword">int</span> y,
+            <span class="hljs-keyword">int</span> prex,
+            <span class="hljs-keyword">int</span> prey,
+            <span class="hljs-keyword">int</span> time,
+            <span class="hljs-keyword">int</span>[][] times,
+            <span class="hljs-keyword">int</span>[][] lows,
+            <span class="hljs-keyword">int</span>[][] grid,
+            List&lt;Integer&gt; articulationPoints,
+            <span class="hljs-keyword">int</span> color,
+            <span class="hljs-keyword">int</span>[] islandSize)</span> </span>{
+        times[x][y] = time;
+        lows[x][y] = time;
+        grid[x][y] = color;
+        islandSize[<span class="hljs-number">0</span>]++;
+        <span class="hljs-keyword">int</span> children = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] dir : dirs) {
+            <span class="hljs-keyword">int</span> nx = x + dir[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">int</span> ny = y + dir[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (nx &lt; <span class="hljs-number">0</span> || ny &lt; <span class="hljs-number">0</span> || nx &gt;= grid.length || ny &gt;= grid[<span class="hljs-number">0</span>].length) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-keyword">if</span> (grid[nx][ny] == <span class="hljs-number">1</span>) {
+                children++;
+                tarjan(
+                        nx,
+                        ny,
+                        x,
+                        y,
+                        time + <span class="hljs-number">1</span>,
+                        times,
+                        lows,
+                        grid,
+                        articulationPoints,
+                        color,
+                        islandSize);
+                lows[x][y] = Math.min(lows[x][y], lows[nx][ny]);
+                <span class="hljs-keyword">if</span> (prex != -<span class="hljs-number">1</span> &amp;&amp; lows[nx][ny] &gt;= time) {
+                    articulationPoints.add(x * grid.length + y);
+                }
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ((nx != prex || ny != prey) &amp;&amp; grid[nx][ny] != <span class="hljs-number">0</span>) {
+                lows[x][y] = Math.min(lows[x][y], times[nx][ny]);
+            }
+        }
+        <span class="hljs-keyword">if</span> (prex == -<span class="hljs-number">1</span> &amp;&amp; children &gt; <span class="hljs-number">1</span>) {
+            articulationPoints.add(x * grid.length + y);
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -16,7 +16,7 @@ const tagMap = {};
 const tagList = [];
 
 function buildProblems () {
-	const pathReg = /^\d{3}-\d{3}$/;
+	const pathReg = /^\d{4}-\d{4}$/;
 	const fileReg = /\.md$/;
 	fs.readdirSync(path.resolve(__dirname, '../')).forEach(floder => {
 		if (!pathReg.test(floder)) return;

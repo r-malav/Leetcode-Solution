@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Group Sold Products By The Date - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1484. Group Sold Products By The Date</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/database">Database</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/finding-the-topic-of-each-post.html">Finding the Topic of Each Post</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Table <code>Activities</code>:</p>
+<pre><code class="hljs">+<span class="hljs-comment">-------------+---------+</span>
+| <span class="hljs-keyword">Column</span> <span class="hljs-type">Name</span> | <span class="hljs-keyword">Type</span>    |
++<span class="hljs-comment">-------------+---------+</span>
+| sell_date   | <span class="hljs-type">date</span>    |
+| product     | <span class="hljs-type">varchar</span> |
++<span class="hljs-comment">-------------+---------+</span>
+There <span class="hljs-keyword">is</span> <span class="hljs-keyword">no</span> <span class="hljs-keyword">primary key</span> <span class="hljs-keyword">for</span> this <span class="hljs-keyword">table</span>, it may contain duplicates.
+<span class="hljs-keyword">Each</span> <span class="hljs-keyword">row</span> <span class="hljs-keyword">of</span> this <span class="hljs-keyword">table</span> contains the product <span class="hljs-type">name</span> <span class="hljs-keyword">and</span> the <span class="hljs-type">date</span> it was sold <span class="hljs-keyword">in</span> a market.
+</code></pre>
+<p>&nbsp;</p>
+<p>Write an SQL query to find for each date the number of different products sold and their names.</p>
+<p>The sold products names for each date should be sorted lexicographically.</p>
+<p>Return the result table ordered by <code>sell_date</code>.</p>
+<p>The query result format is in the following example.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: 
+<span class="hljs-section">Activities table:
++------------+------------+</span>
+<span class="hljs-section">| sell_date  | product     |
++------------+------------+</span>
+| 2020-05-30 | Headphone  |
+| 2020-06-01 | Pencil     |
+| 2020-06-02 | Mask       |
+| 2020-05-30 | Basketball |
+| 2020-06-01 | Bible      |
+| 2020-06-02 | Mask       |
+<span class="hljs-section">| 2020-05-30 | T-Shirt    |
++------------+------------+</span>
+<span class="hljs-section">Output: 
++------------+----------+------------------------------+</span>
+<span class="hljs-section">| sell_date  | num_sold | products                     |
++------------+----------+------------------------------+</span>
+| 2020-05-30 | 3        | Basketball,Headphone,T-shirt |
+| 2020-06-01 | 2        | Bible,Pencil                 |
+<span class="hljs-section">| 2020-06-02 | 1        | Mask                         |
++------------+----------+------------------------------+</span>
+Explanation: 
+For 2020-05-30, Sold items were (Headphone, Basketball, T-shirt), we sort them lexicographically and separate them by a comma.
+For 2020-06-01, Sold items were (Pencil, Bible), we sort them lexicographically and separate them by a comma.
+For 2020-06-02, the Sold item is (Mask), we just return it.
+</code></pre>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-sql"><span class="hljs-comment"># Write your MySQL query statement below</span>
+<span class="hljs-keyword">select</span> sell_date, <span class="hljs-keyword">count</span>(<span class="hljs-keyword">distinct</span> product) <span class="hljs-keyword">as</span> num_sold,
+<span class="hljs-keyword">group_concat</span>(<span class="hljs-keyword">distinct</span> product <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> product <span class="hljs-keyword">asc</span>) <span class="hljs-keyword">as</span> products
+<span class="hljs-keyword">from</span> Activities
+<span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> sell_date
+<span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> sell_date;
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

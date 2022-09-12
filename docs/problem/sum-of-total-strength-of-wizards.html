@@ -1,0 +1,132 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Sum of Total Strength of Wizards - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2281. Sum of Total Strength of Wizards</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/stack">Stack</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/monotonic-stack">Monotonic Stack</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/prefix-sum">Prefix Sum</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/next-greater-element-i.html">Next Greater Element I</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/sum-of-subarray-minimums.html">Sum of Subarray Minimums</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/number-of-visible-people-in-a-queue.html">Number of Visible People in a Queue</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/sum-of-subarray-ranges.html">Sum of Subarray Ranges</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>As the ruler of a kingdom, you have an army of wizards at your command.</p>
+<p>You are given a <strong>0-indexed</strong> integer array <code>strength</code>, where <code>strength[i]</code> denotes the strength of the <code>ith</code> wizard. For a <strong>contiguous</strong> group of wizards (i.e. the wizards' strengths form a <strong>subarray</strong> of <code>strength</code>), the <strong>total strength</strong> is defined as the <strong>product</strong> of the following two values:</p>
+<ul>
+<li><p>The strength of the <strong>weakest</strong> wizard in the group.</p></li>
+<li><p>The <strong>total</strong> of all the individual strengths of the wizards in the group.</p></li>
+</ul>
+<p>Return **the *<em>sum</em>* of the total strengths of <strong>all</strong> contiguous groups of wizards**. Since the answer may be very large, return it *<em>modulo</em>* <code>109 + 7</code>.</p>
+<p>A <strong>subarray</strong> is a contiguous <strong>non-empty</strong> sequence of elements within an array.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: strength = [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
+Output: <span class="hljs-number">44</span>
+Explanation: The following are all the contiguous groups of wizards:
+- [<span class="hljs-number">1</span>] <span class="hljs-keyword">from</span> [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] has a total strength of min([<span class="hljs-number">1</span>]) * sum([<span class="hljs-number">1</span>]) = <span class="hljs-number">1</span> * <span class="hljs-number">1</span> = <span class="hljs-number">1</span>
+- [<span class="hljs-number">3</span>] <span class="hljs-keyword">from</span> [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] has a total strength of min([<span class="hljs-number">3</span>]) * sum([<span class="hljs-number">3</span>]) = <span class="hljs-number">3</span> * <span class="hljs-number">3</span> = <span class="hljs-number">9</span>
+- [<span class="hljs-number">1</span>] <span class="hljs-keyword">from</span> [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] has a total strength of min([<span class="hljs-number">1</span>]) * sum([<span class="hljs-number">1</span>]) = <span class="hljs-number">1</span> * <span class="hljs-number">1</span> = <span class="hljs-number">1</span>
+- [<span class="hljs-number">2</span>] <span class="hljs-keyword">from</span> [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] has a total strength of min([<span class="hljs-number">2</span>]) * sum([<span class="hljs-number">2</span>]) = <span class="hljs-number">2</span> * <span class="hljs-number">2</span> = <span class="hljs-number">4</span>
+- [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>] <span class="hljs-keyword">from</span> [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] has a total strength of min([<span class="hljs-number">1</span>,<span class="hljs-number">3</span>]) * sum([<span class="hljs-number">1</span>,<span class="hljs-number">3</span>]) = <span class="hljs-number">1</span> * <span class="hljs-number">4</span> = <span class="hljs-number">4</span>
+- [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>] <span class="hljs-keyword">from</span> [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] has a total strength of min([<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]) * sum([<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]) = <span class="hljs-number">1</span> * <span class="hljs-number">4</span> = <span class="hljs-number">4</span>
+- [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] <span class="hljs-keyword">from</span> [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] has a total strength of min([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]) * sum([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]) = <span class="hljs-number">1</span> * <span class="hljs-number">3</span> = <span class="hljs-number">3</span>
+- [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>] <span class="hljs-keyword">from</span> [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] has a total strength of min([<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]) * sum([<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]) = <span class="hljs-number">1</span> * <span class="hljs-number">5</span> = <span class="hljs-number">5</span>
+- [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] <span class="hljs-keyword">from</span> [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] has a total strength of min([<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]) * sum([<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]) = <span class="hljs-number">1</span> * <span class="hljs-number">6</span> = <span class="hljs-number">6</span>
+- [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] <span class="hljs-keyword">from</span> [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] has a total strength of min([<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]) * sum([<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]) = <span class="hljs-number">1</span> * <span class="hljs-number">7</span> = <span class="hljs-number">7</span>
+The sum of all the total strengths <span class="hljs-keyword">is</span> <span class="hljs-number">1</span> + <span class="hljs-number">9</span> + <span class="hljs-number">1</span> + <span class="hljs-number">4</span> + <span class="hljs-number">4</span> + <span class="hljs-number">4</span> + <span class="hljs-number">3</span> + <span class="hljs-number">5</span> + <span class="hljs-number">6</span> + <span class="hljs-number">7</span> = <span class="hljs-number">44.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: strength = [<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>]
+Output: <span class="hljs-number">213</span>
+Explanation: The following are all the contiguous groups of wizards: 
+- [<span class="hljs-number">5</span>] <span class="hljs-keyword">from</span> [<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>] has a total strength of min([<span class="hljs-number">5</span>]) * sum([<span class="hljs-number">5</span>]) = <span class="hljs-number">5</span> * <span class="hljs-number">5</span> = <span class="hljs-number">25</span>
+- [<span class="hljs-number">4</span>] <span class="hljs-keyword">from</span> [<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>] has a total strength of min([<span class="hljs-number">4</span>]) * sum([<span class="hljs-number">4</span>]) = <span class="hljs-number">4</span> * <span class="hljs-number">4</span> = <span class="hljs-number">16</span>
+- [<span class="hljs-number">6</span>] <span class="hljs-keyword">from</span> [<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>] has a total strength of min([<span class="hljs-number">6</span>]) * sum([<span class="hljs-number">6</span>]) = <span class="hljs-number">6</span> * <span class="hljs-number">6</span> = <span class="hljs-number">36</span>
+- [<span class="hljs-number">5</span>,<span class="hljs-number">4</span>] <span class="hljs-keyword">from</span> [<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>] has a total strength of min([<span class="hljs-number">5</span>,<span class="hljs-number">4</span>]) * sum([<span class="hljs-number">5</span>,<span class="hljs-number">4</span>]) = <span class="hljs-number">4</span> * <span class="hljs-number">9</span> = <span class="hljs-number">36</span>
+- [<span class="hljs-number">4</span>,<span class="hljs-number">6</span>] <span class="hljs-keyword">from</span> [<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>] has a total strength of min([<span class="hljs-number">4</span>,<span class="hljs-number">6</span>]) * sum([<span class="hljs-number">4</span>,<span class="hljs-number">6</span>]) = <span class="hljs-number">4</span> * <span class="hljs-number">10</span> = <span class="hljs-number">40</span>
+- [<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>] <span class="hljs-keyword">from</span> [<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>] has a total strength of min([<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>]) * sum([<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>]) = <span class="hljs-number">4</span> * <span class="hljs-number">15</span> = <span class="hljs-number">60</span>
+The sum of all the total strengths <span class="hljs-keyword">is</span> <span class="hljs-number">25</span> + <span class="hljs-number">16</span> + <span class="hljs-number">36</span> + <span class="hljs-number">36</span> + <span class="hljs-number">40</span> + <span class="hljs-number">60</span> = <span class="hljs-number">213.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= strength.length &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= strength[i] &lt;= 109</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> mod = (<span class="hljs-keyword">int</span>) <span class="hljs-number">1e9</span> + <span class="hljs-number">7</span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">totalStrength</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>{
+        <span class="hljs-keyword">int</span> n = nums.length;
+        <span class="hljs-keyword">long</span>[] forward = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[n];
+        <span class="hljs-keyword">long</span>[] backward = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[n];
+        <span class="hljs-keyword">long</span>[] prefix = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[n + <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">long</span>[] suffix = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[n + <span class="hljs-number">1</span>];
+        forward[<span class="hljs-number">0</span>] = prefix[<span class="hljs-number">1</span>] = nums[<span class="hljs-number">0</span>];
+        backward[n - <span class="hljs-number">1</span>] = suffix[n - <span class="hljs-number">1</span>] = nums[n - <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; n; ++i) {
+            forward[i] = nums[i] + forward[i - <span class="hljs-number">1</span>];
+            prefix[i + <span class="hljs-number">1</span>] = prefix[i] + forward[i];
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = n - <span class="hljs-number">2</span>; <span class="hljs-number">0</span> &lt;= i; --i) {
+            backward[i] = nums[i] + backward[i + <span class="hljs-number">1</span>];
+            suffix[i] = suffix[i + <span class="hljs-number">1</span>] + backward[i];
+        }
+        <span class="hljs-keyword">long</span> res = <span class="hljs-number">0</span>;
+        Deque&lt;Integer&gt; dq = <span class="hljs-keyword">new</span> LinkedList&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+            <span class="hljs-keyword">while</span> (!dq.isEmpty() &amp;&amp; nums[dq.peekLast()] &gt;= nums[i]) {
+                <span class="hljs-keyword">int</span> cur = dq.pollLast();
+                <span class="hljs-keyword">int</span> prev = dq.isEmpty() ? -<span class="hljs-number">1</span> : dq.peekLast();
+                res =
+                        (res
+                                        + getSum(
+                                                        nums, forward, prefix, backward, suffix,
+                                                        prev, cur, i)
+                                                * nums[cur])
+                                % mod;
+            }
+            dq.add(i);
+        }
+        <span class="hljs-keyword">while</span> (!dq.isEmpty()) {
+            <span class="hljs-keyword">int</span> cur = dq.pollLast();
+            <span class="hljs-keyword">int</span> prev = dq.isEmpty() ? -<span class="hljs-number">1</span> : dq.peekLast();
+            res =
+                    (res
+                                    + getSum(nums, forward, prefix, backward, suffix, prev, cur, n)
+                                            * nums[cur])
+                            % mod;
+        }
+        <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>) res;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> <span class="hljs-title">getSum</span><span class="hljs-params">(
+            <span class="hljs-keyword">int</span>[] nums,
+            <span class="hljs-keyword">long</span>[] forward,
+            <span class="hljs-keyword">long</span>[] prefix,
+            <span class="hljs-keyword">long</span>[] backward,
+            <span class="hljs-keyword">long</span>[] suffix,
+            <span class="hljs-keyword">int</span> prev,
+            <span class="hljs-keyword">int</span> cur,
+            <span class="hljs-keyword">int</span> next)</span> </span>{
+        <span class="hljs-keyword">long</span> sum = ((cur - prev) * (<span class="hljs-keyword">long</span>) nums[cur] % mod) * (next - cur) % mod;
+        <span class="hljs-keyword">long</span> preSum = getPresum(backward, suffix, prev + <span class="hljs-number">1</span>, cur - <span class="hljs-number">1</span>, next - cur);
+        <span class="hljs-keyword">long</span> postSum = getPostsum(forward, prefix, cur + <span class="hljs-number">1</span>, next - <span class="hljs-number">1</span>, cur - prev);
+        <span class="hljs-keyword">return</span> (sum + preSum + postSum) % mod;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> <span class="hljs-title">getPresum</span><span class="hljs-params">(<span class="hljs-keyword">long</span>[] backward, <span class="hljs-keyword">long</span>[] suffix, <span class="hljs-keyword">int</span> from, <span class="hljs-keyword">int</span> to, <span class="hljs-keyword">int</span> m)</span> </span>{
+        <span class="hljs-keyword">int</span> n = backward.length;
+        <span class="hljs-keyword">long</span> cnt = to - from + <span class="hljs-number">1L</span>;
+        <span class="hljs-keyword">return</span> (suffix[from] - suffix[to + <span class="hljs-number">1</span>] - cnt * (to + <span class="hljs-number">1</span> == n ? <span class="hljs-number">0</span> : backward[to + <span class="hljs-number">1</span>]) % mod)
+                % mod
+                * m
+                % mod;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> <span class="hljs-title">getPostsum</span><span class="hljs-params">(<span class="hljs-keyword">long</span>[] forward, <span class="hljs-keyword">long</span>[] prefix, <span class="hljs-keyword">int</span> from, <span class="hljs-keyword">int</span> to, <span class="hljs-keyword">int</span> m)</span> </span>{
+        <span class="hljs-keyword">long</span> cnt = to - from + <span class="hljs-number">1L</span>;
+        <span class="hljs-keyword">return</span> (prefix[to + <span class="hljs-number">1</span>] - prefix[from] - cnt * (<span class="hljs-number">0</span> == from ? <span class="hljs-number">0</span> : forward[from - <span class="hljs-number">1</span>]) % mod)
+                % mod
+                * m
+                % mod;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

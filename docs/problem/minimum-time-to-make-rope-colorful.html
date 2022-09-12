@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Time to Make Rope Colorful - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1578. Minimum Time to Make Rope Colorful</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Alice has <code>n</code> balloons arranged on a rope. You are given a <strong>0-indexed</strong> string <code>colors</code> where <code>colors[i]</code> is the color of the <code>ith</code> balloon.</p>
+<p>Alice wants the rope to be <strong>colorful</strong>. She does not want <strong>two consecutive balloons</strong> to be of the same color, so she asks Bob for help. Bob can remove some balloons from the rope to make it <strong>colorful</strong>. You are given a <strong>0-indexed</strong> integer array <code>neededTime</code> where <code>neededTime[i]</code> is the time (in seconds) that Bob needs to remove the <code>ith</code> balloon from the rope.</p>
+<p>Return **the *<em>minimum time</em>* Bob needs to make the rope <strong>colorful</strong>**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/12/13/ballon1.jpg" alt="" /></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> colors = <span class="hljs-string">"abaac"</span>, neededTime = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-number">3</span>
+Explanation: In the above image, <span class="hljs-string">'a'</span> <span class="hljs-keyword">is</span> blue, <span class="hljs-string">'b'</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">red</span>, <span class="hljs-built_in">and</span> <span class="hljs-string">'c'</span> <span class="hljs-keyword">is</span> green.
+Bob can <span class="hljs-built_in">remove</span> the blue balloon at <span class="hljs-built_in">index</span> <span class="hljs-number">2</span>. This takes <span class="hljs-number">3</span> seconds.
+There are <span class="hljs-keyword">no</span> longer two consecutive balloons of the same color. Total time = <span class="hljs-number">3</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/12/13/balloon2.jpg" alt="" /></p>
+<pre><code class="hljs">Input: colors = <span class="hljs-string">"abc"</span>, neededTime = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+Output: <span class="hljs-number">0</span>
+Explanation: The rope <span class="hljs-keyword">is</span> already colorful. Bob does <span class="hljs-keyword">not</span> need to remove any balloons <span class="hljs-keyword">from</span> the rope.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/12/13/balloon3.jpg" alt="" /></p>
+<pre><code class="hljs">Input: colors = <span class="hljs-string">"aabaa"</span>, neededTime = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>]
+Output: <span class="hljs-number">2</span>
+Explanation: Bob will remove the ballons at indices <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-number">4.</span> Each ballon takes <span class="hljs-number">1</span> second to remove.
+There are no longer two consecutive balloons of the same color. Total time = <span class="hljs-number">1</span> + <span class="hljs-number">1</span> = <span class="hljs-number">2.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == colors.length == neededTime.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= neededTime[i] &lt;= 104</code></p></li>
+<li><p><code>colors</code> contains only lowercase English letters.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minCost</span><span class="hljs-params">(String s, <span class="hljs-keyword">int</span>[] cost)</span> </span>{
+        <span class="hljs-keyword">char</span>[] str = s.toCharArray();
+        <span class="hljs-keyword">int</span> minCost = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; str.length; i++) {
+            <span class="hljs-keyword">if</span> (str[i] == str[i - <span class="hljs-number">1</span>]) {
+                <span class="hljs-comment">// accrue the cost of deletion for the lower duplicate</span>
+                minCost += Math.min(cost[i], cost[i - <span class="hljs-number">1</span>]);
+                <span class="hljs-comment">// keep the cost of the higher duplicate for next iteration</span>
+                cost[i] = Math.max(cost[i], cost[i - <span class="hljs-number">1</span>]);
+            }
+        }
+        <span class="hljs-keyword">return</span> minCost;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

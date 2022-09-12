@@ -1,0 +1,73 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Stone Game VIII - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1872. Stone Game VIII</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/prefix-sum">Prefix Sum</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/game-theory">Game Theory</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/stone-game.html">Stone Game</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/stone-game-ii.html">Stone Game II</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/stone-game-iii.html">Stone Game III</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/stone-game-iv.html">Stone Game IV</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/stone-game-v.html">Stone Game V</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/stone-game-vi.html">Stone Game VI</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/stone-game-vii.html">Stone Game VII</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/stone-game-viii.html">Stone Game VIII</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/stone-game-ix.html">Stone Game IX</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Alice and Bob take turns playing a game, with <strong>Alice starting first</strong>.</p>
+<p>There are <code>n</code> stones arranged in a row. On each player's turn, while the number of stones is <strong>more than one</strong>, they will do the following:</p>
+<ul>
+<li><p>Choose an integer <code>x &gt; 1</code>, and <strong>remove</strong> the leftmost <code>x</code> stones from the row.</p></li>
+<li><p>Add the <strong>sum</strong> of the <strong>removed</strong> stones' values to the player's score.</p></li>
+<li><p>Place a <strong>new stone</strong>, whose value is equal to that sum, on the left side of the row.</p></li>
+</ul>
+<p>The game stops when <strong>only</strong> <strong>one</strong> stone is left in the row.</p>
+<p>The <strong>score difference</strong> between Alice and Bob is <code>(Alice's score - Bob's score)</code>. Alice's goal is to <strong>maximize</strong> the score difference, and Bob's goal is the <strong>minimize</strong> the score difference.</p>
+<p>Given an integer array <code>stones</code> of length <code>n</code> where <code>stones[i]</code> represents the value of the <code>ith</code> stone <strong>from the left</strong>, return **the *<em>score difference</em>* between Alice and Bob if they both play <strong>optimally</strong>.**</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: stones = [<span class="hljs-number">-1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">-3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">-5</span>]
+Output: <span class="hljs-number">5</span>
+Explanation:
+- Alice removes the first <span class="hljs-number">4</span> stones, adds (<span class="hljs-number">-1</span>) + <span class="hljs-number">2</span> + (<span class="hljs-number">-3</span>) + <span class="hljs-number">4</span> = <span class="hljs-number">2</span> to her score, <span class="hljs-keyword">and</span> places a stone of
+  value <span class="hljs-number">2</span> on the left. stones = [<span class="hljs-number">2</span>,<span class="hljs-number">-5</span>].
+- Bob removes the first <span class="hljs-number">2</span> stones, adds <span class="hljs-number">2</span> + (<span class="hljs-number">-5</span>) = <span class="hljs-number">-3</span> to his score, <span class="hljs-keyword">and</span> places a stone of value <span class="hljs-number">-3</span> on
+  the left. stones = [<span class="hljs-number">-3</span>].
+The difference between their scores <span class="hljs-keyword">is</span> <span class="hljs-number">2</span> - (<span class="hljs-number">-3</span>) = <span class="hljs-number">5.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: stones = [<span class="hljs-number">7</span>,<span class="hljs-number">-6</span>,<span class="hljs-number">5</span>,<span class="hljs-number">10</span>,<span class="hljs-number">5</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">-6</span>]
+Output: <span class="hljs-number">13</span>
+Explanation:
+- Alice removes all stones, adds <span class="hljs-number">7</span> + (<span class="hljs-number">-6</span>) + <span class="hljs-number">5</span> + <span class="hljs-number">10</span> + <span class="hljs-number">5</span> + (<span class="hljs-number">-2</span>) + (<span class="hljs-number">-6</span>) = <span class="hljs-number">13</span> to her score, <span class="hljs-keyword">and</span> places a
+  stone of value <span class="hljs-number">13</span> on the left. stones = [<span class="hljs-number">13</span>].
+The difference between their scores <span class="hljs-keyword">is</span> <span class="hljs-number">13</span> - <span class="hljs-number">0</span> = <span class="hljs-number">13.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: stones = [<span class="hljs-number">-10</span>,<span class="hljs-number">-12</span>]
+Output: <span class="hljs-number">-22</span>
+Explanation:
+- Alice can only make one move, which <span class="hljs-keyword">is</span> to remove both stones. She adds (<span class="hljs-number">-10</span>) + (<span class="hljs-number">-12</span>) = <span class="hljs-number">-22</span> to her
+  score <span class="hljs-keyword">and</span> places a stone of value <span class="hljs-number">-22</span> on the left. stones = [<span class="hljs-number">-22</span>].
+The difference between their scores <span class="hljs-keyword">is</span> (<span class="hljs-number">-22</span>) - <span class="hljs-number">0</span> = <span class="hljs-number">-22.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == stones.length</code></p></li>
+<li><p><code>2 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>-104 &lt;= stones[i] &lt;= 104</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">stoneGameVIII</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] stones)</span> </span>{
+        <span class="hljs-keyword">if</span> (stones == <span class="hljs-keyword">null</span> || stones.length &lt;= <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">int</span> n = stones.length;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; n; i++) {
+            stones[i] = stones[i - <span class="hljs-number">1</span>] + stones[i];
+        }
+        <span class="hljs-comment">// presum stones[] is ready;</span>
+        <span class="hljs-comment">// dp[n-2]</span>
+        <span class="hljs-keyword">int</span> dp = stones[n - <span class="hljs-number">1</span>];
+        <span class="hljs-comment">// The game stops when only one stone is left in the row.</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = n - <span class="hljs-number">3</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            dp = Math.max(stones[i + <span class="hljs-number">1</span>] - dp, dp);
+        }
+        <span class="hljs-keyword">return</span> dp;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

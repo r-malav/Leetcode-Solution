@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Decrypt String from Alphabet to Integer Mapping - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1309. Decrypt String from Alphabet to Integer Mapping</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a string <code>s</code> formed by digits and <code>'#'</code>. We want to map <code>s</code> to English lowercase characters as follows:</p>
+<ul>
+<li><p>Characters (<code>'a'</code> to <code>'i'</code>) are represented by (<code>'1'</code> to <code>'9'</code>) respectively.</p></li>
+<li><p>Characters (<code>'j'</code> to <code>'z'</code>) are represented by (<code>'10#'</code> to <code>'26#'</code>) respectively.</p></li>
+</ul>
+<p>Return <strong>the string formed after mapping</strong>.</p>
+<p>The test cases are generated so that a unique mapping will always exist.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"10#11#12"</span>
+Output: <span class="hljs-string">"jkab"</span>
+Explanation: <span class="hljs-string">"j"</span> -&gt; <span class="hljs-string">"10#"</span> , <span class="hljs-string">"k"</span> -&gt; <span class="hljs-string">"11#"</span> , <span class="hljs-string">"a"</span> -&gt; <span class="hljs-string">"1"</span> , <span class="hljs-string">"b"</span> -&gt; <span class="hljs-string">"2"</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> s = <span class="hljs-string">"1326#"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">"acz"</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 1000</code></p></li>
+<li><p><code>s</code> consists of digits and the <code>'#'</code> letter.</p></li>
+<li><p><code>s</code> will be a valid string such that mapping is always possible.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">freqAlphabets</span><span class="hljs-params">(String s)</span> </span>{
+        Map&lt;String, String&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        map.put(<span class="hljs-string">"1"</span>, <span class="hljs-string">"a"</span>);
+        map.put(<span class="hljs-string">"2"</span>, <span class="hljs-string">"b"</span>);
+        map.put(<span class="hljs-string">"3"</span>, <span class="hljs-string">"c"</span>);
+        map.put(<span class="hljs-string">"4"</span>, <span class="hljs-string">"d"</span>);
+        map.put(<span class="hljs-string">"5"</span>, <span class="hljs-string">"e"</span>);
+        map.put(<span class="hljs-string">"6"</span>, <span class="hljs-string">"f"</span>);
+        map.put(<span class="hljs-string">"7"</span>, <span class="hljs-string">"g"</span>);
+        map.put(<span class="hljs-string">"8"</span>, <span class="hljs-string">"h"</span>);
+        map.put(<span class="hljs-string">"9"</span>, <span class="hljs-string">"i"</span>);
+        map.put(<span class="hljs-string">"10#"</span>, <span class="hljs-string">"j"</span>);
+        map.put(<span class="hljs-string">"11#"</span>, <span class="hljs-string">"k"</span>);
+        map.put(<span class="hljs-string">"12#"</span>, <span class="hljs-string">"l"</span>);
+        map.put(<span class="hljs-string">"13#"</span>, <span class="hljs-string">"m"</span>);
+        map.put(<span class="hljs-string">"14#"</span>, <span class="hljs-string">"n"</span>);
+        map.put(<span class="hljs-string">"15#"</span>, <span class="hljs-string">"o"</span>);
+        map.put(<span class="hljs-string">"16#"</span>, <span class="hljs-string">"p"</span>);
+        map.put(<span class="hljs-string">"17#"</span>, <span class="hljs-string">"q"</span>);
+        map.put(<span class="hljs-string">"18#"</span>, <span class="hljs-string">"r"</span>);
+        map.put(<span class="hljs-string">"19#"</span>, <span class="hljs-string">"s"</span>);
+        map.put(<span class="hljs-string">"20#"</span>, <span class="hljs-string">"t"</span>);
+        map.put(<span class="hljs-string">"21#"</span>, <span class="hljs-string">"u"</span>);
+        map.put(<span class="hljs-string">"22#"</span>, <span class="hljs-string">"v"</span>);
+        map.put(<span class="hljs-string">"23#"</span>, <span class="hljs-string">"w"</span>);
+        map.put(<span class="hljs-string">"24#"</span>, <span class="hljs-string">"x"</span>);
+        map.put(<span class="hljs-string">"25#"</span>, <span class="hljs-string">"y"</span>);
+        map.put(<span class="hljs-string">"26#"</span>, <span class="hljs-string">"z"</span>);
+        StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (i &lt; s.length()) {
+            <span class="hljs-keyword">if</span> ((Integer.parseInt(<span class="hljs-string">""</span> + s.charAt(i)) == <span class="hljs-number">1</span> || Integer.parseInt(<span class="hljs-string">""</span> + s.charAt(i)) == <span class="hljs-number">2</span>)
+                    &amp;&amp; i + <span class="hljs-number">1</span> &lt; s.length()
+                    &amp;&amp; i + <span class="hljs-number">2</span> &lt; s.length()
+                    &amp;&amp; s.charAt(i + <span class="hljs-number">2</span>) == <span class="hljs-string">'#'</span>) {
+                sb.append(map.get(s.substring(i, i + <span class="hljs-number">3</span>)));
+                i += <span class="hljs-number">3</span>;
+            } <span class="hljs-keyword">else</span> {
+                sb.append(map.get(<span class="hljs-string">""</span> + s.charAt(i)));
+                i++;
+            }
+        }
+        <span class="hljs-keyword">return</span> sb.toString();
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

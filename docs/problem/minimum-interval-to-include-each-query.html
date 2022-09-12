@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Interval to Include Each Query - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1851. Minimum Interval to Include Each Query</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/line-sweep">Line Sweep</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/heap-priority-queue">Heap (Priority Queue)</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/number-of-flowers-in-full-bloom.html">Number of Flowers in Full Bloom</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a 2D integer array <code>intervals</code>, where <code>intervals[i] = [lefti, righti]</code> describes the <code>ith</code> interval starting at <code>lefti</code> and ending at <code>righti</code> <strong>(inclusive)</strong>. The <strong>size</strong> of an interval is defined as the number of integers it contains, or more formally <code>righti - lefti + 1</code>.</p>
+<p>You are also given an integer array <code>queries</code>. The answer to the <code>jth</code> query is the <strong>size of the smallest interval</strong> <code>i</code> such that <code>lefti &lt;= queries[j] &lt;= righti</code>. If no such interval exists, the answer is <code>-1</code>.</p>
+<p>Return <strong>an array containing the answers to the queries</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: <span class="hljs-built_in">int</span>ervals = [[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">6</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">4</span>]], queries = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]
+Output: [<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>]
+Explanation: The queries are processed as follows:
+- Query = <span class="hljs-number">2</span>: The <span class="hljs-built_in">int</span>erval [<span class="hljs-number">2</span>,<span class="hljs-number">4</span>] <span class="hljs-keyword">is</span> the smallest <span class="hljs-built_in">int</span>erval containing <span class="hljs-number">2.</span> The answer <span class="hljs-keyword">is</span> <span class="hljs-number">4</span> - <span class="hljs-number">2</span> + <span class="hljs-number">1</span> = <span class="hljs-number">3.</span>
+- Query = <span class="hljs-number">3</span>: The <span class="hljs-built_in">int</span>erval [<span class="hljs-number">2</span>,<span class="hljs-number">4</span>] <span class="hljs-keyword">is</span> the smallest <span class="hljs-built_in">int</span>erval containing <span class="hljs-number">3.</span> The answer <span class="hljs-keyword">is</span> <span class="hljs-number">4</span> - <span class="hljs-number">2</span> + <span class="hljs-number">1</span> = <span class="hljs-number">3.</span>
+- Query = <span class="hljs-number">4</span>: The <span class="hljs-built_in">int</span>erval [<span class="hljs-number">4</span>,<span class="hljs-number">4</span>] <span class="hljs-keyword">is</span> the smallest <span class="hljs-built_in">int</span>erval containing <span class="hljs-number">4.</span> The answer <span class="hljs-keyword">is</span> <span class="hljs-number">4</span> - <span class="hljs-number">4</span> + <span class="hljs-number">1</span> = <span class="hljs-number">1.</span>
+- Query = <span class="hljs-number">5</span>: The <span class="hljs-built_in">int</span>erval [<span class="hljs-number">3</span>,<span class="hljs-number">6</span>] <span class="hljs-keyword">is</span> the smallest <span class="hljs-built_in">int</span>erval containing <span class="hljs-number">5.</span> The answer <span class="hljs-keyword">is</span> <span class="hljs-number">6</span> - <span class="hljs-number">3</span> + <span class="hljs-number">1</span> = <span class="hljs-number">4.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: <span class="hljs-built_in">int</span>ervals = [[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">8</span>],[<span class="hljs-number">20</span>,<span class="hljs-number">25</span>]], queries = [<span class="hljs-number">2</span>,<span class="hljs-number">19</span>,<span class="hljs-number">5</span>,<span class="hljs-number">22</span>]
+Output: [<span class="hljs-number">2</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>]
+Explanation: The queries are processed as follows:
+- Query = <span class="hljs-number">2</span>: The <span class="hljs-built_in">int</span>erval [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>] <span class="hljs-keyword">is</span> the smallest <span class="hljs-built_in">int</span>erval containing <span class="hljs-number">2.</span> The answer <span class="hljs-keyword">is</span> <span class="hljs-number">3</span> - <span class="hljs-number">2</span> + <span class="hljs-number">1</span> = <span class="hljs-number">2.</span>
+- Query = <span class="hljs-number">19</span>: None of the <span class="hljs-built_in">int</span>ervals contain <span class="hljs-number">19.</span> The answer <span class="hljs-keyword">is</span> <span class="hljs-number">-1.</span>
+- Query = <span class="hljs-number">5</span>: The <span class="hljs-built_in">int</span>erval [<span class="hljs-number">2</span>,<span class="hljs-number">5</span>] <span class="hljs-keyword">is</span> the smallest <span class="hljs-built_in">int</span>erval containing <span class="hljs-number">5.</span> The answer <span class="hljs-keyword">is</span> <span class="hljs-number">5</span> - <span class="hljs-number">2</span> + <span class="hljs-number">1</span> = <span class="hljs-number">4.</span>
+- Query = <span class="hljs-number">22</span>: The <span class="hljs-built_in">int</span>erval [<span class="hljs-number">20</span>,<span class="hljs-number">25</span>] <span class="hljs-keyword">is</span> the smallest <span class="hljs-built_in">int</span>erval containing <span class="hljs-number">22.</span> The answer <span class="hljs-keyword">is</span> <span class="hljs-number">25</span> - <span class="hljs-number">20</span> + <span class="hljs-number">1</span> = <span class="hljs-number">6.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= intervals.length &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= queries.length &lt;= 105</code></p></li>
+<li><p><code>intervals[i].length == 2</code></p></li>
+<li><p><code>1 &lt;= lefti &lt;= righti &lt;= 107</code></p></li>
+<li><p><code>1 &lt;= queries[j] &lt;= 107</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] minInterval(<span class="hljs-keyword">int</span>[][] intervals, <span class="hljs-keyword">int</span>[] queries) {
+        <span class="hljs-keyword">int</span> numQuery = queries.length;
+
+        <span class="hljs-keyword">int</span>[][] queriesWithIndex = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[numQuery][<span class="hljs-number">2</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; numQuery; i++) {
+            queriesWithIndex[i] = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {queries[i], i};
+        }
+
+        Arrays.sort(intervals, Comparator.comparingInt(a -&gt; a[<span class="hljs-number">0</span>]));
+        Arrays.sort(queriesWithIndex, Comparator.comparingInt(a -&gt; a[<span class="hljs-number">0</span>]));
+
+        PriorityQueue&lt;<span class="hljs-keyword">int</span>[]&gt; minHeap =
+                <span class="hljs-keyword">new</span> PriorityQueue&lt;&gt;(Comparator.comparingInt(a -&gt; (a[<span class="hljs-number">1</span>] - a[<span class="hljs-number">0</span>])));
+
+        <span class="hljs-keyword">int</span>[] result = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[numQuery];
+
+        <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; queries.length; i++) {
+            <span class="hljs-keyword">int</span> queryVal = queriesWithIndex[i][<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">int</span> queryIndex = queriesWithIndex[i][<span class="hljs-number">1</span>];
+
+            <span class="hljs-keyword">while</span> (j &lt; intervals.length &amp;&amp; intervals[j][<span class="hljs-number">0</span>] &lt;= queryVal) {
+                minHeap.add(intervals[j]);
+                j++;
+            }
+
+            <span class="hljs-keyword">while</span> (!minHeap.isEmpty() &amp;&amp; minHeap.peek()[<span class="hljs-number">1</span>] &lt; queryVal) {
+                minHeap.remove();
+            }
+            result[queryIndex] =
+                    minHeap.isEmpty() ? -<span class="hljs-number">1</span> : (minHeap.peek()[<span class="hljs-number">1</span>] - minHeap.peek()[<span class="hljs-number">0</span>] + <span class="hljs-number">1</span>);
+        }
+
+        <span class="hljs-keyword">return</span> result;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

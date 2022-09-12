@@ -1,0 +1,101 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Snakes and Ladders - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>909. Snakes and Ladders</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an <code>n x n</code> integer matrix <code>board</code> where the cells are labeled from <code>1</code> to <code>n2</code> in a <strong>Boustrophedon style</strong> starting from the bottom left of the board (i.e. <code>board[n - 1][0]</code>) and alternating direction each row.</p>
+<p>You start on square <code>1</code> of the board. In each move, starting from square <code>curr</code>, do the following:</p>
+<pre><code>Choose a destination square <code>next</code> with a label in the range <code>[curr + 1, min(curr + 6, n2)]</code>.
+</code></pre>
+<ul>
+<li><p>This choice simulates the result of a standard <strong>6-sided die roll</strong>: i.e., there are always at most 6 destinations, regardless of the size of the board.</p></li>
+
+<li><p>If <code>next</code> has a snake or ladder, you <strong>must</strong> move to the destination of that snake or ladder. Otherwise, you move to <code>next</code>.</p></li>
+<li><p>The game ends when you reach the square <code>n2</code>.</p></li>
+</ul>
+<p>A board square on row <code>r</code> and column <code>c</code> has a snake or ladder if <code>board[r][c] != -1</code>. The destination of that snake or ladder is <code>board[r][c]</code>. Squares <code>1</code> and <code>n2</code> do not have a snake or ladder.</p>
+<p>Note that you only take a snake or ladder at most once per move. If the destination to a snake or ladder is the start of another snake or ladder, you do <strong>not</strong> follow the subsequent&nbsp;snake or ladder.</p>
+<ul>
+<li>For example, suppose the board is <code>[[-1,4],[-1,3]]</code>, and on the first move, your destination square is <code>2</code>. You follow the ladder to square <code>3</code>, but do <strong>not</strong> follow the subsequent ladder to <code>4</code>.</li>
+</ul>
+<p>Return **the least number of moves required to reach the square *<em><code>n2</code></em>*. If it is not possible to reach the square, return **<code>-1</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2018/09/23/snakes.png" alt="" /></p>
+<pre><code class="hljs">Input: board = [[<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>],[<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>],[<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>],[<span class="hljs-number">-1</span>,<span class="hljs-number">35</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">13</span>,<span class="hljs-number">-1</span>],[<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>],[<span class="hljs-number">-1</span>,<span class="hljs-number">15</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>]]
+Output: <span class="hljs-number">4</span>
+Explanation: 
+In the beginning, you start at square <span class="hljs-number">1</span> (at row <span class="hljs-number">5</span>, column <span class="hljs-number">0</span>).
+You decide to move to square <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> must take the ladder to square <span class="hljs-number">15.</span>
+You then decide to move to square <span class="hljs-number">17</span> <span class="hljs-keyword">and</span> must take the snake to square <span class="hljs-number">13.</span>
+You then decide to move to square <span class="hljs-number">14</span> <span class="hljs-keyword">and</span> must take the ladder to square <span class="hljs-number">35.</span>
+You then decide to move to square <span class="hljs-number">36</span>, ending the game.
+This <span class="hljs-keyword">is</span> the lowest possible number of moves to reach the last square, so <span class="hljs-keyword">return</span> <span class="hljs-number">4.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: board = [[<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>],[<span class="hljs-number">-1</span>,<span class="hljs-number">3</span>]]
+Output: <span class="hljs-number">1</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == board.length == board[i].length</code></p></li>
+<li><p><code>2 &lt;= n &lt;= 20</code></p></li>
+<li><p><code>grid[i][j]</code> is either <code>-1</code> or in the range <code>[1, n2]</code>.</p></li>
+<li><p>The squares labeled <code>1</code> and <code>n2</code> do not have any ladders or snakes.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> size;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">snakesAndLadders</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] board)</span> </span>{
+        Queue&lt;Integer&gt; queue = <span class="hljs-keyword">new</span> LinkedList&lt;&gt;();
+        size = board.length;
+        <span class="hljs-keyword">int</span> target = size * size;
+        <span class="hljs-keyword">boolean</span>[] visited = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[target];
+        queue.add(<span class="hljs-number">1</span>);
+        visited[<span class="hljs-number">0</span>] = <span class="hljs-keyword">true</span>;
+        <span class="hljs-keyword">int</span> step = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+            <span class="hljs-keyword">int</span> queueSize = queue.size();
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; queueSize; i++) {
+                <span class="hljs-keyword">int</span> previousLabel = queue.poll();
+                <span class="hljs-keyword">if</span> (previousLabel == target) {
+                    <span class="hljs-keyword">return</span> step;
+                }
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> currentLabel = previousLabel + <span class="hljs-number">1</span>;
+                        currentLabel &lt;= Math.min(target, previousLabel + <span class="hljs-number">6</span>);
+                        currentLabel++) {
+                    <span class="hljs-keyword">if</span> (visited[currentLabel - <span class="hljs-number">1</span>]) {
+                        <span class="hljs-keyword">continue</span>;
+                    }
+                    visited[currentLabel - <span class="hljs-number">1</span>] = <span class="hljs-keyword">true</span>;
+                    <span class="hljs-keyword">int</span>[] position = indexToPosition(currentLabel);
+                    <span class="hljs-keyword">if</span> (board[position[<span class="hljs-number">0</span>]][position[<span class="hljs-number">1</span>]] == -<span class="hljs-number">1</span>) {
+                        queue.add(currentLabel);
+                    } <span class="hljs-keyword">else</span> {
+                        queue.add(board[position[<span class="hljs-number">0</span>]][position[<span class="hljs-number">1</span>]]);
+                    }
+                }
+            }
+            step++;
+        }
+
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] indexToPosition(<span class="hljs-keyword">int</span> index) {
+        <span class="hljs-keyword">int</span> vertical = <span class="hljs-keyword">this</span>.size - <span class="hljs-number">1</span> - (index - <span class="hljs-number">1</span>) / <span class="hljs-keyword">this</span>.size;
+        <span class="hljs-keyword">int</span> horizontal;
+        <span class="hljs-keyword">if</span> ((<span class="hljs-keyword">this</span>.size - vertical) % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>) {
+            horizontal = (index - <span class="hljs-number">1</span>) % <span class="hljs-keyword">this</span>.size;
+        } <span class="hljs-keyword">else</span> {
+            horizontal = <span class="hljs-keyword">this</span>.size - <span class="hljs-number">1</span> - (index - <span class="hljs-number">1</span>) % <span class="hljs-keyword">this</span>.size;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {vertical, horizontal};
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

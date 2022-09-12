@@ -1,0 +1,93 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Execution of All Suffix Instructions Staying in a Grid - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2120. Execution of All Suffix Instructions Staying in a Grid</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/simulation">Simulation</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/out-of-boundary-paths.html">Out of Boundary Paths</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/robot-return-to-origin.html">Robot Return to Origin</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is an <code>n x n</code> grid, with the top-left cell at <code>(0, 0)</code> and the bottom-right cell at <code>(n - 1, n - 1)</code>. You are given the integer <code>n</code> and an integer array <code>startPos</code> where <code>startPos = [startrow, startcol]</code> indicates that a robot is initially at cell <code>(startrow, startcol)</code>.</p>
+<p>You are also given a <strong>0-indexed</strong> string <code>s</code> of length <code>m</code> where <code>s[i]</code> is the <code>ith</code> instruction for the robot: <code>'L'</code> (move left), <code>'R'</code> (move right), <code>'U'</code> (move up), and <code>'D'</code> (move down).</p>
+<p>The robot can begin executing from any <code>ith</code> instruction in <code>s</code>. It executes the instructions one by one towards the end of <code>s</code> but it stops if either of these conditions is met:</p>
+<ul>
+<li><p>The next instruction will move the robot off the grid.</p></li>
+<li><p>There are no more instructions left to execute.</p></li>
+</ul>
+<p>Return <strong>an array</strong> <code>answer</code> <strong>of length</strong> <code>m</code> <strong>where</strong> <code>answer[i]</code> **is *<em>the number of instructions</em>* the robot can execute if the robot <strong>begins executing from</strong> the** <code>ith</code> <strong>instruction in</strong> <code>s</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/12/09/1.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">3</span>, startPos = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>], s = <span class="hljs-string">"RRDDLU"</span>
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]
+Explanation: Starting <span class="hljs-built_in">from</span> startPos <span class="hljs-keyword">and</span> beginning execution <span class="hljs-built_in">from</span> <span class="hljs-keyword">the</span> ith instruction:
+- <span class="hljs-number">0</span>th: <span class="hljs-string">"RRDDLU"</span>. Only <span class="hljs-literal">one</span> instruction <span class="hljs-string">"R"</span> can be executed <span class="hljs-keyword">before</span> <span class="hljs-keyword">it</span> moves off <span class="hljs-keyword">the</span> grid.
+- <span class="hljs-number">1</span>st:  <span class="hljs-string">"RDDLU"</span>. All <span class="hljs-literal">five</span> instructions can be executed <span class="hljs-keyword">while</span> <span class="hljs-keyword">it</span> stays <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> grid <span class="hljs-keyword">and</span> <span class="hljs-keyword">ends</span> <span class="hljs-keyword">at</span> (<span class="hljs-number">1</span>, <span class="hljs-number">1</span>).
+- <span class="hljs-number">2</span>nd:   <span class="hljs-string">"DDLU"</span>. All <span class="hljs-literal">four</span> instructions can be executed <span class="hljs-keyword">while</span> <span class="hljs-keyword">it</span> stays <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> grid <span class="hljs-keyword">and</span> <span class="hljs-keyword">ends</span> <span class="hljs-keyword">at</span> (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>).
+- <span class="hljs-number">3</span>rd:    <span class="hljs-string">"DLU"</span>. All <span class="hljs-literal">three</span> instructions can be executed <span class="hljs-keyword">while</span> <span class="hljs-keyword">it</span> stays <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> grid <span class="hljs-keyword">and</span> <span class="hljs-keyword">ends</span> <span class="hljs-keyword">at</span> (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>).
+- <span class="hljs-number">4</span>th:     <span class="hljs-string">"LU"</span>. Only <span class="hljs-literal">one</span> instruction <span class="hljs-string">"L"</span> can be executed <span class="hljs-keyword">before</span> <span class="hljs-keyword">it</span> moves off <span class="hljs-keyword">the</span> grid.
+- <span class="hljs-number">5</span>th:      <span class="hljs-string">"U"</span>. If moving up, <span class="hljs-keyword">it</span> would move off <span class="hljs-keyword">the</span> grid.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/12/09/2.png" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-string">Input:</span> n = <span class="hljs-number">2</span>, startPos = [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>], s = <span class="hljs-string">"LURD"</span>
+<span class="hljs-string">Output:</span> [<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]
+<span class="hljs-string">Explanation:</span>
+- <span class="hljs-number">0</span><span class="hljs-string">th:</span> <span class="hljs-string">"LURD"</span>.
+- <span class="hljs-number">1</span><span class="hljs-string">st:</span>  <span class="hljs-string">"URD"</span>.
+- <span class="hljs-number">2</span><span class="hljs-string">nd:</span>   <span class="hljs-string">"RD"</span>.
+- <span class="hljs-number">3</span><span class="hljs-string">rd:</span>    <span class="hljs-string">"D"</span>.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/12/09/3.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">1</span>, startPos = [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>], s = <span class="hljs-string">"LRUD"</span>
+Output: [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]
+Explanation: No matter which instruction the robot begins execution <span class="hljs-keyword">from</span>, it would move off the grid.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == s.length</code></p></li>
+<li><p><code>1 &lt;= n, m &lt;= 500</code></p></li>
+<li><p><code>startPos.length == 2</code></p></li>
+<li><p><code>0 &lt;= startrow, startcol &lt; n</code></p></li>
+<li><p><code>s</code> consists of <code>'L'</code>, <code>'R'</code>, <code>'U'</code>, and <code>'D'</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] executeInstructions(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[] startPos, String s) {
+        <span class="hljs-keyword">int</span>[] answer = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[s.length()];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+            <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">int</span> currX = startPos[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">int</span> currY = startPos[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = i; j &lt; s.length(); j++) {
+                <span class="hljs-keyword">char</span> mv = s.charAt(j);
+                <span class="hljs-keyword">if</span> (mv == <span class="hljs-string">'R'</span>) {
+                    currY++;
+                    <span class="hljs-keyword">if</span> (currY &gt; n - <span class="hljs-number">1</span>) {
+                        <span class="hljs-keyword">break</span>;
+                    }
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (mv == <span class="hljs-string">'D'</span>) {
+                    currX++;
+                    <span class="hljs-keyword">if</span> (currX &gt; n - <span class="hljs-number">1</span>) {
+                        <span class="hljs-keyword">break</span>;
+                    }
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (mv == <span class="hljs-string">'L'</span>) {
+                    currY--;
+                    <span class="hljs-keyword">if</span> (currY &lt; <span class="hljs-number">0</span>) {
+                        <span class="hljs-keyword">break</span>;
+                    }
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (mv == <span class="hljs-string">'U'</span>) {
+                    currX--;
+                    <span class="hljs-keyword">if</span> (currX &lt; <span class="hljs-number">0</span>) {
+                        <span class="hljs-keyword">break</span>;
+                    }
+                }
+                count++;
+            }
+            answer[i] = count;
+        }
+        <span class="hljs-keyword">return</span> answer;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Escape the Spreading Fire - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2258. Escape the Spreading Fire</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/rotting-oranges.html">Rotting Oranges</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/last-day-where-you-can-still-cross.html">Last Day Where You Can Still Cross</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-weighted-subgraph-with-the-required-paths.html">Minimum Weighted Subgraph With the Required Paths</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>0-indexed</strong> 2D integer array <code>grid</code> of size <code>m x n</code> which represents a field. Each cell has one of three values:</p>
+<ul>
+<li><p><code>0</code> represents grass,</p></li>
+<li><p><code>1</code> represents fire,</p></li>
+<li><p><code>2</code> represents a wall that you and fire cannot pass through.</p></li>
+</ul>
+<p>You are situated in the top-left cell, <code>(0, 0)</code>, and you want to travel to the safehouse at the bottom-right cell, <code>(m - 1, n - 1)</code>. Every minute, you may move to an <strong>adjacent</strong> grass cell. <strong>After</strong> your move, every fire cell will spread to all <strong>adjacent</strong> cells that are not walls.</p>
+<p>Return **the *<em>maximum</em>* number of minutes that you can stay in your initial position before moving while still safely reaching the safehouse**. If this is impossible, return <code>-1</code>. If you can *<em>always</em>* reach the safehouse regardless of the minutes stayed, return <code>109</code>.</p>
+<p>Note that even if the fire spreads to the safehouse immediately after you have reached it, it will be counted as safely reaching the safehouse.</p>
+<p>A cell is <strong>adjacent</strong> to another cell if the former is directly north, east, south, or west of the latter (i.e., their sides are touching).</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2022/03/10/ex1new.jpg" alt="" /></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]]
+Output: <span class="hljs-number">3</span>
+Explanation: The figure above shows the scenario where you stay <span class="hljs-keyword">in</span> the initial position <span class="hljs-keyword">for</span> <span class="hljs-number">3</span> minutes.
+You will still be able to safely reach the safehouse.
+Staying <span class="hljs-keyword">for</span> more than <span class="hljs-number">3</span> minutes will <span class="hljs-keyword">not</span> allow you to safely reach the safehouse.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2022/03/10/ex2new2.jpg" alt="" /></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]]
+Output: <span class="hljs-number">-1</span>
+Explanation: The figure above shows the scenario where you immediately move towards the safehouse.
+Fire will spread to any cell you move towards <span class="hljs-keyword">and</span> it <span class="hljs-keyword">is</span> impossible to safely reach the safehouse.
+Thus, <span class="hljs-number">-1</span> <span class="hljs-keyword">is</span> returned.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2022/03/10/ex3new.jpg" alt="" /></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>]]
+Output: <span class="hljs-number">1000000000</span>
+Explanation: The figure above shows the initial grid.
+Notice that the fire <span class="hljs-keyword">is</span> contained by walls <span class="hljs-keyword">and</span> you will always be able to safely reach the safehouse.
+Thus, <span class="hljs-number">109</span> <span class="hljs-keyword">is</span> returned.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == grid.length</code></p></li>
+<li><p><code>n == grid[i].length</code></p></li>
+<li><p><code>2 &lt;= m, n &lt;= 300</code></p></li>
+<li><p><code>4 &lt;= m * n &lt;= 2 * 104</code></p></li>
+<li><p><code>grid[i][j]</code> is either <code>0</code>, <code>1</code>, or <code>2</code>.</p></li>
+<li><p><code>grid[0][0] == grid[m - 1][n - 1] == 0</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[][] setFire(<span class="hljs-keyword">int</span>[][] grid, <span class="hljs-keyword">int</span>[][] dir) {
+        <span class="hljs-keyword">int</span> n = grid.length;
+        <span class="hljs-keyword">int</span> m = grid[<span class="hljs-number">0</span>].length;
+        ArrayDeque&lt;Integer&gt; bfs = <span class="hljs-keyword">new</span> ArrayDeque&lt;&gt;();
+        <span class="hljs-keyword">int</span>[][] fire = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n][m];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; m; j++) {
+                fire[i][j] = Integer.MAX_VALUE;
+                <span class="hljs-keyword">if</span> (grid[i][j] == <span class="hljs-number">1</span>) {
+                    fire[i][j] = <span class="hljs-number">0</span>;
+                    bfs.add(i * m + j);
+                }
+                <span class="hljs-keyword">if</span> (grid[i][j] == <span class="hljs-number">2</span>) {
+                    fire[i][j] = <span class="hljs-number">0</span>;
+                }
+            }
+        }
+        <span class="hljs-keyword">while</span> (!bfs.isEmpty()) {
+            <span class="hljs-keyword">int</span> rm = bfs.removeFirst();
+            <span class="hljs-keyword">int</span> x = rm / m;
+            <span class="hljs-keyword">int</span> y = rm % m;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> d = <span class="hljs-number">0</span>; d &lt; <span class="hljs-number">4</span>; d++) {
+                <span class="hljs-keyword">int</span> nx = x + dir[d][<span class="hljs-number">0</span>];
+                <span class="hljs-keyword">int</span> ny = y + dir[d][<span class="hljs-number">1</span>];
+                <span class="hljs-keyword">if</span> (nx &gt;= <span class="hljs-number">0</span> &amp;&amp; ny &gt;= <span class="hljs-number">0</span> &amp;&amp; nx &lt; n &amp;&amp; ny &lt; m &amp;&amp; fire[nx][ny] == Integer.MAX_VALUE) {
+                    fire[nx][ny] = fire[x][y] + <span class="hljs-number">1</span>;
+                    bfs.add(nx * m + ny);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> fire;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isPoss</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] fire, <span class="hljs-keyword">int</span>[][] dir, <span class="hljs-keyword">int</span> time)</span> </span>{
+        <span class="hljs-keyword">if</span> (time &gt;= fire[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+        }
+        <span class="hljs-keyword">int</span> n = fire.length;
+        <span class="hljs-keyword">int</span> m = fire[<span class="hljs-number">0</span>].length;
+        ArrayDeque&lt;Integer&gt; bfs = <span class="hljs-keyword">new</span> ArrayDeque&lt;&gt;();
+        bfs.add(<span class="hljs-number">0</span>);
+        <span class="hljs-keyword">boolean</span>[][] isVis = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[n][m];
+        isVis[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-keyword">true</span>;
+        <span class="hljs-keyword">while</span> (!bfs.isEmpty()) {
+            <span class="hljs-keyword">int</span> size = bfs.size();
+            <span class="hljs-keyword">while</span> (size-- &gt; <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">int</span> rm = bfs.removeFirst();
+                <span class="hljs-keyword">int</span> x = rm / m;
+                <span class="hljs-keyword">int</span> y = rm % m;
+                <span class="hljs-keyword">if</span> (x == n - <span class="hljs-number">1</span> &amp;&amp; y == m - <span class="hljs-number">1</span>) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+                }
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> d = <span class="hljs-number">0</span>; d &lt; <span class="hljs-number">4</span>; d++) {
+                    <span class="hljs-keyword">int</span> nx = x + dir[d][<span class="hljs-number">0</span>];
+                    <span class="hljs-keyword">int</span> ny = y + dir[d][<span class="hljs-number">1</span>];
+                    <span class="hljs-keyword">if</span> (nx &gt;= <span class="hljs-number">0</span> &amp;&amp; ny &gt;= <span class="hljs-number">0</span> &amp;&amp; nx &lt; n &amp;&amp; ny &lt; m &amp;&amp; !isVis[nx][ny]) {
+                        <span class="hljs-keyword">if</span> (nx == n - <span class="hljs-number">1</span> &amp;&amp; ny == m - <span class="hljs-number">1</span>) {
+                            <span class="hljs-keyword">if</span> (time + <span class="hljs-number">1</span> &lt;= fire[nx][ny]) {
+                                isVis[nx][ny] = <span class="hljs-keyword">true</span>;
+                                bfs.add(nx * m + ny);
+                            }
+                        } <span class="hljs-keyword">else</span> {
+                            <span class="hljs-keyword">if</span> (time + <span class="hljs-number">1</span> &lt; fire[nx][ny]) {
+                                isVis[nx][ny] = <span class="hljs-keyword">true</span>;
+                                bfs.add(nx * m + ny);
+                            }
+                        }
+                    }
+                }
+            }
+            time++;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maximumMinutes</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] grid)</span> </span>{
+        <span class="hljs-keyword">int</span>[][] dir = {{<span class="hljs-number">0</span>, <span class="hljs-number">1</span>}, {<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>}};
+        <span class="hljs-keyword">int</span>[][] fire = setFire(grid, dir);
+        <span class="hljs-keyword">int</span> lo = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> hi = (<span class="hljs-keyword">int</span>) <span class="hljs-number">1e9</span>;
+        <span class="hljs-keyword">while</span> (lo &lt;= hi) {
+            <span class="hljs-keyword">int</span> mid = ((hi - lo) &gt;&gt; <span class="hljs-number">1</span>) + lo;
+            <span class="hljs-keyword">if</span> (isPoss(fire, dir, mid)) {
+                lo = mid + <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> {
+                hi = mid - <span class="hljs-number">1</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> hi;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

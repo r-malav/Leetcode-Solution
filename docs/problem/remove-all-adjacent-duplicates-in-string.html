@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Remove All Adjacent Duplicates In String - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1047. Remove All Adjacent Duplicates In String</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/stack">Stack</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/remove-all-adjacent-duplicates-in-string-ii.html">Remove All Adjacent Duplicates in String II</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/removing-stars-from-a-string.html">Removing Stars From a String</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a string <code>s</code> consisting of lowercase English letters. A <strong>duplicate removal</strong> consists of choosing two <strong>adjacent</strong> and <strong>equal</strong> letters and removing them.</p>
+<p>We repeatedly make <strong>duplicate removals</strong> on <code>s</code> until we no longer can.</p>
+<p>Return <strong>the final string after all such duplicate removals have been made</strong>. It can be proven that the answer is <strong>unique</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> s = <span class="hljs-string">"abbaca"</span>
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-string">"ca"</span>
+Explanation: 
+For example, in <span class="hljs-string">"abbaca"</span> we could <span class="hljs-built_in">remove</span> <span class="hljs-string">"bb"</span> since the letters are adjacent <span class="hljs-built_in">and</span> equal, <span class="hljs-built_in">and</span> this <span class="hljs-keyword">is</span> the <span class="hljs-keyword">only</span> possible <span class="hljs-keyword">move</span>.  The result of this <span class="hljs-keyword">move</span> <span class="hljs-keyword">is</span> that the <span class="hljs-built_in">string</span> <span class="hljs-keyword">is</span> <span class="hljs-string">"aaca"</span>, of which <span class="hljs-keyword">only</span> <span class="hljs-string">"aa"</span> <span class="hljs-keyword">is</span> possible, <span class="hljs-keyword">so</span> the final <span class="hljs-built_in">string</span> <span class="hljs-keyword">is</span> <span class="hljs-string">"ca"</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> s = <span class="hljs-string">"azxxzy"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">"ay"</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 105</code></p></li>
+<li><p><code>s</code> consists of lowercase English letters.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">removeDuplicates</span><span class="hljs-params">(String s)</span> </span>{
+        <span class="hljs-keyword">if</span> (s.length() == <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> s;
+        }
+        <span class="hljs-keyword">char</span>[] array = s.toCharArray();
+        <span class="hljs-keyword">int</span> length = array.length;
+        <span class="hljs-keyword">int</span> fast = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> slow = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (fast &lt; length) {
+            <span class="hljs-keyword">if</span> (slow == <span class="hljs-number">0</span> || array[fast] != array[slow - <span class="hljs-number">1</span>]) {
+                array[slow++] = array[fast++];
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">if</span> (array[fast] == array[slow - <span class="hljs-number">1</span>]) {
+                    fast++;
+                }
+                slow--;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> String(array, <span class="hljs-number">0</span>, slow);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

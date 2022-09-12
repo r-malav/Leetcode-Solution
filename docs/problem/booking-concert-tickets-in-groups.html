@@ -1,0 +1,196 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Booking Concert Tickets in Groups - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2286. Booking Concert Tickets in Groups</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/design">Design</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-indexed-tree">Binary Indexed Tree</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/segment-tree">Segment Tree</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/cinema-seat-allocation.html">Cinema Seat Allocation</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A concert hall has <code>n</code> rows numbered from <code>0</code> to <code>n - 1</code>, each with <code>m</code> seats, numbered from <code>0</code> to <code>m - 1</code>. You need to design a ticketing system that can allocate seats in the following cases:</p>
+<ul>
+<li><p>If a group of <code>k</code> spectators can sit <strong>together</strong> in a row.</p></li>
+<li><p>If <strong>every</strong> member of a group of <code>k</code> spectators can get a seat. They may or <strong>may not</strong> sit together.</p></li>
+</ul>
+<p>Note that the spectators are very picky. Hence:</p>
+<ul>
+<li><p>They will book seats only if each member of their group can get a seat with row number <strong>less than or equal</strong> to <code>maxRow</code>. <code>maxRow</code> can <strong>vary</strong> from group to group.</p></li>
+<li><p>In case there are multiple rows to choose from, the row with the <strong>smallest</strong> number is chosen. If there are multiple seats to choose in the same row, the seat with the <strong>smallest</strong> number is chosen.</p></li>
+</ul>
+<p>Implement the <code>BookMyShow</code> class:</p>
+<ul>
+<li><p><code>BookMyShow(int n, int m)</code> Initializes the object with <code>n</code> as number of rows and <code>m</code> as number of seats per row.</p></li>
+<li><p><code>int[] gather(int k, int maxRow)</code> Returns an array of length <code>2</code> denoting the row and seat number (respectively) of the <strong>first seat</strong> being allocated to the <code>k</code> members of the group, who must sit <strong>together</strong>. In other words, it returns the smallest possible <code>r</code> and <code>c</code> such that all <code>[c, c + k - 1]</code> seats are valid and empty in row <code>r</code>, and <code>r &lt;= maxRow</code>. Returns <code>[]</code> in case it is <strong>not possible</strong> to allocate seats to the group.</p></li>
+<li><p><code>boolean scatter(int k, int maxRow)</code> Returns <code>true</code> if all <code>k</code> members of the group can be allocated seats in rows <code>0</code> to <code>maxRow</code>, who may or <strong>may not</strong> sit together. If the seats can be allocated, it allocates <code>k</code> seats to the group with the <strong>smallest</strong> row numbers, and the smallest possible seat numbers in each row. Otherwise, returns <code>false</code>.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input
+[<span class="hljs-string">"BookMyShow"</span>, <span class="hljs-string">"gather"</span>, <span class="hljs-string">"gather"</span>, <span class="hljs-string">"scatter"</span>, <span class="hljs-string">"scatter"</span>]
+[[<span class="hljs-number">2</span>, <span class="hljs-number">5</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">1</span>]]
+Output
+[<span class="hljs-literal">null</span>, [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>], [], <span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>]
+
+Explanation
+BookMyShow bms = new BookMyShow(<span class="hljs-number">2</span>, <span class="hljs-number">5</span>); <span class="hljs-comment">// There are 2 rows with 5 seats each </span>
+bms.gather(<span class="hljs-number">4</span>, <span class="hljs-number">0</span>); <span class="hljs-comment">// return [0, 0]</span>
+                  <span class="hljs-comment">// The group books seats [0, 3] of row 0. </span>
+bms.gather(<span class="hljs-number">2</span>, <span class="hljs-number">0</span>); <span class="hljs-comment">// return []</span>
+                  <span class="hljs-comment">// There is only 1 seat left in row 0,</span>
+                  <span class="hljs-comment">// so it is not possible to book 2 consecutive seats. </span>
+bms.scatter(<span class="hljs-number">5</span>, <span class="hljs-number">1</span>); <span class="hljs-comment">// return True</span>
+                   <span class="hljs-comment">// The group books seat 4 of row 0 and seats [0, 3] of row 1. </span>
+bms.scatter(<span class="hljs-number">5</span>, <span class="hljs-number">1</span>); <span class="hljs-comment">// return False</span>
+                   <span class="hljs-comment">// There is only one seat left in the hall.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= n &lt;= 5 * 104</code></p></li>
+<li><p><code>1 &lt;= m, k &lt;= 109</code></p></li>
+<li><p><code>0 &lt;= maxRow &lt;= n - 1</code></p></li>
+<li><p>At most <code>5 * 104</code> calls <strong>in total</strong> will be made to <code>gather</code> and <code>scatter</code>.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BookMyShow</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> n;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> m;
+    <span class="hljs-comment">// max number of seats in a row for some segment of the rows</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span>[] max;
+    <span class="hljs-comment">// total number of seats for some segment of the rows</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span>[] total;
+    <span class="hljs-comment">// number of rows with zero free places on the left and on the right</span>
+    <span class="hljs-comment">// using this to quickly skip already zero rows</span>
+    <span class="hljs-comment">// actual nodes are placed in [1,this.n], the first and last element only shows there the first</span>
+    <span class="hljs-comment">// non-zero row</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span>[] numZerosRight;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span>[] numZerosLeft;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">BookMyShow</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> m)</span> </span>{
+        <span class="hljs-comment">// make n to be a power of 2 (for simplicity)</span>
+        <span class="hljs-keyword">this</span>.n = nextPow2(n);
+        <span class="hljs-keyword">this</span>.m = m;
+        <span class="hljs-comment">// segment tree for max number of seats in a row</span>
+        <span class="hljs-keyword">this</span>.max = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-keyword">this</span>.n * <span class="hljs-number">2</span> - <span class="hljs-number">1</span>];
+        <span class="hljs-comment">// total number of seats for a segment of the rows</span>
+        <span class="hljs-keyword">this</span>.total = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[<span class="hljs-keyword">this</span>.n * <span class="hljs-number">2</span> - <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">this</span>.numZerosRight = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-keyword">this</span>.n + <span class="hljs-number">2</span>];
+        <span class="hljs-keyword">this</span>.numZerosLeft = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-keyword">this</span>.n + <span class="hljs-number">2</span>];
+        <span class="hljs-comment">// initialize max and total, for max we firstly set values to m</span>
+        <span class="hljs-comment">// segments of size 1 are placed starting from this.n - 1</span>
+        Arrays.fill(max, <span class="hljs-keyword">this</span>.n - <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.n + n - <span class="hljs-number">1</span>, m);
+        Arrays.fill(total, <span class="hljs-keyword">this</span>.n - <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.n + n - <span class="hljs-number">1</span>, m);
+        <span class="hljs-comment">// calculate values of max and total for segments based on values of their children</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-keyword">this</span>.n - <span class="hljs-number">2</span>, i1 = i * <span class="hljs-number">2</span> + <span class="hljs-number">1</span>, i2 = i * <span class="hljs-number">2</span> + <span class="hljs-number">2</span>; i &gt;= <span class="hljs-number">0</span>; i--, i1 -= <span class="hljs-number">2</span>, i2 -= <span class="hljs-number">2</span>) {
+            max[i] = Math.max(max[i1], max[i2]);
+            total[i] = total[i1] + total[i2];
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] gather(<span class="hljs-keyword">int</span> k, <span class="hljs-keyword">int</span> maxRow) {
+        <span class="hljs-comment">// find most left row with enough free places</span>
+        <span class="hljs-keyword">int</span> mostLeft = mostLeft(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, n, k, maxRow + <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">if</span> (mostLeft == -<span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">0</span>];
+        }
+        <span class="hljs-comment">// get corresponding segment tree node</span>
+        <span class="hljs-keyword">int</span> v = n - <span class="hljs-number">1</span> + mostLeft;
+        <span class="hljs-keyword">int</span>[] ans = {mostLeft, m - max[v]};
+        <span class="hljs-comment">// update max and total for this node</span>
+        max[v] -= k;
+        total[v] -= k;
+        <span class="hljs-comment">// until this is a root of segment tree we update its parent</span>
+        <span class="hljs-keyword">while</span> (v != <span class="hljs-number">0</span>) {
+            v = (v - <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>;
+            max[v] = Math.max(max[v * <span class="hljs-number">2</span> + <span class="hljs-number">1</span>], max[v * <span class="hljs-number">2</span> + <span class="hljs-number">2</span>]);
+            total[v] = total[v * <span class="hljs-number">2</span> + <span class="hljs-number">1</span>] + total[v * <span class="hljs-number">2</span> + <span class="hljs-number">2</span>];
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">mostLeft</span><span class="hljs-params">(<span class="hljs-keyword">int</span> v, <span class="hljs-keyword">int</span> l, <span class="hljs-keyword">int</span> r, <span class="hljs-keyword">int</span> k, <span class="hljs-keyword">int</span> qr)</span> </span>{
+        <span class="hljs-keyword">if</span> (l &gt;= qr || max[v] &lt; k) {
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">if</span> (l == r - <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> l;
+        }
+        <span class="hljs-keyword">int</span> mid = (l + r) / <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">int</span> left = mostLeft(v * <span class="hljs-number">2</span> + <span class="hljs-number">1</span>, l, mid, k, qr);
+        <span class="hljs-keyword">if</span> (left != -<span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> left;
+        }
+        <span class="hljs-keyword">return</span> mostLeft(v * <span class="hljs-number">2</span> + <span class="hljs-number">2</span>, mid, r, k, qr);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">scatter</span><span class="hljs-params">(<span class="hljs-keyword">int</span> k, <span class="hljs-keyword">int</span> maxRow)</span> </span>{
+        <span class="hljs-comment">// find total number of free places in the rows [0; maxRow+1)</span>
+        <span class="hljs-keyword">long</span> sum = total(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, n, maxRow + <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">if</span> (sum &lt; k) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+        }
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+        <span class="hljs-comment">// to don't update parent for both of its children we use a queue</span>
+        Deque&lt;Integer&gt; deque = <span class="hljs-keyword">new</span> ArrayDeque&lt;&gt;();
+        <span class="hljs-keyword">while</span> (k != <span class="hljs-number">0</span>) {
+            i = i + numZerosRight[i] + <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">int</span> v = n - <span class="hljs-number">1</span> + i - <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">int</span> spent = Math.min(k, max[v]);
+            k -= spent;
+            max[v] -= spent;
+            total[v] -= spent;
+            <span class="hljs-keyword">if</span> (max[v] == <span class="hljs-number">0</span>) {
+                <span class="hljs-comment">// update numZerosRight and numZerosLeft</span>
+                numZerosRight[i - numZerosLeft[i] - <span class="hljs-number">1</span>] += numZerosRight[i] + <span class="hljs-number">1</span>;
+                numZerosLeft[i + numZerosRight[i] + <span class="hljs-number">1</span>] += numZerosLeft[i] + <span class="hljs-number">1</span>;
+            }
+            <span class="hljs-keyword">if</span> (v != <span class="hljs-number">0</span>) {
+                v = (v - <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>;
+                <span class="hljs-comment">// if we already have the parent node in the queue we don't need to update it</span>
+                <span class="hljs-keyword">if</span> (deque.isEmpty() || deque.peekLast() != v) {
+                    deque.addLast(v);
+                }
+            }
+        }
+        <span class="hljs-comment">// update max and total</span>
+        <span class="hljs-keyword">while</span> (!deque.isEmpty()) {
+            <span class="hljs-keyword">int</span> v = deque.pollFirst();
+            max[v] = Math.max(max[v * <span class="hljs-number">2</span> + <span class="hljs-number">1</span>], max[v * <span class="hljs-number">2</span> + <span class="hljs-number">2</span>]);
+            total[v] = total[v * <span class="hljs-number">2</span> + <span class="hljs-number">1</span>] + total[v * <span class="hljs-number">2</span> + <span class="hljs-number">2</span>];
+            <span class="hljs-keyword">if</span> (v != <span class="hljs-number">0</span>) {
+                v = (v - <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>;
+                <span class="hljs-comment">// if we already have the parent node in the queue we don't need to update it</span>
+                <span class="hljs-keyword">if</span> (deque.isEmpty() || deque.peekLast() != v) {
+                    deque.addLast(v);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+    }
+
+    <span class="hljs-comment">// find sum of [ql, qr)</span>
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> <span class="hljs-title">total</span><span class="hljs-params">(<span class="hljs-keyword">int</span> v, <span class="hljs-keyword">int</span> l, <span class="hljs-keyword">int</span> r, <span class="hljs-keyword">int</span> qr)</span> </span>{
+        <span class="hljs-keyword">if</span> (l &gt;= qr) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">if</span> (r &lt;= qr) {
+            <span class="hljs-keyword">return</span> total[v];
+        }
+        <span class="hljs-keyword">int</span> mid = (l + r) / <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">return</span> total(v * <span class="hljs-number">2</span> + <span class="hljs-number">1</span>, l, mid, qr) + total(v * <span class="hljs-number">2</span> + <span class="hljs-number">2</span>, mid, r, qr);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">nextPow2</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-keyword">if</span> ((n &amp; (n - <span class="hljs-number">1</span>)) == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> n;
+        }
+        <span class="hljs-keyword">return</span> Integer.highestOneBit(n) &lt;&lt; <span class="hljs-number">1</span>;
+    }
+}
+
+<span class="hljs-comment">/**
+ * Your BookMyShow object will be instantiated and called as such:
+ * BookMyShow obj = new BookMyShow(n, m);
+ * int[] param_1 = obj.gather(k,maxRow);
+ * boolean param_2 = obj.scatter(k,maxRow);
+ */</span>
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

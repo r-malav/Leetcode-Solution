@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Course Schedule IV - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1462. Course Schedule IV</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/graph">Graph</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/topological-sort">Topological Sort</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There are a total of <code>numCourses</code> courses you have to take, labeled from <code>0</code> to <code>numCourses - 1</code>. You are given an array <code>prerequisites</code> where <code>prerequisites[i] = [ai, bi]</code> indicates that you <strong>must</strong> take course <code>ai</code> first if you want to take course <code>bi</code>.</p>
+<ul>
+<li>For example, the pair <code>[0, 1]</code> indicates that you have to take course <code>0</code> before you can take course <code>1</code>.</li>
+</ul>
+<p>Prerequisites can also be <strong>indirect</strong>. If course <code>a</code> is a prerequisite of course <code>b</code>, and course <code>b</code> is a prerequisite of course <code>c</code>, then course <code>a</code> is a prerequisite of course <code>c</code>.</p>
+<p>You are also given an array <code>queries</code> where <code>queries[j] = [uj, vj]</code>. For the <code>jth</code> query, you should answer whether course <code>uj</code> is a prerequisite of course <code>vj</code> or not.</p>
+<p>Return *a boolean array *<code>answer</code>*, where *<code>answer[j]</code>* is the answer to the <em><code>jth</code></em> query.*</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/05/01/courses4-1-graph.jpg" alt="" /></p>
+<pre><code class="hljs">Input: numCourses = <span class="hljs-number">2</span>, prerequisites = [[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]], queries = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]]
+Output: [<span class="hljs-literal">false</span>,<span class="hljs-literal">true</span>]
+Explanation: The pair [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>] indicates that you have to take course <span class="hljs-number">1</span> before you can take course <span class="hljs-number">0.</span>
+Course <span class="hljs-number">0</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> a prerequisite of course <span class="hljs-number">1</span>, but the opposite <span class="hljs-keyword">is</span> <span class="hljs-literal">true</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: numCourses = <span class="hljs-number">2</span>, prerequisites = [], queries = [[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]]
+Output: [<span class="hljs-literal">false</span>,<span class="hljs-literal">false</span>]
+Explanation: There are no prerequisites, <span class="hljs-keyword">and</span> each course <span class="hljs-keyword">is</span> independent.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/05/01/courses4-3-graph.jpg" alt="" /></p>
+<pre><code class="hljs">Input: numCourses = <span class="hljs-number">3</span>, prerequisites = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">0</span>]], queries = [[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]]
+Output: [<span class="hljs-literal">true</span>,<span class="hljs-literal">true</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>2 &lt;= numCourses &lt;= 100</code></p></li>
+<li><p><code>0 &lt;= prerequisites.length &lt;= (numCourses * (numCourses - 1) / 2)</code></p></li>
+<li><p><code>prerequisites[i].length == 2</code></p></li>
+<li><p><code>0 &lt;= ai, bi &lt;= n - 1</code></p></li>
+<li><p><code>ai != bi</code></p></li>
+<li><p>All the pairs <code>[ai, bi]</code> are <strong>unique</strong>.</p></li>
+<li><p>The prerequisites graph has no cycles.</p></li>
+<li><p><code>1 &lt;= queries.length &lt;= 104</code></p></li>
+<li><p><code>0 &lt;= ui, vi &lt;= n - 1</code></p></li>
+<li><p><code>ui != vi</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;Boolean&gt; <span class="hljs-title">checkIfPrerequisite</span><span class="hljs-params">(
+            <span class="hljs-keyword">int</span> numCourses, <span class="hljs-keyword">int</span>[][] prerequisites, <span class="hljs-keyword">int</span>[][] queries)</span> </span>{
+        Map&lt;Integer, List&lt;Integer&gt;&gt; m = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">int</span>[] ind = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[numCourses];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] p : prerequisites) {
+            m.computeIfAbsent(p[<span class="hljs-number">1</span>], o -&gt; <span class="hljs-keyword">new</span> ArrayList&lt;&gt;()).add(p[<span class="hljs-number">0</span>]);
+            ind[p[<span class="hljs-number">0</span>]]++;
+        }
+        <span class="hljs-keyword">boolean</span>[][] r = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[numCourses][numCourses];
+        Queue&lt;Integer&gt; q = <span class="hljs-keyword">new</span> LinkedList&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; numCourses; i++) {
+            <span class="hljs-keyword">if</span> (ind[i] == <span class="hljs-number">0</span>) {
+                q.add(i);
+            }
+        }
+        <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+            <span class="hljs-keyword">int</span> j = q.poll();
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k : m.getOrDefault(j, <span class="hljs-keyword">new</span> ArrayList&lt;&gt;())) {
+                r[k][j] = <span class="hljs-keyword">true</span>;
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> l = <span class="hljs-number">0</span>; l &lt; r.length; l++) {
+                    <span class="hljs-keyword">if</span> (r[j][l]) {
+                        r[k][l] = <span class="hljs-keyword">true</span>;
+                    }
+                }
+                ind[k]--;
+                <span class="hljs-keyword">if</span> (ind[k] == <span class="hljs-number">0</span>) {
+                    q.offer(k);
+                }
+            }
+        }
+        List&lt;Boolean&gt; a = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] qr : queries) {
+            a.add(r[qr[<span class="hljs-number">0</span>]][qr[<span class="hljs-number">1</span>]]);
+        }
+        <span class="hljs-keyword">return</span> a;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

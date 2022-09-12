@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Number of Ways to Partition an Array - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2025. Maximum Number of Ways to Partition an Array</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/counting">Counting</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/enumeration">Enumeration</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/prefix-sum">Prefix Sum</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/partition-equal-subset-sum.html">Partition Equal Subset Sum</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/partition-to-k-equal-sum-subsets.html">Partition to K Equal Sum Subsets</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>0-indexed</strong> integer array <code>nums</code> of length <code>n</code>. The number of ways to <strong>partition</strong> <code>nums</code> is the number of <code>pivot</code> indices that satisfy both conditions:</p>
+<ul>
+<li><p><code>1 &lt;= pivot &lt; n</code></p></li>
+<li><p><code>nums[0] + nums[1] + ... + nums[pivot - 1] == nums[pivot] + nums[pivot + 1] + ... + nums[n - 1]</code></p></li>
+</ul>
+<p>You are also given an integer <code>k</code>. You can choose to change the value of <strong>one</strong> element of <code>nums</code> to <code>k</code>, or to leave the array <strong>unchanged</strong>.</p>
+<p>Return **the *<em>maximum</em>* possible number of ways to <strong>partition</strong> <strong><code>nums</code></strong> to satisfy both conditions after changing <strong>at most</strong> one element**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">2</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">2</span>], k = <span class="hljs-number">3</span>
+Output: <span class="hljs-number">1</span>
+Explanation: One optimal approach <span class="hljs-keyword">is</span> to change nums[<span class="hljs-number">0</span>] to k. The <span class="hljs-built_in">array</span> becomes [<span class="hljs-number">3</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">2</span>].
+There <span class="hljs-keyword">is</span> one way to partition the <span class="hljs-built_in">array</span>:
+- For pivot = <span class="hljs-number">2</span>, we have the partition [<span class="hljs-number">3</span>,<span class="hljs-number">-1</span> | <span class="hljs-number">2</span>]: <span class="hljs-number">3</span> + <span class="hljs-number">-1</span> == <span class="hljs-number">2.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>], k = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">2</span>
+Explanation: The optimal approach <span class="hljs-keyword">is</span> to leave the <span class="hljs-built_in">array</span> unchanged.
+There are two ways to partition the <span class="hljs-built_in">array</span>:
+- For pivot = <span class="hljs-number">1</span>, we have the partition [<span class="hljs-number">0</span> | <span class="hljs-number">0</span>,<span class="hljs-number">0</span>]: <span class="hljs-number">0</span> == <span class="hljs-number">0</span> + <span class="hljs-number">0.</span>
+- For pivot = <span class="hljs-number">2</span>, we have the partition [<span class="hljs-number">0</span>,<span class="hljs-number">0</span> | <span class="hljs-number">0</span>]: <span class="hljs-number">0</span> + <span class="hljs-number">0</span> == <span class="hljs-number">0.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">22</span>,<span class="hljs-number">4</span>,<span class="hljs-number">-25</span>,<span class="hljs-number">-20</span>,<span class="hljs-number">-15</span>,<span class="hljs-number">15</span>,<span class="hljs-number">-16</span>,<span class="hljs-number">7</span>,<span class="hljs-number">19</span>,<span class="hljs-number">-10</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-13</span>,<span class="hljs-number">-14</span>], k = <span class="hljs-number">-33</span>
+Output: <span class="hljs-number">4</span>
+Explanation: One optimal approach <span class="hljs-keyword">is</span> to change nums[<span class="hljs-number">2</span>] to k. The <span class="hljs-built_in">array</span> becomes [<span class="hljs-number">22</span>,<span class="hljs-number">4</span>,<span class="hljs-number">-33</span>,<span class="hljs-number">-20</span>,<span class="hljs-number">-15</span>,<span class="hljs-number">15</span>,<span class="hljs-number">-16</span>,<span class="hljs-number">7</span>,<span class="hljs-number">19</span>,<span class="hljs-number">-10</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-13</span>,<span class="hljs-number">-14</span>].
+There are four ways to partition the <span class="hljs-built_in">array</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == nums.length</code></p></li>
+<li><p><code>2 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>-105 &lt;= k, nums[i] &lt;= 105</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">waysToPartition</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">int</span> n = nums.length;
+        <span class="hljs-keyword">long</span>[] ps = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[n];
+        ps[<span class="hljs-number">0</span>] = nums[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; n; i++) {
+            ps[i] = ps[i - <span class="hljs-number">1</span>] + nums[i];
+        }
+        Map&lt;Long, ArrayList&lt;Integer&gt;&gt; partDiffs = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">int</span> maxWays = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">long</span> partL = ps[i - <span class="hljs-number">1</span>];
+            <span class="hljs-keyword">long</span> partR = ps[n - <span class="hljs-number">1</span>] - partL;
+            <span class="hljs-keyword">long</span> partDiff = partR - partL;
+            <span class="hljs-keyword">if</span> (partDiff == <span class="hljs-number">0</span>) {
+                maxWays++;
+            }
+            ArrayList&lt;Integer&gt; idxSet =
+                    partDiffs.computeIfAbsent(partDiff, k1 -&gt; <span class="hljs-keyword">new</span> ArrayList&lt;&gt;());
+            idxSet.add(i);
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++) {
+            <span class="hljs-keyword">int</span> ways = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">long</span> newDiff = (<span class="hljs-keyword">long</span>) k - nums[j];
+            ArrayList&lt;Integer&gt; leftList = partDiffs.get(newDiff);
+            <span class="hljs-keyword">if</span> (leftList != <span class="hljs-keyword">null</span>) {
+                <span class="hljs-keyword">int</span> i = upperBound(leftList, j);
+                ways += leftList.size() - i;
+            }
+            ArrayList&lt;Integer&gt; rightList = partDiffs.get(-newDiff);
+            <span class="hljs-keyword">if</span> (rightList != <span class="hljs-keyword">null</span>) {
+                <span class="hljs-keyword">int</span> i = upperBound(rightList, j);
+                ways += i;
+            }
+            maxWays = Math.max(ways, maxWays);
+        }
+        <span class="hljs-keyword">return</span> maxWays;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">upperBound</span><span class="hljs-params">(List&lt;Integer&gt; arr, <span class="hljs-keyword">int</span> val)</span> </span>{
+        <span class="hljs-keyword">int</span> ans = -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> n = arr.size();
+        <span class="hljs-keyword">int</span> l = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> r = n;
+        <span class="hljs-keyword">while</span> (l &lt;= r) {
+            <span class="hljs-keyword">int</span> mid = l + (r - l) / <span class="hljs-number">2</span>;
+            <span class="hljs-keyword">if</span> (mid == n) {
+                <span class="hljs-keyword">return</span> n;
+            }
+            <span class="hljs-keyword">if</span> (arr.get(mid) &gt; val) {
+                ans = mid;
+                r = mid - <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> {
+                l = mid + <span class="hljs-number">1</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

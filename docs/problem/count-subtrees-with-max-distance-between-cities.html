@@ -1,0 +1,93 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Count Subtrees With Max Distance Between Cities - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1617. Count Subtrees With Max Distance Between Cities</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bit-manipulation">Bit Manipulation</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/tree">Tree</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/enumeration">Enumeration</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bitmask">Bitmask</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/tree-diameter.html">Tree Diameter</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There are <code>n</code> cities numbered from <code>1</code> to <code>n</code>. You are given an array <code>edges</code> of size <code>n-1</code>, where <code>edges[i] = [ui, vi]</code> represents a bidirectional edge between cities <code>ui</code> and <code>vi</code>. There exists a unique path between each pair of cities. In other words, the cities form a <strong>tree</strong>.</p>
+<p>A <strong>subtree</strong> is a subset of cities where every city is reachable from every other city in the subset, where the path between each pair passes through only the cities from the subset. Two subtrees are different if there is a city in one subtree that is not present in the other.</p>
+<p>For each <code>d</code> from <code>1</code> to <code>n-1</code>, find the number of subtrees in which the <strong>maximum distance</strong> between any two cities in the subtree is equal to <code>d</code>.</p>
+<p>Return <strong>an array of size</strong> <code>n-1</code> **where the *<em><code>dth</code></em>* ****element *<em>(1-indexed)</em>* is the number of subtrees in which the <strong>maximum distance</strong> between any two cities is equal to **<code>d</code>.</p>
+<p><strong>Notice</strong>&nbsp;that&nbsp;the <strong>distance</strong> between the two cities is the number of edges in the path between them.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/09/21/p1.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">4</span>, edges = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">4</span>]]
+Output: [<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">0</span>]
+Explanation:
+The subtrees with subsets {<span class="hljs-number">1</span>,<span class="hljs-number">2</span>}, {<span class="hljs-number">2</span>,<span class="hljs-number">3</span>} <span class="hljs-keyword">and</span> {<span class="hljs-number">2</span>,<span class="hljs-number">4</span>} have a max distance of <span class="hljs-number">1.</span>
+The subtrees with subsets {<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>}, {<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>}, {<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>} <span class="hljs-keyword">and</span> {<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>} have a max distance of <span class="hljs-number">2.</span>
+No subtree has two nodes where the max distance between them <span class="hljs-keyword">is</span> <span class="hljs-number">3.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">2</span>, edges = <span class="hljs-string">[[1,2]]</span>
+Output: [<span class="hljs-number">1</span>]
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">3</span>, edges = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]]
+Output: [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>2 &lt;= n &lt;= 15</code></p></li>
+<li><p><code>edges.length == n-1</code></p></li>
+<li><p><code>edges[i].length == 2</code></p></li>
+<li><p><code>1 &lt;= ui, vi &lt;= n</code></p></li>
+<li><p>All pairs <code>(ui, vi)</code> are distinct.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> vis = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] countSubgraphsForEachDiameter(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[][] edges) {
+        ans = <span class="hljs-number">0</span>;
+        vis = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span>[] dist = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n - <span class="hljs-number">1</span>];
+        Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] i : edges) {
+            graph.computeIfAbsent(<span class="hljs-number">1</span> &lt;&lt; (i[<span class="hljs-number">0</span>] - <span class="hljs-number">1</span>), ArrayList::<span class="hljs-keyword">new</span>).add((<span class="hljs-number">1</span> &lt;&lt; (i[<span class="hljs-number">1</span>] - <span class="hljs-number">1</span>)));
+            graph.computeIfAbsent(<span class="hljs-number">1</span> &lt;&lt; (i[<span class="hljs-number">1</span>] - <span class="hljs-number">1</span>), ArrayList::<span class="hljs-keyword">new</span>).add((<span class="hljs-number">1</span> &lt;&lt; (i[<span class="hljs-number">0</span>] - <span class="hljs-number">1</span>)));
+        }
+        <span class="hljs-keyword">int</span> ps = ((<span class="hljs-keyword">int</span>) Math.pow(<span class="hljs-number">2</span>, n)) - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> set = <span class="hljs-number">3</span>; set &lt;= ps; set++) {
+            <span class="hljs-comment">// is power of 2</span>
+            <span class="hljs-keyword">boolean</span> isp2 = set != <span class="hljs-number">0</span> &amp;&amp; ((set &amp; (set - <span class="hljs-number">1</span>)) == <span class="hljs-number">0</span>);
+            <span class="hljs-keyword">if</span> (!isp2) {
+                ans = <span class="hljs-number">0</span>;
+                vis = <span class="hljs-number">0</span>;
+                dfs(graph, set, Integer.highestOneBit(set), -<span class="hljs-number">1</span>);
+                <span class="hljs-keyword">if</span> (vis == set) {
+                    dist[ans - <span class="hljs-number">1</span>]++;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> dist;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">dfs</span><span class="hljs-params">(Map&lt;Integer, List&lt;Integer&gt;&gt; graph, <span class="hljs-keyword">int</span> set, <span class="hljs-keyword">int</span> c, <span class="hljs-keyword">int</span> p)</span> </span>{
+        <span class="hljs-keyword">if</span> ((set &amp; c) == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        vis = vis | c;
+        <span class="hljs-keyword">int</span> fdist = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> sdist = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i : graph.get(c)) {
+            <span class="hljs-keyword">if</span> (i != p) {
+                <span class="hljs-keyword">int</span> dist = dfs(graph, set, i, c);
+                <span class="hljs-keyword">if</span> (dist &gt; fdist) {
+                    sdist = fdist;
+                    fdist = dist;
+                } <span class="hljs-keyword">else</span> {
+                    sdist = Math.max(sdist, dist);
+                }
+            }
+        }
+        ans = Math.max(ans, fdist + sdist);
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + fdist;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

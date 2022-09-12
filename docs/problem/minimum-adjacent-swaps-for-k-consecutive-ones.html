@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Adjacent Swaps for K Consecutive Ones - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1703. Minimum Adjacent Swaps for K Consecutive Ones</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sliding-window">Sliding Window</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/prefix-sum">Prefix Sum</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-swaps-to-group-all-1s-together.html">Minimum Swaps to Group All 1&#x27;s Together</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-number-of-operations-to-make-array-continuous.html">Minimum Number of Operations to Make Array Continuous</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-adjacent-swaps-to-make-a-valid-array.html">Minimum Adjacent Swaps to Make a Valid Array</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an integer array, <code>nums</code>, and an integer <code>k</code>. <code>nums</code> comprises of only <code>0</code>'s and <code>1</code>'s. In one move, you can choose two <strong>adjacent</strong> indices and swap their values.</p>
+<p>Return **the *<em>minimum</em>* number of moves required so that <strong><code>nums</code></strong> has <strong><code>k</code></strong> <strong>consecutive</strong> <strong><code>1</code></strong>'s**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>], k = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">1</span>
+Explanation: In <span class="hljs-number">1</span> move, nums could be [<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>] <span class="hljs-keyword">and</span> have <span class="hljs-number">2</span> consecutive <span class="hljs-number">1</span><span class="hljs-string">'s.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>], k = <span class="hljs-number">3</span>
+Output: <span class="hljs-number">5</span>
+Explanation: In <span class="hljs-number">5</span> moves, the leftmost <span class="hljs-number">1</span> can be shifted right until nums = [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>].
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>], k = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">0</span>
+Explanation: nums already has <span class="hljs-number">2</span> consecutive <span class="hljs-number">1</span><span class="hljs-string">'s.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= nums.length &lt;= 105</code></p></li>
+<li><p><code>nums[i]</code> is <code>0</code> or <code>1</code>.</p></li>
+<li><p><code>1 &lt;= k &lt;= sum(nums)</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minMoves</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">int</span> len = nums.length;
+        <span class="hljs-keyword">int</span> cnt = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">long</span> min = Long.MAX_VALUE;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> num : nums) {
+            <span class="hljs-keyword">if</span> (num == <span class="hljs-number">1</span>) {
+                cnt++;
+            }
+        }
+        <span class="hljs-keyword">int</span>[] arr = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[cnt];
+        <span class="hljs-keyword">int</span> idx = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">long</span>[] sum = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[cnt + <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) {
+            <span class="hljs-keyword">if</span> (nums[i] == <span class="hljs-number">1</span>) {
+                arr[idx++] = i;
+                sum[idx] = sum[idx - <span class="hljs-number">1</span>] + i;
+            }
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i + k - <span class="hljs-number">1</span> &lt; cnt; i++) {
+            min = Math.min(min, getSum(arr, i, i + k - <span class="hljs-number">1</span>, sum));
+        }
+        <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>) min;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> <span class="hljs-title">getSum</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] arr, <span class="hljs-keyword">int</span> l, <span class="hljs-keyword">int</span> h, <span class="hljs-keyword">long</span>[] sum)</span> </span>{
+        <span class="hljs-keyword">int</span> mid = l + (h - l) / <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">int</span> k = h - l + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> radius = mid - l;
+        <span class="hljs-keyword">long</span> res = sum[h + <span class="hljs-number">1</span>] - sum[mid + <span class="hljs-number">1</span>] - (sum[mid] - sum[l]) - (<span class="hljs-number">1</span> + radius) * radius;
+        <span class="hljs-keyword">if</span> (k % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) {
+            res = res - arr[mid] - (radius + <span class="hljs-number">1</span>);
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

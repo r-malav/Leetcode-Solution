@@ -1,0 +1,90 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Count Integers in Intervals - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2276. Count Integers in Intervals</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/design">Design</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/segment-tree">Segment Tree</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/ordered-set">Ordered Set</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/merge-intervals.html">Merge Intervals</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/insert-interval.html">Insert Interval</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/data-stream-as-disjoint-intervals.html">Data Stream as Disjoint Intervals</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/my-calendar-iii.html">My Calendar III</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an <strong>empty</strong> set of intervals, implement a data structure that can:</p>
+<ul>
+<li><p><strong>Add</strong> an interval to the set of intervals.</p></li>
+<li><p><strong>Count</strong> the number of integers that are present in <strong>at least one</strong> interval.</p></li>
+</ul>
+<p>Implement the <code>CountIntervals</code> class:</p>
+<ul>
+<li><p><code>CountIntervals()</code> Initializes the object with an empty set of intervals.</p></li>
+<li><p><code>void add(int left, int right)</code> Adds the interval <code>[left, right]</code> to the set of intervals.</p></li>
+<li><p><code>int count()</code> Returns the number of integers that are present in <strong>at least one</strong> interval.</p></li>
+</ul>
+<p><strong>Note</strong> that an interval <code>[left, right]</code> denotes all the integers <code>x</code> where <code>left &lt;= x &lt;= right</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input
+[<span class="hljs-string">"CountIntervals"</span>, <span class="hljs-string">"add"</span>, <span class="hljs-string">"add"</span>, <span class="hljs-string">"count"</span>, <span class="hljs-string">"add"</span>, <span class="hljs-string">"count"</span>]
+[[], [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">7</span>, <span class="hljs-number">10</span>], [], [<span class="hljs-number">5</span>, <span class="hljs-number">8</span>], []]
+Output
+[<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, <span class="hljs-number">6</span>, <span class="hljs-literal">null</span>, <span class="hljs-number">8</span>]
+
+Explanation
+CountIntervals countIntervals = new CountIntervals(); <span class="hljs-comment">// initialize the object with an empty set of intervals. </span>
+countIntervals.add(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>);  <span class="hljs-comment">// add [2, 3] to the set of intervals.</span>
+countIntervals.add(<span class="hljs-number">7</span>, <span class="hljs-number">10</span>); <span class="hljs-comment">// add [7, 10] to the set of intervals.</span>
+countIntervals.count();    <span class="hljs-comment">// return 6</span>
+                           <span class="hljs-comment">// the integers 2 and 3 are present in the interval [2, 3].</span>
+                           <span class="hljs-comment">// the integers 7, 8, 9, and 10 are present in the interval [7, 10].</span>
+countIntervals.add(<span class="hljs-number">5</span>, <span class="hljs-number">8</span>);  <span class="hljs-comment">// add [5, 8] to the set of intervals.</span>
+countIntervals.count();    <span class="hljs-comment">// return 8</span>
+                           <span class="hljs-comment">// the integers 2 and 3 are present in the interval [2, 3].</span>
+                           <span class="hljs-comment">// the integers 5 and 6 are present in the interval [5, 8].</span>
+                           <span class="hljs-comment">// the integers 7 and 8 are present in the intervals [5, 8] and [7, 10].</span>
+                           <span class="hljs-comment">// the integers 9 and 10 are present in the interval [7, 10].</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= left &lt;= right &lt;= 109</code></p></li>
+<li><p>At most <code>105</code> calls <strong>in total</strong> will be made to <code>add</code> and <code>count</code>.</p></li>
+<li><p>At least <strong>one</strong> call will be made to <code>count</code>.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CountIntervals</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> TreeMap&lt;Integer, Integer&gt; map;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> count;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">CountIntervals</span><span class="hljs-params">()</span> </span>{
+        map = <span class="hljs-keyword">new</span> TreeMap&lt;&gt;();
+        map.put(-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>);
+        map.put(<span class="hljs-number">1_000_000_001</span>, <span class="hljs-number">1_000_000_001</span>);
+        count = <span class="hljs-number">0</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-keyword">int</span> left, <span class="hljs-keyword">int</span> right)</span> </span>{
+        Map.Entry&lt;Integer, Integer&gt; item =
+                map.floorEntry(left).getValue() &lt; left
+                        ? map.ceilingEntry(left)
+                        : map.floorEntry(left);
+        <span class="hljs-keyword">while</span> (item.getKey() &lt;= right) {
+            left = Math.min(left, item.getKey());
+            right = Math.max(right, item.getValue());
+            count -= item.getValue() - item.getKey() + <span class="hljs-number">1</span>;
+            map.remove(item.getKey());
+            item = map.ceilingEntry(item.getKey());
+        }
+
+        map.put(left, right);
+        count += right - left + <span class="hljs-number">1</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">count</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> count;
+    }
+}
+
+<span class="hljs-comment">/**
+ * Your CountIntervals object will be instantiated and called as such:
+ * CountIntervals obj = new CountIntervals();
+ * obj.add(left,right);
+ * int param_2 = obj.count();
+ */</span>
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

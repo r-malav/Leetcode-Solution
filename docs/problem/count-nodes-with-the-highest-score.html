@@ -1,0 +1,94 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Count Nodes With the Highest Score - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2049. Count Nodes With the Highest Score</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/tree">Tree</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-tree">Binary Tree</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/sum-of-distances-in-tree.html">Sum of Distances in Tree</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/delete-nodes-and-return-forest.html">Delete Nodes And Return Forest</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-product-of-splitted-binary-tree.html">Maximum Product of Splitted Binary Tree</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is a <strong>binary</strong> tree rooted at <code>0</code> consisting of <code>n</code> nodes. The nodes are labeled from <code>0</code> to <code>n - 1</code>. You are given a <strong>0-indexed</strong> integer array <code>parents</code> representing the tree, where <code>parents[i]</code> is the parent of node <code>i</code>. Since node <code>0</code> is the root, <code>parents[0] == -1</code>.</p>
+<p>Each node has a <strong>score</strong>. To find the score of a node, consider if the node and the edges connected to it were <strong>removed</strong>. The tree would become one or more <strong>non-empty</strong> subtrees. The <strong>size</strong> of a subtree is the number of the nodes in it. The <strong>score</strong> of the node is the <strong>product of the sizes</strong> of all those subtrees.</p>
+<p>Return **the *<em>number</em>* of nodes that have the <strong>highest score</strong>**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/10/03/example-1.png" alt="" /></p>
+<pre><code class="hljs">Input: parents = [<span class="hljs-number">-1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>]
+Output: <span class="hljs-number">3</span>
+Explanation:
+- The score of node <span class="hljs-number">0</span> <span class="hljs-keyword">is</span>: <span class="hljs-number">3</span> * <span class="hljs-number">1</span> = <span class="hljs-number">3</span>
+- The score of node <span class="hljs-number">1</span> <span class="hljs-keyword">is</span>: <span class="hljs-number">4</span> = <span class="hljs-number">4</span>
+- The score of node <span class="hljs-number">2</span> <span class="hljs-keyword">is</span>: <span class="hljs-number">1</span> * <span class="hljs-number">1</span> * <span class="hljs-number">2</span> = <span class="hljs-number">2</span>
+- The score of node <span class="hljs-number">3</span> <span class="hljs-keyword">is</span>: <span class="hljs-number">4</span> = <span class="hljs-number">4</span>
+- The score of node <span class="hljs-number">4</span> <span class="hljs-keyword">is</span>: <span class="hljs-number">4</span> = <span class="hljs-number">4</span>
+The highest score <span class="hljs-keyword">is</span> <span class="hljs-number">4</span>, <span class="hljs-keyword">and</span> three nodes (node <span class="hljs-number">1</span>, node <span class="hljs-number">3</span>, <span class="hljs-keyword">and</span> node <span class="hljs-number">4</span>) have the highest score.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/10/03/example-2.png" alt="" /></p>
+<pre><code class="hljs">Input: parents = [<span class="hljs-number">-1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>]
+Output: <span class="hljs-number">2</span>
+Explanation:
+- The score of node <span class="hljs-number">0</span> <span class="hljs-keyword">is</span>: <span class="hljs-number">2</span> = <span class="hljs-number">2</span>
+- The score of node <span class="hljs-number">1</span> <span class="hljs-keyword">is</span>: <span class="hljs-number">2</span> = <span class="hljs-number">2</span>
+- The score of node <span class="hljs-number">2</span> <span class="hljs-keyword">is</span>: <span class="hljs-number">1</span> * <span class="hljs-number">1</span> = <span class="hljs-number">1</span>
+The highest score <span class="hljs-keyword">is</span> <span class="hljs-number">2</span>, <span class="hljs-keyword">and</span> two nodes (node <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> node <span class="hljs-number">1</span>) have the highest score.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == parents.length</code></p></li>
+<li><p><code>2 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>parents[0] == -1</code></p></li>
+<li><p><code>0 &lt;= parents[i] &lt;= n - 1</code> for <code>i != 0</code></p></li>
+<li><p><code>parents</code> represents a valid binary tree.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Node</span> </span>{
+        Node left;
+        Node right;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> size;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> max;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> freq = <span class="hljs-number">0</span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> <span class="hljs-title">postOrder</span><span class="hljs-params">(Node root)</span> </span>{
+        <span class="hljs-keyword">if</span> (root == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">long</span> left = postOrder(root.left);
+        <span class="hljs-keyword">long</span> right = postOrder(root.right);
+        <span class="hljs-keyword">long</span> val = Math.max(<span class="hljs-number">1</span>, left) * Math.max(<span class="hljs-number">1</span>, right) * Math.max(size - left - right - <span class="hljs-number">1</span>, <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">if</span> (val &gt; max) {
+            max = val;
+            freq = <span class="hljs-number">1</span>;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (val == max) {
+            freq += <span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">return</span> left + right + <span class="hljs-number">1</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">countHighestScoreNodes</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] parents)</span> </span>{
+        <span class="hljs-keyword">this</span>.size = parents.length;
+        Node[] nodes = <span class="hljs-keyword">new</span> Node[size];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; size; i++) {
+            nodes[i] = <span class="hljs-keyword">new</span> Node();
+        }
+        Node root = <span class="hljs-keyword">null</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-keyword">if</span> (parents[i] != -<span class="hljs-number">1</span>) {
+                Node node = nodes[parents[i]];
+                <span class="hljs-keyword">if</span> (node.left == <span class="hljs-keyword">null</span>) {
+                    node.left = nodes[i];
+                } <span class="hljs-keyword">else</span> {
+                    node.right = nodes[i];
+                }
+            } <span class="hljs-keyword">else</span> {
+                root = nodes[i];
+            }
+        }
+        postOrder(root);
+        <span class="hljs-keyword">return</span> freq;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

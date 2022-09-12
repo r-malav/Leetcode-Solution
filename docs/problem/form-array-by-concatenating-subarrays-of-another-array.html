@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Form Array by Concatenating Subarrays of Another Array - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1764. Form Array by Concatenating Subarrays of Another Array</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string-matching">String Matching</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a 2D integer array <code>groups</code> of length <code>n</code>. You are also given an integer array <code>nums</code>.</p>
+<p>You are asked if you can choose <code>n</code> **disjoint **subarrays from the array <code>nums</code> such that the <code>ith</code> subarray is equal to <code>groups[i]</code> (<strong>0-indexed</strong>), and if <code>i &gt; 0</code>, the <code>(i-1)th</code> subarray appears <strong>before</strong> the <code>ith</code> subarray in <code>nums</code> (i.e. the subarrays must be in the same order as <code>groups</code>).</p>
+<p>Return <code>true</code> <strong>if you can do this task, and</strong> <code>false</code> <strong>otherwise</strong>.</p>
+<p>Note that the subarrays are <strong>disjoint</strong> if and only if there is no index <code>k</code> such that <code>nums[k]</code> belongs to more than one subarray. A subarray is a contiguous sequence of elements within an array.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: groups = [[<span class="hljs-number">1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">0</span>]], nums = [<span class="hljs-number">1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">0</span>]
+Output: <span class="hljs-literal">true</span>
+Explanation: You can choose the <span class="hljs-number">0</span>th subarray as [<span class="hljs-number">1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">0</span>] <span class="hljs-keyword">and</span> the <span class="hljs-number">1</span>st one as [<span class="hljs-number">1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">0</span>].
+These subarrays are disjoint as they share no common nums[k] element.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: groups = [[<span class="hljs-number">10</span>,<span class="hljs-number">-2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]], nums = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">10</span>,<span class="hljs-number">-2</span>]
+Output: <span class="hljs-literal">false</span>
+Explanation: Note that choosing the subarrays [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">10</span>,<span class="hljs-number">-2</span>] <span class="hljs-keyword">and</span> [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">10</span>,<span class="hljs-number">-2</span>] <span class="hljs-keyword">is</span> incorrect because they are <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> the same order as <span class="hljs-keyword">in</span> groups.
+[<span class="hljs-number">10</span>,<span class="hljs-number">-2</span>] must come before [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>].
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: groups = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]], nums = [<span class="hljs-number">7</span>,<span class="hljs-number">7</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">7</span>,<span class="hljs-number">7</span>]
+Output: <span class="hljs-literal">false</span>
+Explanation: Note that choosing the subarrays [<span class="hljs-number">7</span>,<span class="hljs-number">7</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">7</span>,<span class="hljs-number">7</span>] <span class="hljs-keyword">and</span> [<span class="hljs-number">7</span>,<span class="hljs-number">7</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">7</span>,<span class="hljs-number">7</span>] <span class="hljs-keyword">is</span> invalid because they are <span class="hljs-keyword">not</span> disjoint.
+They share a common elements nums[<span class="hljs-number">4</span>] (<span class="hljs-number">0</span>-indexed).
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>groups.length == n</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 103</code></p></li>
+<li><p><code>1 &lt;= groups[i].length, sum(groups[i].length) &lt;= 103</code></p></li>
+<li><p><code>1 &lt;= nums.length &lt;= 103</code></p></li>
+<li><p><code>-107 &lt;= groups[i][j], nums[k] &lt;= 107</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">canChoose</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] groups, <span class="hljs-keyword">int</span>[] nums)</span> </span>{
+        <span class="hljs-keyword">int</span> prev = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; groups.length; i++) {
+            <span class="hljs-keyword">int</span>[] temp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[groups[i].length];
+            <span class="hljs-keyword">if</span> (prev + groups[i].length &gt; nums.length) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            }
+            <span class="hljs-keyword">int</span> index = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">int</span> j;
+            <span class="hljs-keyword">for</span> (j = prev; j &lt; prev + groups[i].length; j++) {
+                temp[index++] = nums[j];
+            }
+            <span class="hljs-keyword">if</span> (Arrays.equals(temp, groups[i])) {
+                prev = j;
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-keyword">int</span> k;
+            <span class="hljs-keyword">for</span> (k = j; k &lt; nums.length; k++) {
+                <span class="hljs-keyword">int</span> l;
+                <span class="hljs-keyword">for</span> (l = <span class="hljs-number">0</span>; l &lt; temp.length - <span class="hljs-number">1</span>; l++) {
+                    temp[l] = temp[l + <span class="hljs-number">1</span>];
+                }
+                temp[l] = nums[k];
+                <span class="hljs-keyword">if</span> (Arrays.equals(temp, groups[i])) {
+                    prev = k + <span class="hljs-number">1</span>;
+                    <span class="hljs-keyword">break</span>;
+                }
+            }
+            <span class="hljs-keyword">if</span> (k == nums.length) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

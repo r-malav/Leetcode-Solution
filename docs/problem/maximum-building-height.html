@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Building Height - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1840. Maximum Building Height</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You want to build <code>n</code> new buildings in a city. The new buildings will be built in a line and are labeled from <code>1</code> to <code>n</code>.</p>
+<p>However, there are city restrictions on the heights of the new buildings:</p>
+<ul>
+<li><p>The height of each building must be a non-negative integer.</p></li>
+<li><p>The height of the first building <strong>must</strong> be <code>0</code>.</p></li>
+<li><p>The height difference between any two adjacent buildings <strong>cannot exceed</strong> <code>1</code>.</p></li>
+</ul>
+<p>Additionally, there are city restrictions on the maximum height of specific buildings. These restrictions are given as a 2D integer array <code>restrictions</code> where <code>restrictions[i] = [idi, maxHeighti]</code> indicates that building <code>idi</code> must have a height <strong>less than or equal to</strong> <code>maxHeighti</code>.</p>
+<p>It is guaranteed that each building will appear <strong>at most once</strong> in <code>restrictions</code>, and building <code>1</code> will <strong>not</strong> be in <code>restrictions</code>.</p>
+<p>Return **the *<em>maximum possible height</em>* of the <strong>tallest</strong> building**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/04/08/ic236-q4-ex1-1.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">5</span>, restrictions = [[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">1</span>]]
+Output: <span class="hljs-number">2</span>
+Explanation: The green area <span class="hljs-keyword">in</span> the image indicates the maximum allowed height <span class="hljs-keyword">for</span> each building.
+We can build the buildings with heights [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>], <span class="hljs-keyword">and</span> the tallest building has a height of <span class="hljs-number">2.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/04/08/ic236-q4-ex2.png" alt="" /></p>
+<pre><code class="hljs">Input: n = 6, restrictions = []
+Output: 5
+Explanation: The green<span class="hljs-built_in"> area </span><span class="hljs-keyword">in</span> the image indicates the maximum allowed height <span class="hljs-keyword">for</span> each building.
+We can build the buildings with heights [0,1,2,3,4,5], <span class="hljs-keyword">and</span> the tallest building has a height of 5.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/04/08/ic236-q4-ex3.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">10</span>, restrictions = [[<span class="hljs-number">5</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">7</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">10</span>,<span class="hljs-number">3</span>]]
+Output: <span class="hljs-number">5</span>
+Explanation: The green area <span class="hljs-keyword">in</span> the image indicates the maximum allowed height <span class="hljs-keyword">for</span> each building.
+We can build the buildings with heights [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>], <span class="hljs-keyword">and</span> the tallest building has a height of <span class="hljs-number">5.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>2 &lt;= n &lt;= 109</code></p></li>
+<li><p><code>0 &lt;= restrictions.length &lt;= min(n - 1, 105)</code></p></li>
+<li><p><code>2 &lt;= idi &lt;= n</code></p></li>
+<li><p><code>idi</code>&nbsp;is <strong>unique</strong>.</p></li>
+<li><p><code>0 &lt;= maxHeighti &lt;= 109</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxBuilding</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[][] restrictions)</span> </span>{
+        <span class="hljs-keyword">if</span> (restrictions.length == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> n - <span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">int</span> m = restrictions.length;
+        Arrays.sort(restrictions, Comparator.comparingInt(a -&gt; a[<span class="hljs-number">0</span>]));
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = m - <span class="hljs-number">2</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            restrictions[i][<span class="hljs-number">1</span>] =
+                    Math.min(
+                            restrictions[i][<span class="hljs-number">1</span>],
+                            restrictions[i + <span class="hljs-number">1</span>][<span class="hljs-number">1</span>] + restrictions[i + <span class="hljs-number">1</span>][<span class="hljs-number">0</span>] - restrictions[i][<span class="hljs-number">0</span>]);
+        }
+        <span class="hljs-keyword">int</span> id = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> height = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> res = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] r : restrictions) {
+            <span class="hljs-keyword">int</span> currMax;
+            <span class="hljs-keyword">if</span> (r[<span class="hljs-number">1</span>] &gt;= height + r[<span class="hljs-number">0</span>] - id) {
+                currMax = height + r[<span class="hljs-number">0</span>] - id;
+                height = currMax;
+            } <span class="hljs-keyword">else</span> {
+                currMax = (height + r[<span class="hljs-number">0</span>] - id + r[<span class="hljs-number">1</span>]) / <span class="hljs-number">2</span>;
+                height = r[<span class="hljs-number">1</span>];
+            }
+            id = r[<span class="hljs-number">0</span>];
+            res = Math.max(res, currMax);
+        }
+        <span class="hljs-keyword">if</span> (id != n) {
+            res = Math.max(res, height + n - id);
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

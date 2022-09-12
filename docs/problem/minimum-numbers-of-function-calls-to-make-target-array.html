@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Numbers of Function Calls to Make Target Array - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1558. Minimum Numbers of Function Calls to Make Target Array</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an integer array <code>nums</code>. You have an integer array <code>arr</code> of the same length with all values set to <code>0</code> initially. You also have the following <code>modify</code> function:</p>
+<p><img src="https://assets.leetcode.com/uploads/2020/07/10/sample_2_1887.png" alt="" /></p>
+<p>You want to use the modify function to covert <code>arr</code> to <code>nums</code> using the minimum number of calls.</p>
+<p>Return **the minimum number of function calls to make *<em><code>nums</code></em>* from **<code>arr</code>.</p>
+<p>The test cases are generated so that the answer fits in a <strong>32-bit</strong> signed integer.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">5</span>]
+Output: <span class="hljs-number">5</span>
+Explanation: Increment by <span class="hljs-number">1</span> (second element): [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>] to <span class="hljs-keyword">get</span> [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>] (<span class="hljs-number">1</span> operation).
+Double all the elements: [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>] -&gt; [<span class="hljs-number">0</span>, <span class="hljs-number">2</span>] -&gt; [<span class="hljs-number">0</span>, <span class="hljs-number">4</span>] (<span class="hljs-number">2</span> operations).
+Increment by <span class="hljs-number">1</span> (both elements)  [<span class="hljs-number">0</span>, <span class="hljs-number">4</span>] -&gt; [<span class="hljs-number">1</span>, <span class="hljs-number">4</span>] -&gt; [<span class="hljs-number">1</span>, <span class="hljs-number">5</span>] (<span class="hljs-number">2</span> operations).
+Total of operations: <span class="hljs-number">1</span> + <span class="hljs-number">2</span> + <span class="hljs-number">2</span> = <span class="hljs-number">5.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]
+Output: <span class="hljs-number">3</span>
+Explanation: Increment by <span class="hljs-number">1</span> (both elements) [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>] -&gt; [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>] -&gt; [<span class="hljs-number">1</span>, <span class="hljs-number">1</span>] (<span class="hljs-number">2</span> operations).
+Double all the elements: [<span class="hljs-number">1</span>, <span class="hljs-number">1</span>] -&gt; [<span class="hljs-number">2</span>, <span class="hljs-number">2</span>] (<span class="hljs-number">1</span> operation).
+Total of operations: <span class="hljs-number">2</span> + <span class="hljs-number">1</span> = <span class="hljs-number">3.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: nums = [4,2,5]
+Output: 6
+Explanation: (initial)[<span class="hljs-string">0,0,0</span>] -&gt; [<span class="hljs-string">1,0,0</span>] -&gt; [<span class="hljs-string">1,0,1</span>] -&gt; [<span class="hljs-string">2,0,2</span>] -&gt; [<span class="hljs-string">2,1,2</span>] -&gt; [<span class="hljs-string">4,2,4</span>] -&gt; [<span class="hljs-string">4,2,5</span>](<span class="hljs-link">nums</span>).
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= nums.length &lt;= 105</code></p></li>
+<li><p><code>0 &lt;= nums[i] &lt;= 109</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minOperations</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>{
+        <span class="hljs-keyword">int</span> ops = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> bit = <span class="hljs-number">0</span>; bit &lt; <span class="hljs-number">32</span>; bit++) {
+            <span class="hljs-keyword">boolean</span> nonzero = <span class="hljs-keyword">false</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+                ops += nums[i] % <span class="hljs-number">2</span>;
+                nums[i] /= <span class="hljs-number">2</span>;
+                nonzero |= nums[i] &gt; <span class="hljs-number">0</span>;
+            }
+            <span class="hljs-keyword">if</span> (nonzero) {
+                ops++;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> ops;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximize Number of Subsequences in a String - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2207. Maximize Number of Subsequences in a String</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/prefix-sum">Prefix Sum</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/longest-common-subsequence.html">Longest Common Subsequence</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>0-indexed</strong> string <code>text</code> and another <strong>0-indexed</strong> string <code>pattern</code> of length <code>2</code>, both of which consist of only lowercase English letters.</p>
+<p>You can add <strong>either</strong> <code>pattern[0]</code> <strong>or</strong> <code>pattern[1]</code> anywhere in <code>text</code> <strong>exactly once</strong>. Note that the character can be added even at the beginning or at the end of <code>text</code>.</p>
+<p>Return **the *<em>maximum</em>* number of times** <code>pattern</code> **can occur as a *<em>subsequence</em>* of the modified **<code>text</code>.</p>
+<p>A <strong>subsequence</strong> is a string that can be derived from another string by deleting some or no characters without changing the order of the remaining characters.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: <span class="hljs-keyword">text</span> = <span class="hljs-string">"abdcdbc"</span>, pattern = <span class="hljs-string">"ac"</span>
+Output: <span class="hljs-number">4</span>
+Explanation:
+If we <span class="hljs-built_in">add</span> pattern[<span class="hljs-number">0</span>] = <span class="hljs-string">'a'</span> <span class="hljs-keyword">in</span> between <span class="hljs-keyword">text</span>[<span class="hljs-number">1</span>] <span class="hljs-keyword">and</span> <span class="hljs-keyword">text</span>[<span class="hljs-number">2</span>], we <span class="hljs-built_in">get</span> <span class="hljs-string">"abadcdbc"</span>. Now, <span class="hljs-keyword">the</span> <span class="hljs-built_in">number</span> <span class="hljs-keyword">of</span> times <span class="hljs-string">"ac"</span> occurs <span class="hljs-keyword">as</span> <span class="hljs-keyword">a</span> subsequence is <span class="hljs-number">4.</span>
+Some other strings which have <span class="hljs-number">4</span> subsequences <span class="hljs-string">"ac"</span> <span class="hljs-keyword">after</span> adding <span class="hljs-keyword">a</span> <span class="hljs-keyword">character</span> <span class="hljs-built_in">to</span> <span class="hljs-keyword">text</span> are <span class="hljs-string">"aabdcdbc"</span> <span class="hljs-keyword">and</span> <span class="hljs-string">"abdacdbc"</span>.
+However, strings such <span class="hljs-keyword">as</span> <span class="hljs-string">"abdcadbc"</span>, <span class="hljs-string">"abdccdbc"</span>, <span class="hljs-keyword">and</span> <span class="hljs-string">"abdcdbcc"</span>, although obtainable, have only <span class="hljs-number">3</span> subsequences <span class="hljs-string">"ac"</span> <span class="hljs-keyword">and</span> are thus suboptimal.
+It can be shown that <span class="hljs-keyword">it</span> is <span class="hljs-keyword">not</span> possible <span class="hljs-built_in">to</span> <span class="hljs-built_in">get</span> more than <span class="hljs-number">4</span> subsequences <span class="hljs-string">"ac"</span> <span class="hljs-keyword">by</span> adding only <span class="hljs-literal">one</span> <span class="hljs-keyword">character</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: text = <span class="hljs-string">"aabb"</span>, pattern = <span class="hljs-string">"ab"</span>
+<span class="hljs-symbol">Output</span>: <span class="hljs-number">6</span>
+<span class="hljs-symbol">Explanation</span>:
+<span class="hljs-symbol">Some</span> of the <span class="hljs-keyword">strings </span>which can <span class="hljs-keyword">be </span>obtained from text <span class="hljs-keyword">and </span>have <span class="hljs-number">6</span> <span class="hljs-keyword">subsequences </span><span class="hljs-string">"ab"</span> are <span class="hljs-string">"aaabb"</span>, <span class="hljs-string">"aaabb"</span>, <span class="hljs-keyword">and </span><span class="hljs-string">"aabbb"</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= text.length &lt;= 105</code></p></li>
+<li><p><code>pattern.length == 2</code></p></li>
+<li><p><code>text</code> and <code>pattern</code> consist only of lowercase English letters.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">long</span> <span class="hljs-title">maximumSubsequenceCount</span><span class="hljs-params">(String text, String pattern)</span> </span>{
+        <span class="hljs-keyword">char</span> first = pattern.charAt(<span class="hljs-number">0</span>);
+        <span class="hljs-keyword">char</span> second = pattern.charAt(<span class="hljs-number">1</span>);
+        <span class="hljs-keyword">if</span> (first == second) {
+            <span class="hljs-keyword">long</span> res = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> c : text.toCharArray()) {
+                <span class="hljs-keyword">if</span> (c == first) {
+                    res++;
+                }
+            }
+            <span class="hljs-keyword">return</span> (res * (res + <span class="hljs-number">1</span>)) / <span class="hljs-number">2</span>;
+        }
+        <span class="hljs-keyword">long</span> res = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> firstCount = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> secondCount = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> c : text.toCharArray()) {
+            <span class="hljs-keyword">if</span> (c == first) {
+                firstCount++;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c == second) {
+                secondCount++;
+                res += firstCount;
+            }
+        }
+        <span class="hljs-keyword">return</span> Math.max(res + secondCount, res + firstCount);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

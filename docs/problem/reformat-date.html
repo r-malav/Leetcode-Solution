@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Reformat Date - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1507. Reformat Date</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a <code>date</code> string in the form&nbsp;<code>Day Month Year</code>, where:</p>
+<ul>
+<li><p><code>Day</code>&nbsp;is in the set <code>{"1st", "2nd", "3rd", "4th", ..., "30th", "31st"}</code>.</p></li>
+<li><p><code>Month</code>&nbsp;is in the set <code>{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}</code>.</p></li>
+<li><p><code>Year</code>&nbsp;is in the range <code>[1900, 2100]</code>.</p></li>
+</ul>
+<p>Convert the date string to the format <code>YYYY-MM-DD</code>, where:</p>
+<ul>
+<li><p><code>YYYY</code> denotes the 4 digit year.</p></li>
+<li><p><code>MM</code> denotes the 2 digit month.</p></li>
+<li><p><code>DD</code> denotes the 2 digit day.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> date = <span class="hljs-string">"20th Oct 2052"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">"2052-10-20"</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> date = <span class="hljs-string">"6th Jun 1933"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">"1933-06-06"</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> date = <span class="hljs-string">"26th May 1960"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-string">"1960-05-26"</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li>The given dates are guaranteed to be valid, so no error handling is necessary.</li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">reformatDate</span><span class="hljs-params">(String date)</span> </span>{
+        StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();
+        Map&lt;String, String&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        map.put(<span class="hljs-string">"Jan"</span>, <span class="hljs-string">"01"</span>);
+        map.put(<span class="hljs-string">"Feb"</span>, <span class="hljs-string">"02"</span>);
+        map.put(<span class="hljs-string">"Mar"</span>, <span class="hljs-string">"03"</span>);
+        map.put(<span class="hljs-string">"Apr"</span>, <span class="hljs-string">"04"</span>);
+        map.put(<span class="hljs-string">"May"</span>, <span class="hljs-string">"05"</span>);
+        map.put(<span class="hljs-string">"Jun"</span>, <span class="hljs-string">"06"</span>);
+        map.put(<span class="hljs-string">"Jul"</span>, <span class="hljs-string">"07"</span>);
+        map.put(<span class="hljs-string">"Aug"</span>, <span class="hljs-string">"08"</span>);
+        map.put(<span class="hljs-string">"Sep"</span>, <span class="hljs-string">"09"</span>);
+        map.put(<span class="hljs-string">"Oct"</span>, <span class="hljs-string">"10"</span>);
+        map.put(<span class="hljs-string">"Nov"</span>, <span class="hljs-string">"11"</span>);
+        map.put(<span class="hljs-string">"Dec"</span>, <span class="hljs-string">"12"</span>);
+        sb.append(date.substring(date.length() - <span class="hljs-number">4</span>));
+        sb.append(<span class="hljs-string">'-'</span>);
+        sb.append(map.get(date.substring(date.length() - <span class="hljs-number">8</span>, date.length() - <span class="hljs-number">5</span>)));
+        sb.append(<span class="hljs-string">'-'</span>);
+        <span class="hljs-keyword">if</span> (Character.isDigit(date.charAt(<span class="hljs-number">1</span>))) {
+            sb.append(date, <span class="hljs-number">0</span>, <span class="hljs-number">2</span>);
+        } <span class="hljs-keyword">else</span> {
+            sb.append(<span class="hljs-string">'0'</span>);
+            sb.append(date.charAt(<span class="hljs-number">0</span>));
+        }
+        <span class="hljs-keyword">return</span> sb.toString();
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Strange Printer II - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1591. Strange Printer II</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/graph">Graph</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/topological-sort">Topological Sort</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/strange-printer.html">Strange Printer</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/longest-cycle-in-a-graph.html">Longest Cycle in a Graph</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is a strange printer with the following two special requirements:</p>
+<ul>
+<li><p>On each turn, the printer will print a solid rectangular pattern of a single color on the grid. This will cover up the existing colors in the rectangle.</p></li>
+<li><p>Once the printer has used a color for the above operation, <strong>the same color cannot be used again</strong>.</p></li>
+</ul>
+<p>You are given a <code>m x n</code> matrix <code>targetGrid</code>, where <code>targetGrid[row][col]</code> is the color in the position <code>(row, col)</code> of the grid.</p>
+<p>Return <code>true</code>** if it is possible to print the matrix <strong><code>targetGrid</code></strong>,**** otherwise, return **<code>false</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/12/23/print1.jpg" alt="" /></p>
+<pre><code class="hljs">Input: targetGrid = [[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]]
+Output: <span class="hljs-literal">true</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/12/23/print2.jpg" alt="" /></p>
+<pre><code class="hljs">Input: targetGrid = [[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>]]
+Output: <span class="hljs-literal">true</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: targetGrid = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]]
+Output: <span class="hljs-literal">false</span>
+Explanation: It <span class="hljs-keyword">is</span> impossible to form targetGrid because it <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> allowed to print the same color <span class="hljs-keyword">in</span> different turns.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == targetGrid.length</code></p></li>
+<li><p><code>n == targetGrid[i].length</code></p></li>
+<li><p><code>1 &lt;= m, n &lt;= 60</code></p></li>
+<li><p><code>1 &lt;= targetGrid[row][col] &lt;= 60</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isPrintable</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] targetGrid)</span> </span>{
+        <span class="hljs-keyword">int</span>[][] colorBound = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">61</span>][<span class="hljs-number">4</span>];
+        Set&lt;Integer&gt; colors = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+        <span class="hljs-comment">// prepare colorBound with Max and Min integer for later compare</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; colorBound.length; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; colorBound[<span class="hljs-number">0</span>].length; j++) {
+                <span class="hljs-keyword">if</span> (j == <span class="hljs-number">0</span> || j == <span class="hljs-number">1</span>) {
+                    colorBound[i][j] = Integer.MAX_VALUE;
+                } <span class="hljs-keyword">else</span> {
+                    colorBound[i][j] = Integer.MIN_VALUE;
+                }
+            }
+        }
+        <span class="hljs-comment">// find the color range for each color</span>
+        <span class="hljs-comment">// each color i has a colorBound[i] with {min_i, min_j, max_i, max_j}</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; targetGrid.length; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; targetGrid[<span class="hljs-number">0</span>].length; j++) {
+                colorBound[targetGrid[i][j]][<span class="hljs-number">0</span>] = Math.min(colorBound[targetGrid[i][j]][<span class="hljs-number">0</span>], i);
+                colorBound[targetGrid[i][j]][<span class="hljs-number">1</span>] = Math.min(colorBound[targetGrid[i][j]][<span class="hljs-number">1</span>], j);
+                colorBound[targetGrid[i][j]][<span class="hljs-number">2</span>] = Math.max(colorBound[targetGrid[i][j]][<span class="hljs-number">2</span>], i);
+                colorBound[targetGrid[i][j]][<span class="hljs-number">3</span>] = Math.max(colorBound[targetGrid[i][j]][<span class="hljs-number">3</span>], j);
+                colors.add(targetGrid[i][j]);
+            }
+        }
+        <span class="hljs-keyword">boolean</span>[] printed = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[<span class="hljs-number">61</span>];
+        <span class="hljs-keyword">boolean</span>[][] visited = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[targetGrid.length][targetGrid[<span class="hljs-number">0</span>].length];
+        <span class="hljs-comment">// DFS all the colors, skip the color already be printed</span>
+        <span class="hljs-keyword">for</span> (Integer color : colors) {
+            <span class="hljs-keyword">if</span> (printed[color]) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-keyword">if</span> (!dfs(targetGrid, printed, colorBound, visited, color)) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            }
+        }
+        <span class="hljs-comment">// if all color has been printed, then return true</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">dfs</span><span class="hljs-params">(
+            <span class="hljs-keyword">int</span>[][] targetGrid,
+            <span class="hljs-keyword">boolean</span>[] printed,
+            <span class="hljs-keyword">int</span>[][] colorBound,
+            <span class="hljs-keyword">boolean</span>[][] visited,
+            <span class="hljs-keyword">int</span> color)</span> </span>{
+        printed[color] = <span class="hljs-keyword">true</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = colorBound[color][<span class="hljs-number">0</span>]; i &lt;= colorBound[color][<span class="hljs-number">2</span>]; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = colorBound[color][<span class="hljs-number">1</span>]; j &lt;= colorBound[color][<span class="hljs-number">3</span>]; j++) {
+                <span class="hljs-comment">// if i, j is already visited, skip</span>
+                <span class="hljs-keyword">if</span> (visited[i][j]) {
+                    <span class="hljs-keyword">continue</span>;
+                }
+                <span class="hljs-comment">// if we find a different color, then check if the color is already printed, if so,</span>
+                <span class="hljs-comment">// return false</span>
+                <span class="hljs-comment">// otherwise, dfs the range of the new color</span>
+                <span class="hljs-keyword">if</span> (targetGrid[i][j] != color) {
+                    <span class="hljs-keyword">if</span> (printed[targetGrid[i][j]]) {
+                        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+                    }
+                    <span class="hljs-keyword">if</span> (!dfs(targetGrid, printed, colorBound, visited, targetGrid[i][j])) {
+                        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+                    }
+                }
+                visited[i][j] = <span class="hljs-keyword">true</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

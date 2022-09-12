@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Determine Whether Matrix Can Be Obtained By Rotation - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1886. Determine Whether Matrix Can Be Obtained By Rotation</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/rotate-image.html">Rotate Image</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given two <code>n x n</code> binary matrices <code>mat</code> and <code>target</code>, return <code>true</code>** if it is possible to make <strong><code>mat</code></strong> equal to <strong><code>target</code></strong> by <strong>rotating</strong> <strong><code>mat</code></strong> in <strong>90-degree increments</strong>, or <strong><code>false</code></strong> otherwise.**</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/05/20/grid3.png" alt="" /></p>
+<pre><code class="hljs">Input: mat = <span class="hljs-string">[[0,1],[1,0]]</span>, target = <span class="hljs-string">[[1,0],[0,1]]</span>
+Output: <span class="hljs-literal">true</span>
+Explanation: We can rotate mat <span class="hljs-number">90</span> degrees clockwise to make mat equal target.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/05/20/grid4.png" alt="" /></p>
+<pre><code class="hljs">Input: mat = <span class="hljs-string">[[0,1],[1,1]]</span>, target = <span class="hljs-string">[[1,0],[0,1]]</span>
+Output: <span class="hljs-literal">false</span>
+Explanation: It is impossible to make mat equal to target by rotating mat.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/05/26/grid4.png" alt="" /></p>
+<pre><code class="hljs">Input: mat = [[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]], target = [[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]]
+Output: <span class="hljs-literal">true</span>
+Explanation: We can rotate mat <span class="hljs-number">90</span> degrees clockwise two times to make mat equal target.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == mat.length == target.length</code></p></li>
+<li><p><code>n == mat[i].length == target[i].length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 10</code></p></li>
+<li><p><code>mat[i][j]</code> and <code>target[i][j]</code> are either <code>0</code> or <code>1</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">findRotation</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] mat, <span class="hljs-keyword">int</span>[][] target)</span> </span>{
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++) {
+            <span class="hljs-keyword">if</span> (Arrays.deepEquals(mat, target)) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+            }
+            rotate(mat);
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">rotate</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] mat)</span> </span>{
+        <span class="hljs-comment">// Reverse Rows</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>, j = mat.length - <span class="hljs-number">1</span>; i &lt; j; i++, j--) {
+            <span class="hljs-keyword">int</span>[] tempRow = mat[i];
+            mat[i] = mat[j];
+            mat[j] = tempRow;
+        }
+        <span class="hljs-comment">// Transpose</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; mat.length; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = i + <span class="hljs-number">1</span>; j &lt; mat.length; j++) {
+                <span class="hljs-keyword">int</span> temp = mat[i][j];
+                mat[i][j] = mat[j][i];
+                mat[j][i] = temp;
+            }
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

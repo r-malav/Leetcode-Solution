@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Closest Room - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1847. Closest Room</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/most-beautiful-item-for-each-query.html">Most Beautiful Item for Each Query</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is a hotel with <code>n</code> rooms. The rooms are represented by a 2D integer array <code>rooms</code> where <code>rooms[i] = [roomIdi, sizei]</code> denotes that there is a room with room number <code>roomIdi</code> and size equal to <code>sizei</code>. Each <code>roomIdi</code> is guaranteed to be <strong>unique</strong>.</p>
+<p>You are also given <code>k</code> queries in a 2D array <code>queries</code> where <code>queries[j] = [preferredj, minSizej]</code>. The answer to the <code>jth</code> query is the room number <code>id</code> of a room such that:</p>
+<ul>
+<li><p>The room has a size of <strong>at least</strong> <code>minSizej</code>, and</p></li>
+<li><p><code>abs(id - preferredj)</code> is <strong>minimized</strong>, where <code>abs(x)</code> is the absolute value of <code>x</code>.</p></li>
+</ul>
+<p>If there is a <strong>tie</strong> in the absolute difference, then use the room with the <strong>smallest</strong> such <code>id</code>. If there is <strong>no such room</strong>, the answer is <code>-1</code>.</p>
+<p>Return **an array *<em><code>answer</code></em>* of length <strong><code>k</code></strong> where <strong><code>answer[j]</code></strong> contains the answer to the <strong><code>jth</code></strong> query**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: rooms = [[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">2</span>]], queries = [[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">2</span>]]
+Output: [<span class="hljs-number">3</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">3</span>]
+Explanation: The answers to the queries are as follows:
+Query = [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]: Room number <span class="hljs-number">3</span> <span class="hljs-keyword">is</span> the closest as abs(<span class="hljs-number">3</span> - <span class="hljs-number">3</span>) = <span class="hljs-number">0</span>, <span class="hljs-keyword">and</span> its size of <span class="hljs-number">2</span> <span class="hljs-keyword">is</span> at least <span class="hljs-number">1.</span> The answer <span class="hljs-keyword">is</span> <span class="hljs-number">3.</span>
+Query = [<span class="hljs-number">3</span>,<span class="hljs-number">3</span>]: There are no rooms with a size of at least <span class="hljs-number">3</span>, so the answer <span class="hljs-keyword">is</span> <span class="hljs-number">-1.</span>
+Query = [<span class="hljs-number">5</span>,<span class="hljs-number">2</span>]: Room number <span class="hljs-number">3</span> <span class="hljs-keyword">is</span> the closest as abs(<span class="hljs-number">3</span> - <span class="hljs-number">5</span>) = <span class="hljs-number">2</span>, <span class="hljs-keyword">and</span> its size of <span class="hljs-number">2</span> <span class="hljs-keyword">is</span> at least <span class="hljs-number">2.</span> The answer <span class="hljs-keyword">is</span> <span class="hljs-number">3.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: rooms = [[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">2</span>]], queries = [[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>]]
+Output: [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>]
+Explanation: The answers to the queries are as follows:
+Query = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]: Room number <span class="hljs-number">2</span> <span class="hljs-keyword">is</span> the closest as abs(<span class="hljs-number">2</span> - <span class="hljs-number">2</span>) = <span class="hljs-number">0</span>, <span class="hljs-keyword">and</span> its size of <span class="hljs-number">3</span> <span class="hljs-keyword">is</span> at least <span class="hljs-number">3.</span> The answer <span class="hljs-keyword">is</span> <span class="hljs-number">2.</span>
+Query = [<span class="hljs-number">2</span>,<span class="hljs-number">4</span>]: Room numbers <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-number">3</span> both have sizes of at least <span class="hljs-number">4.</span> The answer <span class="hljs-keyword">is</span> <span class="hljs-number">1</span> since it <span class="hljs-keyword">is</span> smaller.
+Query = [<span class="hljs-number">2</span>,<span class="hljs-number">5</span>]: Room number <span class="hljs-number">3</span> <span class="hljs-keyword">is</span> the only room with a size of at least <span class="hljs-number">5.</span> The answer <span class="hljs-keyword">is</span> <span class="hljs-number">3.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == rooms.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>k == queries.length</code></p></li>
+<li><p><code>1 &lt;= k &lt;= 104</code></p></li>
+<li><p><code>1 &lt;= roomIdi, preferredj &lt;= 107</code></p></li>
+<li><p><code>1 &lt;= sizei, minSizej &lt;= 107</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] closestRoom(<span class="hljs-keyword">int</span>[][] rooms, <span class="hljs-keyword">int</span>[][] queries) {
+        <span class="hljs-keyword">int</span> numRoom = rooms.length;
+        <span class="hljs-keyword">int</span> numQuery = queries.length;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; numQuery; i++) {
+            queries[i] = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {queries[i][<span class="hljs-number">0</span>], queries[i][<span class="hljs-number">1</span>], i};
+        }
+        Arrays.sort(rooms, (a, b) -&gt; (a[<span class="hljs-number">1</span>] != b[<span class="hljs-number">1</span>] ? (a[<span class="hljs-number">1</span>] - b[<span class="hljs-number">1</span>]) : (a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>])));
+        Arrays.sort(queries, (a, b) -&gt; (a[<span class="hljs-number">1</span>] != b[<span class="hljs-number">1</span>] ? (a[<span class="hljs-number">1</span>] - b[<span class="hljs-number">1</span>]) : (a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>])));
+        TreeSet&lt;Integer&gt; roomIds = <span class="hljs-keyword">new</span> TreeSet&lt;&gt;();
+        <span class="hljs-keyword">int</span>[] result = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[numQuery];
+        <span class="hljs-keyword">int</span> j = numRoom - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = numQuery - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            <span class="hljs-keyword">int</span> currRoomId = queries[i][<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">int</span> currRoomSize = queries[i][<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">int</span> currQueryIndex = queries[i][<span class="hljs-number">2</span>];
+            <span class="hljs-keyword">while</span> (j &gt;= <span class="hljs-number">0</span> &amp;&amp; rooms[j][<span class="hljs-number">1</span>] &gt;= currRoomSize) {
+                roomIds.add(rooms[j--][<span class="hljs-number">0</span>]);
+            }
+            <span class="hljs-keyword">if</span> (roomIds.contains(currRoomId)) {
+                result[currQueryIndex] = currRoomId;
+                <span class="hljs-keyword">continue</span>;
+            }
+            Integer nextRoomId = roomIds.higher(currRoomId);
+            Integer prevRoomId = roomIds.lower(currRoomId);
+            <span class="hljs-keyword">if</span> (nextRoomId == <span class="hljs-keyword">null</span> &amp;&amp; prevRoomId == <span class="hljs-keyword">null</span>) {
+                result[currQueryIndex] = -<span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nextRoomId == <span class="hljs-keyword">null</span>) {
+                result[currQueryIndex] = prevRoomId;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (prevRoomId == <span class="hljs-keyword">null</span>) {
+                result[currQueryIndex] = nextRoomId;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">if</span> ((currRoomId - prevRoomId) &lt;= (nextRoomId - currRoomId)) {
+                    result[currQueryIndex] = prevRoomId;
+                } <span class="hljs-keyword">else</span> {
+                    result[currQueryIndex] = nextRoomId;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> result;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

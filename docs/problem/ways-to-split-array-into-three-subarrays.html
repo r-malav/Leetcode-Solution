@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Ways to Split Array Into Three Subarrays - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1712. Ways to Split Array Into Three Subarrays</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/two-pointers">Two Pointers</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/prefix-sum">Prefix Sum</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/number-of-ways-to-divide-a-long-corridor.html">Number of Ways to Divide a Long Corridor</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/number-of-ways-to-split-array.html">Number of Ways to Split Array</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A split of an integer array is <strong>good</strong> if:</p>
+<ul>
+<li><p>The array is split into three <strong>non-empty</strong> contiguous subarrays - named <code>left</code>, <code>mid</code>, <code>right</code> respectively from left to right.</p></li>
+<li><p>The sum of the elements in <code>left</code> is less than or equal to the sum of the elements in <code>mid</code>, and the sum of the elements in <code>mid</code> is less than or equal to the sum of the elements in <code>right</code>.</p></li>
+</ul>
+<p>Given <code>nums</code>, an array of <strong>non-negative</strong> integers, return **the number of *<em>good</em>* ways to split** <code>nums</code>. As the number may be too large, return it <strong>modulo</strong> <code>109 + 7</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]
+Output: <span class="hljs-number">1</span>
+Explanation: The only good way to split nums <span class="hljs-keyword">is</span> [<span class="hljs-number">1</span>] [<span class="hljs-number">1</span>] [<span class="hljs-number">1</span>].
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">0</span>]
+Output: <span class="hljs-number">3</span>
+Explanation: There are three good ways of splitting nums:
+[<span class="hljs-number">1</span>] [<span class="hljs-number">2</span>] [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">0</span>]
+[<span class="hljs-number">1</span>] [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>] [<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">0</span>]
+[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>] [<span class="hljs-number">5</span>,<span class="hljs-number">0</span>]
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">nums</span> <span class="hljs-string">=</span> <span class="hljs-string">[3,2,1]</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">0</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">There</span> <span class="hljs-string">is</span> <span class="hljs-literal">no</span> <span class="hljs-string">good</span> <span class="hljs-string">way</span> <span class="hljs-string">to</span> <span class="hljs-string">split</span> <span class="hljs-string">nums.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>3 &lt;= nums.length &lt;= 105</code></p></li>
+<li><p><code>0 &lt;= nums[i] &lt;= 104</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">waysToSplit</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>{
+        <span class="hljs-keyword">int</span> sum = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> num : nums) {
+            sum += num;
+        }
+        <span class="hljs-keyword">int</span> cur = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">long</span> res = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> idx1 = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> sum1 = nums[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">int</span> idx2 = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> sum2 = nums[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">while</span> (i &lt; nums.length) {
+            cur += nums[i];
+            <span class="hljs-keyword">int</span> right = sum - cur;
+            <span class="hljs-keyword">if</span> (i == <span class="hljs-number">0</span> || i == nums.length - <span class="hljs-number">1</span>) {
+                i++;
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-keyword">while</span> (idx1 &lt;= i &amp;&amp; sum1 &lt;= cur - sum1) {
+                sum1 += nums[idx1++];
+            }
+            <span class="hljs-keyword">while</span> (idx2 &lt; idx1 &amp;&amp; cur - sum2 &gt; right) {
+                sum2 += nums[idx2++];
+            }
+            <span class="hljs-keyword">if</span> (idx1 &gt; idx2) {
+                res = (res + idx1 - idx2) % <span class="hljs-number">1000_000_007</span>;
+            }
+            i++;
+        }
+        <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>) res;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

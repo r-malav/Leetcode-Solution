@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Time to Complete Trips - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2187. Minimum Time to Complete Trips</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-candies-allocated-to-k-children.html">Maximum Candies Allocated to K Children</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-speed-to-arrive-on-time.html">Minimum Speed to Arrive on Time</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimized-maximum-of-products-distributed-to-any-store.html">Minimized Maximum of Products Distributed to Any Store</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-running-time-of-n-computers.html">Maximum Running Time of N Computers</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-number-of-robots-within-budget.html">Maximum Number of Robots Within Budget</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an array <code>time</code> where <code>time[i]</code> denotes the time taken by the <code>ith</code> bus to complete <strong>one trip</strong>.</p>
+<p>Each bus can make multiple trips <strong>successively</strong>; that is, the next trip can start <strong>immediately after</strong> completing the current trip. Also, each bus operates <strong>independently</strong>; that is, the trips of one bus do not influence the trips of any other bus.</p>
+<p>You are also given an integer <code>totalTrips</code>, which denotes the number of trips all buses should make <strong>in total</strong>. Return **the *<em>minimum time</em>* required for all buses to complete <strong>at least</strong> <strong><code>totalTrips</code></strong> trips**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: time = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], totalTrips = <span class="hljs-number">5</span>
+Output: <span class="hljs-number">3</span>
+Explanation:
+- At time t = <span class="hljs-number">1</span>, the number of trips completed by each bus are [<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]. 
+  The total number of trips completed <span class="hljs-keyword">is</span> <span class="hljs-number">1</span> + <span class="hljs-number">0</span> + <span class="hljs-number">0</span> = <span class="hljs-number">1.</span>
+- At time t = <span class="hljs-number">2</span>, the number of trips completed by each bus are [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]. 
+  The total number of trips completed <span class="hljs-keyword">is</span> <span class="hljs-number">2</span> + <span class="hljs-number">1</span> + <span class="hljs-number">0</span> = <span class="hljs-number">3.</span>
+- At time t = <span class="hljs-number">3</span>, the number of trips completed by each bus are [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]. 
+  The total number of trips completed <span class="hljs-keyword">is</span> <span class="hljs-number">3</span> + <span class="hljs-number">1</span> + <span class="hljs-number">1</span> = <span class="hljs-number">5.</span>
+So the minimum time needed <span class="hljs-keyword">for</span> all buses to complete at least <span class="hljs-number">5</span> trips <span class="hljs-keyword">is</span> <span class="hljs-number">3.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: <span class="hljs-built_in">time</span> = [<span class="hljs-number">2</span>], totalTrips = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">2</span>
+Explanation:
+There <span class="hljs-keyword">is</span> only one bus, <span class="hljs-keyword">and</span> <span class="hljs-keyword">it</span> will complete <span class="hljs-keyword">its</span> <span class="hljs-keyword">first</span> trip <span class="hljs-keyword">at</span> t = <span class="hljs-number">2.</span>
+So <span class="hljs-keyword">the</span> minimum <span class="hljs-built_in">time</span> needed <span class="hljs-keyword">to</span> complete <span class="hljs-number">1</span> trip <span class="hljs-keyword">is</span> <span class="hljs-number">2.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= time.length &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= time[i], totalTrips &lt;= 107</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">long</span> <span class="hljs-title">minimumTime</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] time, <span class="hljs-keyword">int</span> totalTrips)</span> </span>{
+        <span class="hljs-keyword">return</span> bs(<span class="hljs-number">0</span>, Long.MAX_VALUE, time, totalTrips);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> <span class="hljs-title">bs</span><span class="hljs-params">(<span class="hljs-keyword">long</span> left, <span class="hljs-keyword">long</span> right, <span class="hljs-keyword">int</span>[] time, <span class="hljs-keyword">long</span> totalTrips)</span> </span>{
+        <span class="hljs-keyword">if</span> (left &gt; right) {
+            <span class="hljs-keyword">return</span> Long.MAX_VALUE;
+        }
+        <span class="hljs-keyword">long</span> mid = (left + right) &gt;&gt; <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">return</span> isPossible(time, mid, totalTrips)
+                ? Math.min(mid, bs(left, mid - <span class="hljs-number">1</span>, time, totalTrips))
+                : bs(mid + <span class="hljs-number">1</span>, right, time, totalTrips);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isPossible</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] time, <span class="hljs-keyword">long</span> mid, <span class="hljs-keyword">long</span> totalTrips)</span> </span>{
+        <span class="hljs-keyword">long</span> count = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i : time) {
+            count += mid / i;
+            <span class="hljs-keyword">if</span> (count &gt;= totalTrips) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

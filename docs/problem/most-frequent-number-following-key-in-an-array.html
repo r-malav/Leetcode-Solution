@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Most Frequent Number Following Key In an Array - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2190. Most Frequent Number Following Key In an Array</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/counting">Counting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/sort-array-by-increasing-frequency.html">Sort Array by Increasing Frequency</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>0-indexed</strong> integer array <code>nums</code>.** **You are also given an integer <code>key</code>, which is present in <code>nums</code>.</p>
+<p>For every unique integer <code>target</code> in <code>nums</code>, <strong>count</strong> the number of times <code>target</code> immediately follows an occurrence of <code>key</code> in <code>nums</code>. In other words, count the number of indices <code>i</code> such that:</p>
+<ul>
+<li><p><code>0 &lt;= i &lt;= nums.length - 2</code>,</p></li>
+<li><p><code>nums[i] == key</code> and,</p></li>
+<li><p><code>nums[i + 1] == target</code>.</p></li>
+</ul>
+<p>Return **the *<em><code>target</code></em>* with the <strong>maximum</strong> count**. The test cases will be generated such that the <code>target</code> with maximum count is unique.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">100</span>,<span class="hljs-number">200</span>,<span class="hljs-number">1</span>,<span class="hljs-number">100</span>], key = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">100</span>
+Explanation: For target = <span class="hljs-number">100</span>, there are <span class="hljs-number">2</span> occurrences at indices <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-number">4</span> which follow an occurrence of key.
+No other <span class="hljs-built_in">int</span>egers follow an occurrence of key, so we <span class="hljs-keyword">return</span> <span class="hljs-number">100.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], key = <span class="hljs-number">2</span>
+Output: <span class="hljs-number">2</span>
+Explanation: For target = <span class="hljs-number">2</span>, there are <span class="hljs-number">3</span> occurrences at indices <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-keyword">and</span> <span class="hljs-number">3</span> which follow an occurrence of key.
+For target = <span class="hljs-number">3</span>, there <span class="hljs-keyword">is</span> only one occurrence at index <span class="hljs-number">4</span> which follows an occurrence of key.
+target = <span class="hljs-number">2</span> has the maximum number of occurrences following an occurrence of key, so we <span class="hljs-keyword">return</span> <span class="hljs-number">2.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>2 &lt;= nums.length &lt;= 1000</code></p></li>
+<li><p><code>1 &lt;= nums[i] &lt;= 1000</code></p></li>
+<li><p>The test cases will be generated such that the answer is unique.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">mostFrequent</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> key)</span> </span>{
+        <span class="hljs-keyword">int</span>[] store = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">1001</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nums.length - <span class="hljs-number">1</span>; i++) {
+            <span class="hljs-keyword">if</span> (nums[i] == key) {
+                store[nums[i + <span class="hljs-number">1</span>]]++;
+            }
+        }
+        <span class="hljs-keyword">int</span> res = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> count = store[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; <span class="hljs-number">1001</span>; i++) {
+            <span class="hljs-keyword">if</span> (count &lt; store[i]) {
+                count = store[i];
+                res = i;
+            }
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

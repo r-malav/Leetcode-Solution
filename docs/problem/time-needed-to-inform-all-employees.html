@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Time Needed to Inform All Employees - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1376. Time Needed to Inform All Employees</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/tree">Tree</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-depth-of-binary-tree.html">Maximum Depth of Binary Tree</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/binary-tree-maximum-path-sum.html">Binary Tree Maximum Path Sum</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A company has <code>n</code> employees with a unique ID for each employee from <code>0</code> to <code>n - 1</code>. The head of the company is the one with <code>headID</code>.</p>
+<p>Each employee has one direct manager given in the <code>manager</code> array where <code>manager[i]</code> is the direct manager of the <code>i-th</code> employee, <code>manager[headID] = -1</code>. Also, it is guaranteed that the subordination relationships have a tree structure.</p>
+<p>The head of the company wants to inform all the company employees of an urgent piece of news. He will inform his direct subordinates, and they will inform their subordinates, and so on until all employees know about the urgent news.</p>
+<p>The <code>i-th</code> employee needs <code>informTime[i]</code> minutes to inform all of his direct subordinates (i.e., After informTime[i] minutes, all his direct subordinates can start spreading the news).</p>
+<p>Return <strong>the number of minutes</strong> needed to inform all the employees about the urgent news.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">1</span>, headID = <span class="hljs-number">0</span>, manager = [<span class="hljs-number">-1</span>], informTime = [<span class="hljs-number">0</span>]
+Output: <span class="hljs-number">0</span>
+Explanation: The head of the company <span class="hljs-keyword">is</span> the only employee <span class="hljs-keyword">in</span> the company.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/02/27/graph.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">6</span>, headID = <span class="hljs-number">2</span>, manager = [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>], informTime = [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]
+Output: <span class="hljs-number">1</span>
+Explanation: The head of the company with id = <span class="hljs-number">2</span> <span class="hljs-keyword">is</span> the direct manager of all the employees <span class="hljs-keyword">in</span> the company <span class="hljs-keyword">and</span> needs <span class="hljs-number">1</span> minute to inform them all.
+The tree structure of the employees <span class="hljs-keyword">in</span> the company <span class="hljs-keyword">is</span> shown.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>0 &lt;= headID &lt; n</code></p></li>
+<li><p><code>manager.length == n</code></p></li>
+<li><p><code>0 &lt;= manager[i] &lt; n</code></p></li>
+<li><p><code>manager[headID] == -1</code></p></li>
+<li><p><code>informTime.length == n</code></p></li>
+<li><p><code>0 &lt;= informTime[i] &lt;= 1000</code></p></li>
+<li><p><code>informTime[i] == 0</code> if employee <code>i</code> has no subordinates.</p></li>
+<li><p>It is <strong>guaranteed</strong> that all the employees can be informed.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Pair</span> </span>{
+        <span class="hljs-keyword">int</span> emp;
+        <span class="hljs-keyword">int</span> time;
+
+        Pair(<span class="hljs-keyword">int</span> emp, <span class="hljs-keyword">int</span> time) {
+            <span class="hljs-keyword">this</span>.emp = emp;
+            <span class="hljs-keyword">this</span>.time = time;
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">numOfMinutes</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> headID, <span class="hljs-keyword">int</span>[] manager, <span class="hljs-keyword">int</span>[] informTime)</span> </span>{
+        HashMap&lt;Integer, List&lt;Integer&gt;&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">int</span> head = -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; manager.length; i++) {
+            <span class="hljs-keyword">if</span> (manager[i] == -<span class="hljs-number">1</span>) {
+                head = i;
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-keyword">int</span> man = manager[i];
+            map.putIfAbsent(man, <span class="hljs-keyword">new</span> ArrayList&lt;&gt;());
+            map.get(man).add(i);
+        }
+        <span class="hljs-keyword">int</span> maxtime = <span class="hljs-number">0</span>;
+        Queue&lt;Pair&gt; que = <span class="hljs-keyword">new</span> ArrayDeque&lt;&gt;();
+        que.add(<span class="hljs-keyword">new</span> Pair(head, informTime[head]));
+        <span class="hljs-keyword">while</span> (!que.isEmpty()) {
+            Pair rem = que.remove();
+            maxtime = Math.max(rem.time, maxtime);
+            <span class="hljs-keyword">if</span> (map.containsKey(rem.emp)) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> under : map.get(rem.emp)) {
+                    que.add(<span class="hljs-keyword">new</span> Pair(under, rem.time + informTime[under]));
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> maxtime;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

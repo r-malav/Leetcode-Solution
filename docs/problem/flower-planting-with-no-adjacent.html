@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Flower Planting With No Adjacent - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1042. Flower Planting With No Adjacent</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/graph">Graph</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You have <code>n</code> gardens, labeled from <code>1</code> to <code>n</code>, and an array <code>paths</code> where <code>paths[i] = [xi, yi]</code> describes a bidirectional path between garden <code>xi</code> to garden <code>yi</code>. In each garden, you want to plant one of 4 types of flowers.</p>
+<p>All gardens have <strong>at most 3</strong> paths coming into or leaving it.</p>
+<p>Your task is to choose a flower type for each garden such that, for any two gardens connected by a path, they have different types of flowers.</p>
+<p>Return <strong>*<em>any</strong> such a choice as an array <strong><code>answer</code></strong>, where <strong><code>answer[i]</code></strong> is the type of flower planted in the <strong><code>(i+1)th</code></strong> garden. The flower types are denoted <strong><code>1</code></strong>, <strong><code>2</code></strong>, <strong><code>3</code></strong>, or <strong><code>4</code></strong>. It is guaranteed an answer exists.</em>*</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">3</span>, paths = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]]
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+Explanation:
+Gardens <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-number">2</span> have different types.
+Gardens <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> <span class="hljs-number">3</span> have different types.
+Gardens <span class="hljs-number">3</span> <span class="hljs-keyword">and</span> <span class="hljs-number">1</span> have different types.
+Hence, [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>] <span class="hljs-keyword">is</span> a valid answer. Other valid answers include [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>], [<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">2</span>], <span class="hljs-keyword">and</span> [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>].
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">4</span>, paths = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]]
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">4</span>, paths = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">4</span>]]
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= n &lt;= 104</code></p></li>
+<li><p><code>0 &lt;= paths.length &lt;= 2 * 104</code></p></li>
+<li><p><code>paths[i].length == 2</code></p></li>
+<li><p><code>1 &lt;= xi, yi &lt;= n</code></p></li>
+<li><p><code>xi != yi</code></p></li>
+<li><p>Every garden has <strong>at most 3</strong> paths coming into or leaving it.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> List&lt;Integer&gt;[] graph;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] color;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span>[] visited;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] gardenNoAdj(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[][] paths) {
+        buildGraph(n, paths);
+        <span class="hljs-keyword">this</span>.color = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        <span class="hljs-keyword">this</span>.visited = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[n];
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> (!visited[i]) {
+                dfs(i);
+            }
+        }
+
+        <span class="hljs-keyword">return</span> color;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">int</span> at)</span> </span>{
+        visited[at] = <span class="hljs-keyword">true</span>;
+        <span class="hljs-keyword">int</span> used = <span class="hljs-number">0</span>;
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> to : graph[at]) {
+            <span class="hljs-keyword">if</span> (color[to] != <span class="hljs-number">0</span>) {
+                used |= <span class="hljs-number">1</span> &lt;&lt; color[to] - <span class="hljs-number">1</span>;
+            }
+        }
+
+        <span class="hljs-comment">// use available color</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++) {
+            <span class="hljs-keyword">if</span> ((used &amp; <span class="hljs-number">1</span> &lt;&lt; i) == <span class="hljs-number">0</span>) {
+                color[at] = i + <span class="hljs-number">1</span>;
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">buildGraph</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[][] paths)</span> </span>{
+        graph = <span class="hljs-keyword">new</span> ArrayList[n];
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            graph[i] = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        }
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] path : paths) {
+            <span class="hljs-keyword">int</span> u = path[<span class="hljs-number">0</span>] - <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">int</span> v = path[<span class="hljs-number">1</span>] - <span class="hljs-number">1</span>;
+            graph[u].add(v);
+            graph[v].add(u);
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

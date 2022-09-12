@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Number of Work Sessions to Finish the Tasks - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1986. Minimum Number of Work Sessions to Finish the Tasks</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/backtracking">Backtracking</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bit-manipulation">Bit Manipulation</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bitmask">Bitmask</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/smallest-sufficient-team.html">Smallest Sufficient Team</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/fair-distribution-of-cookies.html">Fair Distribution of Cookies</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/find-minimum-time-to-finish-all-jobs.html">Find Minimum Time to Finish All Jobs</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/find-minimum-time-to-finish-all-jobs-ii.html">Find Minimum Time to Finish All Jobs II</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There are <code>n</code> tasks assigned to you. The task times are represented as an integer array <code>tasks</code> of length <code>n</code>, where the <code>ith</code> task takes <code>tasks[i]</code> hours to finish. A <strong>work session</strong> is when you work for <strong>at most</strong> <code>sessionTime</code> consecutive hours and then take a break.</p>
+<p>You should finish the given tasks in a way that satisfies the following conditions:</p>
+<ul>
+<li><p>If you start a task in a work session, you must complete it in the <strong>same</strong> work session.</p></li>
+<li><p>You can start a new task <strong>immediately</strong> after finishing the previous one.</p></li>
+<li><p>You may complete the tasks in <strong>any order</strong>.</p></li>
+</ul>
+<p>Given <code>tasks</code> and <code>sessionTime</code>, return **the *<em>minimum</em>* number of <strong>work sessions</strong> needed to finish all the tasks following the conditions above.**</p>
+<p>The tests are generated such that <code>sessionTime</code> is <strong>greater</strong> than or <strong>equal</strong> to the <strong>maximum</strong> element in <code>tasks[i]</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">tasks</span> <span class="hljs-string">=</span> <span class="hljs-string">[1,2,3],</span> <span class="hljs-string">sessionTime</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">2</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">You</span> <span class="hljs-string">can</span> <span class="hljs-string">finish</span> <span class="hljs-string">the</span> <span class="hljs-string">tasks</span> <span class="hljs-string">in</span> <span class="hljs-string">two</span> <span class="hljs-string">work</span> <span class="hljs-string">sessions.</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">First work session:</span> <span class="hljs-string">finish</span> <span class="hljs-string">the</span> <span class="hljs-string">first</span> <span class="hljs-string">and</span> <span class="hljs-string">the</span> <span class="hljs-string">second</span> <span class="hljs-string">tasks</span> <span class="hljs-string">in</span> <span class="hljs-number">1</span> <span class="hljs-string">+</span> <span class="hljs-number">2</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span> <span class="hljs-string">hours.</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">Second work session:</span> <span class="hljs-string">finish</span> <span class="hljs-string">the</span> <span class="hljs-string">third</span> <span class="hljs-string">task</span> <span class="hljs-string">in</span> <span class="hljs-number">3</span> <span class="hljs-string">hours.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: tasks = [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>], sessionTime = <span class="hljs-number">8</span>
+Output: <span class="hljs-number">2</span>
+Explanation: You can finish the tasks <span class="hljs-keyword">in</span> two work sessions.
+- First work session: finish all the tasks except the last one <span class="hljs-keyword">in</span> <span class="hljs-number">3</span> + <span class="hljs-number">1</span> + <span class="hljs-number">3</span> + <span class="hljs-number">1</span> = <span class="hljs-number">8</span> hours.
+- Second work session: finish the last task <span class="hljs-keyword">in</span> <span class="hljs-number">1</span> hour.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: tasks = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>], sessionTime = <span class="hljs-number">15</span>
+Output: <span class="hljs-number">1</span>
+Explanation: You can finish all the tasks <span class="hljs-keyword">in</span> one work session.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == tasks.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 14</code></p></li>
+<li><p><code>1 &lt;= tasks[i] &lt;= 10</code></p></li>
+<li><p><code>max(tasks[i]) &lt;= sessionTime &lt;= 15</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minSessions</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] tasks, <span class="hljs-keyword">int</span> sessionTime)</span> </span>{
+        <span class="hljs-keyword">int</span> len = tasks.length;
+        <span class="hljs-comment">// minimum, all tasks can fit into 1 session</span>
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>;
+        <span class="hljs-comment">// maximum, each task take 1 session to finish</span>
+        <span class="hljs-keyword">int</span> j = len;
+        <span class="hljs-keyword">while</span> (i &lt; j) {
+            <span class="hljs-comment">// try m sessions to see whether it can work</span>
+            <span class="hljs-keyword">int</span> m = (i + j) / <span class="hljs-number">2</span>;
+            <span class="hljs-keyword">if</span> (canFit(tasks, <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[m], sessionTime, len - <span class="hljs-number">1</span>)) {
+                j = m;
+            } <span class="hljs-keyword">else</span> {
+                i = m + <span class="hljs-number">1</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> i;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">canFit</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] tasks, <span class="hljs-keyword">int</span>[] sessions, <span class="hljs-keyword">int</span> sessionTime, <span class="hljs-keyword">int</span> idx)</span> </span>{
+        <span class="hljs-comment">// all tasks have been taken care of</span>
+        <span class="hljs-keyword">if</span> (idx == -<span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+        }
+        Set&lt;Integer&gt; dup = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+        <span class="hljs-comment">// now to take care of tasks[idx]</span>
+        <span class="hljs-comment">// try each spot</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; sessions.length; i++) {
+            <span class="hljs-comment">// current spot cannot fit</span>
+            <span class="hljs-keyword">if</span> (sessions[i] + tasks[idx] &gt; sessionTime || dup.contains(sessions[i] + tasks[idx])) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            dup.add(sessions[i] + tasks[idx]);
+            sessions[i] += tasks[idx];
+            <span class="hljs-keyword">if</span> (canFit(tasks, sessions, sessionTime, idx - <span class="hljs-number">1</span>)) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+            }
+            sessions[i] -= tasks[idx];
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

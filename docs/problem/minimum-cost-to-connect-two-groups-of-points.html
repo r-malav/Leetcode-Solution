@@ -1,0 +1,93 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Cost to Connect Two Groups of Points - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1595. Minimum Cost to Connect Two Groups of Points</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bit-manipulation">Bit Manipulation</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bitmask">Bitmask</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given two groups of points where the first group has <code>size1</code> points, the second group has <code>size2</code> points, and <code>size1 &gt;= size2</code>.</p>
+<p>The <code>cost</code> of the connection between any two points are given in an <code>size1 x size2</code> matrix where <code>cost[i][j]</code> is the cost of connecting point <code>i</code> of the first group and point <code>j</code> of the second group. The groups are connected if <strong>each point in both groups is connected to one or more points in the opposite group</strong>. In other words, each point in the first group must be connected to at least one point in the second group, and each point in the second group must be connected to at least one point in the first group.</p>
+<p>Return <strong>the minimum cost it takes to connect the two groups</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/09/03/ex1.jpg" alt="" /></p>
+<pre><code class="hljs">Input: cost = [[<span class="hljs-number">15</span>, <span class="hljs-number">96</span>], [<span class="hljs-number">36</span>, <span class="hljs-number">2</span>]]
+Output: <span class="hljs-number">17</span>
+Explanation: The optimal way of connecting the groups <span class="hljs-keyword">is</span>:
+<span class="hljs-number">1</span>--A
+<span class="hljs-number">2</span>--B
+This results <span class="hljs-keyword">in</span> a total cost of <span class="hljs-number">17.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/09/03/ex2.jpg" alt="" /></p>
+<pre><code class="hljs">Input: cost = [[1, 3, 5], [4, 1, 1], [1, 5, 3]]
+Output: 4
+Explanation: The optimal way of connecting the groups is:
+1--A
+2--B
+2--C
+3--A
+This results <span class="hljs-keyword">in</span> a total cost of 4.<span class="hljs-built_in">
+Note </span>that there are multiple points connected <span class="hljs-keyword">to</span> point 2 <span class="hljs-keyword">in</span> the first<span class="hljs-built_in"> group </span><span class="hljs-keyword">and</span> point A <span class="hljs-keyword">in</span> the second group. This does <span class="hljs-keyword">not</span> matter as there is <span class="hljs-literal">no</span> limit <span class="hljs-keyword">to</span> the number of points that can be connected. We only care about the minimum total cost.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: cost = [[<span class="hljs-number">2</span>, <span class="hljs-number">5</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">7</span>], [<span class="hljs-number">8</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">8</span>, <span class="hljs-number">8</span>]]
+Output: <span class="hljs-number">10</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>size1 == cost.length</code></p></li>
+<li><p><code>size2 == cost[i].length</code></p></li>
+<li><p><code>1 &lt;= size1, size2 &lt;= 12</code></p></li>
+<li><p><code>size1 &gt;= size2</code></p></li>
+<li><p><code>0 &lt;= cost[i][j] &lt;= 100</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">connectTwoGroups</span><span class="hljs-params">(List&lt;List&lt;Integer&gt;&gt; cost)</span> </span>{
+        <span class="hljs-comment">// size of set 1</span>
+        <span class="hljs-keyword">int</span> m = cost.size();
+        <span class="hljs-comment">// size of set 2</span>
+        <span class="hljs-keyword">int</span> n = cost.get(<span class="hljs-number">0</span>).size();
+        <span class="hljs-keyword">int</span> mask = <span class="hljs-number">1</span> &lt;&lt; m;
+        <span class="hljs-comment">// min cost to connect nodes in set 1 (of different states);</span>
+        <span class="hljs-keyword">int</span>[] record = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[mask];
+        Arrays.fill(record, Integer.MAX_VALUE);
+        <span class="hljs-comment">// since we use record to get the min cost of connecting nodes in set 1</span>
+        <span class="hljs-comment">// we shall go through nodes in set 2 one by one, to make sure they are connected</span>
+        <span class="hljs-comment">// base case:</span>
+        record[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> col = <span class="hljs-number">0</span>; col &lt; n; col++) {
+            <span class="hljs-keyword">int</span>[] tmpRecord = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[mask];
+            Arrays.fill(tmpRecord, Integer.MAX_VALUE);
+            <span class="hljs-comment">// try connection with each of the node in set 1</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> row = <span class="hljs-number">0</span>; row &lt; m; row++) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> msk = <span class="hljs-number">0</span>; msk &lt; mask; msk++) {
+                    <span class="hljs-comment">// the new min cost should be based on the cost record of connecting previous</span>
+                    <span class="hljs-comment">// node in set 2;</span>
+                    <span class="hljs-keyword">int</span> newMask = msk | (<span class="hljs-number">1</span> &lt;&lt; row);
+                    <span class="hljs-keyword">if</span> (record[msk] != Integer.MAX_VALUE) {
+                        tmpRecord[newMask] =
+                                Math.min(tmpRecord[newMask], record[msk] + cost.get(row).get(col));
+                    }
+                    <span class="hljs-comment">// if row nodes in this state has not been connected yet, and the msk is</span>
+                    <span class="hljs-comment">// achievable by connecting the current node</span>
+                    <span class="hljs-comment">// then check whether connect the current node multiple times will benefit the</span>
+                    <span class="hljs-comment">// cost</span>
+                    <span class="hljs-keyword">if</span> ((msk &amp; (<span class="hljs-number">1</span> &lt;&lt; row)) == <span class="hljs-number">0</span> &amp;&amp; tmpRecord[msk] != Integer.MAX_VALUE) {
+                        tmpRecord[newMask] =
+                                Math.min(
+                                        tmpRecord[newMask],
+                                        tmpRecord[msk] + cost.get(row).get(col));
+                    }
+                }
+            }
+            <span class="hljs-comment">// use tmpRecord to update record</span>
+            record = tmpRecord;
+        }
+        <span class="hljs-keyword">return</span> record[(<span class="hljs-number">1</span> &lt;&lt; m) - <span class="hljs-number">1</span>];
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

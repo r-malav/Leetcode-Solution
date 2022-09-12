@@ -1,0 +1,131 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>The Score of Students Solving Math Expression - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2019. The Score of Students Solving Math Expression</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/stack">Stack</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/memoization">Memoization</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/basic-calculator.html">Basic Calculator</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/different-ways-to-add-parentheses.html">Different Ways to Add Parentheses</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a string <code>s</code> that contains digits <code>0-9</code>, addition symbols <code>'+'</code>, and multiplication symbols <code>'*'</code> <strong>only</strong>, representing a <strong>valid</strong> math expression of <strong>single digit numbers</strong> (e.g., <code>3+5*2</code>). This expression was given to <code>n</code> elementary school students. The students were instructed to get the answer of the expression by following this <strong>order of operations</strong>:</p>
+<ul>
+<li><p>Compute <strong>multiplication</strong>, reading from <strong>left to right</strong>; Then,</p></li>
+<li><p>Compute <strong>addition</strong>, reading from <strong>left to right</strong>.</p></li>
+</ul>
+<p>You are given an integer array <code>answers</code> of length <code>n</code>, which are the submitted answers of the students in no particular order. You are asked to grade the <code>answers</code>, by following these <strong>rules</strong>:</p>
+<ul>
+<li><p>If an answer <strong>equals</strong> the correct answer of the expression, this student will be rewarded <code>5</code> points;</p></li>
+<li><p>Otherwise, if the answer <strong>could be interpreted</strong> as if the student applied the operators <strong>in the wrong order</strong> but had <strong>correct arithmetic</strong>, this student will be rewarded <code>2</code> points;</p></li>
+<li><p>Otherwise, this student will be rewarded <code>0</code> points.</p></li>
+</ul>
+<p>Return <strong>the sum of the points of the students</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/09/17/student_solving_math.png" alt="" /></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"7+3*1*2"</span>, answers = [<span class="hljs-number">20</span>,<span class="hljs-number">13</span>,<span class="hljs-number">42</span>]
+Output: <span class="hljs-number">7</span>
+Explanation: As illustrated above, the correct answer of the expression <span class="hljs-keyword">is</span> <span class="hljs-number">13</span>, therefore one student <span class="hljs-keyword">is</span> rewarded <span class="hljs-number">5</span> points: [<span class="hljs-number">20</span>,<span class="hljs-number">13</span>,<span class="hljs-number">42</span>]
+A student might have applied the operators <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span> wrong order: ((<span class="hljs-number">7</span>+<span class="hljs-number">3</span>)*<span class="hljs-number">1</span>)*<span class="hljs-number">2</span> = <span class="hljs-number">20.</span> Therefore one student <span class="hljs-keyword">is</span> rewarded <span class="hljs-number">2</span> points: [<span class="hljs-number">20</span>,<span class="hljs-number">13</span>,<span class="hljs-number">42</span>]
+The points <span class="hljs-keyword">for</span> the students are: [<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">0</span>]. The sum of the points <span class="hljs-keyword">is</span> <span class="hljs-number">2</span>+<span class="hljs-number">5</span>+<span class="hljs-number">0</span>=<span class="hljs-number">7.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"3+5*2"</span>, answers = [<span class="hljs-number">13</span>,<span class="hljs-number">0</span>,<span class="hljs-number">10</span>,<span class="hljs-number">13</span>,<span class="hljs-number">13</span>,<span class="hljs-number">16</span>,<span class="hljs-number">16</span>]
+Output: <span class="hljs-number">19</span>
+Explanation: The correct answer of the expression <span class="hljs-keyword">is</span> <span class="hljs-number">13</span>, therefore three students are rewarded <span class="hljs-number">5</span> points each: [<span class="hljs-number">13</span>,<span class="hljs-number">0</span>,<span class="hljs-number">10</span>,<span class="hljs-number">13</span>,<span class="hljs-number">13</span>,<span class="hljs-number">16</span>,<span class="hljs-number">16</span>]
+A student might have applied the operators <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span> wrong order: ((<span class="hljs-number">3</span>+<span class="hljs-number">5</span>)*<span class="hljs-number">2</span> = <span class="hljs-number">16.</span> Therefore two students are rewarded <span class="hljs-number">2</span> points: [<span class="hljs-number">13</span>,<span class="hljs-number">0</span>,<span class="hljs-number">10</span>,<span class="hljs-number">13</span>,<span class="hljs-number">13</span>,<span class="hljs-number">16</span>,<span class="hljs-number">16</span>]
+The points <span class="hljs-keyword">for</span> the students are: [<span class="hljs-number">5</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]. The sum of the points <span class="hljs-keyword">is</span> <span class="hljs-number">5</span>+<span class="hljs-number">0</span>+<span class="hljs-number">0</span>+<span class="hljs-number">5</span>+<span class="hljs-number">5</span>+<span class="hljs-number">2</span>+<span class="hljs-number">2</span>=<span class="hljs-number">19.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"6+0*1"</span>, answers = [<span class="hljs-number">12</span>,<span class="hljs-number">9</span>,<span class="hljs-number">6</span>,<span class="hljs-number">4</span>,<span class="hljs-number">8</span>,<span class="hljs-number">6</span>]
+Output: <span class="hljs-number">10</span>
+Explanation: The correct answer of the expression <span class="hljs-keyword">is</span> <span class="hljs-number">6.</span>
+If a student had incorrectly done (<span class="hljs-number">6</span>+<span class="hljs-number">0</span>)*<span class="hljs-number">1</span>, the answer would also be <span class="hljs-number">6.</span>
+By the rules of grading, the students will still be rewarded <span class="hljs-number">5</span> points (as they got the correct answer), <span class="hljs-keyword">not</span> <span class="hljs-number">2</span> points.
+The points <span class="hljs-keyword">for</span> the students are: [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">5</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">5</span>]. The sum of the points <span class="hljs-keyword">is</span> <span class="hljs-number">10.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>3 &lt;= s.length &lt;= 31</code></p></li>
+<li><p><code>s</code> represents a valid expression that contains only digits <code>0-9</code>, <code>'+'</code>, and <code>'*'</code> only.</p></li>
+<li><p>All the integer operands in the expression are in the <strong>inclusive</strong> range <code>[0, 9]</code>.</p></li>
+<li><p><code>1 &lt;=</code> The count of all operators (<code>'+'</code> and <code>'*'</code>) in the math expression <code>&lt;= 15</code></p></li>
+<li><p>Test data are generated such that the correct answer of the expression is in the range of <code>[0, 1000]</code>.</p></li>
+<li><p><code>n == answers.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 104</code></p></li>
+<li><p><code>0 &lt;= answers[i] &lt;= 1000</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> HashSet&lt;Integer&gt;[][] dp;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">scoreOfStudents</span><span class="hljs-params">(String s, <span class="hljs-keyword">int</span>[] answers)</span> </span>{
+        ArrayDeque&lt;Integer&gt; st = <span class="hljs-keyword">new</span> ArrayDeque&lt;&gt;();
+        <span class="hljs-keyword">int</span> n = s.length();
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+        dp = <span class="hljs-keyword">new</span> HashSet[n][n];
+        <span class="hljs-keyword">while</span> (i &lt; n) {
+            <span class="hljs-keyword">if</span> (s.charAt(i) - <span class="hljs-string">'0'</span> &gt;= <span class="hljs-number">0</span> &amp;&amp; s.charAt(i) - <span class="hljs-string">'9'</span> &lt;= <span class="hljs-number">0</span>) {
+                st.push(s.charAt(i) - <span class="hljs-string">'0'</span>);
+                i++;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (s.charAt(i) == <span class="hljs-string">'*'</span>) {
+                <span class="hljs-keyword">int</span> cur = st.pop() * (s.charAt(i + <span class="hljs-number">1</span>) - <span class="hljs-string">'0'</span>);
+                i += <span class="hljs-number">2</span>;
+                st.push(cur);
+            } <span class="hljs-keyword">else</span> {
+                i++;
+            }
+        }
+        <span class="hljs-keyword">int</span> res = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> ret = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (!st.isEmpty()) {
+            res += st.pop();
+        }
+        HashSet&lt;Integer&gt; wrong = opts(<span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>, s);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> ans : answers) {
+            <span class="hljs-keyword">if</span> (ans == res) {
+                ret += <span class="hljs-number">5</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (wrong.contains(ans)) {
+                ret += <span class="hljs-number">2</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> ret;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> HashSet&lt;Integer&gt; <span class="hljs-title">opts</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j, String s)</span> </span>{
+        <span class="hljs-keyword">if</span> (dp[i][j] != <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span> dp[i][j];
+        }
+        <span class="hljs-keyword">if</span> (i == j) {
+            HashSet&lt;Integer&gt; res = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+            res.add(s.charAt(i) - <span class="hljs-string">'0'</span>);
+            dp[i][j] = res;
+            <span class="hljs-keyword">return</span> res;
+        }
+        HashSet&lt;Integer&gt; res = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> x = i + <span class="hljs-number">1</span>; x &lt; j; x += <span class="hljs-number">2</span>) {
+            <span class="hljs-keyword">char</span> op = s.charAt(x);
+            HashSet&lt;Integer&gt; left = opts(i, x - <span class="hljs-number">1</span>, s);
+            HashSet&lt;Integer&gt; right = opts(x + <span class="hljs-number">1</span>, j, s);
+            <span class="hljs-keyword">if</span> (op == <span class="hljs-string">'*'</span>) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> l : left) {
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> r : right) {
+                        <span class="hljs-keyword">if</span> (l * r &lt;= <span class="hljs-number">1000</span>) {
+                            res.add(l * r);
+                        }
+                    }
+                }
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> l : left) {
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> r : right) {
+                        <span class="hljs-keyword">if</span> (l + r &lt;= <span class="hljs-number">1000</span>) {
+                            res.add(l + r);
+                        }
+                    }
+                }
+            }
+        }
+        dp[i][j] = res;
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

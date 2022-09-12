@@ -1,0 +1,101 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Count Vowels Permutation - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1220. Count Vowels Permutation</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an integer <code>n</code>, your task is to count how many strings of length <code>n</code> can be formed under the following rules:</p>
+<p>Each character is a lower case vowel (<code>'a'</code>, <code>'e'</code>, <code>'i'</code>, <code>'o'</code>, <code>'u'</code>)
+Each vowel <code>'a'</code> may only be followed by an <code>'e'</code>.
+Each vowel <code>'e'</code> may only be followed by an <code>'a'</code> or an <code>'i'</code>.
+Each vowel <code>'i'</code> may not be followed by another <code>'i'</code>.
+Each vowel <code>'o'</code> may only be followed by an <code>'i'</code> or a <code>'u'</code>.
+Each vowel <code>'u'</code> may only be followed by an <code>'a'</code>.
+Since the answer may be too large, return it modulo <code>10^9 + 7</code>.</p>
+<p><strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-string">Input:</span> n = <span class="hljs-number">1</span>
+<span class="hljs-string">Output:</span> <span class="hljs-number">5</span>
+<span class="hljs-string">Explanation:</span> All possible strings <span class="hljs-string">are:</span> <span class="hljs-string">"a"</span>, <span class="hljs-string">"e"</span>, <span class="hljs-string">"i"</span> , <span class="hljs-string">"o"</span> and <span class="hljs-string">"u"</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-string">Input:</span> n = <span class="hljs-number">2</span>
+<span class="hljs-string">Output:</span> <span class="hljs-number">10</span>
+<span class="hljs-string">Explanation:</span> All possible strings <span class="hljs-string">are:</span> <span class="hljs-string">"ae"</span>, <span class="hljs-string">"ea"</span>, <span class="hljs-string">"ei"</span>, <span class="hljs-string">"ia"</span>, <span class="hljs-string">"ie"</span>, <span class="hljs-string">"io"</span>, <span class="hljs-string">"iu"</span>, <span class="hljs-string">"oi"</span>, <span class="hljs-string">"ou"</span> and <span class="hljs-string">"ua"</span>.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">68</span>
+</code></pre>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= n &lt;= 2 * 10^4</code></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-javascript"><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@param <span class="hljs-type">{number}</span> <span class="hljs-variable">n</span></span>
+ * <span class="hljs-doctag">@return <span class="hljs-type">{number}</span></span>
+ */</span>
+<span class="hljs-keyword">var</span> countVowelPermutation = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">n</span>) </span>{
+  <span class="hljs-keyword">const</span> [[p1, p2, p3, p4]] = multiply(
+    [[<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>]],
+    fastPower(
+      [
+        [<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>],
+        [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>],
+        [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>],
+        [<span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">-1</span>]
+      ],
+      n - <span class="hljs-number">1</span>
+    )
+  )
+  <span class="hljs-keyword">return</span> (fix(p1) * <span class="hljs-number">5</span> + fix(p2) * <span class="hljs-number">5</span> + fix(p3) * <span class="hljs-number">4</span> + fix(p4) * <span class="hljs-number">2</span>) % MOD
+};
+
+<span class="hljs-keyword">const</span> MOD = <span class="hljs-number">10</span> ** <span class="hljs-number">9</span> + <span class="hljs-number">7</span>
+<span class="hljs-keyword">const</span> MOD_N = BigInt(<span class="hljs-number">10</span> ** <span class="hljs-number">9</span> + <span class="hljs-number">7</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">multiply</span> (<span class="hljs-params">m1, m2</span>) </span>{
+  <span class="hljs-keyword">const</span> ret = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Array</span>(m1.length)
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; m1.length; i++) {
+    ret[i] = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Array</span>(m2.length).fill(<span class="hljs-number">0</span>)
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = <span class="hljs-number">0</span>; j &lt; m2.length; j++) {
+      <span class="hljs-keyword">let</span> sum = <span class="hljs-number">0</span>
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> k = <span class="hljs-number">0</span>; k &lt; m2.length; k++) {
+        <span class="hljs-keyword">const</span> p = m1[i][k] * m2[k][j]
+        <span class="hljs-keyword">const</span> prod = p &gt; <span class="hljs-built_in">Number</span>.MAX_SAFE_INTEGER || p &lt; <span class="hljs-built_in">Number</span>.MIN_SAFE_INTEGER
+          ? <span class="hljs-built_in">Number</span>((BigInt(m1[i][k]) * BigInt(m2[k][j])) % MOD_N)
+          : p % MOD
+
+        sum = (sum + prod) % MOD
+      }
+      ret[i][j] = sum
+    }
+  }
+  <span class="hljs-keyword">return</span> ret
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Identity</span> (<span class="hljs-params">len</span>) </span>{
+  <span class="hljs-keyword">const</span> ret = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Array</span>(len)
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) {
+    ret[i] = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Array</span>(len).fill(<span class="hljs-number">0</span>)
+    ret[i][i] = <span class="hljs-number">1</span>
+  }
+  <span class="hljs-keyword">return</span> ret
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fastPower</span> (<span class="hljs-params">matrix, expo, cb</span>) </span>{
+  <span class="hljs-keyword">if</span> (expo === <span class="hljs-number">0</span>) {
+    <span class="hljs-keyword">return</span> Identity(<span class="hljs-built_in">Math</span>.max(matrix.length, matrix[<span class="hljs-number">0</span>].length))
+  }
+  <span class="hljs-keyword">if</span> (expo === <span class="hljs-number">1</span>) {
+    <span class="hljs-keyword">return</span> matrix
+  }
+  <span class="hljs-keyword">if</span> (expo % <span class="hljs-number">2</span> === <span class="hljs-number">0</span>) {
+    <span class="hljs-keyword">const</span> m = fastPower(matrix, expo / <span class="hljs-number">2</span>)
+    <span class="hljs-keyword">return</span> multiply(m, m)
+  }
+  <span class="hljs-keyword">const</span> m = fastPower(matrix, (expo - <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>)
+  <span class="hljs-keyword">return</span> multiply(multiply(m, m), matrix)
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fix</span> (<span class="hljs-params">n</span>) </span>{
+  <span class="hljs-keyword">return</span> n &lt; <span class="hljs-number">0</span> ? (n + MOD) % MOD : n
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

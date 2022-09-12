@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Construct Target Array With Multiple Sums - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1354. Construct Target Array With Multiple Sums</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/heap-priority-queue">Heap (Priority Queue)</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/minimum-amount-of-time-to-fill-cups.html">Minimum Amount of Time to Fill Cups</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an array <code>target</code> of n integers. From a starting array <code>arr</code> consisting of <code>n</code> 1's, you may perform the following procedure :</p>
+<ul>
+<li><p>let <code>x</code> be the sum of all elements currently in your array.</p></li>
+<li><p>choose index <code>i</code>, such that <code>0 &lt;= i &lt; n</code> and set the value of <code>arr</code> at index <code>i</code> to <code>x</code>.</p></li>
+<li><p>You may repeat this procedure as many times as needed.</p></li>
+</ul>
+<p>Return <code>true</code> <strong>if it is possible to construct the</strong> <code>target</code> <strong>array from</strong> <code>arr</code><strong>, otherwise, return</strong> <code>false</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: target = [<span class="hljs-number">9</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>]
+Output: <span class="hljs-literal">true</span>
+Explanation: Start with arr = [<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>] 
+[<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>], sum = <span class="hljs-number">3</span> choose index <span class="hljs-number">1</span>
+[<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>], sum = <span class="hljs-number">5</span> choose index <span class="hljs-number">2</span>
+[<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>], sum = <span class="hljs-number">9</span> choose index <span class="hljs-number">0</span>
+[<span class="hljs-number">9</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>] Done
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: target = [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
+Output: <span class="hljs-literal">false</span>
+Explanation: Impossible to create target <span class="hljs-built_in">array</span> <span class="hljs-keyword">from</span> [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>].
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">target</span> <span class="hljs-string">=</span> <span class="hljs-string">[8,5]</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-literal">true</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == target.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 5 * 104</code></p></li>
+<li><p><code>1 &lt;= target[i] &lt;= 109</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isPossible</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] target)</span> </span>{
+        <span class="hljs-keyword">long</span> sum = target[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">int</span> maxIndex = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; target.length; i++) {
+            sum += target[i];
+            <span class="hljs-keyword">if</span> (target[i] &gt; target[maxIndex]) {
+                maxIndex = i;
+            }
+        }
+        <span class="hljs-keyword">long</span> remainingSum = sum - target[maxIndex];
+        <span class="hljs-keyword">if</span> (target[maxIndex] == <span class="hljs-number">1</span> || remainingSum == <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+        }
+        <span class="hljs-keyword">if</span> (remainingSum &gt;= target[maxIndex]
+                || remainingSum == <span class="hljs-number">0</span>
+                || target[maxIndex] % remainingSum == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+        }
+        target[maxIndex] %= remainingSum;
+        <span class="hljs-keyword">return</span> isPossible(target);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

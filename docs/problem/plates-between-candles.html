@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Plates Between Candles - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2055. Plates Between Candles</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/prefix-sum">Prefix Sum</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/find-first-and-last-position-of-element-in-sorted-array.html">Find First and Last Position of Element in Sorted Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/can-make-palindrome-from-substring.html">Can Make Palindrome from Substring</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is a long table with a line of plates and candles arranged on top of it. You are given a <strong>0-indexed</strong> string <code>s</code> consisting of characters <code>'*'</code> and <code>'|'</code> only, where a <code>'*'</code> represents a <strong>plate</strong> and a <code>'|'</code> represents a <strong>candle</strong>.</p>
+<p>You are also given a <strong>0-indexed</strong> 2D integer array <code>queries</code> where <code>queries[i] = [lefti, righti]</code> denotes the <strong>substring</strong> <code>s[lefti...righti]</code> (<strong>inclusive</strong>). For each query, you need to find the <strong>number</strong> of plates <strong>between candles</strong> that are <strong>in the substring</strong>. A plate is considered <strong>between candles</strong> if there is at least one candle to its left <strong>and</strong> at least one candle to its right <strong>in the substring</strong>.</p>
+<ul>
+<li>For example, <code>s = "||**||**|*"</code>, and a query <code>[3, 8]</code> denotes the substring <code>"*||******|"</code>. The number of plates between candles in this substring is <code>2</code>, as each of the two plates has at least one candle <strong>in the substring</strong> to its left <strong>and</strong> right.</li>
+</ul>
+<p>Return <strong>an integer array</strong> <code>answer</code> <strong>where</strong> <code>answer[i]</code> <strong>is the answer to the</strong> <code>ith</code> <strong>query</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/10/04/ex-1.png" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input</span>: s = <span class="hljs-string">"**|**|***|"</span>, queries = [[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">9</span>]]
+<span class="hljs-symbol">Output</span>: [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+<span class="hljs-symbol">Explanation</span>:
+- queries[<span class="hljs-number">0</span>] has two plates between candles.
+- queries[<span class="hljs-number">1</span>] has three plates between candles.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/10/04/ex-2.png" alt="" /></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"***|**|*****|**||**|*"</span>, queries = [[<span class="hljs-number">1</span>,<span class="hljs-number">17</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">14</span>,<span class="hljs-number">17</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">11</span>],[<span class="hljs-number">15</span>,<span class="hljs-number">16</span>]]
+Output: [<span class="hljs-number">9</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]
+Explanation:
+- queries[<span class="hljs-number">0</span>] has nine plates between candles.
+- The other queries have zero plates between candles.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>3 &lt;= s.length &lt;= 105</code></p></li>
+<li><p><code>s</code> consists of <code>'*'</code> and <code>'|'</code> characters.</p></li>
+<li><p><code>1 &lt;= queries.length &lt;= 105</code></p></li>
+<li><p><code>queries[i].length == 2</code></p></li>
+<li><p><code>0 &lt;= lefti &lt;= righti &lt; s.length</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] platesBetweenCandles(String s, <span class="hljs-keyword">int</span>[][] queries) {
+        <span class="hljs-keyword">char</span>[] sa = s.toCharArray();
+        <span class="hljs-keyword">int</span> n = sa.length;
+        <span class="hljs-keyword">int</span>[] nextCandle = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n + <span class="hljs-number">1</span>];
+        nextCandle[n] = -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = n - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            nextCandle[i] = sa[i] == <span class="hljs-string">'|'</span> ? i : nextCandle[i + <span class="hljs-number">1</span>];
+        }
+        <span class="hljs-keyword">int</span>[] prevCandle = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        <span class="hljs-keyword">int</span>[] prevPlates = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        <span class="hljs-keyword">int</span> countPlate = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">if</span> (sa[<span class="hljs-number">0</span>] == <span class="hljs-string">'*'</span>) {
+            countPlate = <span class="hljs-number">1</span>;
+            prevCandle[<span class="hljs-number">0</span>] = -<span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> (sa[i] == <span class="hljs-string">'|'</span>) {
+                prevCandle[i] = i;
+                prevPlates[i] = countPlate;
+            } <span class="hljs-keyword">else</span> {
+                prevCandle[i] = prevCandle[i - <span class="hljs-number">1</span>];
+                countPlate++;
+            }
+        }
+        <span class="hljs-keyword">int</span> len = queries.length;
+        <span class="hljs-keyword">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[len];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) {
+            <span class="hljs-keyword">int</span>[] query = queries[i];
+            <span class="hljs-keyword">int</span> start = query[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">int</span> end = query[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">int</span> curPlates = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">int</span> endCandle = prevCandle[end];
+            <span class="hljs-keyword">if</span> (endCandle &gt;= start) {
+                <span class="hljs-keyword">int</span> startCandle = nextCandle[start];
+
+                curPlates = prevPlates[endCandle] - prevPlates[startCandle];
+            }
+            res[i] = curPlates;
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

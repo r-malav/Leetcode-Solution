@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Distribute Candies to People - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1103. Distribute Candies to People</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/simulation">Simulation</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>We distribute some&nbsp;number of <code>candies</code>, to a row of <strong><code>n =&amp;nbsp;num_people</code></strong>&nbsp;people in the following way:</p>
+<p>We then give 1 candy to the first person, 2 candies to the second person, and so on until we give <code>n</code>&nbsp;candies to the last person.</p>
+<p>Then, we go back to the start of the row, giving <code>n&amp;nbsp;+ 1</code> candies to the first person, <code>n&amp;nbsp;+ 2</code> candies to the second person, and so on until we give <code>2 * n</code>&nbsp;candies to the last person.</p>
+<p>This process repeats (with us giving one more candy each time, and moving to the start of the row after we reach the end) until we run out of candies.&nbsp; The last person will receive all of our remaining candies (not necessarily one more than the previous gift).</p>
+<p>Return an array (of length <code>num_people</code>&nbsp;and sum <code>candies</code>) that represents the final distribution of candies.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: candies = 7, num_people = 4
+Output: [1,2,3,1]
+Explanation:
+On the first turn, ans[0] += 1,<span class="hljs-built_in"> and </span>the<span class="hljs-built_in"> array </span>is [1,0,0,0].
+On the second turn, ans[1] += 2,<span class="hljs-built_in"> and </span>the<span class="hljs-built_in"> array </span>is [1,2,0,0].
+On the third turn, ans[2] += 3,<span class="hljs-built_in"> and </span>the<span class="hljs-built_in"> array </span>is [1,2,3,0].
+On the fourth turn, ans[3] += 1 (because there is only one candy left),<span class="hljs-built_in"> and </span>the<span class="hljs-keyword"> final</span><span class="hljs-built_in"> array </span>is [1,2,3,1].
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: candies = 10, num_people = 3
+Output: [5,2,3]
+Explanation: 
+On the first turn, ans[0] += 1,<span class="hljs-built_in"> and </span>the<span class="hljs-built_in"> array </span>is [1,0,0].
+On the second turn, ans[1] += 2,<span class="hljs-built_in"> and </span>the<span class="hljs-built_in"> array </span>is [1,2,0].
+On the third turn, ans[2] += 3,<span class="hljs-built_in"> and </span>the<span class="hljs-built_in"> array </span>is [1,2,3].
+On the fourth turn, ans[0] += 4,<span class="hljs-built_in"> and </span>the<span class="hljs-keyword"> final</span><span class="hljs-built_in"> array </span>is [5,2,3].
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p>1 &lt;= candies &lt;= 10^9</p></li>
+<li><p>1 &lt;= num_people &lt;= 1000</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] distributeCandies(<span class="hljs-keyword">int</span> candies, <span class="hljs-keyword">int</span> numPeople) {
+        <span class="hljs-keyword">int</span>[] candiesDistribution = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[numPeople];
+        <span class="hljs-keyword">int</span> count = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (candies &gt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; numPeople; i++) {
+                <span class="hljs-keyword">if</span> (candies &gt;= count) {
+                    candiesDistribution[i] += count;
+                    candies -= count;
+                    count++;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (candies &gt; <span class="hljs-number">0</span>) {
+                    candiesDistribution[i] += candies;
+                    candies -= candies;
+                }
+                <span class="hljs-keyword">if</span> (candies == <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">return</span> candiesDistribution;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> candiesDistribution;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

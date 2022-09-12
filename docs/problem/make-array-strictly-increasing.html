@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Make Array Strictly Increasing - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1187. Make Array Strictly Increasing</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/make-array-non-decreasing-or-non-increasing.html">Make Array Non-decreasing or Non-increasing</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given two integer arrays&nbsp;<code>arr1</code> and <code>arr2</code>, return the minimum number of operations (possibly zero) needed&nbsp;to make <code>arr1</code> strictly increasing.</p>
+<p>In one operation, you can choose two indices&nbsp;<code>0 &lt;=&amp;nbsp;i &lt; arr1.length</code>&nbsp;and&nbsp;<code>0 &lt;= j &lt; arr2.length</code>&nbsp;and do the assignment&nbsp;<code>arr1[i] = arr2[j]</code>.</p>
+<p>If there is no way to make&nbsp;<code>arr1</code>&nbsp;strictly increasing,&nbsp;return&nbsp;<code>-1</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: arr1 = [<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>], arr2 = [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>]
+Output: <span class="hljs-number">1</span>
+Explanation: Replace <span class="hljs-number">5</span> with <span class="hljs-number">2</span>, then arr1 = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>].
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: arr1 = [<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>], arr2 = [<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]
+Output: <span class="hljs-number">2</span>
+Explanation: Replace <span class="hljs-number">5</span> with <span class="hljs-number">3</span> <span class="hljs-keyword">and</span> then replace <span class="hljs-number">3</span> with <span class="hljs-number">4.</span> arr1 = [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>].
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: arr1 = [<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>], arr2 = [<span class="hljs-number">1</span>,<span class="hljs-number">6</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>]
+Output: <span class="hljs-number">-1</span>
+Explanation: You can<span class="hljs-string">'t make arr1 strictly increasing.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= arr1.length, arr2.length &lt;= 2000</code></p></li>
+<li><p><code>0 &lt;= arr1[i], arr2[i] &lt;= 10^9</code></p></li>
+</ul>
+<p>&nbsp;</p>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">makeArrayIncreasing</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] arr1, <span class="hljs-keyword">int</span>[] arr2)</span> </span>{
+        Arrays.sort(arr2);
+        <span class="hljs-keyword">int</span> start = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; arr2.length; i++) {
+            <span class="hljs-keyword">if</span> (arr2[i] != arr2[start]) {
+                arr2[++start] = arr2[i];
+            }
+        }
+        <span class="hljs-keyword">int</span> l2 = start + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[l2 + <span class="hljs-number">2</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; arr1.length; i++) {
+            <span class="hljs-keyword">int</span> noChange = dp[dp.length - <span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; (arr1[i - <span class="hljs-number">1</span>] &gt;= arr1[i])) {
+                noChange = -<span class="hljs-number">1</span>;
+            }
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = dp.length - <span class="hljs-number">2</span>; j &gt; <span class="hljs-number">0</span>; j--) {
+                <span class="hljs-keyword">if</span> (arr2[j - <span class="hljs-number">1</span>] &lt; arr1[i] &amp;&amp; dp[j] != -<span class="hljs-number">1</span>) {
+                    noChange = noChange == -<span class="hljs-number">1</span> ? dp[j] : Math.min(noChange, dp[j]);
+                }
+                <span class="hljs-keyword">if</span> (dp[j - <span class="hljs-number">1</span>] != -<span class="hljs-number">1</span>) {
+                    dp[j] = <span class="hljs-number">1</span> + dp[j - <span class="hljs-number">1</span>];
+                } <span class="hljs-keyword">else</span> {
+                    dp[j] = -<span class="hljs-number">1</span>;
+                }
+                <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; arr1[i - <span class="hljs-number">1</span>] &lt; arr2[j - <span class="hljs-number">1</span>] &amp;&amp; dp[dp.length - <span class="hljs-number">1</span>] &gt;= <span class="hljs-number">0</span>) {
+                    dp[j] =
+                            dp[j] == -<span class="hljs-number">1</span>
+                                    ? (dp[dp.length - <span class="hljs-number">1</span>] + <span class="hljs-number">1</span>)
+                                    : Math.min(dp[j], dp[dp.length - <span class="hljs-number">1</span>] + <span class="hljs-number">1</span>);
+                }
+            }
+            dp[<span class="hljs-number">0</span>] = -<span class="hljs-number">1</span>;
+            dp[dp.length - <span class="hljs-number">1</span>] = noChange;
+        }
+        <span class="hljs-keyword">int</span> res = -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> num : dp) {
+            <span class="hljs-keyword">if</span> (num != -<span class="hljs-number">1</span>) {
+                res = res == -<span class="hljs-number">1</span> ? num : Math.min(res, num);
+            }
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

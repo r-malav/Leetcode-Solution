@@ -1,0 +1,108 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Space Wasted From Packaging - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1889. Minimum Space Wasted From Packaging</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/prefix-sum">Prefix Sum</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You have <code>n</code> packages that you are trying to place in boxes, <strong>one package in each box</strong>. There are <code>m</code> suppliers that each produce boxes of <strong>different sizes</strong> (with infinite supply). A package can be placed in a box if the size of the package is <strong>less than or equal to</strong> the size of the box.</p>
+<p>The package sizes are given as an integer array <code>packages</code>, where <code>packages[i]</code> is the <strong>size</strong> of the <code>ith</code> package. The suppliers are given as a 2D integer array <code>boxes</code>, where <code>boxes[j]</code> is an array of <strong>box sizes</strong> that the <code>jth</code> supplier produces.</p>
+<p>You want to choose a <strong>single supplier</strong> and use boxes from them such that the **total wasted space **is <strong>minimized</strong>. For each package in a box, we define the space <strong>wasted</strong> to be <code>size of the box - size of the package</code>. The <strong>total wasted space</strong> is the sum of the space wasted in <strong>all</strong> the boxes.</p>
+<ul>
+<li>For example, if you have to fit packages with sizes <code>[2,3,5]</code> and the supplier offers boxes of sizes <code>[4,8]</code>, you can fit the packages of size-<code>2</code> and size-<code>3</code> into two boxes of size-<code>4</code> and the package with size-<code>5</code> into a box of size-<code>8</code>. This would result in a waste of <code>(4-2) + (4-3) + (8-5) = 6</code>.</li>
+</ul>
+<p>Return **the *<em>minimum total wasted space</em>* by choosing the box supplier <strong>optimally</strong>, or **<code>-1</code> *if it is *<em>impossible</em>* to fit all the packages inside boxes. *Since the answer may be <strong>large</strong>, return it **modulo **<code>109 + 7</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: packages = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>], boxes = [[<span class="hljs-number">4</span>,<span class="hljs-number">8</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">8</span>]]
+Output: <span class="hljs-number">6</span>
+Explanation: It <span class="hljs-keyword">is</span> optimal to choose the first supplier, using two size<span class="hljs-number">-4</span> boxes <span class="hljs-keyword">and</span> one size<span class="hljs-number">-8</span> box.
+The total waste <span class="hljs-keyword">is</span> (<span class="hljs-number">4</span><span class="hljs-number">-2</span>) + (<span class="hljs-number">4</span><span class="hljs-number">-3</span>) + (<span class="hljs-number">8</span><span class="hljs-number">-5</span>) = <span class="hljs-number">6.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: packages = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>], boxes = [[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]]
+Output: <span class="hljs-number">-1</span>
+Explanation: There <span class="hljs-keyword">is</span> no box that the package of size <span class="hljs-number">5</span> can fit <span class="hljs-keyword">in</span>.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: packages = [<span class="hljs-number">3</span>,<span class="hljs-number">5</span>,<span class="hljs-number">8</span>,<span class="hljs-number">10</span>,<span class="hljs-number">11</span>,<span class="hljs-number">12</span>], boxes = [[<span class="hljs-number">12</span>],[<span class="hljs-number">11</span>,<span class="hljs-number">9</span>],[<span class="hljs-number">10</span>,<span class="hljs-number">5</span>,<span class="hljs-number">14</span>]]
+Output: <span class="hljs-number">9</span>
+Explanation: It <span class="hljs-keyword">is</span> optimal to choose the third supplier, using two size<span class="hljs-number">-5</span> boxes, two size<span class="hljs-number">-10</span> boxes, <span class="hljs-keyword">and</span> two size<span class="hljs-number">-14</span> boxes.
+The total waste <span class="hljs-keyword">is</span> (<span class="hljs-number">5</span><span class="hljs-number">-3</span>) + (<span class="hljs-number">5</span><span class="hljs-number">-5</span>) + (<span class="hljs-number">10</span><span class="hljs-number">-8</span>) + (<span class="hljs-number">10</span><span class="hljs-number">-10</span>) + (<span class="hljs-number">14</span><span class="hljs-number">-11</span>) + (<span class="hljs-number">14</span><span class="hljs-number">-12</span>) = <span class="hljs-number">9.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == packages.length</code></p></li>
+<li><p><code>m == boxes.length</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= m &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= packages[i] &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= boxes[j].length &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= boxes[j][k] &lt;= 105</code></p></li>
+<li><p><code>sum(boxes[j].length) &lt;= 105</code></p></li>
+<li><p>The elements in <code>boxes[j]</code> are <strong>distinct</strong>.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> MOD = <span class="hljs-number">1_000_000_007</span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minWastedSpace</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] packages, <span class="hljs-keyword">int</span>[][] boxes)</span> </span>{
+        <span class="hljs-keyword">int</span> numPackages = packages.length;
+        Arrays.sort(packages);
+        <span class="hljs-keyword">long</span>[] preSum = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[numPackages];
+        preSum[<span class="hljs-number">0</span>] = packages[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; packages.length; i++) {
+            preSum[i] = packages[i] + preSum[i - <span class="hljs-number">1</span>];
+        }
+        <span class="hljs-keyword">long</span> ans = Long.MAX_VALUE;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] box : boxes) {
+            Arrays.sort(box);
+            <span class="hljs-comment">// Box of required size not present</span>
+            <span class="hljs-keyword">if</span> (packages[numPackages - <span class="hljs-number">1</span>] &gt; box[box.length - <span class="hljs-number">1</span>]) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-comment">// Find the total space wasted</span>
+            <span class="hljs-keyword">long</span> totalWastedSpace = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">int</span> prev = -<span class="hljs-number">1</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j : box) {
+                <span class="hljs-keyword">if</span> (prev == packages.length - <span class="hljs-number">1</span>) {
+                    <span class="hljs-keyword">break</span>;
+                }
+                <span class="hljs-keyword">if</span> (j &lt; packages[<span class="hljs-number">0</span>] || j &lt; packages[prev + <span class="hljs-number">1</span>]) {
+                    <span class="hljs-keyword">continue</span>;
+                }
+                <span class="hljs-comment">// Find up to which package the current box can fit</span>
+                <span class="hljs-keyword">int</span> upper = findUpperBound(packages, j);
+                <span class="hljs-keyword">if</span> (upper == -<span class="hljs-number">1</span>) {
+                    <span class="hljs-keyword">continue</span>;
+                }
+                <span class="hljs-comment">// The current box will be able to handle the packages from</span>
+                <span class="hljs-comment">// prev + 1 to the upper index</span>
+                <span class="hljs-keyword">long</span> totalSpace = ((<span class="hljs-keyword">long</span>) upper - (<span class="hljs-keyword">long</span>) prev) * j;
+                <span class="hljs-keyword">long</span> packageSum = preSum[upper] - (prev &gt;= <span class="hljs-number">0</span> ? preSum[prev] : <span class="hljs-number">0</span>);
+                <span class="hljs-keyword">long</span> spaceWastedCurr = totalSpace - packageSum;
+                totalWastedSpace += spaceWastedCurr;
+                prev = upper;
+            }
+            ans = Math.min(ans, totalWastedSpace);
+        }
+        <span class="hljs-keyword">return</span> ans == Long.MAX_VALUE ? -<span class="hljs-number">1</span> : (<span class="hljs-keyword">int</span>) (ans % MOD);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">findUpperBound</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] packages, <span class="hljs-keyword">int</span> key)</span> </span>{
+        <span class="hljs-keyword">int</span> l = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> h = packages.length;
+        <span class="hljs-keyword">while</span> (l &lt; h) {
+            <span class="hljs-keyword">int</span> m = l + (h - l) / <span class="hljs-number">2</span>;
+            <span class="hljs-keyword">if</span> (packages[m] &lt;= key) {
+                l = m + <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> {
+                h = m;
+            }
+        }
+        <span class="hljs-keyword">return</span> h - <span class="hljs-number">1</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

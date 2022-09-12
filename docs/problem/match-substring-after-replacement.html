@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Match Substring After Replacement - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2301. Match Substring After Replacement</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string-matching">String Matching</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/design-add-and-search-words-data-structure.html">Design Add and Search Words Data Structure</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given two strings <code>s</code> and <code>sub</code>. You are also given a 2D character array <code>mappings</code> where <code>mappings[i] = [oldi, newi]</code> indicates that you may perform the following operation <strong>any</strong> number of times:</p>
+<ul>
+<li><strong>Replace</strong> a character <code>oldi</code> of <code>sub</code> with <code>newi</code>.</li>
+</ul>
+<p>Each character in <code>sub</code> <strong>cannot</strong> be replaced more than once.</p>
+<p>Return <code>true</code>** if it is possible to make <strong><code>sub</code></strong> a substring of <strong><code>s</code></strong> by replacing zero or more characters according to **<code>mappings</code>. Otherwise, return <code>false</code>.</p>
+<p>A <strong>substring</strong> is a contiguous non-empty sequence of characters within a string.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"fool3e7bar"</span>, sub = <span class="hljs-string">"leet"</span>, mappings = [[<span class="hljs-string">"e"</span>,<span class="hljs-string">"3"</span>],[<span class="hljs-string">"t"</span>,<span class="hljs-string">"7"</span>],[<span class="hljs-string">"t"</span>,<span class="hljs-string">"8"</span>]]
+Output: <span class="hljs-literal">true</span>
+Explanation: Replace <span class="hljs-keyword">the</span> <span class="hljs-keyword">first</span> <span class="hljs-string">'e'</span> <span class="hljs-keyword">in</span> sub <span class="hljs-keyword">with</span> <span class="hljs-string">'3'</span> <span class="hljs-keyword">and</span> <span class="hljs-string">'t'</span> <span class="hljs-keyword">in</span> sub <span class="hljs-keyword">with</span> <span class="hljs-string">'7'</span>.
+Now sub = <span class="hljs-string">"l3e7"</span> is <span class="hljs-keyword">a</span> substring <span class="hljs-keyword">of</span> s, so we <span class="hljs-literal">return</span> <span class="hljs-literal">true</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"fooleetbar"</span>, sub = <span class="hljs-string">"f00l"</span>, mappings = [[<span class="hljs-string">"o"</span>,<span class="hljs-string">"0"</span>]]
+Output: <span class="hljs-literal">false</span>
+Explanation: The string <span class="hljs-string">"f00l"</span> is <span class="hljs-keyword">not</span> a substring of s <span class="hljs-keyword">and</span> <span class="hljs-literal">no</span> replacements can be made.<span class="hljs-built_in">
+Note </span>that we cannot replace <span class="hljs-string">'0'</span> with <span class="hljs-string">'o'</span>.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"Fool33tbaR"</span>, sub = <span class="hljs-string">"leetd"</span>, mappings = [[<span class="hljs-string">"e"</span>,<span class="hljs-string">"3"</span>],[<span class="hljs-string">"t"</span>,<span class="hljs-string">"7"</span>],[<span class="hljs-string">"t"</span>,<span class="hljs-string">"8"</span>],[<span class="hljs-string">"d"</span>,<span class="hljs-string">"b"</span>],[<span class="hljs-string">"p"</span>,<span class="hljs-string">"b"</span>]]
+Output: <span class="hljs-literal">true</span>
+Explanation: Replace <span class="hljs-keyword">the</span> <span class="hljs-keyword">first</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">second</span> <span class="hljs-string">'e'</span> <span class="hljs-keyword">in</span> sub <span class="hljs-keyword">with</span> <span class="hljs-string">'3'</span> <span class="hljs-keyword">and</span> <span class="hljs-string">'d'</span> <span class="hljs-keyword">in</span> sub <span class="hljs-keyword">with</span> <span class="hljs-string">'b'</span>.
+Now sub = <span class="hljs-string">"l33tb"</span> is <span class="hljs-keyword">a</span> substring <span class="hljs-keyword">of</span> s, so we <span class="hljs-literal">return</span> <span class="hljs-literal">true</span>.
+
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= sub.length &lt;= s.length &lt;= 5000</code></p></li>
+<li><p><code>0 &lt;= mappings.length &lt;= 1000</code></p></li>
+<li><p><code>mappings[i].length == 2</code></p></li>
+<li><p><code>oldi != newi</code></p></li>
+<li><p><code>s</code> and <code>sub</code> consist of uppercase and lowercase English letters and digits.</p></li>
+<li><p><code>oldi</code> and <code>newi</code> are either uppercase or lowercase English letters or digits.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">char</span>[] c1;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">char</span>[] c2;
+    <span class="hljs-keyword">private</span> Set&lt;Character&gt;[] al;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">matchReplacement</span><span class="hljs-params">(String s, String sub, <span class="hljs-keyword">char</span>[][] mappings)</span> </span>{
+        c1 = s.toCharArray();
+        c2 = sub.toCharArray();
+        al = <span class="hljs-keyword">new</span> Set[<span class="hljs-number">75</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">75</span>; i++) {
+            Set&lt;Character&gt; temp = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+            al[i] = temp;
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span>[] mapping : mappings) {
+            al[mapping[<span class="hljs-number">0</span>] - <span class="hljs-string">'0'</span>].add(mapping[<span class="hljs-number">1</span>]);
+        }
+        <span class="hljs-keyword">return</span> ans(c1.length, c2.length) == <span class="hljs-number">1</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">ans</span><span class="hljs-params">(<span class="hljs-keyword">int</span> m, <span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-keyword">if</span> (m == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">if</span> (ans(m - <span class="hljs-number">1</span>, n) == <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">if</span> (m &gt;= n &amp;&amp; (c1[m - <span class="hljs-number">1</span>] == c2[n - <span class="hljs-number">1</span>] || al[c2[n - <span class="hljs-number">1</span>] - <span class="hljs-string">'0'</span>].contains(c1[m - <span class="hljs-number">1</span>]))) {
+            <span class="hljs-keyword">while</span> (n &gt;= <span class="hljs-number">1</span> &amp;&amp; (c1[m - <span class="hljs-number">1</span>] == c2[n - <span class="hljs-number">1</span>] || al[c2[n - <span class="hljs-number">1</span>] - <span class="hljs-string">'0'</span>].contains(c1[m - <span class="hljs-number">1</span>]))) {
+                n--;
+                m--;
+            }
+            <span class="hljs-keyword">if</span> (n == <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Probability of a Two Boxes Having The Same Number of Distinct Balls - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1467. Probability of a Two Boxes Having The Same Number of Distinct Balls</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/backtracking">Backtracking</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/combinatorics">Combinatorics</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/probability-and-statistics">Probability and Statistics</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given <code>2n</code> balls of <code>k</code> distinct colors. You will be given an integer array <code>balls</code> of size <code>k</code> where <code>balls[i]</code> is the number of balls of color <code>i</code>.</p>
+<p>All the balls will be <strong>shuffled uniformly at random</strong>, then we will distribute the first <code>n</code> balls to the first box and the remaining <code>n</code> balls to the other box (Please read the explanation of the second example carefully).</p>
+<p>Please note that the two boxes are considered different. For example, if we have two balls of colors <code>a</code> and <code>b</code>, and two boxes <code>[]</code> and <code>()</code>, then the distribution <code>[a] (b)</code> is considered different than the distribution <code>[b] (a) </code>(Please read the explanation of the first example carefully).</p>
+<p>Return** the probability** that the two boxes have the same number of distinct balls. Answers within <code>10-5</code> of the actual value will be accepted as correct.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: balls = [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]
+Output: <span class="hljs-number">1.00000</span>
+Explanation: Only <span class="hljs-number">2</span> ways to divide the balls equally:
+- A ball of color <span class="hljs-number">1</span> to box <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> a ball of color <span class="hljs-number">2</span> to box <span class="hljs-number">2</span>
+- A ball of color <span class="hljs-number">2</span> to box <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> a ball of color <span class="hljs-number">1</span> to box <span class="hljs-number">2</span>
+In both ways, the number of distinct colors <span class="hljs-keyword">in</span> each box <span class="hljs-keyword">is</span> equal. The probability <span class="hljs-keyword">is</span> <span class="hljs-number">2</span>/<span class="hljs-number">2</span> = <span class="hljs-number">1</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: balls = [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]
+Output: <span class="hljs-number">0.66667</span>
+Explanation: We have the <span class="hljs-keyword">set</span> of balls [<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+This <span class="hljs-keyword">set</span> of balls will be shuffled randomly <span class="hljs-keyword">and</span> we may have one of the <span class="hljs-number">12</span> distinct shuffles with equal probability (i.e. <span class="hljs-number">1</span>/<span class="hljs-number">12</span>):
+[<span class="hljs-number">1</span>,<span class="hljs-number">1</span> / <span class="hljs-number">2</span>,<span class="hljs-number">3</span>], [<span class="hljs-number">1</span>,<span class="hljs-number">1</span> / <span class="hljs-number">3</span>,<span class="hljs-number">2</span>], [<span class="hljs-number">1</span>,<span class="hljs-number">2</span> / <span class="hljs-number">1</span>,<span class="hljs-number">3</span>], [<span class="hljs-number">1</span>,<span class="hljs-number">2</span> / <span class="hljs-number">3</span>,<span class="hljs-number">1</span>], [<span class="hljs-number">1</span>,<span class="hljs-number">3</span> / <span class="hljs-number">1</span>,<span class="hljs-number">2</span>], [<span class="hljs-number">1</span>,<span class="hljs-number">3</span> / <span class="hljs-number">2</span>,<span class="hljs-number">1</span>], [<span class="hljs-number">2</span>,<span class="hljs-number">1</span> / <span class="hljs-number">1</span>,<span class="hljs-number">3</span>], [<span class="hljs-number">2</span>,<span class="hljs-number">1</span> / <span class="hljs-number">3</span>,<span class="hljs-number">1</span>], [<span class="hljs-number">2</span>,<span class="hljs-number">3</span> / <span class="hljs-number">1</span>,<span class="hljs-number">1</span>], [<span class="hljs-number">3</span>,<span class="hljs-number">1</span> / <span class="hljs-number">1</span>,<span class="hljs-number">2</span>], [<span class="hljs-number">3</span>,<span class="hljs-number">1</span> / <span class="hljs-number">2</span>,<span class="hljs-number">1</span>], [<span class="hljs-number">3</span>,<span class="hljs-number">2</span> / <span class="hljs-number">1</span>,<span class="hljs-number">1</span>]
+After that, we add the first two balls to the first box <span class="hljs-keyword">and</span> the second two balls to the second box.
+We can see that <span class="hljs-number">8</span> of these <span class="hljs-number">12</span> possible random distributions have the same number of distinct colors of balls <span class="hljs-keyword">in</span> each box.
+Probability <span class="hljs-keyword">is</span> <span class="hljs-number">8</span>/<span class="hljs-number">12</span> = <span class="hljs-number">0.66667</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: balls = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
+Output: <span class="hljs-number">0.60000</span>
+Explanation: The <span class="hljs-keyword">set</span> of balls <span class="hljs-keyword">is</span> [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">4</span>]. It <span class="hljs-keyword">is</span> hard to display all the <span class="hljs-number">180</span> possible random shuffles of <span class="hljs-keyword">this</span> <span class="hljs-keyword">set</span> but it <span class="hljs-keyword">is</span> easy to check that <span class="hljs-number">108</span> of them will have the same number of distinct colors <span class="hljs-keyword">in</span> each box.
+Probability = <span class="hljs-number">108</span> / <span class="hljs-number">180</span> = <span class="hljs-number">0.6</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= balls.length &lt;= 8</code></p></li>
+<li><p><code>1 &lt;= balls[i] &lt;= 6</code></p></li>
+<li><p><code>sum(balls)</code> is even.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">double</span> <span class="hljs-title">getProbability</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] balls)</span> </span>{
+        <span class="hljs-keyword">int</span> m = balls.length;
+        <span class="hljs-keyword">int</span> s = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> b : balls) {
+            s += b;
+        }
+        <span class="hljs-keyword">double</span>[][] c = <span class="hljs-keyword">new</span> <span class="hljs-keyword">double</span>[s + <span class="hljs-number">1</span>][s / <span class="hljs-number">2</span> + <span class="hljs-number">1</span>];
+        c[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; s + <span class="hljs-number">1</span>; i++) {
+            c[i][<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>; j &lt; s / <span class="hljs-number">2</span> + <span class="hljs-number">1</span>; j++) {
+                c[i][j] = c[i - <span class="hljs-number">1</span>][j] + c[i - <span class="hljs-number">1</span>][j - <span class="hljs-number">1</span>];
+            }
+        }
+        <span class="hljs-keyword">double</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">double</span>[<span class="hljs-number">2</span> * m + <span class="hljs-number">1</span>][s / <span class="hljs-number">2</span> + <span class="hljs-number">1</span>];
+        dp[m][<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> sum = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> b : balls) {
+            sum += b;
+            <span class="hljs-keyword">double</span>[][] ndp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">double</span>[<span class="hljs-number">2</span> * m + <span class="hljs-number">1</span>][s / <span class="hljs-number">2</span> + <span class="hljs-number">1</span>];
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt;= b; i++) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">2</span> * m + <span class="hljs-number">1</span>; j++) {
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k = <span class="hljs-number">0</span>; k &lt; s / <span class="hljs-number">2</span> + <span class="hljs-number">1</span>; k++) {
+                        <span class="hljs-keyword">if</span> (dp[j][k] == <span class="hljs-number">0</span>) {
+                            <span class="hljs-keyword">continue</span>;
+                        }
+                        <span class="hljs-keyword">int</span> nk = k + i;
+                        <span class="hljs-keyword">int</span> nr = sum - nk;
+                        <span class="hljs-keyword">if</span> (nk &lt;= s / <span class="hljs-number">2</span> &amp;&amp; nr &lt;= s / <span class="hljs-number">2</span>) {
+                            <span class="hljs-keyword">int</span> i1 = (i == b) ? j + <span class="hljs-number">1</span> : j;
+                            <span class="hljs-keyword">int</span> nj = (i == <span class="hljs-number">0</span>) ? j - <span class="hljs-number">1</span> : i1;
+                            ndp[nj][nk] += dp[j][k] * c[b][i];
+                        }
+                    }
+                }
+            }
+            dp = ndp;
+        }
+        <span class="hljs-keyword">return</span> dp[m][s / <span class="hljs-number">2</span>] / c[s][s / <span class="hljs-number">2</span>];
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

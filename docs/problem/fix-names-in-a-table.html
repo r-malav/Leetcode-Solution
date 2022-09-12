@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Fix Names in a Table - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1667. Fix Names in a Table</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/database">Database</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Table: <code>Users</code></p>
+<pre><code class="hljs">+<span class="hljs-comment">----------------+---------+</span>
+| <span class="hljs-keyword">Column</span> <span class="hljs-type">Name</span>    | <span class="hljs-keyword">Type</span>    |
++<span class="hljs-comment">----------------+---------+</span>
+| user_id        | <span class="hljs-type">int</span>     |
+| <span class="hljs-type">name</span>           | <span class="hljs-type">varchar</span> |
++<span class="hljs-comment">----------------+---------+</span>
+user_id <span class="hljs-keyword">is</span> the <span class="hljs-keyword">primary key</span> <span class="hljs-keyword">for</span> this <span class="hljs-keyword">table</span>.
+This <span class="hljs-keyword">table</span> contains the ID <span class="hljs-keyword">and</span> the <span class="hljs-type">name</span> <span class="hljs-keyword">of</span> the <span class="hljs-keyword">user</span>. The <span class="hljs-type">name</span> consists <span class="hljs-keyword">of</span> <span class="hljs-keyword">only</span> lowercase <span class="hljs-keyword">and</span> uppercase characters.
+</code></pre>
+<p>&nbsp;</p>
+<p>Write an SQL query to fix the names so that only the first character is uppercase and the rest are lowercase.</p>
+<p>Return the result table ordered by <code>user_id</code>.</p>
+<p>The query result format is in the following example.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: 
+<span class="hljs-section">Users table:
++---------+-------+</span>
+<span class="hljs-section">| user_id | name  |
++---------+-------+</span>
+| 1       | aLice |
+<span class="hljs-section">| 2       | bOB   |
++---------+-------+</span>
+<span class="hljs-section">Output: 
++---------+-------+</span>
+<span class="hljs-section">| user_id | name  |
++---------+-------+</span>
+| 1       | Alice |
+<span class="hljs-section">| 2       | Bob   |
++---------+-------+</span>
+</code></pre>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-sql"><span class="hljs-comment"># Write your MySQL query statement below</span>
+<span class="hljs-keyword">select</span> user_id, <span class="hljs-keyword">concat</span>(<span class="hljs-keyword">upper</span>(<span class="hljs-keyword">substring</span>(<span class="hljs-keyword">name</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>)), <span class="hljs-keyword">lower</span>(<span class="hljs-keyword">substring</span>(<span class="hljs-keyword">name</span>, <span class="hljs-number">2</span>))) <span class="hljs-keyword">as</span> <span class="hljs-keyword">name</span> <span class="hljs-keyword">from</span> <span class="hljs-keyword">Users</span> <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> user_id
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

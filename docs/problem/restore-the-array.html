@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Restore The Array - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1416. Restore The Array</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/number-of-ways-to-separate-numbers.html">Number of Ways to Separate Numbers</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A program was supposed to print an array of integers. The program forgot to print whitespaces and the array is printed as a string of digits <code>s</code> and all we know is that all integers in the array were in the range <code>[1, k]</code> and there are no leading zeros in the array.</p>
+<p>Given the string <code>s</code> and the integer <code>k</code>, return **the number of the possible arrays that can be printed as *<em><code>s</code></em>* using the mentioned program**. Since the answer may be very large, return it *<em>modulo</em>* <code>109 + 7</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"1000"</span>, k = 10000
+Output: 1
+Explanation: The only possible<span class="hljs-built_in"> array </span>is [1000]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"1000"</span>, k = 10
+Output: 0
+Explanation: There cannot be an<span class="hljs-built_in"> array </span>that was printed this way<span class="hljs-built_in"> and </span>has all integer &gt;= 1<span class="hljs-built_in"> and </span>&lt;= 10.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"1317"</span>, k = <span class="hljs-number">2000</span>
+Output: <span class="hljs-number">8</span>
+Explanation: Possible <span class="hljs-built_in">array</span>s are [<span class="hljs-number">1317</span>],[<span class="hljs-number">131</span>,<span class="hljs-number">7</span>],[<span class="hljs-number">13</span>,<span class="hljs-number">17</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">317</span>],[<span class="hljs-number">13</span>,<span class="hljs-number">1</span>,<span class="hljs-number">7</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">31</span>,<span class="hljs-number">7</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">17</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">7</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 105</code></p></li>
+<li><p><code>s</code> consists of only digits and does not contain leading zeros.</p></li>
+<li><p><code>1 &lt;= k &lt;= 109</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">numberOfArrays</span><span class="hljs-params">(String s, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">int</span> kMod = <span class="hljs-number">1000000007</span>;
+        <span class="hljs-keyword">int</span> n = s.length();
+        <span class="hljs-keyword">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        <span class="hljs-keyword">if</span> (s.charAt(n - <span class="hljs-number">1</span>) != <span class="hljs-string">'0'</span>) {
+            dp[n - <span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = n - <span class="hljs-number">2</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            <span class="hljs-keyword">if</span> (s.charAt(i) == <span class="hljs-string">'0'</span>) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-keyword">long</span> temp = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">int</span> j = i;
+            <span class="hljs-keyword">while</span> (j &lt; n &amp;&amp; temp * <span class="hljs-number">10</span> + s.charAt(j) - <span class="hljs-string">'0'</span> &lt;= k) {
+                temp = temp * <span class="hljs-number">10</span> + s.charAt(j) - <span class="hljs-string">'0'</span>;
+                <span class="hljs-keyword">if</span> (j == n - <span class="hljs-number">1</span>) {
+                    dp[i] += <span class="hljs-number">1</span>;
+                } <span class="hljs-keyword">else</span> {
+                    dp[i] += dp[j + <span class="hljs-number">1</span>];
+                }
+                dp[i] %= kMod;
+                j++;
+            }
+        }
+        <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>];
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

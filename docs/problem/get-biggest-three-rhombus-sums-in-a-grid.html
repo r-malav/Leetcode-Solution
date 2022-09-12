@@ -1,0 +1,108 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Get Biggest Three Rhombus Sums in a Grid - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1878. Get Biggest Three Rhombus Sums in a Grid</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/heap-priority-queue">Heap (Priority Queue)</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/prefix-sum">Prefix Sum</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/count-fertile-pyramids-in-a-land.html">Count Fertile Pyramids in a Land</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an <code>m x n</code> integer matrix <code>grid</code>​​​.</p>
+<p>A <strong>rhombus sum</strong> is the sum of the elements that form <strong>the</strong> <strong>border</strong> of a regular rhombus shape in <code>grid</code>​​​. The rhombus must have the shape of a square rotated 45 degrees with each of the corners centered in a grid cell. Below is an image of four valid rhombus shapes with the corresponding colored cells that should be included in each <strong>rhombus sum</strong>:</p>
+<p><img src="https://assets.leetcode.com/uploads/2021/04/23/pc73-q4-desc-2.png" alt="" /></p>
+<p>Note that the rhombus can have an area of 0, which is depicted by the purple rhombus in the bottom right corner.</p>
+<p>Return **the biggest three *<em>distinct rhombus sums</em>* in the <strong><code>grid</code></strong> in <strong>descending order</strong><strong>**. If there are less than three distinct values, return all of them</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/04/23/pc73-q4-ex1.png" alt="" /></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">20</span>,<span class="hljs-number">30</span>,<span class="hljs-number">200</span>,<span class="hljs-number">40</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>]]
+Output: [<span class="hljs-number">228</span>,<span class="hljs-number">216</span>,<span class="hljs-number">211</span>]
+Explanation: The rhombus shapes <span class="hljs-keyword">for</span> the three biggest distinct rhombus sums are depicted above.
+- Blue: <span class="hljs-number">20</span> + <span class="hljs-number">3</span> + <span class="hljs-number">200</span> + <span class="hljs-number">5</span> = <span class="hljs-number">228</span>
+- Red: <span class="hljs-number">200</span> + <span class="hljs-number">2</span> + <span class="hljs-number">10</span> + <span class="hljs-number">4</span> = <span class="hljs-number">216</span>
+- Green: <span class="hljs-number">5</span> + <span class="hljs-number">200</span> + <span class="hljs-number">4</span> + <span class="hljs-number">2</span> = <span class="hljs-number">211</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/04/23/pc73-q4-ex2.png" alt="" /></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>],[<span class="hljs-number">7</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span>]]
+Output: [<span class="hljs-number">20</span>,<span class="hljs-number">9</span>,<span class="hljs-number">8</span>]
+Explanation: The rhombus shapes <span class="hljs-keyword">for</span> the three biggest distinct rhombus sums are depicted above.
+- Blue: <span class="hljs-number">4</span> + <span class="hljs-number">2</span> + <span class="hljs-number">6</span> + <span class="hljs-number">8</span> = <span class="hljs-number">20</span>
+- Red: <span class="hljs-number">9</span> (area <span class="hljs-number">0</span> rhombus <span class="hljs-keyword">in</span> the bottom right corner)
+- Green: <span class="hljs-number">8</span> (area <span class="hljs-number">0</span> rhombus <span class="hljs-keyword">in</span> the bottom middle)
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: grid = [[<span class="hljs-number">7</span>,<span class="hljs-number">7</span>,<span class="hljs-number">7</span>]]
+Output: [<span class="hljs-number">7</span>]
+Explanation: All three possible rhombus sums are the same, so <span class="hljs-keyword">return</span> [<span class="hljs-number">7</span>].
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>m == grid.length</code></p></li>
+<li><p><code>n == grid[i].length</code></p></li>
+<li><p><code>1 &lt;= m, n &lt;= 50</code></p></li>
+<li><p><code>1 &lt;= grid[i][j] &lt;= 105</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] getBiggestThree(<span class="hljs-keyword">int</span>[][] grid) {
+        <span class="hljs-keyword">int</span> capicity = <span class="hljs-number">3</span>;
+        PriorityQueue&lt;Integer&gt; minHeap = <span class="hljs-keyword">new</span> PriorityQueue&lt;&gt;();
+        <span class="hljs-keyword">int</span> m = grid.length;
+        <span class="hljs-keyword">int</span> n = grid[<span class="hljs-number">0</span>].length;
+        <span class="hljs-keyword">int</span>[][][] preSum = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[m][n][<span class="hljs-number">2</span>];
+        <span class="hljs-keyword">int</span> maxLen = Math.min(m, n) / <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> r = <span class="hljs-number">0</span>; r &lt; m; r++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> c = <span class="hljs-number">0</span>; c &lt; n; c++) {
+                addToMinHeap(minHeap, grid[r][c], capicity);
+                preSum[r][c][<span class="hljs-number">0</span>] +=
+                        valid(m, n, r - <span class="hljs-number">1</span>, c - <span class="hljs-number">1</span>)
+                                ? grid[r][c] + preSum[r - <span class="hljs-number">1</span>][c - <span class="hljs-number">1</span>][<span class="hljs-number">0</span>]
+                                : grid[r][c];
+                preSum[r][c][<span class="hljs-number">1</span>] +=
+                        valid(m, n, r - <span class="hljs-number">1</span>, c + <span class="hljs-number">1</span>)
+                                ? grid[r][c] + preSum[r - <span class="hljs-number">1</span>][c + <span class="hljs-number">1</span>][<span class="hljs-number">1</span>]
+                                : grid[r][c];
+            }
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> r = <span class="hljs-number">0</span>; r &lt; m; r++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> c = <span class="hljs-number">0</span>; c &lt; n; c++) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> l = <span class="hljs-number">1</span>; l &lt;= maxLen; l++) {
+                    <span class="hljs-keyword">if</span> (!valid(m, n, r - l, c - l)
+                            || !valid(m, n, r - l, c + l)
+                            || !valid(m, n, r - <span class="hljs-number">2</span> * l, c)) {
+                        <span class="hljs-keyword">break</span>;
+                    }
+                    <span class="hljs-keyword">int</span> rhombus = preSum[r][c][<span class="hljs-number">0</span>] - preSum[r - l][c - l][<span class="hljs-number">0</span>];
+                    rhombus += preSum[r][c][<span class="hljs-number">1</span>] - preSum[r - l][c + l][<span class="hljs-number">1</span>];
+                    rhombus += preSum[r - l][c - l][<span class="hljs-number">1</span>] - preSum[r - <span class="hljs-number">2</span> * l][c][<span class="hljs-number">1</span>];
+                    rhombus += preSum[r - l][c + l][<span class="hljs-number">0</span>] - preSum[r - <span class="hljs-number">2</span> * l][c][<span class="hljs-number">0</span>];
+                    rhombus += -grid[r][c] + grid[r - <span class="hljs-number">2</span> * l][c];
+                    addToMinHeap(minHeap, rhombus, capicity);
+                }
+            }
+        }
+        <span class="hljs-keyword">int</span> size = minHeap.size();
+        <span class="hljs-keyword">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[size];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = size - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            res[i] = minHeap.poll();
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">addToMinHeap</span><span class="hljs-params">(PriorityQueue&lt;Integer&gt; minHeap, <span class="hljs-keyword">int</span> num, <span class="hljs-keyword">int</span> capicity)</span> </span>{
+        <span class="hljs-keyword">if</span> (minHeap.isEmpty() || (minHeap.size() &lt; capicity &amp;&amp; !minHeap.contains(num))) {
+            minHeap.offer(num);
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">if</span> (num &gt; minHeap.peek() &amp;&amp; !minHeap.contains(num)) {
+                minHeap.poll();
+                minHeap.offer(num);
+            }
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">valid</span><span class="hljs-params">(<span class="hljs-keyword">int</span> m, <span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> r, <span class="hljs-keyword">int</span> c)</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span> &lt;= r &amp;&amp; r &lt; m &amp;&amp; <span class="hljs-number">0</span> &lt;= c &amp;&amp; c &lt; n;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

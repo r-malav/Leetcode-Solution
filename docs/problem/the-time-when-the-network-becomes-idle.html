@@ -1,0 +1,109 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>The Time When the Network Becomes Idle - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2039. The Time When the Network Becomes Idle</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/graph">Graph</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/network-delay-time.html">Network Delay Time</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/n-ary-tree-level-order-traversal.html">N-ary Tree Level Order Traversal</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-depth-of-n-ary-tree.html">Maximum Depth of N-ary Tree</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is a network of <code>n</code> servers, labeled from <code>0</code> to <code>n - 1</code>. You are given a 2D integer array <code>edges</code>, where <code>edges[i] = [ui, vi]</code> indicates there is a message channel between servers <code>ui</code> and <code>vi</code>, and they can pass <strong>any</strong> number of messages to <strong>each other</strong> directly in <strong>one</strong> second. You are also given a <strong>0-indexed</strong> integer array <code>patience</code> of length <code>n</code>.</p>
+<p>All servers are <strong>connected</strong>, i.e., a message can be passed from one server to any other server(s) directly or indirectly through the message channels.</p>
+<p>The server labeled <code>0</code> is the <strong>master</strong> server. The rest are <strong>data</strong> servers. Each data server needs to send its message to the master server for processing and wait for a reply. Messages move between servers <strong>optimally</strong>, so every message takes the <strong>least amount of time</strong> to arrive at the master server. The master server will process all newly arrived messages <strong>instantly</strong> and send a reply to the originating server via the <strong>reversed path</strong> the message had gone through.</p>
+<p>At the beginning of second <code>0</code>, each data server sends its message to be processed. Starting from second <code>1</code>, at the <strong>beginning</strong> of <strong>every</strong> second, each data server will check if it has received a reply to the message it sent (including any newly arrived replies) from the master server:</p>
+<ul>
+<li><p>If it has not, it will <strong>resend</strong> the message periodically. The data server <code>i</code> will resend the message every <code>patience[i]</code> second(s), i.e., the data server <code>i</code> will resend the message if <code>patience[i]</code> second(s) have <strong>elapsed</strong> since the <strong>last</strong> time the message was sent from this server.</p></li>
+<li><p>Otherwise, <strong>no more resending</strong> will occur from this server.</p></li>
+</ul>
+<p>The network becomes <strong>idle</strong> when there are <strong>no</strong> messages passing between servers or arriving at servers.</p>
+<p>Return **the *<em>earliest second</em>* starting from which the network becomes <strong>idle</strong>**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/09/22/quiet-place-example1.png" alt="" /></p>
+<pre><code class="hljs">Input: edges = [[0,1],[1,2]], patience = [0,2,1]
+Output: 8
+Explanation:
+At (the beginning of) second 0,
+- Data<span class="hljs-built_in"> server </span>1 sends its message (denoted 1A) <span class="hljs-keyword">to</span> the master server.
+- Data<span class="hljs-built_in"> server </span>2 sends its message (denoted 2A) <span class="hljs-keyword">to</span> the master server.
+
+At second 1,
+- Message 1A arrives at the master server. Master<span class="hljs-built_in"> server </span>processes message 1A instantly <span class="hljs-keyword">and</span> sends a reply 1A back.
+-<span class="hljs-built_in"> Server </span>1 has <span class="hljs-keyword">not</span> received any reply. 1 second (1 &lt; patience[1] = 2) elapsed since this<span class="hljs-built_in"> server </span>has sent the message, therefore it does <span class="hljs-keyword">not</span> resend the message.
+-<span class="hljs-built_in"> Server </span>2 has <span class="hljs-keyword">not</span> received any reply. 1 second (1 == patience[2] = 1) elapsed since this<span class="hljs-built_in"> server </span>has sent the message, therefore it resends the message (denoted 2B).
+
+At second 2,
+- The reply 1A arrives at<span class="hljs-built_in"> server </span>1. <span class="hljs-literal">No</span> more resending will occur <span class="hljs-keyword">from</span><span class="hljs-built_in"> server </span>1.
+- Message 2A arrives at the master server. Master<span class="hljs-built_in"> server </span>processes message 2A instantly <span class="hljs-keyword">and</span> sends a reply 2A back.
+-<span class="hljs-built_in"> Server </span>2 resends the message (denoted 2C).
+<span class="hljs-built_in">..</span>.
+At second 4,
+- The reply 2A arrives at<span class="hljs-built_in"> server </span>2. <span class="hljs-literal">No</span> more resending will occur <span class="hljs-keyword">from</span><span class="hljs-built_in"> server </span>2.
+<span class="hljs-built_in">..</span>.
+At second 7, reply 2D arrives at<span class="hljs-built_in"> server </span>2.
+
+Starting <span class="hljs-keyword">from</span> the beginning of the second 8, there are <span class="hljs-literal">no</span> messages passing between servers <span class="hljs-keyword">or</span> arriving at servers.
+This is the time when the<span class="hljs-built_in"> network </span>becomes idle.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/09/04/network_a_quiet_place_2.png" alt="" /></p>
+<pre><code class="hljs">Input: edges = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]], patience = [<span class="hljs-number">0</span>,<span class="hljs-number">10</span>,<span class="hljs-number">10</span>]
+Output: <span class="hljs-number">3</span>
+Explanation: Data servers <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-number">2</span> receive a reply back at the beginning of second <span class="hljs-number">2.</span>
+From the beginning of the second <span class="hljs-number">3</span>, the network becomes idle.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == patience.length</code></p></li>
+<li><p><code>2 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>patience[0] == 0</code></p></li>
+<li><p><code>1 &lt;= patience[i] &lt;= 105</code> for <code>1 &lt;= i &lt; n</code></p></li>
+<li><p><code>1 &lt;= edges.length &lt;= min(105, n * (n - 1) / 2)</code></p></li>
+<li><p><code>edges[i].length == 2</code></p></li>
+<li><p><code>0 &lt;= ui, vi &lt; n</code></p></li>
+<li><p><code>ui != vi</code></p></li>
+<li><p>There are no duplicate edges.</p></li>
+<li><p>Each server can directly or indirectly reach another server.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">networkBecomesIdle</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] edges, <span class="hljs-keyword">int</span>[] pat)</span> </span>{
+        <span class="hljs-keyword">int</span> n = pat.length;
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; adj = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            adj.add(<span class="hljs-keyword">new</span> ArrayList&lt;&gt;());
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] arr : edges) {
+            adj.get(arr[<span class="hljs-number">0</span>]).add(arr[<span class="hljs-number">1</span>]);
+            adj.get(arr[<span class="hljs-number">1</span>]).add(arr[<span class="hljs-number">0</span>]);
+        }
+        <span class="hljs-keyword">int</span>[] distance = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        Arrays.fill(distance, <span class="hljs-number">99999</span>);
+        distance[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
+        PriorityQueue&lt;<span class="hljs-keyword">int</span>[]&gt; pq = <span class="hljs-keyword">new</span> PriorityQueue&lt;&gt;((a1, a2) -&gt; Integer.compare(a1[<span class="hljs-number">1</span>], a2[<span class="hljs-number">1</span>]));
+        pq.add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {<span class="hljs-number">0</span>, <span class="hljs-number">0</span>});
+        <span class="hljs-keyword">while</span> (!pq.isEmpty()) {
+            <span class="hljs-keyword">int</span>[] a = pq.poll();
+            <span class="hljs-keyword">int</span> node = a[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">for</span> (Integer nn : adj.get(node)) {
+                <span class="hljs-keyword">if</span> (distance[node] + <span class="hljs-number">1</span> &lt; distance[nn]) {
+                    distance[nn] = <span class="hljs-number">1</span> + distance[node];
+                    pq.add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {nn, distance[nn]});
+                }
+            }
+        }
+        <span class="hljs-keyword">int</span> max = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">int</span> num1 = <span class="hljs-number">2</span> * distance[i];
+            <span class="hljs-keyword">int</span> num2 = num1 / pat[i];
+            <span class="hljs-keyword">if</span> (num1 % pat[i] != <span class="hljs-number">0</span>) {
+                num2++;
+            }
+            num2--;
+            num2 *= pat[i];
+            max = Math.max(max, num2 + num1);
+        }
+        <span class="hljs-keyword">return</span> max + <span class="hljs-number">1</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

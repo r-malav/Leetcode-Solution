@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Number of Pairs in Array - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2341. Maximum Number of Pairs in Array</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/counting">Counting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/sort-characters-by-frequency.html">Sort Characters By Frequency</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/top-k-frequent-words.html">Top K Frequent Words</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/sort-array-by-increasing-frequency.html">Sort Array by Increasing Frequency</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>0-indexed</strong> integer array <code>nums</code>. In one operation, you may do the following:</p>
+<ul>
+<li><p>Choose <strong>two</strong> integers in <code>nums</code> that are <strong>equal</strong>.</p></li>
+<li><p>Remove both integers from <code>nums</code>, forming a <strong>pair</strong>.</p></li>
+</ul>
+<p>The operation is done on <code>nums</code> as many times as possible.</p>
+<p>Return **a *<em>0-indexed</em>* integer array <strong><code>answer</code></strong> of size <strong><code>2</code></strong> where <strong><code>answer[0]</code></strong> is the number of pairs that are formed and <strong><code>answer[1]</code></strong> is the number of leftover integers in <strong><code>nums</code></strong> after doing the operation as many times as possible**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]
+Output: [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]
+Explanation:
+Form a pair with nums[<span class="hljs-number">0</span>] <span class="hljs-keyword">and</span> nums[<span class="hljs-number">3</span>] <span class="hljs-keyword">and</span> remove them <span class="hljs-keyword">from</span> nums. Now, nums = [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>].
+Form a pair with nums[<span class="hljs-number">0</span>] <span class="hljs-keyword">and</span> nums[<span class="hljs-number">2</span>] <span class="hljs-keyword">and</span> remove them <span class="hljs-keyword">from</span> nums. Now, nums = [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>].
+Form a pair with nums[<span class="hljs-number">0</span>] <span class="hljs-keyword">and</span> nums[<span class="hljs-number">1</span>] <span class="hljs-keyword">and</span> remove them <span class="hljs-keyword">from</span> nums. Now, nums = [<span class="hljs-number">2</span>].
+No more pairs can be formed. A total of <span class="hljs-number">3</span> pairs have been formed, <span class="hljs-keyword">and</span> there <span class="hljs-keyword">is</span> <span class="hljs-number">1</span> number leftover <span class="hljs-keyword">in</span> nums.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]
+Explanation: Form a pair with nums[<span class="hljs-number">0</span>] <span class="hljs-keyword">and</span> nums[<span class="hljs-number">1</span>] <span class="hljs-keyword">and</span> remove them <span class="hljs-keyword">from</span> nums. Now, nums = [].
+No more pairs can be formed. A total of <span class="hljs-number">1</span> pair has been formed, <span class="hljs-keyword">and</span> there are <span class="hljs-number">0</span> numbers leftover <span class="hljs-keyword">in</span> nums.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">nums</span> <span class="hljs-string">=</span> <span class="hljs-string">[0]</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-string">[0,1]</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-literal">No</span> <span class="hljs-string">pairs</span> <span class="hljs-string">can</span> <span class="hljs-string">be</span> <span class="hljs-string">formed,</span> <span class="hljs-string">and</span> <span class="hljs-string">there</span> <span class="hljs-string">is</span> <span class="hljs-number">1</span> <span class="hljs-string">number</span> <span class="hljs-string">leftover</span> <span class="hljs-string">in</span> <span class="hljs-string">nums.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= nums.length &lt;= 100</code></p></li>
+<li><p><code>0 &lt;= nums[i] &lt;= 100</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] numberOfPairs(<span class="hljs-keyword">int</span>[] nums) {
+        Arrays.sort(nums);
+        <span class="hljs-keyword">int</span> pairs = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+            <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; nums[i] == nums[i - <span class="hljs-number">1</span>]) {
+                nums[i] = -<span class="hljs-number">1</span>;
+                nums[i - <span class="hljs-number">1</span>] = -<span class="hljs-number">1</span>;
+                pairs++;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {pairs, nums.length - (<span class="hljs-number">2</span> * pairs)};
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

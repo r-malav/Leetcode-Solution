@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Longest Binary Subsequence Less Than or Equal to K - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2311. Longest Binary Subsequence Less Than or Equal to K</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/memoization">Memoization</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-binary-string-after-change.html">Maximum Binary String After Change</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a binary string <code>s</code> and a positive integer <code>k</code>.</p>
+<p>Return **the length of the *<em>longest</em>* subsequence of <strong><code>s</code></strong> that makes up a <strong>binary</strong> number less than or equal to** <code>k</code>.</p>
+<p>Note:</p>
+<ul>
+<li><p>The subsequence can contain <strong>leading zeroes</strong>.</p></li>
+<li><p>The empty string is considered to be equal to <code>0</code>.</p></li>
+<li><p>A <strong>subsequence</strong> is a string that can be derived from another string by deleting some or no characters without changing the order of the remaining characters.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"1001010"</span>, k = <span class="hljs-number">5</span>
+Output: <span class="hljs-number">5</span>
+Explanation: The longest subsequence <span class="hljs-keyword">of</span> s <span class="hljs-keyword">that</span> makes up a binary <span class="hljs-built_in">number</span> <span class="hljs-keyword">less than or equal</span> <span class="hljs-keyword">to</span> <span class="hljs-number">5</span> <span class="hljs-keyword">is</span> <span class="hljs-string">"00010"</span>, <span class="hljs-keyword">as</span> this <span class="hljs-built_in">number</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">equal</span> <span class="hljs-keyword">to</span> <span class="hljs-number">2</span> <span class="hljs-keyword">in</span> decimal.
+Note <span class="hljs-keyword">that</span> <span class="hljs-string">"00100"</span> <span class="hljs-keyword">and</span> <span class="hljs-string">"00101"</span> are also possible, which are <span class="hljs-keyword">equal</span> <span class="hljs-keyword">to</span> <span class="hljs-number">4</span> <span class="hljs-keyword">and</span> <span class="hljs-number">5</span> <span class="hljs-keyword">in</span> decimal, respectively.
+The <span class="hljs-built_in">length</span> <span class="hljs-keyword">of</span> this subsequence <span class="hljs-keyword">is</span> <span class="hljs-number">5</span>, so <span class="hljs-number">5</span> <span class="hljs-keyword">is</span> returned.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"00101001"</span>, k = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">6</span>
+Explanation: <span class="hljs-string">"000001"</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">the</span> longest subsequence <span class="hljs-keyword">of</span> s <span class="hljs-keyword">that</span> makes up a binary <span class="hljs-built_in">number</span> <span class="hljs-keyword">less than or equal</span> <span class="hljs-keyword">to</span> <span class="hljs-number">1</span>, <span class="hljs-keyword">as</span> this <span class="hljs-built_in">number</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">equal</span> <span class="hljs-keyword">to</span> <span class="hljs-number">1</span> <span class="hljs-keyword">in</span> decimal.
+The <span class="hljs-built_in">length</span> <span class="hljs-keyword">of</span> this subsequence <span class="hljs-keyword">is</span> <span class="hljs-number">6</span>, so <span class="hljs-number">6</span> <span class="hljs-keyword">is</span> returned.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 1000</code></p></li>
+<li><p><code>s[i]</code> is either <code>'0'</code> or <code>'1'</code>.</p></li>
+<li><p><code>1 &lt;= k &lt;= 109</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">longestSubsequence</span><span class="hljs-params">(String s, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">int</span> res = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> cost = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> n = s.length();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = n - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            <span class="hljs-keyword">if</span> (s.charAt(i) == <span class="hljs-string">'0'</span> || cost &lt;= k) {
+                k -= cost * (s.charAt(i) - <span class="hljs-string">'0'</span>);
+                ++res;
+            }
+            <span class="hljs-keyword">if</span> (cost &lt;= k) {
+                cost *= <span class="hljs-number">2</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Total Beauty of the Gardens - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2234. Maximum Total Beauty of the Gardens</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/two-pointers">Two Pointers</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/split-array-largest-sum.html">Split Array Largest Sum</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Alice is a caretaker of <code>n</code> gardens and she wants to plant flowers to maximize the total beauty of all her gardens.</p>
+<p>You are given a <strong>0-indexed</strong> integer array <code>flowers</code> of size <code>n</code>, where <code>flowers[i]</code> is the number of flowers already planted in the <code>ith</code> garden. Flowers that are already planted <strong>cannot</strong> be removed. You are then given another integer <code>newFlowers</code>, which is the <strong>maximum</strong> number of flowers that Alice can additionally plant. You are also given the integers <code>target</code>, <code>full</code>, and <code>partial</code>.</p>
+<p>A garden is considered <strong>complete</strong> if it has <strong>at least</strong> <code>target</code> flowers. The <strong>total beauty</strong> of the gardens is then determined as the <strong>sum</strong> of the following:</p>
+<ul>
+<li><p>The number of <strong>complete</strong> gardens multiplied by <code>full</code>.</p></li>
+<li><p>The <strong>minimum</strong> number of flowers in any of the <strong>incomplete</strong> gardens multiplied by <code>partial</code>. If there are no incomplete gardens, then this value will be <code>0</code>.</p></li>
+</ul>
+<p>Return **the *<em>maximum</em>* total beauty that Alice can obtain after planting at most <strong><code>newFlowers</code></strong> flowers.**</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: flowers = [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>], newFlowers = <span class="hljs-number">7</span>, target = <span class="hljs-number">6</span>, full = <span class="hljs-number">12</span>, partial = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">14</span>
+Explanation: Alice can plant
+- <span class="hljs-number">2</span> flowers <span class="hljs-keyword">in</span> the <span class="hljs-number">0</span>th garden
+- <span class="hljs-number">3</span> flowers <span class="hljs-keyword">in</span> the <span class="hljs-number">1</span>st garden
+- <span class="hljs-number">1</span> flower <span class="hljs-keyword">in</span> the <span class="hljs-number">2</span>nd garden
+- <span class="hljs-number">1</span> flower <span class="hljs-keyword">in</span> the <span class="hljs-number">3</span>rd garden
+The gardens will then be [<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]. She planted a total of <span class="hljs-number">2</span> + <span class="hljs-number">3</span> + <span class="hljs-number">1</span> + <span class="hljs-number">1</span> = <span class="hljs-number">7</span> flowers.
+There <span class="hljs-keyword">is</span> <span class="hljs-number">1</span> garden that <span class="hljs-keyword">is</span> complete.
+The minimum number of flowers <span class="hljs-keyword">in</span> the incomplete gardens <span class="hljs-keyword">is</span> <span class="hljs-number">2.</span>
+Thus, the total beauty <span class="hljs-keyword">is</span> <span class="hljs-number">1</span> * <span class="hljs-number">12</span> + <span class="hljs-number">2</span> * <span class="hljs-number">1</span> = <span class="hljs-number">12</span> + <span class="hljs-number">2</span> = <span class="hljs-number">14.</span>
+No other way of planting flowers can obtain a total beauty higher than <span class="hljs-number">14.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: flowers = [<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>], newFlowers = <span class="hljs-number">10</span>, target = <span class="hljs-number">5</span>, full = <span class="hljs-number">2</span>, partial = <span class="hljs-number">6</span>
+Output: <span class="hljs-number">30</span>
+Explanation: Alice can plant
+- <span class="hljs-number">3</span> flowers <span class="hljs-keyword">in</span> the <span class="hljs-number">0</span>th garden
+- <span class="hljs-number">0</span> flowers <span class="hljs-keyword">in</span> the <span class="hljs-number">1</span>st garden
+- <span class="hljs-number">0</span> flowers <span class="hljs-keyword">in</span> the <span class="hljs-number">2</span>nd garden
+- <span class="hljs-number">2</span> flowers <span class="hljs-keyword">in</span> the <span class="hljs-number">3</span>rd garden
+The gardens will then be [<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>]. She planted a total of <span class="hljs-number">3</span> + <span class="hljs-number">0</span> + <span class="hljs-number">0</span> + <span class="hljs-number">2</span> = <span class="hljs-number">5</span> flowers.
+There are <span class="hljs-number">3</span> gardens that are complete.
+The minimum number of flowers <span class="hljs-keyword">in</span> the incomplete gardens <span class="hljs-keyword">is</span> <span class="hljs-number">4.</span>
+Thus, the total beauty <span class="hljs-keyword">is</span> <span class="hljs-number">3</span> * <span class="hljs-number">2</span> + <span class="hljs-number">4</span> * <span class="hljs-number">6</span> = <span class="hljs-number">6</span> + <span class="hljs-number">24</span> = <span class="hljs-number">30.</span>
+No other way of planting flowers can obtain a total beauty higher than <span class="hljs-number">30.</span>
+Note that Alice could make all the gardens complete but <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span> <span class="hljs-keyword">case</span>, she would obtain a lower total beauty.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= flowers.length &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= flowers[i], target &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= newFlowers &lt;= 1010</code></p></li>
+<li><p><code>1 &lt;= full, partial &lt;= 105</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">long</span> <span class="hljs-title">maximumBeauty</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] flowers, <span class="hljs-keyword">long</span> newFlowers, <span class="hljs-keyword">int</span> target, <span class="hljs-keyword">int</span> full, <span class="hljs-keyword">int</span> partial)</span> </span>{
+        <span class="hljs-keyword">int</span> n = flowers.length;
+        <span class="hljs-keyword">long</span>[] prefix = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[n + <span class="hljs-number">1</span>];
+        Arrays.sort(flowers);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+            prefix[i + <span class="hljs-number">1</span>] = prefix[i] + Math.min(flowers[i], target);
+        }
+        <span class="hljs-keyword">long</span> res = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> i = n - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> c = <span class="hljs-number">0</span>; c &lt;= n; ++c) {
+            <span class="hljs-keyword">long</span> remain = prefix[n] - prefix[n - c] + newFlowers - c * (<span class="hljs-keyword">long</span>) target;
+            <span class="hljs-keyword">long</span> min = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">if</span> (<span class="hljs-number">0</span> &gt; remain) {
+                <span class="hljs-keyword">break</span>;
+            }
+            i = Math.min(i, n - c - <span class="hljs-number">1</span>);
+            <span class="hljs-keyword">while</span> (<span class="hljs-number">0</span> &lt;= i
+                    &amp;&amp; (target &lt;= flowers[i]
+                            || flowers[i] * (<span class="hljs-keyword">long</span>) (i + <span class="hljs-number">1</span>) - prefix[i + <span class="hljs-number">1</span>] &gt; remain)) {
+                i--;
+            }
+            <span class="hljs-keyword">if</span> (<span class="hljs-number">0</span> &lt;= i) {
+                <span class="hljs-keyword">long</span> dif = flowers[i] * (<span class="hljs-keyword">long</span>) (i + <span class="hljs-number">1</span>) - prefix[i + <span class="hljs-number">1</span>];
+                min = Math.min(target - <span class="hljs-number">1L</span>, flowers[i] + (remain - dif) / (i + <span class="hljs-number">1</span>));
+                <span class="hljs-keyword">if</span> (i + <span class="hljs-number">1</span> &lt; n - c) {
+                    min = Math.min(min, flowers[i + <span class="hljs-number">1</span>]);
+                }
+            }
+            res = Math.max(res, c * (<span class="hljs-keyword">long</span>) full + min * partial);
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Number of Ways Where Square of Number Is Equal to Product of Two Numbers - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1577. Number of Ways Where Square of Number Is Equal to Product of Two Numbers</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/two-pointers">Two Pointers</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given two arrays of integers <code>nums1</code> and <code>nums2</code>, return the number of triplets formed (type 1 and type 2) under the following rules:</p>
+<ul>
+<li><p>Type 1: Triplet (i, j, k) if <code>nums1[i]2 == nums2[j] * nums2[k]</code> where <code>0 &lt;= i &lt; nums1.length</code> and <code>0 &lt;= j &lt; k &lt; nums2.length</code>.</p></li>
+<li><p>Type 2: Triplet (i, j, k) if <code>nums2[i]2 == nums1[j] * nums1[k]</code> where <code>0 &lt;= i &lt; nums2.length</code> and <code>0 &lt;= j &lt; k &lt; nums1.length</code>.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums1 = [<span class="hljs-number">7</span>,<span class="hljs-number">4</span>], nums2 = [<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span>]
+Output: <span class="hljs-number">1</span>
+Explanation: Type <span class="hljs-number">1</span>: (<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>), nums1[<span class="hljs-number">1</span>]<span class="hljs-number">2</span> = nums2[<span class="hljs-number">1</span>] * nums2[<span class="hljs-number">2</span>]. (<span class="hljs-number">42</span> = <span class="hljs-number">2</span> * <span class="hljs-number">8</span>). 
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums1 = [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>], nums2 = [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]
+Output: <span class="hljs-number">9</span>
+Explanation: All Triplets are valid, because <span class="hljs-number">12</span> = <span class="hljs-number">1</span> * <span class="hljs-number">1.</span>
+Type <span class="hljs-number">1</span>: (<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>), (<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>), (<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>), (<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>), (<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>), (<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>).  nums1[i]<span class="hljs-number">2</span> = nums2[j] * nums2[k].
+Type <span class="hljs-number">2</span>: (<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>), (<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>), (<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>). nums2[i]<span class="hljs-number">2</span> = nums1[j] * nums1[k].
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: nums1 = [<span class="hljs-number">7</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>,<span class="hljs-number">3</span>], nums2 = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">9</span>,<span class="hljs-number">7</span>]
+Output: <span class="hljs-number">2</span>
+Explanation: There are <span class="hljs-number">2</span> valid triplets.
+Type <span class="hljs-number">1</span>: (<span class="hljs-number">3</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>).  nums1[<span class="hljs-number">3</span>]<span class="hljs-number">2</span> = nums2[<span class="hljs-number">0</span>] * nums2[<span class="hljs-number">2</span>].
+Type <span class="hljs-number">2</span>: (<span class="hljs-number">3</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>).  nums2[<span class="hljs-number">3</span>]<span class="hljs-number">2</span> = nums1[<span class="hljs-number">0</span>] * nums1[<span class="hljs-number">1</span>].
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= nums1.length, nums2.length &lt;= 1000</code></p></li>
+<li><p><code>1 &lt;= nums1[i], nums2[i] &lt;= 105</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">numTriplets</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums1, <span class="hljs-keyword">int</span>[] nums2)</span> </span>{
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        <span class="hljs-keyword">return</span> count(nums1, nums2) + count(nums2, nums1);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">count</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] a, <span class="hljs-keyword">int</span>[] b)</span> </span>{
+        <span class="hljs-keyword">int</span> m = b.length;
+        <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> value : a) {
+            <span class="hljs-keyword">long</span> x = (<span class="hljs-keyword">long</span>) value * value;
+            <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">int</span> k = m - <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">while</span> (j &lt; k) {
+                <span class="hljs-keyword">long</span> prod = (<span class="hljs-keyword">long</span>) b[j] * b[k];
+                <span class="hljs-keyword">if</span> (prod &lt; x) {
+                    j++;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (prod &gt; x) {
+                    k--;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (b[j] != b[k]) {
+                    <span class="hljs-keyword">int</span> jNew = j;
+                    <span class="hljs-keyword">int</span> kNew = k;
+                    <span class="hljs-keyword">while</span> (b[j] == b[jNew]) {
+                        jNew++;
+                    }
+                    <span class="hljs-keyword">while</span> (b[k] == b[kNew]) {
+                        kNew--;
+                    }
+                    count += (jNew - j) * (k - kNew);
+                    j = jNew;
+                    k = kNew;
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">int</span> q = k - j + <span class="hljs-number">1</span>;
+                    count += (q) * (q - <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>;
+                    <span class="hljs-keyword">break</span>;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> count;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

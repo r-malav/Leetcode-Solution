@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Count Nice Pairs in an Array - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1814. Count Nice Pairs in an Array</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/counting">Counting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/number-of-pairs-of-interchangeable-rectangles.html">Number of Pairs of Interchangeable Rectangles</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/count-number-of-bad-pairs.html">Count Number of Bad Pairs</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an array <code>nums</code> that consists of non-negative integers. Let us define <code>rev(x)</code> as the reverse of the non-negative integer <code>x</code>. For example, <code>rev(123) = 321</code>, and <code>rev(120) = 21</code>. A pair of indices <code>(i, j)</code> is <strong>nice</strong> if it satisfies all of the following conditions:</p>
+<ul>
+<li><p><code>0 &lt;= i &lt; j &lt; nums.length</code></p></li>
+<li><p><code>nums[i] + rev(nums[j]) == nums[j] + rev(nums[i])</code></p></li>
+</ul>
+<p>Return <strong>the number of nice pairs of indices</strong>. Since that number can be too large, return it <strong>modulo</strong> <code>109 + 7</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">42</span>,<span class="hljs-number">11</span>,<span class="hljs-number">1</span>,<span class="hljs-number">97</span>]
+Output: <span class="hljs-number">2</span>
+Explanation: The two pairs are:
+ - (<span class="hljs-number">0</span>,<span class="hljs-number">3</span>) : <span class="hljs-number">42</span> + rev(<span class="hljs-number">97</span>) = <span class="hljs-number">42</span> + <span class="hljs-number">79</span> = <span class="hljs-number">121</span>, <span class="hljs-number">97</span> + rev(<span class="hljs-number">42</span>) = <span class="hljs-number">97</span> + <span class="hljs-number">24</span> = <span class="hljs-number">121.</span>
+ - (<span class="hljs-number">1</span>,<span class="hljs-number">2</span>) : <span class="hljs-number">11</span> + rev(<span class="hljs-number">1</span>) = <span class="hljs-number">11</span> + <span class="hljs-number">1</span> = <span class="hljs-number">12</span>, <span class="hljs-number">1</span> + rev(<span class="hljs-number">11</span>) = <span class="hljs-number">1</span> + <span class="hljs-number">11</span> = <span class="hljs-number">12.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">13</span>,<span class="hljs-number">10</span>,<span class="hljs-number">35</span>,<span class="hljs-number">24</span>,<span class="hljs-number">76</span>]
+Output: <span class="hljs-number">4</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= nums.length &lt;= 105</code></p></li>
+<li><p><code>0 &lt;= nums[i] &lt;= 109</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">rev</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-keyword">int</span> r = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (n &gt; <span class="hljs-number">0</span>) {
+            r = r * <span class="hljs-number">10</span> + n % <span class="hljs-number">10</span>;
+            n = n / <span class="hljs-number">10</span>;
+        }
+        <span class="hljs-keyword">return</span> r;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">countNicePairs</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>{
+        HashMap&lt;Integer, Integer&gt; revMap = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">int</span> cnt = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> num : nums) {
+            <span class="hljs-keyword">int</span> lhs = num - rev(num);
+            <span class="hljs-keyword">int</span> prevCnt = revMap.getOrDefault(lhs, <span class="hljs-number">0</span>);
+            cnt += prevCnt;
+            <span class="hljs-keyword">int</span> mod = <span class="hljs-number">1000000007</span>;
+            cnt = cnt % mod;
+            revMap.put(lhs, prevCnt + <span class="hljs-number">1</span>);
+        }
+        <span class="hljs-keyword">return</span> cnt;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

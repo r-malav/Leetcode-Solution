@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Average Difference - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2256. Minimum Average Difference</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/prefix-sum">Prefix Sum</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/split-array-with-same-average.html">Split Array With Same Average</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/number-of-ways-to-split-array.html">Number of Ways to Split Array</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>0-indexed</strong> integer array <code>nums</code> of length <code>n</code>.</p>
+<p>The <strong>average difference</strong> of the index <code>i</code> is the <strong>absolute</strong> <strong>difference</strong> between the average of the <strong>first</strong> <code>i + 1</code> elements of <code>nums</code> and the average of the <strong>last</strong> <code>n - i - 1</code> elements. Both averages should be <strong>rounded down</strong> to the nearest integer.</p>
+<p>Return** the index with the <strong>minimum average difference</strong>**. If there are multiple such indices, return the *<em>smallest</em>* one.</p>
+<p><strong>Note:</strong></p>
+<ul>
+<li><p>The <strong>absolute difference</strong> of two numbers is the absolute value of their difference.</p></li>
+<li><p>The <strong>average</strong> of <code>n</code> elements is the <strong>sum</strong> of the <code>n</code> elements divided (<strong>integer division</strong>) by <code>n</code>.</p></li>
+<li><p>The average of <code>0</code> elements is considered to be <code>0</code>.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">9</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>]
+Output: <span class="hljs-number">3</span>
+Explanation:
+- The average difference of index <span class="hljs-number">0</span> <span class="hljs-keyword">is</span>: |<span class="hljs-number">2</span> / <span class="hljs-number">1</span> - (<span class="hljs-number">5</span> + <span class="hljs-number">3</span> + <span class="hljs-number">9</span> + <span class="hljs-number">5</span> + <span class="hljs-number">3</span>) / <span class="hljs-number">5</span>| = |<span class="hljs-number">2</span> / <span class="hljs-number">1</span> - <span class="hljs-number">25</span> / <span class="hljs-number">5</span>| = |<span class="hljs-number">2</span> - <span class="hljs-number">5</span>| = <span class="hljs-number">3.</span>
+- The average difference of index <span class="hljs-number">1</span> <span class="hljs-keyword">is</span>: |(<span class="hljs-number">2</span> + <span class="hljs-number">5</span>) / <span class="hljs-number">2</span> - (<span class="hljs-number">3</span> + <span class="hljs-number">9</span> + <span class="hljs-number">5</span> + <span class="hljs-number">3</span>) / <span class="hljs-number">4</span>| = |<span class="hljs-number">7</span> / <span class="hljs-number">2</span> - <span class="hljs-number">20</span> / <span class="hljs-number">4</span>| = |<span class="hljs-number">3</span> - <span class="hljs-number">5</span>| = <span class="hljs-number">2.</span>
+- The average difference of index <span class="hljs-number">2</span> <span class="hljs-keyword">is</span>: |(<span class="hljs-number">2</span> + <span class="hljs-number">5</span> + <span class="hljs-number">3</span>) / <span class="hljs-number">3</span> - (<span class="hljs-number">9</span> + <span class="hljs-number">5</span> + <span class="hljs-number">3</span>) / <span class="hljs-number">3</span>| = |<span class="hljs-number">10</span> / <span class="hljs-number">3</span> - <span class="hljs-number">17</span> / <span class="hljs-number">3</span>| = |<span class="hljs-number">3</span> - <span class="hljs-number">5</span>| = <span class="hljs-number">2.</span>
+- The average difference of index <span class="hljs-number">3</span> <span class="hljs-keyword">is</span>: |(<span class="hljs-number">2</span> + <span class="hljs-number">5</span> + <span class="hljs-number">3</span> + <span class="hljs-number">9</span>) / <span class="hljs-number">4</span> - (<span class="hljs-number">5</span> + <span class="hljs-number">3</span>) / <span class="hljs-number">2</span>| = |<span class="hljs-number">19</span> / <span class="hljs-number">4</span> - <span class="hljs-number">8</span> / <span class="hljs-number">2</span>| = |<span class="hljs-number">4</span> - <span class="hljs-number">4</span>| = <span class="hljs-number">0.</span>
+- The average difference of index <span class="hljs-number">4</span> <span class="hljs-keyword">is</span>: |(<span class="hljs-number">2</span> + <span class="hljs-number">5</span> + <span class="hljs-number">3</span> + <span class="hljs-number">9</span> + <span class="hljs-number">5</span>) / <span class="hljs-number">5</span> - <span class="hljs-number">3</span> / <span class="hljs-number">1</span>| = |<span class="hljs-number">24</span> / <span class="hljs-number">5</span> - <span class="hljs-number">3</span> / <span class="hljs-number">1</span>| = |<span class="hljs-number">4</span> - <span class="hljs-number">3</span>| = <span class="hljs-number">1.</span>
+- The average difference of index <span class="hljs-number">5</span> <span class="hljs-keyword">is</span>: |(<span class="hljs-number">2</span> + <span class="hljs-number">5</span> + <span class="hljs-number">3</span> + <span class="hljs-number">9</span> + <span class="hljs-number">5</span> + <span class="hljs-number">3</span>) / <span class="hljs-number">6</span> - <span class="hljs-number">0</span>| = |<span class="hljs-number">27</span> / <span class="hljs-number">6</span> - <span class="hljs-number">0</span>| = |<span class="hljs-number">4</span> - <span class="hljs-number">0</span>| = <span class="hljs-number">4.</span>
+The average difference of index <span class="hljs-number">3</span> <span class="hljs-keyword">is</span> the minimum average difference so <span class="hljs-keyword">return</span> <span class="hljs-number">3.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">0</span>]
+Output: <span class="hljs-number">0</span>
+Explanation:
+The only index <span class="hljs-keyword">is</span> <span class="hljs-number">0</span> so <span class="hljs-keyword">return</span> <span class="hljs-number">0.</span>
+The average difference of index <span class="hljs-number">0</span> <span class="hljs-keyword">is</span>: |<span class="hljs-number">0</span> / <span class="hljs-number">1</span> - <span class="hljs-number">0</span>| = |<span class="hljs-number">0</span> - <span class="hljs-number">0</span>| = <span class="hljs-number">0.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= nums.length &lt;= 105</code></p></li>
+<li><p><code>0 &lt;= nums[i] &lt;= 105</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minimumAverageDifference</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>{
+        <span class="hljs-keyword">long</span> numsSum = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> num : nums) {
+            numsSum += num;
+        }
+        <span class="hljs-keyword">long</span> minAverageDiff = Long.MAX_VALUE;
+        <span class="hljs-keyword">long</span> sumFromFront = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> index = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+            sumFromFront += nums[i];
+            <span class="hljs-keyword">int</span> numbersRight = i == nums.length - <span class="hljs-number">1</span> ? <span class="hljs-number">1</span> : nums.length - i - <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">long</span> averageDiff =
+                    Math.abs(sumFromFront / (i + <span class="hljs-number">1</span>) - (numsSum - sumFromFront) / numbersRight);
+            <span class="hljs-keyword">if</span> (minAverageDiff &gt; averageDiff) {
+                minAverageDiff = averageDiff;
+                index = i;
+            }
+            <span class="hljs-keyword">if</span> (averageDiff == <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> index;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

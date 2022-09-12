@@ -1,0 +1,117 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Score of a Node Sequence - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2242. Maximum Score of a Node Sequence</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/graph">Graph</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/enumeration">Enumeration</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/get-the-maximum-score.html">Get the Maximum Score</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is an <strong>undirected</strong> graph with <code>n</code> nodes, numbered from <code>0</code> to <code>n - 1</code>.</p>
+<p>You are given a <strong>0-indexed</strong> integer array <code>scores</code> of length <code>n</code> where <code>scores[i]</code> denotes the score of node <code>i</code>. You are also given a 2D integer array <code>edges</code> where <code>edges[i] = [ai, bi]</code> denotes that there exists an <strong>undirected</strong> edge connecting nodes <code>ai</code> and <code>bi</code>.</p>
+<p>A node sequence is <strong>valid</strong> if it meets the following conditions:</p>
+<ul>
+<li><p>There is an edge connecting every pair of <strong>adjacent</strong> nodes in the sequence.</p></li>
+<li><p>No node appears more than once in the sequence.</p></li>
+</ul>
+<p>The score of a node sequence is defined as the <strong>sum</strong> of the scores of the nodes in the sequence.</p>
+<p>Return **the *<em>maximum score</em>* of a valid node sequence with a length of <strong><code>4</code></strong>. <strong>If no such sequence exists, return</strong> **<code>-1</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2022/04/15/ex1new3.png" alt="" /></p>
+<pre><code class="hljs">Input: scores = [<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">9</span>,<span class="hljs-number">8</span>,<span class="hljs-number">4</span>], edges = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">4</span>]]
+Output: <span class="hljs-number">24</span>
+Explanation: The figure above shows the graph <span class="hljs-keyword">and</span> the chosen node sequence [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>].
+The score of the node sequence <span class="hljs-keyword">is</span> <span class="hljs-number">5</span> + <span class="hljs-number">2</span> + <span class="hljs-number">9</span> + <span class="hljs-number">8</span> = <span class="hljs-number">24.</span>
+It can be shown that no other node sequence has a score of more than <span class="hljs-number">24.</span>
+Note that the sequences [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>] <span class="hljs-keyword">and</span> [<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>] are also valid <span class="hljs-keyword">and</span> have a score of <span class="hljs-number">24.</span>
+The sequence [<span class="hljs-number">0</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>] <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> valid since no edge connects nodes <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-number">3.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2022/03/17/ex2.png" alt="" /></p>
+<pre><code class="hljs">Input: scores = [<span class="hljs-number">9</span>,<span class="hljs-number">20</span>,<span class="hljs-number">6</span>,<span class="hljs-number">4</span>,<span class="hljs-number">11</span>,<span class="hljs-number">12</span>], edges = [[<span class="hljs-number">0</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>]]
+Output: <span class="hljs-number">-1</span>
+Explanation: The figure above shows the graph.
+There are no valid node sequences of length <span class="hljs-number">4</span>, so we <span class="hljs-keyword">return</span> <span class="hljs-number">-1.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == scores.length</code></p></li>
+<li><p><code>4 &lt;= n &lt;= 5 * 104</code></p></li>
+<li><p><code>1 &lt;= scores[i] &lt;= 108</code></p></li>
+<li><p><code>0 &lt;= edges.length &lt;= 5 * 104</code></p></li>
+<li><p><code>edges[i].length == 2</code></p></li>
+<li><p><code>0 &lt;= ai, bi &lt;= n - 1</code></p></li>
+<li><p><code>ai != bi</code></p></li>
+<li><p>There are no duplicate edges.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maximumScore</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] scores, <span class="hljs-keyword">int</span>[][] edges)</span> </span>{
+        <span class="hljs-comment">// store only top 3 nodes (having highest scores)</span>
+        <span class="hljs-keyword">int</span>[][] graph = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[scores.length][<span class="hljs-number">3</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] a : graph) {
+            Arrays.fill(a, -<span class="hljs-number">1</span>);
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] edge : edges) {
+            insert(edge[<span class="hljs-number">0</span>], graph[edge[<span class="hljs-number">1</span>]], scores);
+            insert(edge[<span class="hljs-number">1</span>], graph[edge[<span class="hljs-number">0</span>]], scores);
+        }
+        <span class="hljs-keyword">int</span> maxScore = -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] edge : edges) {
+            <span class="hljs-keyword">int</span> u = edge[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">int</span> v = edge[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">int</span> score = scores[u] + scores[v];
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++) {
+                <span class="hljs-comment">// if neighbour is current node, skip</span>
+                <span class="hljs-keyword">if</span> (graph[u][i] == -<span class="hljs-number">1</span> || graph[u][i] == v) {
+                    <span class="hljs-keyword">continue</span>;
+                }
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">3</span>; j++) {
+                    <span class="hljs-comment">// if neighbour is current node or already choosen node, skip</span>
+                    <span class="hljs-keyword">if</span> (graph[v][j] == -<span class="hljs-number">1</span> || graph[v][j] == u) {
+                        <span class="hljs-keyword">continue</span>;
+                    }
+                    <span class="hljs-keyword">if</span> (graph[v][j] == graph[u][i]) {
+                        <span class="hljs-keyword">continue</span>;
+                    }
+                    maxScore =
+                            Math.max(maxScore, score + scores[graph[u][i]] + scores[graph[v][j]]);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> maxScore;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">insert</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[] arr, <span class="hljs-keyword">int</span>[] scores)</span> </span>{
+        <span class="hljs-keyword">if</span> (arr[<span class="hljs-number">0</span>] == -<span class="hljs-number">1</span>) {
+            arr[<span class="hljs-number">0</span>] = n;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arr[<span class="hljs-number">1</span>] == -<span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">if</span> (scores[arr[<span class="hljs-number">0</span>]] &lt; scores[n]) {
+                arr[<span class="hljs-number">1</span>] = arr[<span class="hljs-number">0</span>];
+                arr[<span class="hljs-number">0</span>] = n;
+            } <span class="hljs-keyword">else</span> {
+                arr[<span class="hljs-number">1</span>] = n;
+            }
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arr[<span class="hljs-number">2</span>] == -<span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">if</span> (scores[arr[<span class="hljs-number">0</span>]] &lt; scores[n]) {
+                arr[<span class="hljs-number">2</span>] = arr[<span class="hljs-number">1</span>];
+                arr[<span class="hljs-number">1</span>] = arr[<span class="hljs-number">0</span>];
+                arr[<span class="hljs-number">0</span>] = n;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (scores[arr[<span class="hljs-number">1</span>]] &lt; scores[n]) {
+                arr[<span class="hljs-number">2</span>] = arr[<span class="hljs-number">1</span>];
+                arr[<span class="hljs-number">1</span>] = n;
+            } <span class="hljs-keyword">else</span> {
+                arr[<span class="hljs-number">2</span>] = n;
+            }
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">if</span> (scores[arr[<span class="hljs-number">1</span>]] &lt; scores[n]) {
+                arr[<span class="hljs-number">2</span>] = arr[<span class="hljs-number">1</span>];
+                arr[<span class="hljs-number">1</span>] = n;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (scores[arr[<span class="hljs-number">2</span>]] &lt; scores[n]) {
+                arr[<span class="hljs-number">2</span>] = n;
+            }
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Capitalize the Title - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2129. Capitalize the Title</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/detect-capital.html">Detect Capital</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/to-lower-case.html">To Lower Case</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a string <code>title</code> consisting of one or more words separated by a single space, where each word consists of English letters. <strong>Capitalize</strong> the string by changing the capitalization of each word such that:</p>
+<ul>
+<li><p>If the length of the word is <code>1</code> or <code>2</code> letters, change all letters to lowercase.</p></li>
+<li><p>Otherwise, change the first letter to uppercase and the remaining letters to lowercase.</p></li>
+</ul>
+<p>Return **the *<em>capitalized</em>* **<code>title</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: title = <span class="hljs-string">"capiTalIze tHe titLe"</span>
+Output: <span class="hljs-string">"Capitalize The Title"</span>
+Explanation:
+Since all <span class="hljs-keyword">the</span> <span class="hljs-keyword">words</span> have <span class="hljs-keyword">a</span> <span class="hljs-built_in">length</span> <span class="hljs-keyword">of</span> <span class="hljs-keyword">at</span> least <span class="hljs-number">3</span>, <span class="hljs-keyword">the</span> <span class="hljs-keyword">first</span> letter <span class="hljs-keyword">of</span> <span class="hljs-keyword">each</span> <span class="hljs-built_in">word</span> is uppercase, <span class="hljs-keyword">and</span> <span class="hljs-keyword">the</span> remaining letters are lowercase.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: title = <span class="hljs-string">"First leTTeR of EACH Word"</span>
+Output: <span class="hljs-string">"First Letter of Each Word"</span>
+Explanation:
+The <span class="hljs-built_in">word</span> <span class="hljs-string">"of"</span> has <span class="hljs-built_in">length</span> <span class="hljs-number">2</span>, so <span class="hljs-keyword">it</span> is all lowercase.
+The remaining <span class="hljs-keyword">words</span> have <span class="hljs-keyword">a</span> <span class="hljs-built_in">length</span> <span class="hljs-keyword">of</span> <span class="hljs-keyword">at</span> least <span class="hljs-number">3</span>, so <span class="hljs-keyword">the</span> <span class="hljs-keyword">first</span> letter <span class="hljs-keyword">of</span> <span class="hljs-keyword">each</span> remaining <span class="hljs-built_in">word</span> is uppercase, <span class="hljs-keyword">and</span> <span class="hljs-keyword">the</span> remaining letters are lowercase.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: title = <span class="hljs-string">"i lOve leetcode"</span>
+Output: <span class="hljs-string">"i Love Leetcode"</span>
+Explanation:
+The <span class="hljs-built_in">word</span> <span class="hljs-string">"i"</span> has <span class="hljs-built_in">length</span> <span class="hljs-number">1</span>, so <span class="hljs-keyword">it</span> is lowercase.
+The remaining <span class="hljs-keyword">words</span> have <span class="hljs-keyword">a</span> <span class="hljs-built_in">length</span> <span class="hljs-keyword">of</span> <span class="hljs-keyword">at</span> least <span class="hljs-number">3</span>, so <span class="hljs-keyword">the</span> <span class="hljs-keyword">first</span> letter <span class="hljs-keyword">of</span> <span class="hljs-keyword">each</span> remaining <span class="hljs-built_in">word</span> is uppercase, <span class="hljs-keyword">and</span> <span class="hljs-keyword">the</span> remaining letters are lowercase.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= title.length &lt;= 100</code></p></li>
+<li><p><code>title</code> consists of words separated by a single space without any leading or trailing spaces.</p></li>
+<li><p>Each word consists of uppercase and lowercase English letters and is <strong>non-empty</strong>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">capitalizeTitle</span><span class="hljs-params">(String title)</span> </span>{
+        StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (i &lt; title.length()) {
+            <span class="hljs-keyword">while</span> (j &lt; title.length() &amp;&amp; title.charAt(j) != <span class="hljs-string">' '</span>) {
+                sb.append(Character.toLowerCase(title.charAt(j)));
+                j++;
+            }
+            <span class="hljs-keyword">int</span> len = j - i;
+            <span class="hljs-keyword">if</span> (len &gt; <span class="hljs-number">2</span>) {
+                sb.setCharAt(i, Character.toUpperCase(title.charAt(i)));
+            }
+            <span class="hljs-keyword">if</span> (j == title.length()) {
+                <span class="hljs-keyword">break</span>;
+            }
+            sb.append(title.charAt(j));
+            i = ++j;
+        }
+        <span class="hljs-keyword">return</span> sb.toString();
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

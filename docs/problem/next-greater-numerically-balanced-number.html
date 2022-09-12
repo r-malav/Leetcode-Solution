@@ -1,0 +1,84 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Next Greater Numerically Balanced Number - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2048. Next Greater Numerically Balanced Number</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/backtracking">Backtracking</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/enumeration">Enumeration</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>An integer <code>x</code> is <strong>numerically balanced</strong> if for every digit <code>d</code> in the number <code>x</code>, there are <strong>exactly</strong> <code>d</code> occurrences of that digit in <code>x</code>.</p>
+<p>Given an integer <code>n</code>, return **the *<em>smallest numerically balanced</em>* number <strong>strictly greater</strong> than <strong><code>n</code></strong>.**</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">22</span>
+<span class="hljs-attr">Explanation:</span> 
+<span class="hljs-attr">22 is numerically balanced since:</span>
+<span class="hljs-bullet">-</span> <span class="hljs-string">The</span> <span class="hljs-string">digit</span> <span class="hljs-number">2</span> <span class="hljs-string">occurs</span> <span class="hljs-number">2</span> <span class="hljs-string">times.</span> 
+<span class="hljs-string">It</span> <span class="hljs-string">is</span> <span class="hljs-string">also</span> <span class="hljs-string">the</span> <span class="hljs-string">smallest</span> <span class="hljs-string">numerically</span> <span class="hljs-string">balanced</span> <span class="hljs-string">number</span> <span class="hljs-string">strictly</span> <span class="hljs-string">greater</span> <span class="hljs-string">than</span> <span class="hljs-number">1</span><span class="hljs-string">.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">1000</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">1333</span>
+<span class="hljs-attr">Explanation:</span> 
+<span class="hljs-attr">1333 is numerically balanced since:</span>
+<span class="hljs-bullet">-</span> <span class="hljs-string">The</span> <span class="hljs-string">digit</span> <span class="hljs-number">1</span> <span class="hljs-string">occurs</span> <span class="hljs-number">1</span> <span class="hljs-string">time.</span>
+<span class="hljs-bullet">-</span> <span class="hljs-string">The</span> <span class="hljs-string">digit</span> <span class="hljs-number">3</span> <span class="hljs-string">occurs</span> <span class="hljs-number">3</span> <span class="hljs-string">times.</span> 
+<span class="hljs-string">It</span> <span class="hljs-string">is</span> <span class="hljs-string">also</span> <span class="hljs-string">the</span> <span class="hljs-string">smallest</span> <span class="hljs-string">numerically</span> <span class="hljs-string">balanced</span> <span class="hljs-string">number</span> <span class="hljs-string">strictly</span> <span class="hljs-string">greater</span> <span class="hljs-string">than</span> <span class="hljs-number">1000</span><span class="hljs-string">.</span>
+<span class="hljs-string">Note</span> <span class="hljs-string">that</span> <span class="hljs-number">1022</span> <span class="hljs-string">cannot</span> <span class="hljs-string">be</span> <span class="hljs-string">the</span> <span class="hljs-string">answer</span> <span class="hljs-string">because</span> <span class="hljs-number">0</span> <span class="hljs-string">appeared</span> <span class="hljs-string">more</span> <span class="hljs-string">than</span> <span class="hljs-number">0</span> <span class="hljs-string">times.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">3000</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">3133</span>
+<span class="hljs-attr">Explanation:</span> 
+<span class="hljs-attr">3133 is numerically balanced since:</span>
+<span class="hljs-bullet">-</span> <span class="hljs-string">The</span> <span class="hljs-string">digit</span> <span class="hljs-number">1</span> <span class="hljs-string">occurs</span> <span class="hljs-number">1</span> <span class="hljs-string">time.</span>
+<span class="hljs-bullet">-</span> <span class="hljs-string">The</span> <span class="hljs-string">digit</span> <span class="hljs-number">3</span> <span class="hljs-string">occurs</span> <span class="hljs-number">3</span> <span class="hljs-string">times.</span>
+<span class="hljs-string">It</span> <span class="hljs-string">is</span> <span class="hljs-string">also</span> <span class="hljs-string">the</span> <span class="hljs-string">smallest</span> <span class="hljs-string">numerically</span> <span class="hljs-string">balanced</span> <span class="hljs-string">number</span> <span class="hljs-string">strictly</span> <span class="hljs-string">greater</span> <span class="hljs-string">than</span> <span class="hljs-number">3000</span><span class="hljs-string">.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>0 &lt;= n &lt;= 106</code></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">nextBeautifulNumber</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-keyword">int</span>[] arr = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>};
+        <span class="hljs-keyword">boolean</span>[] select = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[<span class="hljs-number">7</span>];
+        <span class="hljs-keyword">int</span> d = n == <span class="hljs-number">0</span> ? <span class="hljs-number">1</span> : (<span class="hljs-keyword">int</span>) Math.log10(n) + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">return</span> solve(<span class="hljs-number">1</span>, n, d, <span class="hljs-number">0</span>, select, arr);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">solve</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> d, <span class="hljs-keyword">int</span> sz, <span class="hljs-keyword">boolean</span>[] select, <span class="hljs-keyword">int</span>[] arr)</span> </span>{
+        <span class="hljs-keyword">if</span> (sz &gt; d + <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> Integer.MAX_VALUE;
+        }
+        <span class="hljs-keyword">if</span> (i == select.length) {
+            <span class="hljs-keyword">return</span> sz &gt;= d ? make(<span class="hljs-number">0</span>, n, sz, select, arr) : Integer.MAX_VALUE;
+        }
+        <span class="hljs-keyword">int</span> ans = solve(i + <span class="hljs-number">1</span>, n, d, sz, select, arr);
+        select[i] = <span class="hljs-keyword">true</span>;
+        ans = Math.min(ans, solve(i + <span class="hljs-number">1</span>, n, d, sz + i, select, arr));
+        select[i] = <span class="hljs-keyword">false</span>;
+        <span class="hljs-keyword">return</span> ans;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">make</span><span class="hljs-params">(<span class="hljs-keyword">int</span> cur, <span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> end, <span class="hljs-keyword">boolean</span>[] select, <span class="hljs-keyword">int</span>[] arr)</span> </span>{
+        <span class="hljs-keyword">if</span> (end == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> cur &gt; n ? cur : Integer.MAX_VALUE;
+        }
+
+        <span class="hljs-keyword">int</span> ans = Integer.MAX_VALUE;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>; j &lt; arr.length; j++) {
+            <span class="hljs-keyword">if</span> (!select[j] || arr[j] == <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            --arr[j];
+            ans = Math.min(make(<span class="hljs-number">10</span> * cur + j, n, end - <span class="hljs-number">1</span>, select, arr), ans);
+            ++arr[j];
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Abbreviating the Product of a Range - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2117. Abbreviating the Product of a Range</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/factorial-trailing-zeroes.html">Factorial Trailing Zeroes</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-trailing-zeros-in-a-cornered-path.html">Maximum Trailing Zeros in a Cornered Path</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given two positive integers <code>left</code> and <code>right</code> with <code>left &lt;= right</code>. Calculate the <strong>product</strong> of all integers in the <strong>inclusive</strong> range <code>[left, right]</code>.</p>
+<p>Since the product may be very large, you will <strong>abbreviate</strong> it following these steps:</p>
+<pre><code>Count all **trailing** zeros in the product and **remove** them. Let us denote this count as <code>C</code>.
+</code></pre>
+<ul>
+<li><p>For example, there are <code>3</code> trailing zeros in <code>1000</code>, and there are <code>0</code> trailing zeros in <code>546</code>.</p>
+<p>Denote the remaining number of digits in the product as <code>d</code>. If <code>d &gt; 10</code>, then express the product as <code>&lt;pre&gt;...&lt;suf&gt;</code> where <code>&lt;pre&gt;</code> denotes the <strong>first</strong> <code>5</code> digits of the product, and <code>&lt;suf&gt;</code> denotes the <strong>last</strong> <code>5</code> digits of the product <strong>after</strong> removing all trailing zeros. If <code>d &lt;= 10</code>, we keep it unchanged.</p></li>
+<li><p>For example, we express <code>1234567654321</code> as <code>12345...54321</code>, but <code>1234567</code> is represented as <code>1234567</code>.</p>
+<p>Finally, represent the product as a <strong>string</strong> <code>"&lt;pre&gt;...&lt;suf&gt;eC"</code>.</p></li>
+<li><p>For example, <code>12345678987600000</code> will be represented as <code>"12345...89876e5"</code>.</p></li>
+</ul>
+<p>Return **a string denoting the *<em>abbreviated product</em>* of all integers in the <strong>inclusive</strong> range** <code>[left, right]</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> <span class="hljs-keyword">left</span> = <span class="hljs-number">1</span>, <span class="hljs-keyword">right</span> = <span class="hljs-number">4</span>
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-string">"24e0"</span>
+Explanation: The product <span class="hljs-keyword">is</span> <span class="hljs-number">1</span> × <span class="hljs-number">2</span> × <span class="hljs-number">3</span> × <span class="hljs-number">4</span> = <span class="hljs-number">24</span>.
+There are <span class="hljs-keyword">no</span> trailing zeros, <span class="hljs-keyword">so</span> <span class="hljs-number">24</span> remains the same. The abbreviation will end with <span class="hljs-string">"e0"</span>.
+Since the <span class="hljs-keyword">number</span> of digits <span class="hljs-keyword">is</span> <span class="hljs-number">2</span>, which <span class="hljs-keyword">is</span> less than <span class="hljs-number">10</span>, we <span class="hljs-keyword">do</span> not have <span class="hljs-keyword">to</span> <span class="hljs-keyword">abbreviate</span> it further.
+Thus, the final representation <span class="hljs-keyword">is</span> <span class="hljs-string">"24e0"</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> <span class="hljs-keyword">left</span> = <span class="hljs-number">2</span>, <span class="hljs-keyword">right</span> = <span class="hljs-number">11</span>
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-string">"399168e2"</span>
+Explanation: The product <span class="hljs-keyword">is</span> <span class="hljs-number">39916800</span>.
+There are <span class="hljs-number">2</span> trailing zeros, which we <span class="hljs-built_in">remove</span> <span class="hljs-keyword">to</span> <span class="hljs-built_in">get</span> <span class="hljs-number">399168</span>. The abbreviation will end with <span class="hljs-string">"e2"</span>.
+The <span class="hljs-keyword">number</span> of digits after removing the trailing zeros <span class="hljs-keyword">is</span> <span class="hljs-number">6</span>, <span class="hljs-keyword">so</span> we <span class="hljs-keyword">do</span> not <span class="hljs-keyword">abbreviate</span> it further.
+Hence, the abbreviated product <span class="hljs-keyword">is</span> <span class="hljs-string">"399168e2"</span>.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">left</span> <span class="hljs-string">=</span> <span class="hljs-number">371</span><span class="hljs-string">,</span> <span class="hljs-string">right</span> <span class="hljs-string">=</span> <span class="hljs-number">375</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-string">"7219856259e3"</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">The</span> <span class="hljs-string">product</span> <span class="hljs-string">is</span> <span class="hljs-number">7219856259000</span><span class="hljs-string">.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= left &lt;= right &lt;= 104</code></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">abbreviateProduct</span><span class="hljs-params">(<span class="hljs-keyword">int</span> left, <span class="hljs-keyword">int</span> right)</span> </span>{
+        <span class="hljs-keyword">long</span> threshold0 = <span class="hljs-number">100_000_000_000_000L</span>;
+        <span class="hljs-keyword">long</span> threshold1 = <span class="hljs-number">10_000_000_000L</span>;
+        <span class="hljs-keyword">long</span> threshold2 = <span class="hljs-number">100_000</span>;
+        <span class="hljs-keyword">long</span> curr = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> i;
+        <span class="hljs-keyword">int</span> zerosCount = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (i = left; i &lt;= right &amp;&amp; curr &lt; threshold0; i++) {
+            curr *= i;
+            <span class="hljs-keyword">while</span> (curr % <span class="hljs-number">10</span> == <span class="hljs-number">0</span>) {
+                curr /= <span class="hljs-number">10</span>;
+                zerosCount++;
+            }
+        }
+        <span class="hljs-keyword">if</span> (curr &lt; threshold1) {
+            <span class="hljs-keyword">return</span> String.format(<span class="hljs-string">"%de%d"</span>, curr, zerosCount);
+        }
+
+        <span class="hljs-keyword">long</span> low = curr % threshold1;
+        <span class="hljs-keyword">double</span> high = curr;
+        <span class="hljs-keyword">while</span> (high &gt; threshold1) {
+            high /= <span class="hljs-number">10</span>;
+        }
+
+        <span class="hljs-keyword">for</span> (; i &lt;= right; i++) {
+            low *= i;
+            high *= i;
+            <span class="hljs-keyword">while</span> (low % <span class="hljs-number">10</span> == <span class="hljs-number">0</span>) {
+                low /= <span class="hljs-number">10</span>;
+                zerosCount++;
+            }
+            <span class="hljs-keyword">if</span> (low &gt;= threshold1) {
+                low %= threshold1;
+            }
+            <span class="hljs-keyword">while</span> (high &gt; threshold1) {
+                high /= <span class="hljs-number">10</span>;
+            }
+        }
+
+        <span class="hljs-keyword">while</span> (high &gt;= threshold2) {
+            high /= <span class="hljs-number">10</span>;
+        }
+        low %= threshold2;
+        <span class="hljs-keyword">return</span> String.format(<span class="hljs-string">"%d...%05de%d"</span>, (<span class="hljs-keyword">int</span>) high, low, zerosCount);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Design Skiplist - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1206. Design Skiplist</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/linked-list">Linked List</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/design">Design</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/design-hashset.html">Design HashSet</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/design-hashmap.html">Design HashMap</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/design-linked-list.html">Design Linked List</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Design a <strong>Skiplist</strong> without using any built-in libraries.</p>
+<p>A <strong>skiplist</strong> is a data structure that takes <code>O(log(n))</code> time to add, erase and search. Comparing with treap and red-black tree which has the same function and performance, the code length of Skiplist can be comparatively short and the idea behind Skiplists is just simple linked lists.</p>
+<p>For example, we have a Skiplist containing <code>[30,40,50,60,70,90]</code> and we want to add <code>80</code> and <code>45</code> into it. The Skiplist works this way:</p>
+<p><img src="https://assets.leetcode.com/uploads/2019/09/27/1506_skiplist.gif" alt="" /></p>
+<p>Artyom Kalinin [CC BY-SA 3.0], via Wikimedia Commons</p>
+<p>You can see there are many layers in the Skiplist. Each layer is a sorted linked list. With the help of the top layers, add, erase and search can be faster than <code>O(n)</code>. It can be proven that the average time complexity for each operation is <code>O(log(n))</code> and space complexity is <code>O(n)</code>.</p>
+<p>See more about Skiplist: https://en.wikipedia.org/wiki/Skip_list</p>
+<p>Implement the <code>Skiplist</code> class:</p>
+<ul>
+<li><p><code>Skiplist()</code> Initializes the object of the skiplist.</p></li>
+<li><p><code>bool search(int target)</code> Returns <code>true</code> if the integer <code>target</code> exists in the Skiplist or <code>false</code> otherwise.</p></li>
+<li><p><code>void add(int num)</code> Inserts the value <code>num</code> into the SkipList.</p></li>
+<li><p><code>bool erase(int num)</code> Removes the value <code>num</code> from the Skiplist and returns <code>true</code>. If <code>num</code> does not exist in the Skiplist, do nothing and return <code>false</code>. If there exist multiple <code>num</code> values, removing any one of them is fine.</p></li>
+</ul>
+<p>Note that duplicates may exist in the Skiplist, your code needs to handle this situation.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-keyword">Input</span>
+["Skiplist", "add", "add", "add", "search", "add", "search", "erase", "erase", "search"]
+[[], [<span class="hljs-number">1</span>], [<span class="hljs-number">2</span>], [<span class="hljs-number">3</span>], [<span class="hljs-number">0</span>], [<span class="hljs-number">4</span>], [<span class="hljs-number">1</span>], [<span class="hljs-number">0</span>], [<span class="hljs-number">1</span>], [<span class="hljs-number">1</span>]]
+Output
+[<span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">false</span>, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">true</span>, <span class="hljs-keyword">false</span>, <span class="hljs-keyword">true</span>, <span class="hljs-keyword">false</span>]
+
+Explanation
+Skiplist skiplist = <span class="hljs-built_in">new</span> Skiplist();
+skiplist.<span class="hljs-keyword">add</span>(<span class="hljs-number">1</span>);
+skiplist.<span class="hljs-keyword">add</span>(<span class="hljs-number">2</span>);
+skiplist.<span class="hljs-keyword">add</span>(<span class="hljs-number">3</span>);
+skiplist.<span class="hljs-keyword">search</span>(<span class="hljs-number">0</span>); // <span class="hljs-keyword">return</span> <span class="hljs-keyword">False</span>
+skiplist.<span class="hljs-keyword">add</span>(<span class="hljs-number">4</span>);
+skiplist.<span class="hljs-keyword">search</span>(<span class="hljs-number">1</span>); // <span class="hljs-keyword">return</span> <span class="hljs-keyword">True</span>
+skiplist.erase(<span class="hljs-number">0</span>);  // <span class="hljs-keyword">return</span> <span class="hljs-keyword">False</span>, <span class="hljs-number">0</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> skiplist.
+skiplist.erase(<span class="hljs-number">1</span>);  // <span class="hljs-keyword">return</span> <span class="hljs-keyword">True</span>
+skiplist.<span class="hljs-keyword">search</span>(<span class="hljs-number">1</span>); // <span class="hljs-keyword">return</span> <span class="hljs-keyword">False</span>, <span class="hljs-number">1</span> has already been erased.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>0 &lt;= num, target &lt;= 2 * 104</code></p></li>
+<li><p>At most <code>5 * 104</code> calls will be made to <code>search</code>, <code>add</code>, and <code>erase</code>.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Skiplist</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> INIT_CAPACITY = <span class="hljs-number">8</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> minBoundary;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Node head;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> headCapacity;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> headLevel = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Node</span> </span>{
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> val;
+        <span class="hljs-keyword">private</span> Node[] next;
+
+        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-title">Node</span><span class="hljs-params">(<span class="hljs-keyword">int</span> val, <span class="hljs-keyword">int</span> level)</span> </span>{
+            <span class="hljs-keyword">this</span>.val = val;
+            next = <span class="hljs-keyword">new</span> Node[level];
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Skiplist</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">this</span>(INIT_CAPACITY);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Skiplist</span><span class="hljs-params">(<span class="hljs-keyword">int</span> size)</span> </span>{
+        <span class="hljs-keyword">if</span> (size == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException(<span class="hljs-string">"size should be greater than 0"</span>);
+        }
+        <span class="hljs-keyword">if</span> (size &lt; INIT_CAPACITY) {
+            size = INIT_CAPACITY;
+        }
+        minBoundary = size / <span class="hljs-number">2</span>;
+        headCapacity = size;
+        head = <span class="hljs-keyword">new</span> Node(<span class="hljs-number">0</span>, size);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">search</span><span class="hljs-params">(<span class="hljs-keyword">int</span> target)</span> </span>{
+        Node curr = head;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = headLevel - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            <span class="hljs-keyword">while</span> (curr.next[i] != <span class="hljs-keyword">null</span>) {
+                <span class="hljs-keyword">int</span> cmp = target - curr.next[i].val;
+                <span class="hljs-keyword">if</span> (cmp &lt; <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">break</span>;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (cmp &gt; <span class="hljs-number">0</span>) {
+                    curr = curr.next[i];
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-keyword">int</span> num)</span> </span>{
+        Node[] update = <span class="hljs-keyword">new</span> Node[headLevel + <span class="hljs-number">1</span>];
+        update[headLevel] = head;
+        buildUpdate(num, update);
+        <span class="hljs-keyword">int</span> level = getRandomLevel();
+        <span class="hljs-keyword">if</span> (level &gt; headLevel) {
+            <span class="hljs-keyword">if</span> (headLevel == headCapacity) {
+                resizeHead(<span class="hljs-number">2</span> * headCapacity);
+            }
+            headLevel++;
+        }
+        Node x = <span class="hljs-keyword">new</span> Node(num, level);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; level; i++) {
+            Node n = update[i].next[i];
+            update[i].next[i] = x;
+            x.next[i] = n;
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">erase</span><span class="hljs-params">(<span class="hljs-keyword">int</span> num)</span> </span>{
+        <span class="hljs-keyword">if</span> (headLevel == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+        }
+        Node[] update = <span class="hljs-keyword">new</span> Node[headLevel];
+        buildUpdate(num, update);
+        <span class="hljs-keyword">if</span> (update[<span class="hljs-number">0</span>].next[<span class="hljs-number">0</span>] == <span class="hljs-keyword">null</span> || update[<span class="hljs-number">0</span>].next[<span class="hljs-number">0</span>].val != num) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; headLevel; i++) {
+            <span class="hljs-keyword">if</span> (update[i].next[i] == <span class="hljs-keyword">null</span> || update[i].next[i].val != num) {
+                <span class="hljs-keyword">break</span>;
+            }
+            update[i].next[i] = update[i].next[i].next[i];
+        }
+        <span class="hljs-keyword">if</span> (head.next[headLevel - <span class="hljs-number">1</span>] == <span class="hljs-keyword">null</span>
+                &amp;&amp; --headLevel &gt;= minBoundary
+                &amp;&amp; headLevel == headCapacity / <span class="hljs-number">4</span>) {
+            resizeHead(headCapacity / <span class="hljs-number">2</span>);
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">buildUpdate</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, Node[] update)</span> </span>{
+        Node curr = head;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = headLevel - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            <span class="hljs-keyword">while</span> (curr.next[i] != <span class="hljs-keyword">null</span> &amp;&amp; curr.next[i].val &lt; x) {
+                curr = curr.next[i];
+            }
+            update[i] = curr;
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getRandomLevel</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">int</span> maxLevel = <span class="hljs-number">14</span>;
+        <span class="hljs-keyword">int</span> level = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> limit = Math.min(maxLevel, headLevel + <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">double</span> p = <span class="hljs-number">0.5</span>;
+        <span class="hljs-keyword">while</span> (Math.random() &lt; p &amp;&amp; level &lt; limit) {
+            level++;
+        }
+        <span class="hljs-keyword">return</span> level;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">resizeHead</span><span class="hljs-params">(<span class="hljs-keyword">int</span> size)</span> </span>{
+        Node[] copy = <span class="hljs-keyword">new</span> Node[size];
+        System.arraycopy(head.next, <span class="hljs-number">0</span>, copy, <span class="hljs-number">0</span>, headLevel);
+        head.next = copy;
+        headCapacity = size;
+    }
+}
+
+<span class="hljs-comment">/**
+ * Your Skiplist object will be instantiated and called as such:
+ * Skiplist obj = new Skiplist();
+ * boolean param_1 = obj.search(target);
+ * obj.add(num);
+ * boolean param_3 = obj.erase(num);
+ */</span>
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

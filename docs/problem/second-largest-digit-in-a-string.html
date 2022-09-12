@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Second Largest Digit in a String - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1796. Second Largest Digit in a String</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/remove-digit-from-number-to-maximize-result.html">Remove Digit From Number to Maximize Result</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an alphanumeric string <code>s</code>, return **the *<em>second largest</em>* numerical digit that appears in <strong><code>s</code></strong>, or <strong><code>-1</code></strong> if it does not exist**.</p>
+<p>An <strong>alphanumeric</strong>** **string is a string consisting of lowercase English letters and digits.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">s</span> <span class="hljs-string">=</span> <span class="hljs-string">"dfa12321afd"</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">2</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">The</span> <span class="hljs-string">digits</span> <span class="hljs-string">that</span> <span class="hljs-string">appear</span> <span class="hljs-string">in</span> <span class="hljs-string">s</span> <span class="hljs-string">are</span> <span class="hljs-string">[1,</span> <span class="hljs-number">2</span><span class="hljs-string">,</span> <span class="hljs-number">3</span><span class="hljs-string">].</span> <span class="hljs-string">The</span> <span class="hljs-string">second</span> <span class="hljs-string">largest</span> <span class="hljs-string">digit</span> <span class="hljs-string">is</span> <span class="hljs-number">2</span><span class="hljs-string">.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">s</span> <span class="hljs-string">=</span> <span class="hljs-string">"abc1111"</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">-1</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">The</span> <span class="hljs-string">digits</span> <span class="hljs-string">that</span> <span class="hljs-string">appear</span> <span class="hljs-string">in</span> <span class="hljs-string">s</span> <span class="hljs-string">are</span> <span class="hljs-string">[1].</span> <span class="hljs-string">There</span> <span class="hljs-string">is</span> <span class="hljs-literal">no</span> <span class="hljs-string">second</span> <span class="hljs-string">largest</span> <span class="hljs-string">digit.</span> 
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 500</code></p></li>
+<li><p><code>s</code> consists of only lowercase English letters and/or digits.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">secondHighest</span><span class="hljs-params">(String s)</span> </span>{
+        <span class="hljs-keyword">int</span> largest = -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> sl = -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> ch : s.toCharArray()) {
+            <span class="hljs-keyword">if</span> (Character.isDigit(ch)) {
+                <span class="hljs-keyword">int</span> n = ch - <span class="hljs-string">'0'</span>;
+                <span class="hljs-keyword">if</span> (n &gt; largest) {
+                    sl = largest;
+                    largest = n;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (n &gt; sl &amp;&amp; n &lt; largest) {
+                    sl = n;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> sl;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

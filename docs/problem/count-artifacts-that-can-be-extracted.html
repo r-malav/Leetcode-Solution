@@ -1,0 +1,90 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Count Artifacts That Can Be Extracted - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2201. Count Artifacts That Can Be Extracted</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/simulation">Simulation</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximal-square.html">Maximal Square</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is an <code>n x n</code> <strong>0-indexed</strong> grid with some artifacts buried in it. You are given the integer <code>n</code> and a **0-indexed **2D integer array <code>artifacts</code> describing the positions of the rectangular artifacts where <code>artifacts[i] = [r1i, c1i, r2i, c2i]</code> denotes that the <code>ith</code> artifact is buried in the subgrid where:</p>
+<ul>
+<li><p><code>(r1i, c1i)</code> is the coordinate of the <strong>top-left</strong> cell of the <code>ith</code> artifact and</p></li>
+<li><p><code>(r2i, c2i)</code> is the coordinate of the <strong>bottom-right</strong> cell of the <code>ith</code> artifact.</p></li>
+</ul>
+<p>You will excavate some cells of the grid and remove all the mud from them. If the cell has a part of an artifact buried underneath, it will be uncovered. If all the parts of an artifact are uncovered, you can extract it.</p>
+<p>Given a <strong>0-indexed</strong> 2D integer array <code>dig</code> where <code>dig[i] = [ri, ci]</code> indicates that you will excavate the cell <code>(ri, ci)</code>, return <strong>the number of artifacts that you can extract</strong>.</p>
+<p>The test cases are generated such that:</p>
+<ul>
+<li><p>No two artifacts overlap.</p></li>
+<li><p>Each artifact only covers at most <code>4</code> cells.</p></li>
+<li><p>The entries of <code>dig</code> are unique.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/09/16/untitled-diagram.jpg" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">2</span>, artifacts = [[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]], dig = [[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]]
+Output: <span class="hljs-number">1</span>
+Explanation: 
+The different colors represent different artifacts. Excavated cells are labeled with a <span class="hljs-string">'D'</span> <span class="hljs-keyword">in</span> the grid.
+There <span class="hljs-keyword">is</span> <span class="hljs-number">1</span> artifact that can be extracted, namely the red artifact.
+The blue artifact has one part <span class="hljs-keyword">in</span> cell (<span class="hljs-number">1</span>,<span class="hljs-number">1</span>) which remains uncovered, so we cannot extract it.
+Thus, we <span class="hljs-keyword">return</span> <span class="hljs-number">1.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2019/09/16/untitled-diagram-1.jpg" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">2</span>, artifacts = [[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]], dig = [[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]]
+Output: <span class="hljs-number">2</span>
+Explanation: Both the red <span class="hljs-keyword">and</span> blue artifacts have all parts uncovered (labeled with a <span class="hljs-string">'D'</span>) <span class="hljs-keyword">and</span> can be extracted, so we <span class="hljs-keyword">return</span> <span class="hljs-number">2.</span> 
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= n &lt;= 1000</code></p></li>
+<li><p><code>1 &lt;= artifacts.length, dig.length &lt;= min(n2, 105)</code></p></li>
+<li><p><code>artifacts[i].length == 4</code></p></li>
+<li><p><code>dig[i].length == 2</code></p></li>
+<li><p><code>0 &lt;= r1i, c1i, r2i, c2i, ri, ci &lt;= n - 1</code></p></li>
+<li><p><code>r1i &lt;= r2i</code></p></li>
+<li><p><code>c1i &lt;= c2i</code></p></li>
+<li><p>No two artifacts will overlap.</p></li>
+<li><p>The number of cells covered by an artifact is <strong>at most</strong> <code>4</code>.</p></li>
+<li><p>The entries of <code>dig</code> are unique.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">digArtifacts</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[][] artifacts, <span class="hljs-keyword">int</span>[][] dig)</span> </span>{
+        <span class="hljs-keyword">int</span>[][] ar = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n][n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] ints : dig) {
+            ar[ints[<span class="hljs-number">0</span>]][ints[<span class="hljs-number">1</span>]] = <span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] artifact : artifacts) {
+            <span class="hljs-keyword">int</span> x1 = artifact[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">int</span> y1 = artifact[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">int</span> x2 = artifact[<span class="hljs-number">2</span>];
+            <span class="hljs-keyword">int</span> y2 = artifact[<span class="hljs-number">3</span>];
+            <span class="hljs-keyword">int</span> flag = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">int</span> a = x1;
+            <span class="hljs-keyword">int</span> b = y1;
+            <span class="hljs-keyword">while</span> (a &lt;= x2) {
+                b = y1;
+                <span class="hljs-keyword">while</span> (b &lt;= y2) {
+                    <span class="hljs-keyword">if</span> (ar[a][b] != <span class="hljs-number">1</span>) {
+                        flag = <span class="hljs-number">1</span>;
+                        <span class="hljs-keyword">break</span>;
+                    }
+                    b++;
+                }
+                <span class="hljs-keyword">if</span> (flag == <span class="hljs-number">1</span>) {
+                    <span class="hljs-keyword">break</span>;
+                }
+                a++;
+            }
+            <span class="hljs-keyword">if</span> (a == x2 + <span class="hljs-number">1</span> &amp;&amp; b == y2 + <span class="hljs-number">1</span>) {
+                ans++;
+            }
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Difference Between Increasing Elements - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2016. Maximum Difference Between Increasing Elements</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/best-time-to-buy-and-sell-stock.html">Best Time to Buy and Sell Stock</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/two-furthest-houses-with-different-colors.html">Two Furthest Houses With Different Colors</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a <strong>0-indexed</strong> integer array <code>nums</code> of size <code>n</code>, find the <strong>maximum difference</strong> between <code>nums[i]</code> and <code>nums[j]</code> (i.e., <code>nums[j] - nums[i]</code>), such that <code>0 &lt;= i &lt; j &lt; n</code> and <code>nums[i] &lt; nums[j]</code>.</p>
+<p>Return **the *<em>maximum difference</em>*. **If no such <code>i</code> and <code>j</code> exists, return <code>-1</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">7</span>,<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">4</span>]
+Output: <span class="hljs-number">4</span>
+Explanation:
+The maximum difference occurs with i = <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> j = <span class="hljs-number">2</span>, nums[j] - nums[i] = <span class="hljs-number">5</span> - <span class="hljs-number">1</span> = <span class="hljs-number">4.</span>
+Note that with i = <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> j = <span class="hljs-number">0</span>, the difference nums[j] - nums[i] = <span class="hljs-number">7</span> - <span class="hljs-number">1</span> = <span class="hljs-number">6</span>, but i &gt; j, so it <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> valid.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">9</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>]
+Output: <span class="hljs-number">-1</span>
+Explanation:
+There <span class="hljs-keyword">is</span> no i <span class="hljs-keyword">and</span> j such that i &lt; j <span class="hljs-keyword">and</span> nums[i] &lt; nums[j].
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">10</span>]
+Output: <span class="hljs-number">9</span>
+Explanation:
+The maximum difference occurs with i = <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> j = <span class="hljs-number">3</span>, nums[j] - nums[i] = <span class="hljs-number">10</span> - <span class="hljs-number">1</span> = <span class="hljs-number">9.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == nums.length</code></p></li>
+<li><p><code>2 &lt;= n &lt;= 1000</code></p></li>
+<li><p><code>1 &lt;= nums[i] &lt;= 109</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maximumDifference</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>{
+        <span class="hljs-keyword">int</span> mini = nums[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">int</span> ans = -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nums.length - <span class="hljs-number">1</span>; i++) {
+            <span class="hljs-keyword">if</span> (nums[i] &lt; mini) {
+                mini = nums[i];
+            }
+            <span class="hljs-keyword">if</span> (nums[i + <span class="hljs-number">1</span>] - mini &gt; ans) {
+                ans = nums[i + <span class="hljs-number">1</span>] - mini;
+            }
+        }
+        <span class="hljs-keyword">return</span> ans &lt;= <span class="hljs-number">0</span> ? -<span class="hljs-number">1</span> : ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

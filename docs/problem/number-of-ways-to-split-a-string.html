@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Number of Ways to Split a String - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1573. Number of Ways to Split a String</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/split-array-with-equal-sum.html">Split Array with Equal Sum</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a binary string <code>s</code>, you can split <code>s</code> into 3 <strong>non-empty</strong> strings <code>s1</code>, <code>s2</code>, and <code>s3</code> where <code>s1 + s2 + s3 = s</code>.</p>
+<p>Return the number of ways <code>s</code> can be split such that the number of ones is the same in <code>s1</code>, <code>s2</code>, and <code>s3</code>. Since the answer may be too large, return it <strong>modulo</strong> <code>109 + 7</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"10101"</span>
+Output: <span class="hljs-number">4</span>
+Explanation: There are <span class="hljs-literal">four</span> ways <span class="hljs-built_in">to</span> <span class="hljs-built_in">split</span> s <span class="hljs-keyword">in</span> <span class="hljs-number">3</span> parts where <span class="hljs-keyword">each</span> part contain <span class="hljs-keyword">the</span> same <span class="hljs-built_in">number</span> <span class="hljs-keyword">of</span> letters <span class="hljs-string">'1'</span>.
+<span class="hljs-string">"1|010|1"</span>
+<span class="hljs-string">"1|01|01"</span>
+<span class="hljs-string">"10|10|1"</span>
+<span class="hljs-string">"10|1|01"</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> s = <span class="hljs-string">"1001"</span>
+<span class="hljs-symbol">Output:</span> <span class="hljs-number">0</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> s = <span class="hljs-string">"0000"</span>
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-number">3</span>
+Explanation: There are three ways <span class="hljs-keyword">to</span> <span class="hljs-keyword">split</span> s in <span class="hljs-number">3</span> parts.
+<span class="hljs-string">"0|0|00"</span>
+<span class="hljs-string">"0|00|0"</span>
+<span class="hljs-string">"00|0|0"</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>3 &lt;= s.length &lt;= 105</code></p></li>
+<li><p><code>s[i]</code> is either <code>'0'</code> or <code>'1'</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">numWays</span><span class="hljs-params">(String s)</span> </span>{
+        <span class="hljs-keyword">long</span> totalOnesCount = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">long</span> mod = <span class="hljs-number">1000000007</span>;
+        <span class="hljs-keyword">long</span> waysOfFirstString = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">long</span> waysOfSecondString = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">long</span> onesCount = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">long</span> n = s.length();
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+            <span class="hljs-keyword">if</span> (s.charAt(i) == <span class="hljs-string">'1'</span>) {
+                totalOnesCount += <span class="hljs-number">1</span>;
+            }
+        }
+
+        <span class="hljs-keyword">if</span> (totalOnesCount % <span class="hljs-number">3</span> != <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+
+        <span class="hljs-keyword">long</span> onesFirstPart = totalOnesCount / <span class="hljs-number">3</span>;
+        <span class="hljs-keyword">long</span> onesSecondPart = onesFirstPart * <span class="hljs-number">2</span>;
+
+        <span class="hljs-keyword">if</span> (totalOnesCount == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>) ((n - <span class="hljs-number">1</span>) * (n - <span class="hljs-number">2</span>) / <span class="hljs-number">2</span> % mod);
+        }
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+            <span class="hljs-keyword">if</span> (s.charAt(i) == <span class="hljs-string">'1'</span>) {
+                onesCount += <span class="hljs-number">1</span>;
+            }
+            <span class="hljs-keyword">if</span> (onesCount == onesFirstPart) {
+                waysOfFirstString += <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (onesCount == onesSecondPart) {
+                waysOfSecondString += <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (onesCount &gt; onesSecondPart) {
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+
+        <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>) ((waysOfFirstString * waysOfSecondString) % mod);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

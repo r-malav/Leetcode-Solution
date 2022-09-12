@@ -1,0 +1,73 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Two Out of Three - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2032. Two Out of Three</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given three integer arrays <code>nums1</code>, <code>nums2</code>, and <code>nums3</code>, return **a *<em>distinct</em>* array containing all the values that are present in <strong>at least two</strong> out of the three arrays. You may return the values in <strong>any</strong> order**.
+&nbsp;
+*<em>Example 1:</em>*</p>
+<pre><code class="hljs">Input: nums1 = [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>], nums2 = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], nums3 = [<span class="hljs-number">3</span>]
+Output: [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>]
+Explanation: The values that are present <span class="hljs-keyword">in</span> at least two <span class="hljs-built_in">array</span>s are:
+- <span class="hljs-number">3</span>, <span class="hljs-keyword">in</span> all three <span class="hljs-built_in">array</span>s.
+- <span class="hljs-number">2</span>, <span class="hljs-keyword">in</span> nums1 <span class="hljs-keyword">and</span> nums2.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums1 = [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>], nums2 = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], nums3 = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
+Output: [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]
+Explanation: The values that are present <span class="hljs-keyword">in</span> at least two <span class="hljs-built_in">array</span>s are:
+- <span class="hljs-number">2</span>, <span class="hljs-keyword">in</span> nums2 <span class="hljs-keyword">and</span> nums3.
+- <span class="hljs-number">3</span>, <span class="hljs-keyword">in</span> nums1 <span class="hljs-keyword">and</span> nums2.
+- <span class="hljs-number">1</span>, <span class="hljs-keyword">in</span> nums1 <span class="hljs-keyword">and</span> nums3.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: nums1 = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>], nums2 = [<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>], nums3 = [<span class="hljs-number">5</span>]
+Output: []
+Explanation: No value <span class="hljs-keyword">is</span> present <span class="hljs-keyword">in</span> at least two <span class="hljs-built_in">array</span>s.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= nums1.length, nums2.length, nums3.length &lt;= 100</code></p></li>
+<li><p><code>1 &lt;= nums1[i], nums2[j], nums3[k] &lt;= 100</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title">twoOutOfThree</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums1, <span class="hljs-keyword">int</span>[] nums2, <span class="hljs-keyword">int</span>[] nums3)</span> </span>{
+        Set&lt;Integer&gt; ans = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+        Set&lt;Integer&gt; set1 = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i : nums1) {
+            set1.add(i);
+        }
+        Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i : nums2) {
+            set2.add(i);
+        }
+        Set&lt;Integer&gt; set3 = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i : nums3) {
+            set3.add(i);
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j : nums1) {
+            <span class="hljs-keyword">if</span> (set2.contains(j) || set3.contains(j)) {
+                ans.add(j);
+            }
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j : nums2) {
+            <span class="hljs-keyword">if</span> (set1.contains(j) || set3.contains(j)) {
+                ans.add(j);
+            }
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j : nums3) {
+            <span class="hljs-keyword">if</span> (set1.contains(j) || set2.contains(j)) {
+                ans.add(j);
+            }
+        }
+        List&lt;Integer&gt; result = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        result.addAll(ans);
+        <span class="hljs-keyword">return</span> result;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

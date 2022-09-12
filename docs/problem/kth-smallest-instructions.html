@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Kth Smallest Instructions - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1643. Kth Smallest Instructions</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/combinatorics">Combinatorics</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Bob is standing at cell <code>(0, 0)</code>, and he wants to reach <code>destination</code>: <code>(row, column)</code>. He can only travel <strong>right</strong> and <strong>down</strong>. You are going to help Bob by providing <strong>instructions</strong> for him to reach <code>destination</code>.</p>
+<p>The <strong>instructions</strong> are represented as a string, where each character is either:</p>
+<ul>
+<li><p><code>'H'</code>, meaning move horizontally (go <strong>right</strong>), or</p></li>
+<li><p><code>'V'</code>, meaning move vertically (go <strong>down</strong>).</p></li>
+</ul>
+<p>Multiple <strong>instructions</strong> will lead Bob to <code>destination</code>. For example, if <code>destination</code> is <code>(2, 3)</code>, both <code>"HHHVV"</code> and <code>"HVHVH"</code> are valid <strong>instructions</strong>.</p>
+<p>However, Bob is very picky. Bob has a lucky number <code>k</code>, and he wants the <code>kth</code> <strong>lexicographically smallest instructions</strong> that will lead him to <code>destination</code>. <code>k</code> is <strong>1-indexed</strong>.</p>
+<p>Given an integer array <code>destination</code> and an integer <code>k</code>, return **the *<em><code>kth</code></em>* <strong>lexicographically smallest instructions</strong> that will take Bob to **<code>destination</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/10/12/ex1.png" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-string">Input:</span> destination = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], k = <span class="hljs-number">1</span>
+<span class="hljs-string">Output:</span> <span class="hljs-string">"HHHVV"</span>
+<span class="hljs-string">Explanation:</span> All the instructions that reach (<span class="hljs-number">2</span>, <span class="hljs-number">3</span>) <span class="hljs-keyword">in</span> lexicographic order are <span class="hljs-keyword">as</span> <span class="hljs-string">follows:</span>
+[<span class="hljs-string">"HHHVV"</span>, <span class="hljs-string">"HHVHV"</span>, <span class="hljs-string">"HHVVH"</span>, <span class="hljs-string">"HVHHV"</span>, <span class="hljs-string">"HVHVH"</span>, <span class="hljs-string">"HVVHH"</span>, <span class="hljs-string">"VHHHV"</span>, <span class="hljs-string">"VHHVH"</span>, <span class="hljs-string">"VHVHH"</span>, <span class="hljs-string">"VVHHH"</span>].
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/10/12/ex2.png" alt="" /></p>
+<pre><code class="hljs">Input: destination = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], k = <span class="hljs-number">2</span>
+Output: <span class="hljs-string">"HHVHV"</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/10/12/ex3.png" alt="" /></p>
+<pre><code class="hljs">Input: destination = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], k = <span class="hljs-number">3</span>
+Output: <span class="hljs-string">"HHVVH"</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>destination.length == 2</code></p></li>
+<li><p><code>1 &lt;= row, column &lt;= 15</code></p></li>
+<li><p><code>1 &lt;= k &lt;= nCr(row + column, row)</code>, where <code>nCr(a, b)</code> denotes <code>a</code> choose <code>b</code>​​​​​.</p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">kthSmallestPath</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] destination, <span class="hljs-keyword">int</span> k)</span> </span>{
+        StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();
+        <span class="hljs-keyword">int</span> v = destination[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">int</span> n = v + destination[<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">while</span> (<span class="hljs-keyword">true</span>) {
+            <span class="hljs-keyword">int</span> range = choose(--n, v);
+            <span class="hljs-keyword">if</span> (k &lt;= range) {
+                sb.append(<span class="hljs-string">'H'</span>);
+            } <span class="hljs-keyword">else</span> {
+                sb.append(<span class="hljs-string">'V'</span>);
+                v--;
+                k -= range;
+            }
+            <span class="hljs-keyword">if</span> (v == <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+                    sb.append(<span class="hljs-string">'H'</span>);
+                }
+                <span class="hljs-keyword">break</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (v == n) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt;= v; i++) {
+                    sb.append(<span class="hljs-string">'V'</span>);
+                }
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+
+        <span class="hljs-keyword">return</span> sb.toString();
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">choose</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">if</span> (n - k &lt; k) {
+            k = n - k;
+        }
+        <span class="hljs-keyword">int</span> answer = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt;= k; i++) {
+            answer = answer * (n + <span class="hljs-number">1</span> - i) / i;
+        }
+        <span class="hljs-keyword">return</span> answer;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

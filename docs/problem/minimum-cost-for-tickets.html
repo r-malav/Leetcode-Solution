@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Cost For Tickets - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>983. Minimum Cost For Tickets</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/coin-change.html">Coin Change</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You have planned some train traveling one year in advance. The days of the year in which you will travel are given as an integer array <code>days</code>. Each day is an integer from <code>1</code> to <code>365</code>.</p>
+<p>Train tickets are sold in <strong>three different ways</strong>:</p>
+<ul>
+<li><p>a <strong>1-day</strong> pass is sold for <code>costs[0]</code> dollars,</p></li>
+<li><p>a <strong>7-day</strong> pass is sold for <code>costs[1]</code> dollars, and</p></li>
+<li><p>a <strong>30-day</strong> pass is sold for <code>costs[2]</code> dollars.</p></li>
+</ul>
+<p>The passes allow that many days of consecutive travel.</p>
+<ul>
+<li>For example, if we get a <strong>7-day</strong> pass on day <code>2</code>, then we can travel for <code>7</code> days: <code>2</code>, <code>3</code>, <code>4</code>, <code>5</code>, <code>6</code>, <code>7</code>, and <code>8</code>.</li>
+</ul>
+<p>Return <strong>the minimum number of dollars you need to travel every day in the given list of days</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: days = [<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>,<span class="hljs-number">20</span>], costs = [<span class="hljs-number">2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">15</span>]
+Output: <span class="hljs-number">11</span>
+Explanation: For example, here <span class="hljs-keyword">is</span> one way to buy passes that lets you travel your travel plan:
+On day <span class="hljs-number">1</span>, you bought a <span class="hljs-number">1</span>-day pass <span class="hljs-keyword">for</span> costs[<span class="hljs-number">0</span>] = $<span class="hljs-number">2</span>, which covered day <span class="hljs-number">1.</span>
+On day <span class="hljs-number">3</span>, you bought a <span class="hljs-number">7</span>-day pass <span class="hljs-keyword">for</span> costs[<span class="hljs-number">1</span>] = $<span class="hljs-number">7</span>, which covered days <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, ..., <span class="hljs-number">9.</span>
+On day <span class="hljs-number">20</span>, you bought a <span class="hljs-number">1</span>-day pass <span class="hljs-keyword">for</span> costs[<span class="hljs-number">0</span>] = $<span class="hljs-number">2</span>, which covered day <span class="hljs-number">20.</span>
+In total, you spent $<span class="hljs-number">11</span> <span class="hljs-keyword">and</span> covered all the days of your travel.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: days = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span>,<span class="hljs-number">10</span>,<span class="hljs-number">30</span>,<span class="hljs-number">31</span>], costs = [<span class="hljs-number">2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">15</span>]
+Output: <span class="hljs-number">17</span>
+Explanation: For example, here <span class="hljs-keyword">is</span> one way to buy passes that lets you travel your travel plan:
+On day <span class="hljs-number">1</span>, you bought a <span class="hljs-number">30</span>-day pass <span class="hljs-keyword">for</span> costs[<span class="hljs-number">2</span>] = $<span class="hljs-number">15</span> which covered days <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, ..., <span class="hljs-number">30.</span>
+On day <span class="hljs-number">31</span>, you bought a <span class="hljs-number">1</span>-day pass <span class="hljs-keyword">for</span> costs[<span class="hljs-number">0</span>] = $<span class="hljs-number">2</span> which covered day <span class="hljs-number">31.</span>
+In total, you spent $<span class="hljs-number">17</span> <span class="hljs-keyword">and</span> covered all the days of your travel.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= days.length &lt;= 365</code></p></li>
+<li><p><code>1 &lt;= days[i] &lt;= 365</code></p></li>
+<li><p><code>days</code> is in strictly increasing order.</p></li>
+<li><p><code>costs.length == 3</code></p></li>
+<li><p><code>1 &lt;= costs[i] &lt;= 1000</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">mincostTickets</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] days, <span class="hljs-keyword">int</span>[] costs)</span> </span>{
+        <span class="hljs-keyword">int</span>[] memo = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[days.length + <span class="hljs-number">1</span>];
+        memo[memo.length - <span class="hljs-number">1</span>] = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = days.length - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            memo[i] =
+                    Math.min(
+                            Math.min(
+                                    costs[<span class="hljs-number">0</span>] + memo[getNext(days, i, days[i])],
+                                    costs[<span class="hljs-number">1</span>] + memo[getNext(days, i, days[i] + <span class="hljs-number">6</span>)]),
+                            costs[<span class="hljs-number">2</span>] + memo[getNext(days, i, days[i] + <span class="hljs-number">29</span>)]);
+        }
+        <span class="hljs-keyword">return</span> memo[<span class="hljs-number">0</span>];
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getNext</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] days, <span class="hljs-keyword">int</span> index, <span class="hljs-keyword">int</span> goodUntil)</span> </span>{
+        <span class="hljs-keyword">while</span> (index &lt; days.length &amp;&amp; days[index] &lt;= goodUntil) {
+            index++;
+        }
+        <span class="hljs-keyword">return</span> index;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

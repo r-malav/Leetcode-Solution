@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Longest Ideal Subsequence - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2370. Longest Ideal Subsequence</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/longest-increasing-subsequence.html">Longest Increasing Subsequence</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a string <code>s</code> consisting of lowercase letters and an integer <code>k</code>. We call a string <code>t</code> <strong>ideal</strong> if the following conditions are satisfied:</p>
+<ul>
+<li><p><code>t</code> is a <strong>subsequence</strong> of the string <code>s</code>.</p></li>
+<li><p>The absolute difference in the alphabet order of every two <strong>adjacent</strong> letters in <code>t</code> is less than or equal to <code>k</code>.</p></li>
+</ul>
+<p>Return **the length of the *<em>longest</em>* ideal string**.</p>
+<p>A <strong>subsequence</strong> is a string that can be derived from another string by deleting some or no characters without changing the order of the remaining characters.</p>
+<p><strong>Note</strong> that the alphabet order is not cyclic. For example, the absolute difference in the alphabet order of <code>'a'</code> and <code>'z'</code> is <code>25</code>, not <code>1</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"acfgbd"</span>, k = 2
+Output: 4
+Explanation: The longest ideal string is <span class="hljs-string">"acbd"</span>. The length of this string is 4, so 4 is returned.<span class="hljs-built_in">
+Note </span>that <span class="hljs-string">"acfgbd"</span> is <span class="hljs-keyword">not</span> ideal because <span class="hljs-string">'c'</span> <span class="hljs-keyword">and</span> <span class="hljs-string">'f'</span> have a difference of 3 <span class="hljs-keyword">in</span> alphabet order.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: s = <span class="hljs-string">"abcd"</span>, k = <span class="hljs-number">3</span>
+Output: <span class="hljs-number">4</span>
+Explanation: The longest ideal <span class="hljs-built_in">string</span> <span class="hljs-keyword">is</span> <span class="hljs-string">"abcd"</span>. The length of <span class="hljs-keyword">this</span> <span class="hljs-built_in">string</span> <span class="hljs-keyword">is</span> <span class="hljs-number">4</span>, so <span class="hljs-number">4</span> <span class="hljs-keyword">is</span> returned.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= s.length &lt;= 105</code></p></li>
+<li><p><code>0 &lt;= k &lt;= 25</code></p></li>
+<li><p><code>s</code> consists of lowercase English letters.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">longestIdealString</span><span class="hljs-params">(String s, <span class="hljs-keyword">int</span> k)</span> </span>{
+        <span class="hljs-keyword">int</span> ans = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span>[] array = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">26</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+            <span class="hljs-keyword">int</span> curr = s.charAt(i) - <span class="hljs-string">'a'</span>;
+            <span class="hljs-keyword">int</span> currans = <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">int</span> temp = k;
+            array[curr] += <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">int</span> j = curr - <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">while</span> (temp &gt; <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">if</span> (j == -<span class="hljs-number">1</span>) {
+                    <span class="hljs-keyword">break</span>;
+                }
+                currans = Math.max(currans, array[j] + <span class="hljs-number">1</span>);
+                temp--;
+                <span class="hljs-keyword">if</span> (j == <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">break</span>;
+                }
+                j--;
+            }
+            temp = k;
+            j = curr + <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">while</span> (temp &gt; <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">if</span> (j == <span class="hljs-number">26</span>) {
+                    <span class="hljs-keyword">break</span>;
+                }
+                currans = Math.max(currans, array[j] + <span class="hljs-number">1</span>);
+                temp--;
+                <span class="hljs-keyword">if</span> (j == <span class="hljs-number">25</span>) {
+                    <span class="hljs-keyword">break</span>;
+                }
+                j++;
+            }
+            array[curr] = Math.max(currans, array[curr]);
+            ans = Math.max(ans, array[curr]);
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

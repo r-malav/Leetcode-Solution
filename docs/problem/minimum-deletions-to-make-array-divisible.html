@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Minimum Deletions to Make Array Divisible - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2344. Minimum Deletions to Make Array Divisible</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/heap-priority-queue">Heap (Priority Queue)</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/number-theory">Number Theory</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/check-if-array-pairs-are-divisible-by-k.html">Check If Array Pairs Are Divisible by k</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given two positive integer arrays <code>nums</code> and <code>numsDivide</code>. You can delete any number of elements from <code>nums</code>.</p>
+<p>Return **the *<em>minimum</em>* number of deletions such that the <strong>smallest</strong> element in <strong><code>nums</code></strong> <strong>divides</strong> all the elements of **<code>numsDivide</code>. If this is not possible, return <code>-1</code>.</p>
+<p>Note that an integer <code>x</code> divides <code>y</code> if <code>y % x == 0</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>], numsDivide = [<span class="hljs-number">9</span>,<span class="hljs-number">6</span>,<span class="hljs-number">9</span>,<span class="hljs-number">3</span>,<span class="hljs-number">15</span>]
+Output: <span class="hljs-number">2</span>
+Explanation: 
+The smallest element <span class="hljs-keyword">in</span> [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>] <span class="hljs-keyword">is</span> <span class="hljs-number">2</span>, which does <span class="hljs-keyword">not</span> divide all the elements of numsDivide.
+We use <span class="hljs-number">2</span> deletions to delete the elements <span class="hljs-keyword">in</span> nums that are equal to <span class="hljs-number">2</span> which makes nums = [<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>].
+The smallest element <span class="hljs-keyword">in</span> [<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>] <span class="hljs-keyword">is</span> <span class="hljs-number">3</span>, which divides all the elements of numsDivide.
+It can be shown that <span class="hljs-number">2</span> <span class="hljs-keyword">is</span> the minimum number of deletions needed.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>], numsDivide = [<span class="hljs-number">8</span>,<span class="hljs-number">2</span>,<span class="hljs-number">6</span>,<span class="hljs-number">10</span>]
+Output: <span class="hljs-number">-1</span>
+Explanation: 
+We want the smallest element <span class="hljs-keyword">in</span> nums to divide all the elements of numsDivide.
+There <span class="hljs-keyword">is</span> no way to delete elements <span class="hljs-keyword">from</span> nums to allow <span class="hljs-keyword">this</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= nums.length, numsDivide.length &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= nums[i], numsDivide[i] &lt;= 109</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minOperations</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span>[] numsDivide)</span> </span>{
+        <span class="hljs-keyword">int</span> g = numsDivide[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i : numsDivide) {
+            g = gcd(g, i);
+        }
+        <span class="hljs-keyword">int</span> minOp = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> smallest = Integer.MAX_VALUE;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> num : nums) {
+            <span class="hljs-keyword">if</span> (g % num == <span class="hljs-number">0</span>) {
+                smallest = Math.min(smallest, num);
+            }
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> num : nums) {
+            <span class="hljs-keyword">if</span> (num &lt; smallest) {
+                ++minOp;
+            }
+        }
+        <span class="hljs-keyword">return</span> smallest == Integer.MAX_VALUE ? -<span class="hljs-number">1</span> : minOp;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">gcd</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a, <span class="hljs-keyword">int</span> b)</span> </span>{
+        <span class="hljs-keyword">while</span> (b &gt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">int</span> tmp = a;
+            a = b;
+            b = tmp % b;
+        }
+        <span class="hljs-keyword">return</span> a;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

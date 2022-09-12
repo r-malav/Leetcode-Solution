@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Rearrange Array Elements by Sign - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2149. Rearrange Array Elements by Sign</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/two-pointers">Two Pointers</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/simulation">Simulation</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/wiggle-subsequence.html">Wiggle Subsequence</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/sort-array-by-parity-ii.html">Sort Array By Parity II</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/partition-array-according-to-given-pivot.html">Partition Array According to Given Pivot</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/largest-number-after-digit-swaps-by-parity.html">Largest Number After Digit Swaps by Parity</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given a <strong>0-indexed</strong> integer array <code>nums</code> of <strong>even</strong> length consisting of an <strong>equal</strong> number of positive and negative integers.</p>
+<p>You should <strong>rearrange</strong> the elements of <code>nums</code> such that the modified array follows the given conditions:</p>
+<ul>
+<li><p>Every <strong>consecutive pair</strong> of integers have <strong>opposite signs</strong>.</p></li>
+<li><p>For all integers with the same sign, the <strong>order</strong> in which they were present in <code>nums</code> is <strong>preserved</strong>.</p></li>
+<li><p>The rearranged array begins with a positive integer.</p></li>
+</ul>
+<p>Return <strong>the modified array after rearranging the elements to satisfy the aforementioned conditions</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">-5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">-4</span>]
+Output: [<span class="hljs-number">3</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">-5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">-4</span>]
+Explanation:
+The positive <span class="hljs-built_in">int</span>egers <span class="hljs-keyword">in</span> nums are [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]. The negative <span class="hljs-built_in">int</span>egers are [<span class="hljs-number">-2</span>,<span class="hljs-number">-5</span>,<span class="hljs-number">-4</span>].
+The only possible way to rearrange them such that they satisfy all conditions <span class="hljs-keyword">is</span> [<span class="hljs-number">3</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">-5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">-4</span>].
+Other ways such as [<span class="hljs-number">1</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">-5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">-4</span>], [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">-5</span>,<span class="hljs-number">-4</span>], [<span class="hljs-number">-2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">-5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">-4</span>,<span class="hljs-number">2</span>] are incorrect because they <span class="hljs-keyword">do</span> <span class="hljs-keyword">not</span> satisfy one <span class="hljs-keyword">or</span> more conditions.  
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">-1</span>,<span class="hljs-number">1</span>]
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">-1</span>]
+Explanation:
+<span class="hljs-number">1</span> <span class="hljs-keyword">is</span> the only positive <span class="hljs-built_in">int</span>eger <span class="hljs-keyword">and</span> <span class="hljs-number">-1</span> the only negative <span class="hljs-built_in">int</span>eger <span class="hljs-keyword">in</span> nums.
+So nums <span class="hljs-keyword">is</span> rearranged to [<span class="hljs-number">1</span>,<span class="hljs-number">-1</span>].
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>2 &lt;= nums.length &lt;= 2 * 105</code></p></li>
+<li><p><code>nums.length</code> is <strong>even</strong></p></li>
+<li><p><code>1 &lt;= |nums[i]| &lt;= 105</code></p></li>
+<li><p><code>nums</code> consists of <strong>equal</strong> number of positive and negative integers.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] rearrangeArray(<span class="hljs-keyword">int</span>[] nums) {
+        <span class="hljs-keyword">int</span>[] negatives = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[nums.length / <span class="hljs-number">2</span>];
+        <span class="hljs-keyword">int</span>[] positives = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[nums.length / <span class="hljs-number">2</span>];
+        <span class="hljs-keyword">int</span>[] result = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[nums.length];
+        <span class="hljs-keyword">int</span> pPtr = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> nPtr = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> rPtr = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> num : nums) {
+            <span class="hljs-keyword">if</span> (num &gt; <span class="hljs-number">0</span>) {
+                positives[pPtr++] = num;
+            } <span class="hljs-keyword">else</span> {
+                negatives[nPtr++] = num;
+            }
+        }
+        pPtr = <span class="hljs-number">0</span>;
+        nPtr = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (pPtr &lt; positives.length &amp;&amp; nPtr &lt; negatives.length) {
+            result[rPtr++] = positives[pPtr++];
+            result[rPtr++] = negatives[nPtr++];
+        }
+        <span class="hljs-keyword">return</span> result;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

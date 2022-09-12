@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Robot Bounded In Circle - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1041. Robot Bounded In Circle</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/simulation">Simulation</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>On an infinite plane, a robot initially stands at <code>(0, 0)</code> and faces north. Note that:</p>
+<ul>
+<li><p>The <strong>north direction</strong> is the positive direction of the y-axis.</p></li>
+<li><p>The <strong>south direction</strong> is the negative direction of the y-axis.</p></li>
+<li><p>The <strong>east direction</strong> is the positive direction of the x-axis.</p></li>
+<li><p>The <strong>west direction</strong> is the negative direction of the x-axis.</p></li>
+</ul>
+<p>The robot can receive one of three instructions:</p>
+<ul>
+<li><p><code>"G"</code>: go straight 1 unit.</p></li>
+<li><p><code>"L"</code>: turn 90 degrees to the left (i.e., anti-clockwise direction).</p></li>
+<li><p><code>"R"</code>: turn 90 degrees to the right (i.e., clockwise direction).</p></li>
+</ul>
+<p>The robot performs the <code>instructions</code> given in order, and repeats them forever.</p>
+<p>Return <code>true</code> if and only if there exists a circle in the plane such that the robot never leaves the circle.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">instructions</span> <span class="hljs-string">=</span> <span class="hljs-string">"GGLLGG"</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">The</span> <span class="hljs-string">robot</span> <span class="hljs-string">is</span> <span class="hljs-string">initially</span> <span class="hljs-string">at</span> <span class="hljs-string">(0,</span> <span class="hljs-number">0</span><span class="hljs-string">)</span> <span class="hljs-string">facing</span> <span class="hljs-string">the</span> <span class="hljs-string">north</span> <span class="hljs-string">direction.</span>
+<span class="hljs-attr">"G":</span> <span class="hljs-attr">move one step. Position:</span> <span class="hljs-string">(0,</span> <span class="hljs-number">1</span><span class="hljs-string">).</span> <span class="hljs-attr">Direction:</span> <span class="hljs-string">North.</span>
+<span class="hljs-attr">"G":</span> <span class="hljs-attr">move one step. Position:</span> <span class="hljs-string">(0,</span> <span class="hljs-number">2</span><span class="hljs-string">).</span> <span class="hljs-attr">Direction:</span> <span class="hljs-string">North.</span>
+<span class="hljs-attr">"L":</span> <span class="hljs-attr">turn 90 degrees anti-clockwise. Position:</span> <span class="hljs-string">(0,</span> <span class="hljs-number">2</span><span class="hljs-string">).</span> <span class="hljs-attr">Direction:</span> <span class="hljs-string">West.</span>
+<span class="hljs-attr">"L":</span> <span class="hljs-attr">turn 90 degrees anti-clockwise. Position:</span> <span class="hljs-string">(0,</span> <span class="hljs-number">2</span><span class="hljs-string">).</span> <span class="hljs-attr">Direction:</span> <span class="hljs-string">South.</span>
+<span class="hljs-attr">"G":</span> <span class="hljs-attr">move one step. Position:</span> <span class="hljs-string">(0,</span> <span class="hljs-number">1</span><span class="hljs-string">).</span> <span class="hljs-attr">Direction:</span> <span class="hljs-string">South.</span>
+<span class="hljs-attr">"G":</span> <span class="hljs-attr">move one step. Position:</span> <span class="hljs-string">(0,</span> <span class="hljs-number">0</span><span class="hljs-string">).</span> <span class="hljs-attr">Direction:</span> <span class="hljs-string">South.</span>
+<span class="hljs-string">Repeating</span> <span class="hljs-string">the</span> <span class="hljs-string">instructions,</span> <span class="hljs-attr">the robot goes into the cycle:</span> <span class="hljs-string">(0,</span> <span class="hljs-number">0</span><span class="hljs-string">)</span> <span class="hljs-string">--&gt;</span> <span class="hljs-string">(0,</span> <span class="hljs-number">1</span><span class="hljs-string">)</span> <span class="hljs-string">--&gt;</span> <span class="hljs-string">(0,</span> <span class="hljs-number">2</span><span class="hljs-string">)</span> <span class="hljs-string">--&gt;</span> <span class="hljs-string">(0,</span> <span class="hljs-number">1</span><span class="hljs-string">)</span> <span class="hljs-string">--&gt;</span> <span class="hljs-string">(0,</span> <span class="hljs-number">0</span><span class="hljs-string">).</span>
+<span class="hljs-string">Based</span> <span class="hljs-string">on</span> <span class="hljs-string">that,</span> <span class="hljs-string">we</span> <span class="hljs-string">return</span> <span class="hljs-literal">true</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> <span class="hljs-keyword">instructions </span>= <span class="hljs-string">"GG"</span>
+<span class="hljs-symbol">Output:</span> false
+<span class="hljs-symbol">Explanation:</span> The robot is initially <span class="hljs-built_in">at</span> (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>) facing the <span class="hljs-keyword">north </span><span class="hljs-keyword">direction.
+</span><span class="hljs-string">"G"</span>: <span class="hljs-keyword">move </span>one step. Position: (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>). <span class="hljs-keyword">Direction: </span><span class="hljs-keyword">North.
+</span><span class="hljs-string">"G"</span>: <span class="hljs-keyword">move </span>one step. Position: (<span class="hljs-number">0</span>, <span class="hljs-number">2</span>). <span class="hljs-keyword">Direction: </span><span class="hljs-keyword">North.
+</span>Repeating the <span class="hljs-keyword">instructions, </span>keeps advancing in the <span class="hljs-keyword">north </span><span class="hljs-keyword">direction </span><span class="hljs-keyword">and </span>does not go into cycles.
+<span class="hljs-keyword">Based </span>on that, we return false.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">instructions</span> <span class="hljs-string">=</span> <span class="hljs-string">"GL"</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">The</span> <span class="hljs-string">robot</span> <span class="hljs-string">is</span> <span class="hljs-string">initially</span> <span class="hljs-string">at</span> <span class="hljs-string">(0,</span> <span class="hljs-number">0</span><span class="hljs-string">)</span> <span class="hljs-string">facing</span> <span class="hljs-string">the</span> <span class="hljs-string">north</span> <span class="hljs-string">direction.</span>
+<span class="hljs-attr">"G":</span> <span class="hljs-attr">move one step. Position:</span> <span class="hljs-string">(0,</span> <span class="hljs-number">1</span><span class="hljs-string">).</span> <span class="hljs-attr">Direction:</span> <span class="hljs-string">North.</span>
+<span class="hljs-attr">"L":</span> <span class="hljs-attr">turn 90 degrees anti-clockwise. Position:</span> <span class="hljs-string">(0,</span> <span class="hljs-number">1</span><span class="hljs-string">).</span> <span class="hljs-attr">Direction:</span> <span class="hljs-string">West.</span>
+<span class="hljs-attr">"G":</span> <span class="hljs-attr">move one step. Position:</span> <span class="hljs-string">(-1,</span> <span class="hljs-number">1</span><span class="hljs-string">).</span> <span class="hljs-attr">Direction:</span> <span class="hljs-string">West.</span>
+<span class="hljs-attr">"L":</span> <span class="hljs-attr">turn 90 degrees anti-clockwise. Position:</span> <span class="hljs-string">(-1,</span> <span class="hljs-number">1</span><span class="hljs-string">).</span> <span class="hljs-attr">Direction:</span> <span class="hljs-string">South.</span>
+<span class="hljs-attr">"G":</span> <span class="hljs-attr">move one step. Position:</span> <span class="hljs-string">(-1,</span> <span class="hljs-number">0</span><span class="hljs-string">).</span> <span class="hljs-attr">Direction:</span> <span class="hljs-string">South.</span>
+<span class="hljs-attr">"L":</span> <span class="hljs-attr">turn 90 degrees anti-clockwise. Position:</span> <span class="hljs-string">(-1,</span> <span class="hljs-number">0</span><span class="hljs-string">).</span> <span class="hljs-attr">Direction:</span> <span class="hljs-string">East.</span>
+<span class="hljs-attr">"G":</span> <span class="hljs-attr">move one step. Position:</span> <span class="hljs-string">(0,</span> <span class="hljs-number">0</span><span class="hljs-string">).</span> <span class="hljs-attr">Direction:</span> <span class="hljs-string">East.</span>
+<span class="hljs-attr">"L":</span> <span class="hljs-attr">turn 90 degrees anti-clockwise. Position:</span> <span class="hljs-string">(0,</span> <span class="hljs-number">0</span><span class="hljs-string">).</span> <span class="hljs-attr">Direction:</span> <span class="hljs-string">North.</span>
+<span class="hljs-string">Repeating</span> <span class="hljs-string">the</span> <span class="hljs-string">instructions,</span> <span class="hljs-attr">the robot goes into the cycle:</span> <span class="hljs-string">(0,</span> <span class="hljs-number">0</span><span class="hljs-string">)</span> <span class="hljs-string">--&gt;</span> <span class="hljs-string">(0,</span> <span class="hljs-number">1</span><span class="hljs-string">)</span> <span class="hljs-string">--&gt;</span> <span class="hljs-string">(-1,</span> <span class="hljs-number">1</span><span class="hljs-string">)</span> <span class="hljs-string">--&gt;</span> <span class="hljs-string">(-1,</span> <span class="hljs-number">0</span><span class="hljs-string">)</span> <span class="hljs-string">--&gt;</span> <span class="hljs-string">(0,</span> <span class="hljs-number">0</span><span class="hljs-string">).</span>
+<span class="hljs-string">Based</span> <span class="hljs-string">on</span> <span class="hljs-string">that,</span> <span class="hljs-string">we</span> <span class="hljs-string">return</span> <span class="hljs-literal">true</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= instructions.length &lt;= 100</code></p></li>
+<li><p><code>instructions[i]</code> is <code>'G'</code>, <code>'L'</code> or, <code>'R'</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isRobotBounded</span><span class="hljs-params">(String instructions)</span> </span>{
+        <span class="hljs-keyword">int</span>[][] dir = {{<span class="hljs-number">0</span>, <span class="hljs-number">1</span>}, {-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>}, {<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}};
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> x = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> y = <span class="hljs-number">0</span>;
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> s = <span class="hljs-number">0</span>; s &lt; instructions.length(); s++) {
+            <span class="hljs-keyword">if</span> (instructions.charAt(s) == <span class="hljs-string">'L'</span>) {
+                i = (i + <span class="hljs-number">1</span>) % <span class="hljs-number">4</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (instructions.charAt(s) == <span class="hljs-string">'R'</span>) {
+                i = (i + <span class="hljs-number">3</span>) % <span class="hljs-number">4</span>;
+            } <span class="hljs-keyword">else</span> {
+                x = x + dir[i][<span class="hljs-number">0</span>];
+                y = y + dir[i][<span class="hljs-number">1</span>];
+            }
+        }
+        <span class="hljs-keyword">return</span> x == <span class="hljs-number">0</span> &amp;&amp; y == <span class="hljs-number">0</span> || i != <span class="hljs-number">0</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Design Bitset - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2166. Design Bitset</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/design">Design</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/design-underground-system.html">Design Underground System</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A <strong>Bitset</strong> is a data structure that compactly stores bits.</p>
+<p>Implement the <code>Bitset</code> class:</p>
+<ul>
+<li><p><code>Bitset(int size)</code> Initializes the Bitset with <code>size</code> bits, all of which are <code>0</code>.</p></li>
+<li><p><code>void fix(int idx)</code> Updates the value of the bit at the index <code>idx</code> to <code>1</code>. If the value was already <code>1</code>, no change occurs.</p></li>
+<li><p><code>void unfix(int idx)</code> Updates the value of the bit at the index <code>idx</code> to <code>0</code>. If the value was already <code>0</code>, no change occurs.</p></li>
+<li><p><code>void flip()</code> Flips the values of each bit in the Bitset. In other words, all bits with value <code>0</code> will now have value <code>1</code> and vice versa.</p></li>
+<li><p><code>boolean all()</code> Checks if the value of <strong>each</strong> bit in the Bitset is <code>1</code>. Returns <code>true</code> if it satisfies the condition, <code>false</code> otherwise.</p></li>
+<li><p><code>boolean one()</code> Checks if there is <strong>at least one</strong> bit in the Bitset with value <code>1</code>. Returns <code>true</code> if it satisfies the condition, <code>false</code> otherwise.</p></li>
+<li><p><code>int count()</code> Returns the <strong>total number</strong> of bits in the Bitset which have value <code>1</code>.</p></li>
+<li><p><code>String toString()</code> Returns the current composition of the Bitset. Note that in the resultant string, the character at the <code>ith</code> index should coincide with the value at the <code>ith</code> bit of the Bitset.</p></li>
+</ul>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-keyword">Input</span>
+["Bitset", "fix", "fix", "flip", "all", "unfix", "flip", "one", "unfix", "count", "toString"]
+[[<span class="hljs-number">5</span>], [<span class="hljs-number">3</span>], [<span class="hljs-number">1</span>], [], [], [<span class="hljs-number">0</span>], [], [], [<span class="hljs-number">0</span>], [], []]
+Output
+[<span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">false</span>, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">true</span>, <span class="hljs-keyword">null</span>, <span class="hljs-number">2</span>, "01010"]
+
+Explanation
+Bitset bs = <span class="hljs-built_in">new</span> Bitset(<span class="hljs-number">5</span>); // bitset = "00000".
+bs.fix(<span class="hljs-number">3</span>);     // the <span class="hljs-keyword">value</span> at idx = <span class="hljs-number">3</span> <span class="hljs-keyword">is</span> updated <span class="hljs-keyword">to</span> <span class="hljs-number">1</span>, so bitset = "00010".
+bs.fix(<span class="hljs-number">1</span>);     // the <span class="hljs-keyword">value</span> at idx = <span class="hljs-number">1</span> <span class="hljs-keyword">is</span> updated <span class="hljs-keyword">to</span> <span class="hljs-number">1</span>, so bitset = "01010". 
+bs.flip();     // the <span class="hljs-keyword">value</span> <span class="hljs-keyword">of</span> <span class="hljs-keyword">each</span> <span class="hljs-type">bit</span> <span class="hljs-keyword">is</span> flipped, so bitset = "10101". 
+bs.<span class="hljs-keyword">all</span>();      // <span class="hljs-keyword">return</span> <span class="hljs-keyword">False</span>, <span class="hljs-keyword">as</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">all</span> <span class="hljs-keyword">values</span> <span class="hljs-keyword">of</span> the bitset are <span class="hljs-number">1.</span>
+bs.unfix(<span class="hljs-number">0</span>);   // the <span class="hljs-keyword">value</span> at idx = <span class="hljs-number">0</span> <span class="hljs-keyword">is</span> updated <span class="hljs-keyword">to</span> <span class="hljs-number">0</span>, so bitset = "00101".
+bs.flip();     // the <span class="hljs-keyword">value</span> <span class="hljs-keyword">of</span> <span class="hljs-keyword">each</span> <span class="hljs-type">bit</span> <span class="hljs-keyword">is</span> flipped, so bitset = "11010". 
+bs.one();      // <span class="hljs-keyword">return</span> <span class="hljs-keyword">True</span>, <span class="hljs-keyword">as</span> there <span class="hljs-keyword">is</span> at least <span class="hljs-number">1</span> <span class="hljs-keyword">index</span> <span class="hljs-keyword">with</span> <span class="hljs-keyword">value</span> <span class="hljs-number">1.</span>
+bs.unfix(<span class="hljs-number">0</span>);   // the <span class="hljs-keyword">value</span> at idx = <span class="hljs-number">0</span> <span class="hljs-keyword">is</span> updated <span class="hljs-keyword">to</span> <span class="hljs-number">0</span>, so bitset = "01010".
+bs.count();    // <span class="hljs-keyword">return</span> <span class="hljs-number">2</span>, <span class="hljs-keyword">as</span> there are <span class="hljs-number">2</span> bits <span class="hljs-keyword">with</span> <span class="hljs-keyword">value</span> <span class="hljs-number">1.</span>
+bs.toString(); // <span class="hljs-keyword">return</span> "01010", which <span class="hljs-keyword">is</span> the composition <span class="hljs-keyword">of</span> bitset.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= size &lt;= 105</code></p></li>
+<li><p><code>0 &lt;= idx &lt;= size - 1</code></p></li>
+<li><p>At most <code>105</code> calls will be made <strong>in total</strong> to <code>fix</code>, <code>unfix</code>, <code>flip</code>, <code>all</code>, <code>one</code>, <code>count</code>, and <code>toString</code>.</p></li>
+<li><p>At least one call will be made to <code>all</code>, <code>one</code>, <code>count</code>, or <code>toString</code>.</p></li>
+<li><p>At most <code>5</code> calls will be made to <code>toString</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Bitset</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span>[] bits;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span>[] flipped;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> sz;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> cnt;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Bitset</span><span class="hljs-params">(<span class="hljs-keyword">int</span> size)</span> </span>{
+        sz = size;
+        bits = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[size];
+        flipped = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[size];
+        Arrays.fill(flipped, <span class="hljs-keyword">true</span>);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">fix</span><span class="hljs-params">(<span class="hljs-keyword">int</span> idx)</span> </span>{
+        <span class="hljs-keyword">if</span> (!bits[idx]) {
+            bits[idx] ^= <span class="hljs-keyword">true</span>;
+            flipped[idx] ^= <span class="hljs-keyword">true</span>;
+            cnt += <span class="hljs-number">1</span>;
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">unfix</span><span class="hljs-params">(<span class="hljs-keyword">int</span> idx)</span> </span>{
+        <span class="hljs-keyword">if</span> (bits[idx]) {
+            bits[idx] ^= <span class="hljs-keyword">true</span>;
+            flipped[idx] ^= <span class="hljs-keyword">true</span>;
+            cnt -= <span class="hljs-number">1</span>;
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">flip</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">boolean</span>[] tmp = bits;
+        bits = flipped;
+        flipped = tmp;
+        cnt = sz - cnt;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">all</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> cnt == sz;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">one</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> cnt &gt; <span class="hljs-number">0</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">count</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> cnt;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">toString</span><span class="hljs-params">()</span> </span>{
+        StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">boolean</span> b : bits) {
+            sb.append(b ? <span class="hljs-string">'1'</span> : <span class="hljs-string">'0'</span>);
+        }
+        <span class="hljs-keyword">return</span> sb.toString();
+    }
+}
+
+<span class="hljs-comment">/**
+ * Your Bitset object will be instantiated and called as such:
+ * Bitset obj = new Bitset(size);
+ * obj.fix(idx);
+ * obj.unfix(idx);
+ * obj.flip();
+ * boolean param_4 = obj.all();
+ * boolean param_5 = obj.one();
+ * int param_6 = obj.count();
+ * String param_7 = obj.toString();
+ */</span>
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

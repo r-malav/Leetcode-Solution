@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Sort an Array - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>912. Sort an Array</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/divide-and-conquer">Divide and Conquer</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/heap-priority-queue">Heap (Priority Queue)</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/merge-sort">Merge Sort</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bucket-sort">Bucket Sort</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/radix-sort">Radix Sort</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/counting-sort">Counting Sort</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given an array of integers <code>nums</code>, sort the array in ascending order.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>]
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]
+Output: [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= nums.length &lt;= 5 * 104</code></p></li>
+<li><p><code>-5 * 104 &lt;= nums[i] &lt;= 5 * 104</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] sortArray(<span class="hljs-keyword">int</span>[] nums) {
+        <span class="hljs-keyword">return</span> mergeSort(nums, <span class="hljs-number">0</span>, nums.length - <span class="hljs-number">1</span>);
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] mergeSort(<span class="hljs-keyword">int</span>[] arr, <span class="hljs-keyword">int</span> lo, <span class="hljs-keyword">int</span> hi) {
+        <span class="hljs-keyword">if</span> (lo == hi) {
+            <span class="hljs-keyword">int</span>[] sortedArr = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">1</span>];
+            sortedArr[<span class="hljs-number">0</span>] = arr[lo];
+            <span class="hljs-keyword">return</span> sortedArr;
+        }
+        <span class="hljs-keyword">int</span> mid = (lo + hi) / <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">int</span>[] leftArray = mergeSort(arr, lo, mid);
+        <span class="hljs-keyword">int</span>[] rightArray = mergeSort(arr, mid + <span class="hljs-number">1</span>, hi);
+        <span class="hljs-keyword">return</span> mergeSortedArray(leftArray, rightArray);
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] mergeSortedArray(<span class="hljs-keyword">int</span>[] a, <span class="hljs-keyword">int</span>[] b) {
+        <span class="hljs-keyword">int</span>[] ans = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[a.length + b.length];
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> k = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (i &lt; a.length &amp;&amp; j &lt; b.length) {
+            <span class="hljs-keyword">if</span> (a[i] &lt; b[j]) {
+                ans[k++] = a[i++];
+            } <span class="hljs-keyword">else</span> {
+                ans[k++] = b[j++];
+            }
+        }
+        <span class="hljs-keyword">while</span> (i &lt; a.length) {
+            ans[k++] = a[i++];
+        }
+        <span class="hljs-keyword">while</span> (j &lt; b.length) {
+            ans[k++] = b[j++];
+        }
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

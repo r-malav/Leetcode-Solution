@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Make Two Arrays Equal by Reversing Sub-arrays - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1460. Make Two Arrays Equal by Reversing Sub-arrays</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given two integer arrays of equal length <code>target</code> and <code>arr</code>. In one step, you can select any <strong>non-empty sub-array</strong> of <code>arr</code> and reverse it. You are allowed to make any number of steps.</p>
+<p>Return <code>true</code> **if you can make *<em><code>arr</code></em>* equal to <strong><code>target</code></strong>&nbsp;or <strong><code>false</code></strong> otherwise**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: target = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>], arr = [<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>]
+Output: <span class="hljs-literal">true</span>
+Explanation: You can follow the next steps to convert arr to target:
+<span class="hljs-number">1</span>- Reverse sub-<span class="hljs-built_in">array</span> [<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>], arr becomes [<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+<span class="hljs-number">2</span>- Reverse sub-<span class="hljs-built_in">array</span> [<span class="hljs-number">4</span>,<span class="hljs-number">2</span>], arr becomes [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>]
+<span class="hljs-number">3</span>- Reverse sub-<span class="hljs-built_in">array</span> [<span class="hljs-number">4</span>,<span class="hljs-number">3</span>], arr becomes [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+There are multiple ways to convert arr to target, <span class="hljs-keyword">this</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> the only way to <span class="hljs-keyword">do</span> so.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-keyword">Input</span>: target = [<span class="hljs-number">7</span>], arr = [<span class="hljs-number">7</span>]
+Output: <span class="hljs-keyword">true</span>
+Explanation: arr <span class="hljs-keyword">is</span> equal <span class="hljs-keyword">to</span> target <span class="hljs-keyword">without</span> <span class="hljs-keyword">any</span> reverses.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: target = [<span class="hljs-number">3</span>,<span class="hljs-number">7</span>,<span class="hljs-number">9</span>], arr = [<span class="hljs-number">3</span>,<span class="hljs-number">7</span>,<span class="hljs-number">11</span>]
+Output: <span class="hljs-literal">false</span>
+Explanation: arr does <span class="hljs-keyword">not</span> have value <span class="hljs-number">9</span> <span class="hljs-keyword">and</span> it can never be converted to target.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>target.length == arr.length</code></p></li>
+<li><p><code>1 &lt;= target.length &lt;= 1000</code></p></li>
+<li><p><code>1 &lt;= target[i] &lt;= 1000</code></p></li>
+<li><p><code>1 &lt;= arr[i] &lt;= 1000</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">canBeEqual</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] target, <span class="hljs-keyword">int</span>[] arr)</span> </span>{
+        <span class="hljs-keyword">int</span> n = target.length;
+        Arrays.sort(target);
+        Arrays.sort(arr);
+        <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; target.length; i++) {
+            <span class="hljs-keyword">if</span> (target[i] == arr[i]) {
+                count++;
+            }
+        }
+        <span class="hljs-keyword">return</span> count == n;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

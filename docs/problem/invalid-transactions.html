@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Invalid Transactions - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1169. Invalid Transactions</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>A transaction is possibly invalid if:</p>
+<ul>
+<li><p>the amount exceeds <code>$1000</code>, or;</p></li>
+<li><p>if it occurs within (and including) <code>60</code> minutes of another transaction with the <strong>same name</strong> in a <strong>different city</strong>.</p></li>
+</ul>
+<p>You are given an array of strings <code>transaction</code> where <code>transactions[i]</code> consists of comma-separated values representing the name, time (in minutes), amount, and city of the transaction.</p>
+<p>Return a list of <code>transactions</code> that are possibly invalid. You may return the answer in <strong>any order</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: transactions = [<span class="hljs-string">"alice,20,800,mtv"</span>,<span class="hljs-string">"alice,50,100,beijing"</span>]
+Output: [<span class="hljs-string">"alice,20,800,mtv"</span>,<span class="hljs-string">"alice,50,100,beijing"</span>]
+Explanation: The <span class="hljs-keyword">first</span> transaction is invalid because <span class="hljs-keyword">the</span> <span class="hljs-keyword">second</span> transaction occurs <span class="hljs-keyword">within</span> <span class="hljs-keyword">a</span> <span class="hljs-built_in">difference</span> <span class="hljs-keyword">of</span> <span class="hljs-number">60</span> minutes, have <span class="hljs-keyword">the</span> same name <span class="hljs-keyword">and</span> is <span class="hljs-keyword">in</span> <span class="hljs-keyword">a</span> different city. Similarly <span class="hljs-keyword">the</span> <span class="hljs-keyword">second</span> <span class="hljs-literal">one</span> is invalid too.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> transactions = [<span class="hljs-string">"alice,20,800,mtv"</span>,<span class="hljs-string">"alice,50,1200,mtv"</span>]
+<span class="hljs-symbol">Output:</span> [<span class="hljs-string">"alice,50,1200,mtv"</span>]
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-symbol">Input:</span> transactions = [<span class="hljs-string">"alice,20,800,mtv"</span>,<span class="hljs-string">"bob,50,1200,mtv"</span>]
+<span class="hljs-symbol">Output:</span> [<span class="hljs-string">"bob,50,1200,mtv"</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>transactions.length &lt;= 1000</code></p></li>
+<li><p>Each <code>transactions[i]</code> takes the form <code>"{name},{time},{amount},{city}"</code></p></li>
+<li><p>Each <code>{name}</code> and <code>{city}</code> consist of lowercase English letters, and have lengths between <code>1</code> and <code>10</code>.</p></li>
+<li><p>Each <code>{time}</code> consist of digits, and represent an integer between <code>0</code> and <code>1000</code>.</p></li>
+<li><p>Each <code>{amount}</code> consist of digits, and represent an integer between <code>0</code> and <code>2000</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title">invalidTransactions</span><span class="hljs-params">(String[] transactions)</span> </span>{
+        Map&lt;String, TreeMap&lt;Integer, Transaction&gt;&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        List&lt;String&gt; result = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-keyword">for</span> (String transaction : transactions) {
+            String[] split = transaction.split(<span class="hljs-string">","</span>);
+            String name = split[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">int</span> time = Integer.parseInt(split[<span class="hljs-number">1</span>]);
+            String city = split[<span class="hljs-number">3</span>];
+            map.putIfAbsent(name, <span class="hljs-keyword">new</span> TreeMap&lt;&gt;());
+            map.get(name).put(time, <span class="hljs-keyword">new</span> Transaction(time, city));
+        }
+        <span class="hljs-keyword">for</span> (String transaction : transactions) {
+            String[] split = transaction.split(<span class="hljs-string">","</span>);
+            String name = split[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">int</span> time = Integer.parseInt(split[<span class="hljs-number">1</span>]);
+            <span class="hljs-keyword">int</span> amount = Integer.parseInt(split[<span class="hljs-number">2</span>]);
+            String city = split[<span class="hljs-number">3</span>];
+            <span class="hljs-keyword">if</span> (amount &gt; <span class="hljs-number">1000</span>) {
+                result.add(transaction);
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-keyword">for</span> (Map.Entry&lt;Integer, Transaction&gt; entry :
+                    map.get(name).subMap(time - <span class="hljs-number">60</span>, time + <span class="hljs-number">60</span>).entrySet()) {
+                <span class="hljs-keyword">if</span> (Math.abs(time - entry.getKey()) &lt;= <span class="hljs-number">60</span> &amp;&amp; !entry.getValue().city.equals(city)) {
+                    result.add(transaction);
+                    <span class="hljs-keyword">break</span>;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> result;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Transaction</span> </span>{
+        <span class="hljs-keyword">int</span> amount;
+        String city;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Transaction</span><span class="hljs-params">(<span class="hljs-keyword">int</span> amount, String city)</span> </span>{
+            <span class="hljs-keyword">this</span>.amount = amount;
+            <span class="hljs-keyword">this</span>.city = city;
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

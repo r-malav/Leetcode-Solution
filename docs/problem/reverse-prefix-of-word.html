@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Reverse Prefix of Word - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2000. Reverse Prefix of Word</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/two-pointers">Two Pointers</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given a <strong>0-indexed</strong> string <code>word</code> and a character <code>ch</code>, <strong>reverse</strong> the segment of <code>word</code> that starts at index <code>0</code> and ends at the index of the <strong>first occurrence</strong> of <code>ch</code> (<strong>inclusive</strong>). If the character <code>ch</code> does not exist in <code>word</code>, do nothing.</p>
+<ul>
+<li>For example, if <code>word = "abcdefd"</code> and <code>ch = "d"</code>, then you should <strong>reverse</strong> the segment that starts at <code>0</code> and ends at <code>3</code> (<strong>inclusive</strong>). The resulting string will be <code>"dcbaefd"</code>.</li>
+</ul>
+<p>Return <strong>the resulting string</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: <span class="hljs-built_in">word</span> = <span class="hljs-string">"abcdefd"</span>, ch = <span class="hljs-string">"d"</span>
+Output: <span class="hljs-string">"dcbaefd"</span>
+Explanation:&amp;nbsp;The <span class="hljs-keyword">first</span> occurrence <span class="hljs-keyword">of</span> <span class="hljs-string">"d"</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">at</span> index <span class="hljs-number">3.</span> 
+Reverse <span class="hljs-keyword">the</span> part <span class="hljs-keyword">of</span> <span class="hljs-built_in">word</span> <span class="hljs-keyword">from</span> <span class="hljs-number">0</span> <span class="hljs-keyword">to</span> <span class="hljs-number">3</span> (inclusive), <span class="hljs-keyword">the</span> resulting <span class="hljs-built_in">string</span> <span class="hljs-keyword">is</span> <span class="hljs-string">"dcbaefd"</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: <span class="hljs-built_in">word</span> = <span class="hljs-string">"xyxzxe"</span>, ch = <span class="hljs-string">"z"</span>
+Output: <span class="hljs-string">"zxyxxe"</span>
+Explanation:&amp;nbsp;The <span class="hljs-keyword">first</span> <span class="hljs-keyword">and</span> only occurrence <span class="hljs-keyword">of</span> <span class="hljs-string">"z"</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">at</span> index <span class="hljs-number">3.</span>
+Reverse <span class="hljs-keyword">the</span> part <span class="hljs-keyword">of</span> <span class="hljs-built_in">word</span> <span class="hljs-keyword">from</span> <span class="hljs-number">0</span> <span class="hljs-keyword">to</span> <span class="hljs-number">3</span> (inclusive), <span class="hljs-keyword">the</span> resulting <span class="hljs-built_in">string</span> <span class="hljs-keyword">is</span> <span class="hljs-string">"zxyxxe"</span>.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: <span class="hljs-built_in">word</span> = <span class="hljs-string">"abcd"</span>, ch = <span class="hljs-string">"z"</span>
+Output: <span class="hljs-string">"abcd"</span>
+Explanation:&amp;nbsp;<span class="hljs-string">"z"</span> <span class="hljs-keyword">does</span> <span class="hljs-keyword">not</span> exist <span class="hljs-keyword">in</span> <span class="hljs-built_in">word</span>.
+You should <span class="hljs-keyword">not</span> do any <span class="hljs-built_in">reverse</span> operation, <span class="hljs-keyword">the</span> resulting <span class="hljs-built_in">string</span> <span class="hljs-keyword">is</span> <span class="hljs-string">"abcd"</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= word.length &lt;= 250</code></p></li>
+<li><p><code>word</code> consists of lowercase English letters.</p></li>
+<li><p><code>ch</code> is a lowercase English letter.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">reversePrefix</span><span class="hljs-params">(String word, <span class="hljs-keyword">char</span> ch)</span> </span>{
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> j = word.indexOf(ch);
+        <span class="hljs-keyword">char</span>[] charArr = word.toCharArray();
+        <span class="hljs-keyword">while</span> (i &lt; j) {
+            <span class="hljs-keyword">char</span> temp = charArr[i];
+            charArr[i] = charArr[j];
+            charArr[j] = temp;
+            i++;
+            j--;
+        }
+        <span class="hljs-keyword">return</span> String.valueOf(charArr);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

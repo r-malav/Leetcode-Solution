@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Adding Two Negabinary Numbers - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1073. Adding Two Negabinary Numbers</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>Given two numbers <code>arr1</code> and <code>arr2</code> in base <strong>-2</strong>, return the result of adding them together.</p>
+<p>Each number is given in <strong>array format</strong>:&nbsp; as an array of 0s and 1s, from most significant bit to least significant bit.&nbsp; For example, <code>arr = [1,1,0,1]</code> represents the number <code>(-2)^3&amp;nbsp;+ (-2)^2 + (-2)^0 = -3</code>.&nbsp; A number <code>arr</code> in <strong>array, format</strong> is also guaranteed to have no leading zeros: either&nbsp;<code>arr == [0]</code> or <code>arr[0] == 1</code>.</p>
+<p>Return the result of adding <code>arr1</code> and <code>arr2</code> in the same format: as an array of 0s and 1s with no leading zeros.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: arr1 = [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>], arr2 = [<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]
+Output: [<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]
+Explanation: arr1 represents <span class="hljs-number">11</span>, arr2 represents <span class="hljs-number">5</span>, the output represents <span class="hljs-number">16.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: arr1 = [<span class="hljs-number">0</span>], arr2 = [<span class="hljs-number">0</span>]
+Output: [<span class="hljs-number">0</span>]
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: arr1 = [<span class="hljs-number">0</span>], arr2 = [<span class="hljs-number">1</span>]
+Output: [<span class="hljs-number">1</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= arr1.length,&amp;nbsp;arr2.length &lt;= 1000</code></p></li>
+<li><p><code>arr1[i]</code>&nbsp;and <code>arr2[i]</code> are&nbsp;<code>0</code> or <code>1</code></p></li>
+<li><p><code>arr1</code> and <code>arr2</code> have no leading zeros</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] addNegabinary(<span class="hljs-keyword">int</span>[] arr1, <span class="hljs-keyword">int</span>[] arr2) {
+        <span class="hljs-keyword">int</span> len1 = arr1.length;
+        <span class="hljs-keyword">int</span> len2 = arr2.length;
+        <span class="hljs-keyword">int</span>[] reverseArr1 = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[len1];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = len1 - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            reverseArr1[len1 - i - <span class="hljs-number">1</span>] = arr1[i];
+        }
+        <span class="hljs-keyword">int</span>[] reverseArr2 = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[len2];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = len2 - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            reverseArr2[len2 - i - <span class="hljs-number">1</span>] = arr2[i];
+        }
+        <span class="hljs-keyword">int</span>[] sumArray = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[Math.max(len1, len2) + <span class="hljs-number">2</span>];
+        System.arraycopy(reverseArr1, <span class="hljs-number">0</span>, sumArray, <span class="hljs-number">0</span>, len1);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; sumArray.length; i++) {
+            <span class="hljs-keyword">if</span> (i &lt; len2) {
+                sumArray[i] += reverseArr2[i];
+            }
+            <span class="hljs-keyword">if</span> (sumArray[i] &gt; <span class="hljs-number">1</span>) {
+                sumArray[i] -= <span class="hljs-number">2</span>;
+                sumArray[i + <span class="hljs-number">1</span>]--;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sumArray[i] == -<span class="hljs-number">1</span>) {
+                sumArray[i] = <span class="hljs-number">1</span>;
+                sumArray[i + <span class="hljs-number">1</span>]++;
+            }
+        }
+        <span class="hljs-keyword">int</span> resultLen = sumArray.length;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = sumArray.length - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            <span class="hljs-keyword">if</span> (sumArray[i] == <span class="hljs-number">0</span>) {
+                resultLen--;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+        <span class="hljs-keyword">if</span> (resultLen == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[] {<span class="hljs-number">0</span>};
+        }
+        <span class="hljs-keyword">int</span>[] result = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[resultLen];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = resultLen - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            result[resultLen - i - <span class="hljs-number">1</span>] = sumArray[i];
+        }
+        <span class="hljs-keyword">return</span> result;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

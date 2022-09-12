@@ -1,0 +1,51 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Determine Color of a Chessboard Square - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1812. Determine Color of a Chessboard Square</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/easy" class="tag">Easy</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given <code>coordinates</code>, a string that represents the coordinates of a square of the chessboard. Below is a chessboard for your reference.</p>
+<p><img src="https://assets.leetcode.com/uploads/2021/02/19/screenshot-2021-02-20-at-22159-pm.png" alt="" /></p>
+<p>Return <code>true</code>** if the square is white, and <strong><code>false</code></strong> if the square is black**.</p>
+<p>The coordinate will always represent a valid chessboard square. The coordinate will always have the letter first, and the number second.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: coordinates = <span class="hljs-string">"a1"</span>
+Output: <span class="hljs-literal">false</span>
+Explanation: From <span class="hljs-keyword">the</span> chessboard above, <span class="hljs-keyword">the</span> square <span class="hljs-keyword">with</span> coordinates <span class="hljs-string">"a1"</span> is <span class="hljs-keyword">black</span>, so <span class="hljs-literal">return</span> <span class="hljs-literal">false</span>.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs"><span class="hljs-keyword">Input</span>: coordinates = "h3"
+Output: <span class="hljs-keyword">true</span>
+Explanation: <span class="hljs-keyword">From</span> the chessboard above, the square <span class="hljs-keyword">with</span> coordinates "h3" <span class="hljs-keyword">is</span> white, so <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>.
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs"><span class="hljs-string">Input:</span> coordinates = <span class="hljs-string">"c7"</span>
+<span class="hljs-string">Output:</span> <span class="hljs-literal">false</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>coordinates.length == 2</code></p></li>
+<li><p><code>'a' &lt;= coordinates[0] &lt;= 'h'</code></p></li>
+<li><p><code>'1' &lt;= coordinates[1] &lt;= '8'</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">squareIsWhite</span><span class="hljs-params">(String coordinates)</span> </span>{
+        <span class="hljs-keyword">char</span> x = coordinates.charAt(<span class="hljs-number">0</span>);
+        <span class="hljs-keyword">int</span> y = Integer.parseInt(coordinates.charAt(<span class="hljs-number">1</span>) + <span class="hljs-string">""</span>);
+        <span class="hljs-keyword">switch</span> (x) {
+            <span class="hljs-keyword">case</span> <span class="hljs-string">'a'</span>:
+            <span class="hljs-keyword">case</span> <span class="hljs-string">'c'</span>:
+            <span class="hljs-keyword">case</span> <span class="hljs-string">'e'</span>:
+            <span class="hljs-keyword">case</span> <span class="hljs-string">'g'</span>:
+                <span class="hljs-keyword">return</span> y % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">default</span>:
+                <span class="hljs-keyword">return</span> y % <span class="hljs-number">2</span> != <span class="hljs-number">0</span>;
+        }
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

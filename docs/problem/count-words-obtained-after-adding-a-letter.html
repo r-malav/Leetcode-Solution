@@ -1,0 +1,108 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Count Words Obtained After Adding a Letter - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2135. Count Words Obtained After Adding a Letter</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/hash-table">Hash Table</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/string">String</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/bit-manipulation">Bit Manipulation</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/strings-differ-by-one-character.html">Strings Differ by One Character</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/count-substrings-that-differ-by-one-character.html">Count Substrings That Differ by One Character</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-score-from-removing-substrings.html">Maximum Score From Removing Substrings</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given two <strong>0-indexed</strong> arrays of strings <code>startWords</code> and <code>targetWords</code>. Each string consists of <strong>lowercase English letters</strong> only.</p>
+<p>For each string in <code>targetWords</code>, check if it is possible to choose a string from <code>startWords</code> and perform a <strong>conversion operation</strong> on it to be equal to that from <code>targetWords</code>.</p>
+<p>The <strong>conversion operation</strong> is described in the following two steps:</p>
+<pre><code>**Append** any lowercase letter that is **not present** in the string to its end.
+</code></pre>
+<ul>
+<li><p>For example, if the string is <code>"abc"</code>, the letters <code>'d'</code>, <code>'e'</code>, or <code>'y'</code> can be added to it, but not <code>'a'</code>. If <code>'d'</code> is added, the resulting string will be <code>"abcd"</code>.</p>
+<p><strong>Rearrange</strong> the letters of the new string in <strong>any</strong> arbitrary order.</p></li>
+<li><p>For example, <code>"abcd"</code> can be rearranged to <code>"acbd"</code>, <code>"bacd"</code>, <code>"cbda"</code>, and so on. Note that it can also be rearranged to <code>"abcd"</code> itself.</p></li>
+</ul>
+<p>Return **the *<em>number of strings</em>* in <strong><code>targetWords</code></strong> that can be obtained by performing the operations on <strong>any</strong> string of **<code>startWords</code>.</p>
+<p><strong>Note</strong> that you will only be verifying if the string in <code>targetWords</code> can be obtained from a string in <code>startWords</code> by performing the operations. The strings in <code>startWords</code> <strong>do not</strong> actually change during this process.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: startWords = [<span class="hljs-string">"ant"</span>,<span class="hljs-string">"act"</span>,<span class="hljs-string">"tack"</span>], targetWords = [<span class="hljs-string">"tack"</span>,<span class="hljs-string">"act"</span>,<span class="hljs-string">"acti"</span>]
+Output: 2
+Explanation:
+- <span class="hljs-keyword">In</span> order <span class="hljs-keyword">to</span> form targetWords[0] = <span class="hljs-string">"tack"</span>, we use startWords[1] = <span class="hljs-string">"act"</span>, append <span class="hljs-string">'k'</span> <span class="hljs-keyword">to</span> it, <span class="hljs-keyword">and</span> rearrange <span class="hljs-string">"actk"</span> <span class="hljs-keyword">to</span> <span class="hljs-string">"tack"</span>.
+- There is <span class="hljs-literal">no</span> string <span class="hljs-keyword">in</span> startWords that can be used <span class="hljs-keyword">to</span> obtain targetWords[1] = <span class="hljs-string">"act"</span>.
+ <span class="hljs-built_in"> Note </span>that <span class="hljs-string">"act"</span> does exist <span class="hljs-keyword">in</span> startWords, but we must append one letter <span class="hljs-keyword">to</span> the string before rearranging it.
+- <span class="hljs-keyword">In</span> order <span class="hljs-keyword">to</span> form targetWords[2] = <span class="hljs-string">"acti"</span>, we use startWords[1] = <span class="hljs-string">"act"</span>, append <span class="hljs-string">'i'</span> <span class="hljs-keyword">to</span> it, <span class="hljs-keyword">and</span> rearrange <span class="hljs-string">"acti"</span> <span class="hljs-keyword">to</span> <span class="hljs-string">"acti"</span> itself.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Inpu<span class="hljs-variable">t:</span> startWords = [<span class="hljs-string">"ab"</span>,<span class="hljs-string">"a"</span>], targetWords = [<span class="hljs-string">"abc"</span>,<span class="hljs-string">"abcd"</span>]
+Outpu<span class="hljs-variable">t:</span> <span class="hljs-number">1</span>
+Explanation:
+- In order <span class="hljs-keyword">to</span> form targetWords[<span class="hljs-number">0</span>] = <span class="hljs-string">"abc"</span>, we use startWords[<span class="hljs-number">0</span>] = <span class="hljs-string">"ab"</span>, <span class="hljs-built_in">add</span> <span class="hljs-string">'c'</span> <span class="hljs-keyword">to</span> it, <span class="hljs-built_in">and</span> rearrange it <span class="hljs-keyword">to</span> <span class="hljs-string">"abc"</span>.
+- There <span class="hljs-keyword">is</span> <span class="hljs-keyword">no</span> <span class="hljs-built_in">string</span> in startWords that can <span class="hljs-keyword">be</span> used <span class="hljs-keyword">to</span> obtain targetWords[<span class="hljs-number">1</span>] = <span class="hljs-string">"abcd"</span>.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= startWords.length, targetWords.length &lt;= 5 * 104</code></p></li>
+<li><p><code>1 &lt;= startWords[i].length, targetWords[j].length &lt;= 26</code></p></li>
+<li><p>Each string of <code>startWords</code> and <code>targetWords</code> consists of lowercase English letters only.</p></li>
+<li><p>No letter occurs more than once in any string of <code>startWords</code> or <code>targetWords</code>.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> Set&lt;Integer&gt; set;
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">preprocess</span><span class="hljs-params">(String[] words)</span> </span>{
+        set = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();
+        <span class="hljs-keyword">for</span> (String word : words) {
+            <span class="hljs-keyword">int</span> bitMap = getBitMap(word);
+            set.add(bitMap);
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">matches</span><span class="hljs-params">(<span class="hljs-keyword">int</span> bitMap)</span> </span>{
+        <span class="hljs-keyword">return</span> set.contains(bitMap);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getBitMap</span><span class="hljs-params">(String word)</span> </span>{
+        <span class="hljs-keyword">int</span> result = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; word.length(); i++) {
+            <span class="hljs-keyword">int</span> position = word.charAt(i) - <span class="hljs-string">'a'</span>;
+            result |= (<span class="hljs-number">1</span> &lt;&lt; position);
+        }
+        <span class="hljs-keyword">return</span> result;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">addBit</span><span class="hljs-params">(<span class="hljs-keyword">int</span> bitMap, <span class="hljs-keyword">char</span> c)</span> </span>{
+        <span class="hljs-keyword">int</span> position = c - <span class="hljs-string">'a'</span>;
+        bitMap |= (<span class="hljs-number">1</span> &lt;&lt; position);
+        <span class="hljs-keyword">return</span> bitMap;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">removeBit</span><span class="hljs-params">(<span class="hljs-keyword">int</span> bitMap, <span class="hljs-keyword">char</span> c)</span> </span>{
+        <span class="hljs-keyword">int</span> position = c - <span class="hljs-string">'a'</span>;
+        bitMap &amp;= ~(<span class="hljs-number">1</span> &lt;&lt; position);
+        <span class="hljs-keyword">return</span> bitMap;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">wordCount</span><span class="hljs-params">(String[] startWords, String[] targetWords)</span> </span>{
+        <span class="hljs-keyword">if</span> (startWords == <span class="hljs-keyword">null</span> || startWords.length == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">if</span> (targetWords == <span class="hljs-keyword">null</span> || targetWords.length == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        preprocess(startWords);
+        <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (String word : targetWords) {
+            <span class="hljs-keyword">int</span> bitMap = getBitMap(word);
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; word.length(); i++) {
+                bitMap = removeBit(bitMap, word.charAt(i));
+                <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span>) {
+                    bitMap = addBit(bitMap, word.charAt(i - <span class="hljs-number">1</span>));
+                }
+                <span class="hljs-keyword">if</span> (matches(bitMap)) {
+                    count++;
+                    <span class="hljs-keyword">break</span>;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> count;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

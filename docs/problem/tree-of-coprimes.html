@@ -1,0 +1,100 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Tree of Coprimes - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1766. Tree of Coprimes</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/math">Math</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/tree">Tree</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/depth-first-search">Depth-First Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/breadth-first-search">Breadth-First Search</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is a tree (i.e.,&nbsp;a connected, undirected graph that has no cycles) consisting of <code>n</code> nodes numbered from <code>0</code> to <code>n - 1</code> and exactly <code>n - 1</code> edges. Each node has a value associated with it, and the <strong>root</strong> of the tree is node <code>0</code>.</p>
+<p>To represent this tree, you are given an integer array <code>nums</code> and a 2D array <code>edges</code>. Each <code>nums[i]</code> represents the <code>ith</code> node's value, and each <code>edges[j] = [uj, vj]</code> represents an edge between nodes <code>uj</code> and <code>vj</code> in the tree.</p>
+<p>Two values <code>x</code> and <code>y</code> are <strong>coprime</strong> if <code>gcd(x, y) == 1</code> where <code>gcd(x, y)</code> is the <strong>greatest common divisor</strong> of <code>x</code> and <code>y</code>.</p>
+<p>An ancestor of a node <code>i</code> is any other node on the shortest path from node <code>i</code> to the <strong>root</strong>. A node is **not **considered an ancestor of itself.</p>
+<p>Return **an array *<em><code>ans</code></em>* of size **<code>n</code>, **where <strong><code>ans[i]</code></strong> is the closest ancestor to node <strong><code>i</code></strong> such that **<code>nums[i]</code> **and **<code>nums[ans[i]]</code> are *<em>coprime<strong>, or <code>-1</code></strong> if there is no such ancestor</em>*.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/01/06/untitled-diagram.png" alt="" /></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>], edges = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>]]
+Output: [-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]
+Explanation: <span class="hljs-keyword">In</span> the above figure, each <span class="hljs-keyword">node</span><span class="hljs-title">'s</span> value is <span class="hljs-keyword">in</span> parentheses.
+- <span class="hljs-keyword">Node</span> <span class="hljs-title">0</span> has no coprime ancestors.
+- <span class="hljs-keyword">Node</span> <span class="hljs-title">1</span> has only one ancestor, <span class="hljs-keyword">node</span> <span class="hljs-title">0</span>. Their values are coprime (gcd(<span class="hljs-number">2</span>,<span class="hljs-number">3</span>) == <span class="hljs-number">1</span>).
+- <span class="hljs-keyword">Node</span> <span class="hljs-title">2</span> has two ancestors, nodes <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-number">0</span>. <span class="hljs-keyword">Node</span> <span class="hljs-title">1</span>'s value is not coprime (gcd(<span class="hljs-number">3</span>,<span class="hljs-number">3</span>) == <span class="hljs-number">3</span>), but <span class="hljs-keyword">node</span> <span class="hljs-title">0</span>'s
+  value is (gcd(<span class="hljs-number">2</span>,<span class="hljs-number">3</span>) == <span class="hljs-number">1</span>), so <span class="hljs-keyword">node</span> <span class="hljs-title">0</span> is the closest valid ancestor.
+- <span class="hljs-keyword">Node</span> <span class="hljs-title">3</span> has two ancestors, nodes <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-number">0</span>. It is coprime with <span class="hljs-keyword">node</span> <span class="hljs-title">1</span> (gcd(<span class="hljs-number">3</span>,<span class="hljs-number">2</span>) == <span class="hljs-number">1</span>), so <span class="hljs-keyword">node</span> <span class="hljs-title">1</span> is its
+  closest valid ancestor.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/01/06/untitled-diagram1.png" alt="" /></p>
+<pre><code class="hljs">Input: nums = [<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">10</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">15</span>], edges = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">6</span>]]
+Output: [<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>]
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>nums.length == n</code></p></li>
+<li><p><code>1 &lt;= nums[i] &lt;= 50</code></p></li>
+<li><p><code>1 &lt;= n &lt;= 105</code></p></li>
+<li><p><code>edges.length == n - 1</code></p></li>
+<li><p><code>edges[j].length == 2</code></p></li>
+<li><p><code>0 &lt;= uj, vj &lt; n</code></p></li>
+<li><p><code>uj != vj</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(
+            <span class="hljs-keyword">int</span>[] v2n,
+            <span class="hljs-keyword">int</span>[] v2d,
+            <span class="hljs-keyword">int</span> depth,
+            <span class="hljs-keyword">int</span> parent,
+            <span class="hljs-keyword">int</span> node,
+            <span class="hljs-keyword">int</span>[] ans,
+            <span class="hljs-keyword">int</span>[] nums,
+            ArrayList&lt;Integer&gt;[] neighbors)</span> </span>{
+        <span class="hljs-keyword">int</span> d = Integer.MIN_VALUE;
+        <span class="hljs-keyword">int</span> n = -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> v = nums[node];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">50</span>; i++) {
+            <span class="hljs-keyword">if</span> (v2n[i] != -<span class="hljs-number">1</span> &amp;&amp; v2d[i] &gt; d &amp;&amp; gcd(i, v) == <span class="hljs-number">1</span>) {
+                d = v2d[i];
+                n = v2n[i];
+            }
+        }
+        ans[node] = n;
+        <span class="hljs-keyword">int</span> v2NOld = v2n[v];
+        <span class="hljs-keyword">int</span> v2DOld = v2d[v];
+        v2n[v] = node;
+        v2d[v] = depth;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> child : neighbors[node]) {
+            <span class="hljs-keyword">if</span> (child == parent) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            dfs(v2n, v2d, depth + <span class="hljs-number">1</span>, node, child, ans, nums, neighbors);
+        }
+        v2n[v] = v2NOld;
+        v2d[v] = v2DOld;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">gcd</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span> y)</span> </span>{
+        <span class="hljs-keyword">return</span> x == <span class="hljs-number">0</span> ? y : gcd(y % x, x);
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] getCoprimes(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span>[][] edges) {
+        <span class="hljs-keyword">int</span> n = nums.length;
+        ArrayList&lt;Integer&gt;[] neighbors = <span class="hljs-keyword">new</span> ArrayList[n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            neighbors[i] = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] edge : edges) {
+            neighbors[edge[<span class="hljs-number">0</span>]].add(edge[<span class="hljs-number">1</span>]);
+            neighbors[edge[<span class="hljs-number">1</span>]].add(edge[<span class="hljs-number">0</span>]);
+        }
+        <span class="hljs-keyword">int</span>[] ans = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        <span class="hljs-keyword">int</span>[] v2n = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">51</span>];
+        <span class="hljs-keyword">int</span>[] v2d = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">51</span>];
+        Arrays.fill(v2n, -<span class="hljs-number">1</span>);
+        dfs(v2n, v2d, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, ans, nums, neighbors);
+        <span class="hljs-keyword">return</span> ans;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

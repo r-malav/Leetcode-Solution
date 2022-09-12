@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Spiral Matrix IV - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2326. Spiral Matrix IV</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/linked-list">Linked List</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/simulation">Simulation</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/spiral-matrix.html">Spiral Matrix</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/spiral-matrix-ii.html">Spiral Matrix II</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/spiral-matrix-iii.html">Spiral Matrix III</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given two integers <code>m</code> and <code>n</code>, which represent the dimensions of a matrix.</p>
+<p>You are also given the <code>head</code> of a linked list of integers.</p>
+<p>Generate an <code>m x n</code> matrix that contains the integers in the linked list presented in <strong>spiral</strong> order <strong>(clockwise)</strong>, starting from the <strong>top-left</strong> of the matrix. If there are remaining empty spaces, fill them with <code>-1</code>.</p>
+<p>Return <strong>the generated matrix</strong>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2022/05/09/ex1new.jpg" alt="" /></p>
+<pre><code class="hljs">Input: m = <span class="hljs-number">3</span>, n = <span class="hljs-number">5</span>, head = [<span class="hljs-number">3</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">6</span>,<span class="hljs-number">8</span>,<span class="hljs-number">1</span>,<span class="hljs-number">7</span>,<span class="hljs-number">9</span>,<span class="hljs-number">4</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>,<span class="hljs-number">0</span>]
+Output: [[<span class="hljs-number">3</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">6</span>,<span class="hljs-number">8</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">9</span>,<span class="hljs-number">7</span>]]
+Explanation: The diagram above shows how the values are printed <span class="hljs-keyword">in</span> the matrix.
+Note that the remaining spaces <span class="hljs-keyword">in</span> the matrix are filled with <span class="hljs-number">-1.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2022/05/11/ex2.jpg" alt="" /></p>
+<pre><code class="hljs">Input: m = <span class="hljs-number">1</span>, n = <span class="hljs-number">4</span>, head = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
+Output: [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">-1</span>]]
+Explanation: The diagram above shows how the values are printed <span class="hljs-keyword">from</span> left to right <span class="hljs-keyword">in</span> the matrix.
+The last space <span class="hljs-keyword">in</span> the matrix <span class="hljs-keyword">is</span> <span class="hljs-keyword">set</span> to <span class="hljs-number">-1.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= m, n &lt;= 105</code></p></li>
+<li><p><code>1 &lt;= m * n &lt;= 105</code></p></li>
+<li><p>The number of nodes in the list is in the range <code>[1, m * n]</code>.</p></li>
+<li><p><code>0 &lt;= Node.val &lt;= 1000</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-comment">/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">enum</span> Direction {
+        RIGHT,
+        DOWN,
+        LEFT,
+        UP
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[][] spiralMatrix(<span class="hljs-keyword">int</span> m, <span class="hljs-keyword">int</span> n, ListNode head) {
+        <span class="hljs-keyword">int</span>[][] arr = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[m][n];
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> j = -<span class="hljs-number">1</span>;
+        Direction direction = Direction.RIGHT;
+        <span class="hljs-comment">// Boundaries</span>
+        <span class="hljs-comment">// ++ after Left to right Horizontal traversed</span>
+        <span class="hljs-keyword">int</span> a = <span class="hljs-number">0</span>;
+        <span class="hljs-comment">// -- after Down to Up vertical traversed</span>
+        <span class="hljs-keyword">int</span> b = n - <span class="hljs-number">1</span>;
+        <span class="hljs-comment">// -- after Right to Left horizontal teversed</span>
+        <span class="hljs-keyword">int</span> c = m - <span class="hljs-number">1</span>;
+        <span class="hljs-comment">// ++ after Down to Up vertical traversed</span>
+        <span class="hljs-keyword">int</span> d = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k = <span class="hljs-number">0</span>; k &lt; m * n; ++k) {
+            <span class="hljs-keyword">int</span> val = -<span class="hljs-number">1</span>;
+            <span class="hljs-keyword">if</span> (head != <span class="hljs-keyword">null</span>) {
+                val = head.val;
+                head = head.next;
+            }
+            <span class="hljs-keyword">switch</span> (direction) {
+                <span class="hljs-keyword">case</span> RIGHT:
+                    ++j;
+                    <span class="hljs-keyword">if</span> (j == b) {
+                        direction = Direction.DOWN;
+                        ++a;
+                    }
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> DOWN:
+                    ++i;
+                    <span class="hljs-keyword">if</span> (i == c) {
+                        direction = Direction.LEFT;
+                    }
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> LEFT:
+                    --j;
+                    <span class="hljs-keyword">if</span> (j == d) {
+                        --c;
+                        direction = Direction.UP;
+                    }
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> UP:
+                <span class="hljs-keyword">default</span>:
+                    --i;
+                    <span class="hljs-keyword">if</span> (i == a) {
+                        --b;
+                        ++d;
+                        direction = Direction.RIGHT;
+                    }
+                    <span class="hljs-keyword">break</span>;
+            }
+            arr[i][j] = val;
+        }
+        <span class="hljs-keyword">return</span> arr;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximal Network Rank - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1615. Maximal Network Rank</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/graph">Graph</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is an infrastructure of <code>n</code> cities with some number of <code>roads</code> connecting these cities. Each <code>roads[i] = [ai, bi]</code> indicates that there is a bidirectional road between cities <code>ai</code> and <code>bi</code>.</p>
+<p>The <strong>network rank</strong>** **of *<em>two different cities</em>* is defined as the total number of&nbsp;<strong>directly</strong> connected roads to <strong>either</strong> city. If a road is directly connected to both cities, it is only counted <strong>once</strong>.</p>
+<p>The **maximal network rank **of the infrastructure is the <strong>maximum network rank</strong> of all pairs of different cities.</p>
+<p>Given the integer <code>n</code> and the array <code>roads</code>, return **the *<em>maximal network rank</em>* of the entire infrastructure**.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/09/21/ex1.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">4</span>, roads = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>]]
+Output: <span class="hljs-number">4</span>
+Explanation: The network rank of cities <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-number">1</span> <span class="hljs-keyword">is</span> <span class="hljs-number">4</span> as there are <span class="hljs-number">4</span> roads that are connected to either <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> <span class="hljs-number">1.</span> The road between <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-number">1</span> <span class="hljs-keyword">is</span> only counted once.
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2020/09/21/ex2.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">5</span>, roads = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">4</span>]]
+Output: <span class="hljs-number">5</span>
+Explanation: There are <span class="hljs-number">5</span> roads that are connected to cities <span class="hljs-number">1</span> <span class="hljs-keyword">or</span> <span class="hljs-number">2.</span>
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">8</span>, roads = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">6</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">7</span>]]
+Output: <span class="hljs-number">5</span>
+Explanation: The network rank of <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> <span class="hljs-number">5</span> <span class="hljs-keyword">is</span> <span class="hljs-number">5.</span> Notice that all the cities <span class="hljs-keyword">do</span> <span class="hljs-keyword">not</span> have to be connected.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>2 &lt;= n &lt;= 100</code></p></li>
+<li><p><code>0 &lt;= roads.length &lt;= n * (n - 1) / 2</code></p></li>
+<li><p><code>roads[i].length == 2</code></p></li>
+<li><p><code>0 &lt;= ai, bi&amp;nbsp;&lt;= n-1</code></p></li>
+<li><p><code>ai&amp;nbsp;!=&amp;nbsp;bi</code></p></li>
+<li><p>Each&nbsp;pair of cities has <strong>at most one</strong> road connecting them.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maximalNetworkRank</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[][] roads)</span> </span>{
+        <span class="hljs-keyword">int</span>[] degrees = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+        <span class="hljs-keyword">boolean</span>[] connected = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[<span class="hljs-number">40_000</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] r : roads) {
+            degrees[r[<span class="hljs-number">0</span>]]++;
+            degrees[r[<span class="hljs-number">1</span>]]++;
+            connected[(r[<span class="hljs-number">0</span>] + <span class="hljs-number">101</span>) * (r[<span class="hljs-number">1</span>] + <span class="hljs-number">101</span>) - <span class="hljs-number">1</span>] = <span class="hljs-keyword">true</span>;
+        }
+        <span class="hljs-keyword">int</span> max = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = i + <span class="hljs-number">1</span>; j &lt; n; j++) {
+                <span class="hljs-keyword">if</span> (connected[(i + <span class="hljs-number">101</span>) * (j + <span class="hljs-number">101</span>) - <span class="hljs-number">1</span>]) {
+                    max = Math.max(max, degrees[i] + degrees[j] - <span class="hljs-number">1</span>);
+                } <span class="hljs-keyword">else</span> {
+                    max = Math.max(max, degrees[i] + degrees[j]);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> max;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

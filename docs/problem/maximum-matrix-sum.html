@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Matrix Sum - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1975. Maximum Matrix Sum</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/matrix">Matrix</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are given an <code>n x n</code> integer <code>matrix</code>. You can do the following operation <strong>any</strong> number of times:</p>
+<ul>
+<li>Choose any two <strong>adjacent</strong> elements of <code>matrix</code> and <strong>multiply</strong> each of them by <code>-1</code>.</li>
+</ul>
+<p>Two elements are considered <strong>adjacent</strong> if and only if they share a <strong>border</strong>.</p>
+<p>Your goal is to <strong>maximize</strong> the summation of the matrix's elements. Return **the *<em>maximum</em>* sum of the matrix's elements using the operation mentioned above.**</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/07/16/pc79-q2ex1.png" alt="" /></p>
+<pre><code class="hljs">Input: matrix = [[<span class="hljs-number">1</span>,<span class="hljs-number">-1</span>],[<span class="hljs-number">-1</span>,<span class="hljs-number">1</span>]]
+Output: <span class="hljs-number">4</span>
+Explanation: We can follow <span class="hljs-keyword">the</span> following steps <span class="hljs-built_in">to</span> reach <span class="hljs-built_in">sum</span> equals <span class="hljs-number">4</span>:
+- Multiply <span class="hljs-keyword">the</span> <span class="hljs-number">2</span> elements <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">first</span> row <span class="hljs-keyword">by</span> <span class="hljs-number">-1.</span>
+- Multiply <span class="hljs-keyword">the</span> <span class="hljs-number">2</span> elements <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> <span class="hljs-keyword">first</span> column <span class="hljs-keyword">by</span> <span class="hljs-number">-1.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/07/16/pc79-q2ex2.png" alt="" /></p>
+<pre><code class="hljs">Input: matrix = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">-1</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">-3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]]
+Output: <span class="hljs-number">16</span>
+Explanation: We can follow the following step to reach sum equals <span class="hljs-number">16</span>:
+- Multiply the <span class="hljs-number">2</span> last elements <span class="hljs-keyword">in</span> the second row by <span class="hljs-number">-1.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == matrix.length == matrix[i].length</code></p></li>
+<li><p><code>2 &lt;= n &lt;= 250</code></p></li>
+<li><p><code>-105 &lt;= matrix[i][j] &lt;= 105</code></p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">long</span> <span class="hljs-title">maxMatrixSum</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] matrix)</span> </span>{
+        <span class="hljs-keyword">int</span> numNegatives = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">long</span> totalSum = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> minNeg = Integer.MIN_VALUE;
+        <span class="hljs-keyword">int</span> minPos = Integer.MAX_VALUE;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] ints : matrix) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> e = <span class="hljs-number">0</span>; e &lt; matrix[<span class="hljs-number">0</span>].length; e++) {
+                <span class="hljs-keyword">int</span> value = ints[e];
+                <span class="hljs-keyword">if</span> (value &lt; <span class="hljs-number">0</span>) {
+                    numNegatives++;
+                    totalSum = totalSum - value;
+                    minNeg = Math.max(value, minNeg);
+                } <span class="hljs-keyword">else</span> {
+                    totalSum = totalSum + value;
+                    minPos = Math.min(value, minPos);
+                }
+            }
+        }
+
+        <span class="hljs-keyword">int</span> min = Math.min(minPos, -minNeg);
+
+        <span class="hljs-keyword">return</span> totalSum - numNegatives % <span class="hljs-number">2</span> * (min + min);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Number of Ways to Arrive at Destination - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>1976. Number of Ways to Arrive at Destination</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/graph">Graph</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/topological-sort">Topological Sort</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/shortest-path">Shortest Path</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/all-paths-from-source-to-target.html">All Paths From Source to Target</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/path-with-maximum-probability.html">Path with Maximum Probability</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/second-minimum-time-to-reach-destination.html">Second Minimum Time to Reach Destination</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You are in a city that consists of <code>n</code> intersections numbered from <code>0</code> to <code>n - 1</code> with <strong>bi-directional</strong> roads between some intersections. The inputs are generated such that you can reach any intersection from any other intersection and that there is at most one road between any two intersections.</p>
+<p>You are given an integer <code>n</code> and a 2D integer array <code>roads</code> where <code>roads[i] = [ui, vi, timei]</code> means that there is a road between intersections <code>ui</code> and <code>vi</code> that takes <code>timei</code> minutes to travel. You want to know in how many ways you can travel from intersection <code>0</code> to intersection <code>n - 1</code> in the <strong>shortest amount of time</strong>.</p>
+<p>Return **the *<em>number of ways</em>* you can arrive at your destination in the <strong>shortest amount of time</strong>**. Since the answer may be large, return it *<em>modulo</em>* <code>109 + 7</code>.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2021/07/17/graph2.png" alt="" /></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">7</span>, roads = [[<span class="hljs-number">0</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">6</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">6</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>]]
+Output: <span class="hljs-number">4</span>
+Explanation: The shortest amount of time it takes to go <span class="hljs-keyword">from</span> <span class="hljs-built_in">int</span>ersection <span class="hljs-number">0</span> to <span class="hljs-built_in">int</span>ersection <span class="hljs-number">6</span> <span class="hljs-keyword">is</span> <span class="hljs-number">7</span> minutes.
+The four ways to <span class="hljs-keyword">get</span> there <span class="hljs-keyword">in</span> <span class="hljs-number">7</span> minutes are:
+- <span class="hljs-number">0</span> ➝ <span class="hljs-number">6</span>
+- <span class="hljs-number">0</span> ➝ <span class="hljs-number">4</span> ➝ <span class="hljs-number">6</span>
+- <span class="hljs-number">0</span> ➝ <span class="hljs-number">1</span> ➝ <span class="hljs-number">2</span> ➝ <span class="hljs-number">5</span> ➝ <span class="hljs-number">6</span>
+- <span class="hljs-number">0</span> ➝ <span class="hljs-number">1</span> ➝ <span class="hljs-number">3</span> ➝ <span class="hljs-number">5</span> ➝ <span class="hljs-number">6</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: n = <span class="hljs-number">2</span>, roads = [[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">10</span>]]
+Output: <span class="hljs-number">1</span>
+Explanation: There <span class="hljs-keyword">is</span> only one way to go <span class="hljs-keyword">from</span> <span class="hljs-built_in">int</span>ersection <span class="hljs-number">0</span> to <span class="hljs-built_in">int</span>ersection <span class="hljs-number">1</span>, <span class="hljs-keyword">and</span> it takes <span class="hljs-number">10</span> minutes.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>1 &lt;= n &lt;= 200</code></p></li>
+<li><p><code>n - 1 &lt;= roads.length &lt;= n * (n - 1) / 2</code></p></li>
+<li><p><code>roads[i].length == 3</code></p></li>
+<li><p><code>0 &lt;= ui, vi &lt;= n - 1</code></p></li>
+<li><p><code>1 &lt;= timei &lt;= 109</code></p></li>
+<li><p><code>ui != vi</code></p></li>
+<li><p>There is at most one road connecting any two intersections.</p></li>
+<li><p>You can reach any intersection from any other intersection.</p></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">dijkstra</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] roads, <span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-keyword">long</span> mod = (<span class="hljs-keyword">int</span>) <span class="hljs-number">1e9</span> + <span class="hljs-number">7L</span>;
+        Queue&lt;<span class="hljs-keyword">long</span>[]&gt; pq = <span class="hljs-keyword">new</span> PriorityQueue&lt;&gt;(Comparator.comparingLong(l -&gt; l[<span class="hljs-number">1</span>]));
+        <span class="hljs-keyword">long</span>[] ways = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[n];
+        <span class="hljs-keyword">long</span>[] dist = <span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[n];
+        Arrays.fill(dist, (<span class="hljs-keyword">long</span>) <span class="hljs-number">1e18</span>);
+        dist[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
+        ways[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;
+        ArrayList&lt;<span class="hljs-keyword">long</span>[]&gt;[] graph = <span class="hljs-keyword">new</span> ArrayList[n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; graph.length; i++) {
+            graph[i] = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] road : roads) {
+            graph[road[<span class="hljs-number">0</span>]].add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[] {road[<span class="hljs-number">1</span>], road[<span class="hljs-number">2</span>]});
+            graph[road[<span class="hljs-number">1</span>]].add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[] {road[<span class="hljs-number">0</span>], road[<span class="hljs-number">2</span>]});
+        }
+        pq.add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[] {<span class="hljs-number">0</span>, <span class="hljs-number">0</span>});
+        <span class="hljs-keyword">if</span> (!pq.isEmpty()) {
+            <span class="hljs-keyword">while</span> (!pq.isEmpty()) {
+                <span class="hljs-keyword">long</span>[] ele = pq.remove();
+                <span class="hljs-keyword">long</span> dis = ele[<span class="hljs-number">1</span>];
+                <span class="hljs-keyword">long</span> node = ele[<span class="hljs-number">0</span>];
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">long</span>[] e : graph[(<span class="hljs-keyword">int</span>) node]) {
+                    <span class="hljs-keyword">long</span> wt = e[<span class="hljs-number">1</span>];
+                    <span class="hljs-keyword">long</span> adjNode = e[<span class="hljs-number">0</span>];
+                    <span class="hljs-keyword">if</span> (wt + dis &lt; dist[(<span class="hljs-keyword">int</span>) adjNode]) {
+                        dist[(<span class="hljs-keyword">int</span>) adjNode] = wt + dis;
+                        ways[(<span class="hljs-keyword">int</span>) adjNode] = ways[(<span class="hljs-keyword">int</span>) node];
+                        pq.add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">long</span>[] {adjNode, dist[(<span class="hljs-keyword">int</span>) adjNode]});
+                    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (wt + dis == dist[(<span class="hljs-keyword">int</span>) adjNode]) {
+                        ways[(<span class="hljs-keyword">int</span>) adjNode] = (ways[(<span class="hljs-keyword">int</span>) node] + ways[(<span class="hljs-keyword">int</span>) adjNode]) % mod;
+                    }
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>) ways[n - <span class="hljs-number">1</span>];
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">countPaths</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span>[][] roads)</span> </span>{
+        <span class="hljs-keyword">return</span> dijkstra(roads, n);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

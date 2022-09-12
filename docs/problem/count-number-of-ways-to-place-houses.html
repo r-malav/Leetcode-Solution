@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Count Number of Ways to Place Houses - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2320. Count Number of Ways to Place Houses</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/medium" class="tag">Medium</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/dynamic-programming">Dynamic Programming</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/climbing-stairs.html">Climbing Stairs</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/house-robber.html">House Robber</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>There is a street with <code>n * 2</code> <strong>plots</strong>, where there are <code>n</code> plots on each side of the street. The plots on each side are numbered from <code>1</code> to <code>n</code>. On each plot, a house can be placed.</p>
+<p>Return <strong>the number of ways houses can be placed such that no two houses are adjacent to each other on the same side of the street</strong>. Since the answer may be very large, return it <strong>modulo</strong> <code>109 + 7</code>.</p>
+<p>Note that if a house is placed on the <code>ith</code> plot on one side of the street, a house can also be placed on the <code>ith</code> plot on the other side of the street.</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">4</span>
+<span class="hljs-attr">Explanation:</span> 
+<span class="hljs-attr">Possible arrangements:</span>
+<span class="hljs-number">1</span><span class="hljs-string">.</span> <span class="hljs-string">All</span> <span class="hljs-string">plots</span> <span class="hljs-string">are</span> <span class="hljs-string">empty.</span>
+<span class="hljs-number">2</span><span class="hljs-string">.</span> <span class="hljs-string">A</span> <span class="hljs-string">house</span> <span class="hljs-string">is</span> <span class="hljs-string">placed</span> <span class="hljs-string">on</span> <span class="hljs-string">one</span> <span class="hljs-string">side</span> <span class="hljs-string">of</span> <span class="hljs-string">the</span> <span class="hljs-string">street.</span>
+<span class="hljs-number">3</span><span class="hljs-string">.</span> <span class="hljs-string">A</span> <span class="hljs-string">house</span> <span class="hljs-string">is</span> <span class="hljs-string">placed</span> <span class="hljs-string">on</span> <span class="hljs-string">the</span> <span class="hljs-string">other</span> <span class="hljs-string">side</span> <span class="hljs-string">of</span> <span class="hljs-string">the</span> <span class="hljs-string">street.</span>
+<span class="hljs-number">4</span><span class="hljs-string">.</span> <span class="hljs-string">Two</span> <span class="hljs-string">houses</span> <span class="hljs-string">are</span> <span class="hljs-string">placed,</span> <span class="hljs-string">one</span> <span class="hljs-string">on</span> <span class="hljs-string">each</span> <span class="hljs-string">side</span> <span class="hljs-string">of</span> <span class="hljs-string">the</span> <span class="hljs-string">street.</span>
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<p><img src="https://assets.leetcode.com/uploads/2022/05/12/arrangements.png" alt="" /></p>
+<pre><code class="hljs"><span class="hljs-attr">Input:</span> <span class="hljs-string">n</span> <span class="hljs-string">=</span> <span class="hljs-number">2</span>
+<span class="hljs-attr">Output:</span> <span class="hljs-number">9</span>
+<span class="hljs-attr">Explanation:</span> <span class="hljs-string">The</span> <span class="hljs-number">9</span> <span class="hljs-string">possible</span> <span class="hljs-string">arrangements</span> <span class="hljs-string">are</span> <span class="hljs-string">shown</span> <span class="hljs-string">in</span> <span class="hljs-string">the</span> <span class="hljs-string">diagram</span> <span class="hljs-string">above.</span>
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= n &lt;= 104</code></li>
+</ul>
+<h2 id="solution-java">Solution (Java)</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">countHousePlacements</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+        <span class="hljs-comment">// algo - 1st solve one side  of the street</span>
+        <span class="hljs-comment">// think 0 - space , 1 - house</span>
+        <span class="hljs-comment">// if n = 1 then we can take one 0 and one 1 (total ways = 2)</span>
+        <span class="hljs-comment">// if n = 2 then 00 , 01 , 10 , 11 but we cant take 11 as two house cant be adjacent.</span>
+        <span class="hljs-comment">// so the 1 ended string will be only 1 which is same as previous 0 ended string and 0 ended</span>
+        <span class="hljs-comment">// string are 2 which is previous sum(total ways)</span>
+        <span class="hljs-comment">// apply this formula for n no's</span>
+        <span class="hljs-keyword">long</span> mod = <span class="hljs-number">1000000007</span>;
+        <span class="hljs-keyword">long</span> space = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">long</span> house = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">long</span> sum = space + house;
+        <span class="hljs-keyword">while</span> (--n &gt; <span class="hljs-number">0</span>) {
+            house = space;
+            space = sum;
+            sum = (house + space) % mod;
+        }
+        <span class="hljs-comment">// as street has two side</span>
+        <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>) ((sum * sum) % mod);
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>

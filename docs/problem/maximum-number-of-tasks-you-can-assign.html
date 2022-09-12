@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><title>Maximum Number of Tasks You Can Assign - LeetCode javascript solutions</title><link rel="shortcut icon" href="https://curest0x1021.github.io/Leetcode-Solution/static/img/favicon.png" type="image/png"/><link rel="stylesheet" href="https://curest0x1021.github.io/Leetcode-Solution/static/css/app.css"/></head><body><header><h1>2071. Maximum Number of Tasks You Can Assign</h1><div class="row"><div class="name">Difficulty:</div><div class="value"><a href="https://curest0x1021.github.io/Leetcode-Solution/difficulty/hard" class="tag">Hard</a></div></div><div class="row"><div class="name">Related Topics:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/array">Array</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/binary-search">Binary Search</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/greedy">Greedy</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/queue">Queue</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/sorting">Sorting</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/tag/monotonic-queue">Monotonic Queue</a></li></ul></div></div><div class="row"><div class="name">Similar Questions:</div><div class="value"><ul class="clearfix"><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/most-profit-assigning-work.html">Most Profit Assigning Work</a></li><li><a href="https://curest0x1021.github.io/Leetcode-Solution/problem/maximum-running-time-of-n-computers.html">Maximum Running Time of N Computers</a></li></ul></div></div></header><main><article class="markdown-body"><h2 id="problem">Problem</h2>
+<p>You have <code>n</code> tasks and <code>m</code> workers. Each task has a strength requirement stored in a <strong>0-indexed</strong> integer array <code>tasks</code>, with the <code>ith</code> task requiring <code>tasks[i]</code> strength to complete. The strength of each worker is stored in a <strong>0-indexed</strong> integer array <code>workers</code>, with the <code>jth</code> worker having <code>workers[j]</code> strength. Each worker can only be assigned to a <strong>single</strong> task and must have a strength <strong>greater than or equal</strong> to the task's strength requirement (i.e., <code>workers[j] &gt;= tasks[i]</code>).</p>
+<p>Additionally, you have <code>pills</code> magical pills that will <strong>increase a worker's strength</strong> by <code>strength</code>. You can decide which workers receive the magical pills, however, you may only give each worker <strong>at most one</strong> magical pill.</p>
+<p>Given the **0-indexed **integer arrays <code>tasks</code> and <code>workers</code> and the integers <code>pills</code> and <code>strength</code>, return **the *<em>maximum</em>* number of tasks that can be completed.**</p>
+<p>&nbsp;
+<strong>Example 1:</strong></p>
+<pre><code class="hljs">Input: tasks = [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>], workers = [<span class="hljs-number">0</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>], pills = <span class="hljs-number">1</span>, strength = <span class="hljs-number">1</span>
+Output: <span class="hljs-number">3</span>
+Explanation:
+We can assign the magical pill <span class="hljs-keyword">and</span> tasks as follows:
+- Give the magical pill to worker <span class="hljs-number">0.</span>
+- Assign worker <span class="hljs-number">0</span> to task <span class="hljs-number">2</span> (<span class="hljs-number">0</span> + <span class="hljs-number">1</span> &gt;= <span class="hljs-number">1</span>)
+- Assign worker <span class="hljs-number">1</span> to task <span class="hljs-number">1</span> (<span class="hljs-number">3</span> &gt;= <span class="hljs-number">2</span>)
+- Assign worker <span class="hljs-number">2</span> to task <span class="hljs-number">0</span> (<span class="hljs-number">3</span> &gt;= <span class="hljs-number">3</span>)
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="hljs">Input: tasks = [<span class="hljs-number">5</span>,<span class="hljs-number">4</span>], workers = [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>], pills = <span class="hljs-number">1</span>, strength = <span class="hljs-number">5</span>
+Output: <span class="hljs-number">1</span>
+Explanation:
+We can assign the magical pill <span class="hljs-keyword">and</span> tasks as follows:
+- Give the magical pill to worker <span class="hljs-number">0.</span>
+- Assign worker <span class="hljs-number">0</span> to task <span class="hljs-number">0</span> (<span class="hljs-number">0</span> + <span class="hljs-number">5</span> &gt;= <span class="hljs-number">5</span>)
+</code></pre>
+<p><strong>Example 3:</strong></p>
+<pre><code class="hljs">Input: tasks = [<span class="hljs-number">10</span>,<span class="hljs-number">15</span>,<span class="hljs-number">30</span>], workers = [<span class="hljs-number">0</span>,<span class="hljs-number">10</span>,<span class="hljs-number">10</span>,<span class="hljs-number">10</span>,<span class="hljs-number">10</span>], pills = <span class="hljs-number">3</span>, strength = <span class="hljs-number">10</span>
+Output: <span class="hljs-number">2</span>
+Explanation:
+We can assign the magical pills <span class="hljs-keyword">and</span> tasks as follows:
+- Give the magical pill to worker <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> worker <span class="hljs-number">1.</span>
+- Assign worker <span class="hljs-number">0</span> to task <span class="hljs-number">0</span> (<span class="hljs-number">0</span> + <span class="hljs-number">10</span> &gt;= <span class="hljs-number">10</span>)
+- Assign worker <span class="hljs-number">1</span> to task <span class="hljs-number">1</span> (<span class="hljs-number">10</span> + <span class="hljs-number">10</span> &gt;= <span class="hljs-number">15</span>)
+The last pill <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> given because it will <span class="hljs-keyword">not</span> make any worker strong enough <span class="hljs-keyword">for</span> the last task.
+</code></pre>
+<p>&nbsp;
+<strong>Constraints:</strong></p>
+<ul>
+<li><p><code>n == tasks.length</code></p></li>
+<li><p><code>m == workers.length</code></p></li>
+<li><p><code>1 &lt;= n, m &lt;= 5 * 104</code></p></li>
+<li><p><code>0 &lt;= pills &lt;= m</code></p></li>
+<li><p><code>0 &lt;= tasks[i], workers[j], strength &lt;= 109</code></p></li>
+</ul>
+<h2 id="solution">Solution</h2>
+<pre><code class="hljs lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxTaskAssign</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] tasks, <span class="hljs-keyword">int</span>[] workers, <span class="hljs-keyword">int</span> pills, <span class="hljs-keyword">int</span> strength)</span> </span>{
+        <span class="hljs-keyword">int</span> left = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> right = Math.min(tasks.length, workers.length);
+        Arrays.sort(tasks);
+        Arrays.sort(workers);
+        <span class="hljs-keyword">while</span> (left + <span class="hljs-number">1</span> &lt; right) {
+            <span class="hljs-keyword">int</span> mid = left + (right - left) / <span class="hljs-number">2</span>;
+            <span class="hljs-keyword">if</span> (canAssign(mid, tasks, workers, pills, strength)) {
+                left = mid;
+            } <span class="hljs-keyword">else</span> {
+                right = mid;
+            }
+        }
+        <span class="hljs-keyword">if</span> (canAssign(right, tasks, workers, pills, strength)) {
+            <span class="hljs-keyword">return</span> right;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">return</span> left;
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">canAssign</span><span class="hljs-params">(<span class="hljs-keyword">int</span> count, <span class="hljs-keyword">int</span>[] tasks, <span class="hljs-keyword">int</span>[] workers, <span class="hljs-keyword">int</span> pills, <span class="hljs-keyword">int</span> strength)</span> </span>{
+        Deque&lt;Integer&gt; dq = <span class="hljs-keyword">new</span> ArrayDeque&lt;&gt;();
+        <span class="hljs-keyword">int</span> ind = workers.length - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = count - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            <span class="hljs-keyword">while</span> (ind &gt;= workers.length - count &amp;&amp; workers[ind] + strength &gt;= tasks[i]) {
+                dq.offerLast(workers[ind]);
+                ind--;
+            }
+            <span class="hljs-keyword">if</span> (dq.isEmpty()) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            }
+            <span class="hljs-keyword">if</span> (dq.peekFirst() &gt;= tasks[i]) {
+                dq.pollFirst();
+            } <span class="hljs-keyword">else</span> {
+                dq.pollLast();
+                pills--;
+                <span class="hljs-keyword">if</span> (pills &lt; <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+    }
+}
+</code></pre>
+<p><strong>Explain:</strong></p>
+<p>nope.</p>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time complexity : O(n).</li>
+<li>Space complexity : O(n).</li>
+</ul></article></main><footer><a href="https://github.com/curest0x1021/Leetcode-Solution" target="_blank"><img src="https://curest0x1021.github.io/Leetcode-Solution/static/img/github.png" alt="github"/></a></footer></body></html>
