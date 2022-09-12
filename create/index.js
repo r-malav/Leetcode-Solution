@@ -79,7 +79,11 @@ const getDescription = (description) => {
 const getPath = (id, name) => {
 	const path = require('path');
 	const left = Math.floor((id - 1) / 100);
-	const folder = `${left === 0 ? '001' : (left * 100 + 1)}-${(left + 1) * 100}`;
+  let start = left * 100 + 1;
+  let end = (left + 1) * 100;
+  if (start.toString().length < 4) start = '0' + start;
+  if (end.toString().length < 4) end = '0' + end;
+	const folder = `${left === 0 ? '0001' : start}-${end}`;
 	return path.resolve(__dirname, `../${folder}/${id}. ${name}.md`);
 };
 
