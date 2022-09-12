@@ -1,4 +1,4 @@
-const home = 'https://curest0x1021.github.io/Leetcode-Solution';
+const home = 'https://curest0x-leetcode.netlify.app';
 const github = 'https://github.com/curest0x1021/Leetcode-Solution';
 
 function difficulty (slug, num = 1) {
