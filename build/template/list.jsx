@@ -3,7 +3,7 @@
 	<meta charSet="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<meta httpEquiv="X-UA-Compatible" content="ie=edge"/>
-	<title>LeetCode javascript solutions</title>
+	<title>LeetCode solutions</title>
 	<link rel="shortcut icon" href={url.home + '/static/img/favicon.png'} type="image/png"/>
 	<link rel="stylesheet" href={url.home + '/static/css/app.css'}/>
 </head>
@@ -61,6 +61,9 @@
 	<section className="paging">
 		<ul className="clearfix">
 			<li className={paging.pageNow > 1 ? '' : 'disabled'}>
+				<a href={paging.pageNow > 1 ? (type === 'page' ? url[type](1) : url[type](meta[type].slug, 1)) : '#'}>&lt;&lt;</a>
+			</li>
+			<li className={paging.pageNow > 1 ? '' : 'disabled'}>
 				<a href={paging.pageNow > 1 ? (type === 'page' ? url[type](paging.pageNow - 1) : url[type](meta[type].slug, paging.pageNow - 1)) : '#'}>&lt;</a>
 			</li>
 			{paging.pages.map((page, index) => (
@@ -70,6 +73,9 @@
 			))}
 			<li className={paging.pageNow < paging.pageCount ? '' : 'disabled'}>
 				<a href={paging.pageNow < paging.pageCount ? (type === 'page' ? url[type](paging.pageNow + 1) : url[type](meta[type].slug, paging.pageNow + 1)) : '#'}>&gt;</a>
+			</li>
+			<li className={paging.pageNow < paging.pageCount ? '' : 'disabled'}>
+				<a href={paging.pageNow < paging.pageCount ? (type === 'page' ? url[type](paging.pageCount) : url[type](meta[type].slug, paging.pageCount)) : '#'}>&gt;&gt;</a>
 			</li>
 		</ul>
 	</section>
