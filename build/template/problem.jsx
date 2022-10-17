@@ -3,7 +3,7 @@
 	<meta charSet="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<meta httpEquiv="X-UA-Compatible" content="ie=edge"/>
-	<title>{name} - LeetCode javascript solutions</title>
+	<title>{name} - LeetCode solutions</title>
 	<link rel="shortcut icon" href={url.home + '/static/img/favicon.png'} type="image/png"/>
 	<link rel="stylesheet" href={url.home + '/static/css/app.css'}/>
 </head>
